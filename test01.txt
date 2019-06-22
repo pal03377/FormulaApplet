@@ -1,1 +1,2 @@
 Diese Datei dient dazu, GIT auszuprobieren.
+D:\PortableApps\Notepad++Portable\notepad++Portable.exe
