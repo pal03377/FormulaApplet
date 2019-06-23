@@ -2,5 +2,5 @@ Diese Datei dient dazu, GIT auszuprobieren.
 D:\PortableApps\Notepad++Portable\notepad++Portable.exe
 Nun wird geändert...
 Teil-Erfolg.
-Das ist der Master.
+Das ist Beta.
 
