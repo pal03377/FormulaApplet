@@ -1,6 +1,8 @@
 Diese Datei dient dazu, GIT auszuprobieren.
 D:\PortableApps\Notepad++Portable\notepad++Portable.exe
-Nun wird ge�ndert...
+Nun wird geändert...
 Teil-Erfolg.
 Hier ist Alpha.
+Erste Änderung von Alpha.
+
 
