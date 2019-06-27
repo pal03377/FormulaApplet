@@ -1,3 +1,0 @@
-Diese Datei dient dazu, GIT auszuprobieren.
-Diese Datei kommt zum Branch Alpha dazu.
-
