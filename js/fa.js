@@ -18,7 +18,7 @@ requirejs.config({
 // https://requirejs.org/docs/api.html#pathsfallbacks
 requirejs.config({
     //To get timely, correct error triggers in IE, force a define/shim exports check.
-    enforceDefine: true,
+    enforceDefine: false,
     paths: {
         jquery: [
                 /*
@@ -28,7 +28,7 @@ requirejs.config({
                 crossorigin="anonymous"></script>
              'http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min',
                */
-            'https://code.jquery.com/jquery-3.4.1.min.js',
+            'https://code.jquery.com/jquery-3.4.1.min',
 
             //If the CDN location fails, load from this location
             'lib/jquery-3.4.1.min.js'
@@ -38,8 +38,11 @@ requirejs.config({
 
 
 // Start the main app logic.
-requirejs(['jquery', 'canvas', 'app/sub'],
-function   ($,        canvas,   sub) {
-    //jQuery, canvas and the app/sub module are all
+// requirejs(['jquery', 'canvas', 'app/sub'],
+requirejs(['jquery'],
+
+// function   ($,        canvas,   sub) {
+function   ($) {
+        //jQuery, canvas and the app/sub module are all
     //loaded and can be used here now.
 });
