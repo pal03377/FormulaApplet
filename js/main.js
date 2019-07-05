@@ -1,1 +1,1 @@
-console.log( 'Hier ist main.js' );
+console.log( 'Here is main.js' );
