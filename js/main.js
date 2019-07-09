@@ -1,8 +1,10 @@
 console.log( 'Here is main.js' );
 
 function loader_log( logger, message, state){
-
-  // if...
+  var d = new Date(), ts;
+  ts = d.toLocaleTimeString().split(' ');
+  ts = ts[0] + '.' + d.getMilliseconds() + ' ' + ts[1];
+  message = ts + message;
   if( state == 'error'){
     message += ' <span style="color:red">ERROR</span>'
   }
@@ -28,5 +30,7 @@ function load_lib_or_fallback(load_url, fallback){
 
 load_lib_or_fallback('https://code.jquery.com/jquery-3.4.1.min.js', '/js/lib/jquery-3.4.1.min.js')
 // MathQuill depends on jQuery 1.5.2+
-load_lib_or_fallback('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js', '/js/lib/mathquill.js')
-//load_lib_or_fallback('https://code.jquery.com/jquery-3.4.1.min.js', '/js/lib/jquery-3.4.1.min.js')
+load_lib_or_fallback('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js', '/js/lib/mathquill-0.10.1/mathquill.js')
+load_lib_or_fallback('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css', '/js/lib/mathquill-0.10.1/mathquill.css')
+
+

@@ -164,7 +164,10 @@ var P = (function(prototype, ownProperty, undefined) {
     // set the constructor property on the prototype, for convenience
     proto.constructor = C;
 
-    C.extend = function(def) { return P(C, def); }
+    C.mixin = function(def) {
+      Bare[prototype] = C[prototype] = P(C, def)[prototype];
+      return C;
+    }
 
     return (C.open = function(def) {
       extensions = {};
@@ -629,8 +632,7 @@ var Cursor = P(Point, function(_) {
     this[-dir] = oppDir;
     // by contract, .blur() is called after all has been said and done
     // and the cursor has actually been moved
-    // FIXME pass cursor to .blur() so text can fix cursor pointers when removing itself
-    if (oldParent !== parent && oldParent.blur) oldParent.blur(this);
+    if (oldParent !== parent && oldParent.blur) oldParent.blur();
   };
   _.insDirOf = function(dir, el) {
     prayDirection(dir);
@@ -914,7 +916,7 @@ var API = {}, Options = P(), optionProcessors = {}, Progenote = P(), EMBEDS = {}
 function insistOnInterVer() {
   if (window.console) console.warn(
     'You are using the MathQuill API without specifying an interface version, ' +
-    'which will fail in v1.0.0. Easiest fix is to do the following before ' +
+    'which will fail in v1.0.0. You can fix this easily by doing this before ' +
     'doing anything else:\n' +
     '\n' +
     '    MathQuill = MathQuill.getInterface(1);\n' +
@@ -1111,19 +1113,6 @@ function getInterface(v) {
       this.__controller.seek($(el), pageX, pageY);
       var cmd = Embed().setOptions(options);
       cmd.createLeftOf(this.__controller.cursor);
-    };
-    _.clickAt = function(clientX, clientY, target) {
-      target = target || document.elementFromPoint(clientX, clientY);
-
-      var ctrlr = this.__controller, root = ctrlr.root;
-      if (!jQuery.contains(root.jQ[0], target)) target = root.jQ[0];
-      ctrlr.seek($(target), clientX + pageXOffset, clientY + pageYOffset);
-      if (ctrlr.blurred) this.focus();
-      return this;
-    };
-    _.ignoreNextMousedown = function(fn) {
-      this.__controller.cursor.options.ignoreNextMousedown = fn;
-      return this;
     };
   });
   MQ.EditableField = function() { throw "wtf don't call me, I'm 'abstract'"; };
@@ -1962,9 +1951,9 @@ Controller.open(function(_) {
   _.selectLeft = function() { return this.selectDir(L); };
   _.selectRight = function() { return this.selectDir(R); };
 });
-// Parser MathBlock
+// Parser MathCommand
 var latexMathParser = (function() {
-  function commandToBlock(cmd) { // can also take in a Fragment
+  function commandToBlock(cmd) {
     var block = MathBlock();
     cmd.adopt(block, 0, 0);
     return block;
@@ -2145,7 +2134,6 @@ Controller.open(function(_, super_) {
  *******************************************************/
 
 Controller.open(function(_) {
-  Options.p.ignoreNextMousedown = noop;
   _.delegateMouseEvents = function() {
     var ultimateRootjQ = this.root.jQ;
     //drag-to-select event handling
@@ -2154,12 +2142,6 @@ Controller.open(function(_) {
       var root = Node.byId[rootjQ.attr(mqBlockId) || ultimateRootjQ.attr(mqBlockId)];
       var ctrlr = root.controller, cursor = ctrlr.cursor, blink = cursor.blink;
       var textareaSpan = ctrlr.textareaSpan, textarea = ctrlr.textarea;
-
-      e.preventDefault(); // doesn't work in IE\u22648, but it's a one-line fix:
-      e.target.unselectable = true; // http://jsbin.com/yagekiji/1
-
-      if (cursor.options.ignoreNextMousedown(e)) return;
-      else cursor.options.ignoreNextMousedown = noop;
 
       var target;
       function mousemove(e) { target = $(e.target); }
@@ -2191,6 +2173,8 @@ Controller.open(function(_) {
         if (!ctrlr.editable) rootjQ.prepend(textareaSpan);
         textarea.focus();
       }
+      e.preventDefault(); // doesn't work in IE\u22648, but it's a one-line fix:
+      e.target.unselectable = true; // http://jsbin.com/yagekiji/1
 
       cursor.blink = noop;
       ctrlr.seek($(e.target), e.pageX, e.pageY).cursor.startSelection();
@@ -2846,725 +2830,6 @@ API.MathField = function(APIClasses) {
     };
   });
 };
-/*************************************************
- * Abstract classes of text blocks
- ************************************************/
-
-/**
- * Blocks of plain text, with one or two TextPiece's as children.
- * Represents flat strings of typically serif-font Roman characters, as
- * opposed to hierchical, nested, tree-structured math.
- * Wraps a single HTMLSpanElement.
- */
-var TextBlock = P(Node, function(_, super_) {
-  _.ctrlSeq = '\\text';
-
-  _.replaces = function(replacedText) {
-    if (replacedText instanceof Fragment)
-      this.replacedText = replacedText.remove().jQ.text();
-    else if (typeof replacedText === 'string')
-      this.replacedText = replacedText;
-  };
-
-  _.jQadd = function(jQ) {
-    super_.jQadd.call(this, jQ);
-    if (this.ends[L]) this.ends[L].jQadd(this.jQ[0].firstChild);
-  };
-
-  _.createLeftOf = function(cursor) {
-    var textBlock = this;
-    super_.createLeftOf.call(this, cursor);
-
-    if (textBlock[R].siblingCreated) textBlock[R].siblingCreated(cursor.options, L);
-    if (textBlock[L].siblingCreated) textBlock[L].siblingCreated(cursor.options, R);
-    textBlock.bubble('reflow');
-
-    cursor.insAtRightEnd(textBlock);
-
-    if (textBlock.replacedText)
-      for (var i = 0; i < textBlock.replacedText.length; i += 1)
-        textBlock.write(cursor, textBlock.replacedText.charAt(i));
-  };
-
-  _.parser = function() {
-    var textBlock = this;
-
-    // TODO: correctly parse text mode
-    var string = Parser.string;
-    var regex = Parser.regex;
-    var optWhitespace = Parser.optWhitespace;
-    return optWhitespace
-      .then(string('{')).then(regex(/^[^}]*/)).skip(string('}'))
-      .map(function(text) {
-        if (text.length === 0) return Fragment();
-
-        TextPiece(text).adopt(textBlock, 0, 0);
-        return textBlock;
-      })
-    ;
-  };
-
-  _.textContents = function() {
-    return this.foldChildren('', function(text, child) {
-      return text + child.text;
-    });
-  };
-  _.text = function() { return '"' + this.textContents() + '"'; };
-  _.latex = function() {
-    var contents = this.textContents();
-    if (contents.length === 0) return '';
-    return '\\text{' + contents + '}';
-  };
-  _.html = function() {
-    return (
-        '<span class="mq-text-mode" mathquill-command-id='+this.id+'>'
-      +   this.textContents()
-      + '</span>'
-    );
-  };
-
-  // editability methods: called by the cursor for editing, cursor movements,
-  // and selection of the MathQuill tree, these all take in a direction and
-  // the cursor
-  _.moveTowards = function(dir, cursor) { cursor.insAtDirEnd(-dir, this); };
-  _.moveOutOf = function(dir, cursor) { cursor.insDirOf(dir, this); };
-  _.unselectInto = _.moveTowards;
-
-  // TODO: make these methods part of a shared mixin or something.
-  _.selectTowards = MathCommand.prototype.selectTowards;
-  _.deleteTowards = MathCommand.prototype.deleteTowards;
-
-  _.selectOutOf = function(dir, cursor) {
-    cursor.insDirOf(dir, this);
-  };
-  _.deleteOutOf = function(dir, cursor) {
-    // backspace and delete at ends of block don't unwrap
-    if (this.isEmpty()) cursor.insRightOf(this);
-  };
-  _.write = function(cursor, ch) {
-    cursor.show().deleteSelection();
-
-    if (ch !== '$') {
-      if (!cursor[L]) TextPiece(ch).createLeftOf(cursor);
-      else cursor[L].appendText(ch);
-    }
-    else if (this.isEmpty()) {
-      cursor.insRightOf(this);
-      VanillaSymbol('\\$','$').createLeftOf(cursor);
-    }
-    else if (!cursor[R]) cursor.insRightOf(this);
-    else if (!cursor[L]) cursor.insLeftOf(this);
-    else { // split apart
-      var leftBlock = TextBlock();
-      var leftPc = this.ends[L];
-      leftPc.disown().jQ.detach();
-      leftPc.adopt(leftBlock, 0, 0);
-
-      cursor.insLeftOf(this);
-      super_.createLeftOf.call(leftBlock, cursor);
-    }
-  };
-
-  _.seek = function(pageX, cursor) {
-    cursor.hide();
-    var textPc = fuseChildren(this);
-
-    // insert cursor at approx position in DOMTextNode
-    var avgChWidth = this.jQ.width()/this.text.length;
-    var approxPosition = Math.round((pageX - this.jQ.offset().left)/avgChWidth);
-    if (approxPosition <= 0) cursor.insAtLeftEnd(this);
-    else if (approxPosition >= textPc.text.length) cursor.insAtRightEnd(this);
-    else cursor.insLeftOf(textPc.splitRight(approxPosition));
-
-    // move towards mousedown (pageX)
-    var displ = pageX - cursor.show().offset().left; // displacement
-    var dir = displ && displ < 0 ? L : R;
-    var prevDispl = dir;
-    // displ * prevDispl > 0 iff displacement direction === previous direction
-    while (cursor[dir] && displ * prevDispl > 0) {
-      cursor[dir].moveTowards(dir, cursor);
-      prevDispl = displ;
-      displ = pageX - cursor.offset().left;
-    }
-    if (dir*displ < -dir*prevDispl) cursor[-dir].moveTowards(-dir, cursor);
-
-    if (!cursor.anticursor) {
-      // about to start mouse-selecting, the anticursor is gonna get put here
-      this.anticursorPosition = cursor[L] && cursor[L].text.length;
-      // ^ get it? 'cos if there's no cursor[L], it's 0... I'm a terrible person.
-    }
-    else if (cursor.anticursor.parent === this) {
-      // mouse-selecting within this TextBlock, re-insert the anticursor
-      var cursorPosition = cursor[L] && cursor[L].text.length;;
-      if (this.anticursorPosition === cursorPosition) {
-        cursor.anticursor = Point.copy(cursor);
-      }
-      else {
-        if (this.anticursorPosition < cursorPosition) {
-          var newTextPc = cursor[L].splitRight(this.anticursorPosition);
-          cursor[L] = newTextPc;
-        }
-        else {
-          var newTextPc = cursor[R].splitRight(this.anticursorPosition - cursorPosition);
-        }
-        cursor.anticursor = Point(this, newTextPc[L], newTextPc);
-      }
-    }
-  };
-
-  _.blur = function(cursor) {
-    MathBlock.prototype.blur.call(this);
-    if (!cursor) return;
-    if (this.textContents() === '') {
-      this.remove();
-      if (cursor[L] === this) cursor[L] = this[L];
-      else if (cursor[R] === this) cursor[R] = this[R];
-    }
-    else fuseChildren(this);
-  };
-
-  function fuseChildren(self) {
-    self.jQ[0].normalize();
-
-    var textPcDom = self.jQ[0].firstChild;
-    if (!textPcDom) return;
-    pray('only node in TextBlock span is Text node', textPcDom.nodeType === 3);
-    // nodeType === 3 has meant a Text node since ancient times:
-    //   http://reference.sitepoint.com/javascript/Node/nodeType
-
-    var textPc = TextPiece(textPcDom.data);
-    textPc.jQadd(textPcDom);
-
-    self.children().disown();
-    return textPc.adopt(self, 0, 0);
-  }
-
-  _.focus = MathBlock.prototype.focus;
-});
-
-/**
- * Piece of plain text, with a TextBlock as a parent and no children.
- * Wraps a single DOMTextNode.
- * For convenience, has a .text property that's just a JavaScript string
- * mirroring the text contents of the DOMTextNode.
- * Text contents must always be nonempty.
- */
-var TextPiece = P(Node, function(_, super_) {
-  _.init = function(text) {
-    super_.init.call(this);
-    this.text = text;
-  };
-  _.jQadd = function(dom) { this.dom = dom; this.jQ = $(dom); };
-  _.jQize = function() {
-    return this.jQadd(document.createTextNode(this.text));
-  };
-  _.appendText = function(text) {
-    this.text += text;
-    this.dom.appendData(text);
-  };
-  _.prependText = function(text) {
-    this.text = text + this.text;
-    this.dom.insertData(0, text);
-  };
-  _.insTextAtDirEnd = function(text, dir) {
-    prayDirection(dir);
-    if (dir === R) this.appendText(text);
-    else this.prependText(text);
-  };
-  _.splitRight = function(i) {
-    var newPc = TextPiece(this.text.slice(i)).adopt(this.parent, this, this[R]);
-    newPc.jQadd(this.dom.splitText(i));
-    this.text = this.text.slice(0, i);
-    return newPc;
-  };
-
-  function endChar(dir, text) {
-    return text.charAt(dir === L ? 0 : -1 + text.length);
-  }
-
-  _.moveTowards = function(dir, cursor) {
-    prayDirection(dir);
-
-    var ch = endChar(-dir, this.text)
-
-    var from = this[-dir];
-    if (from) from.insTextAtDirEnd(ch, dir);
-    else TextPiece(ch).createDir(-dir, cursor);
-
-    return this.deleteTowards(dir, cursor);
-  };
-
-  _.latex = function() { return this.text; };
-
-  _.deleteTowards = function(dir, cursor) {
-    if (this.text.length > 1) {
-      if (dir === R) {
-        this.dom.deleteData(0, 1);
-        this.text = this.text.slice(1);
-      }
-      else {
-        // note that the order of these 2 lines is annoyingly important
-        // (the second line mutates this.text.length)
-        this.dom.deleteData(-1 + this.text.length, 1);
-        this.text = this.text.slice(0, -1);
-      }
-    }
-    else {
-      this.remove();
-      this.jQ.remove();
-      cursor[dir] = this[dir];
-    }
-  };
-
-  _.selectTowards = function(dir, cursor) {
-    prayDirection(dir);
-    var anticursor = cursor.anticursor;
-
-    var ch = endChar(-dir, this.text)
-
-    if (anticursor[dir] === this) {
-      var newPc = TextPiece(ch).createDir(dir, cursor);
-      anticursor[dir] = newPc;
-      cursor.insDirOf(dir, newPc);
-    }
-    else {
-      var from = this[-dir];
-      if (from) from.insTextAtDirEnd(ch, dir);
-      else {
-        var newPc = TextPiece(ch).createDir(-dir, cursor);
-        newPc.jQ.insDirOf(-dir, cursor.selection.jQ);
-      }
-
-      if (this.text.length === 1 && anticursor[-dir] === this) {
-        anticursor[-dir] = this[-dir]; // `this` will be removed in deleteTowards
-      }
-    }
-
-    return this.deleteTowards(dir, cursor);
-  };
-});
-
-CharCmds.$ =
-LatexCmds.text =
-LatexCmds.textnormal =
-LatexCmds.textrm =
-LatexCmds.textup =
-LatexCmds.textmd = TextBlock;
-
-function makeTextBlock(latex, tagName, attrs) {
-  return P(TextBlock, {
-    ctrlSeq: latex,
-    htmlTemplate: '<'+tagName+' '+attrs+'>&0</'+tagName+'>'
-  });
-}
-
-LatexCmds.em = LatexCmds.italic = LatexCmds.italics =
-LatexCmds.emph = LatexCmds.textit = LatexCmds.textsl =
-  makeTextBlock('\\textit', 'i', 'class="mq-text-mode"');
-LatexCmds.strong = LatexCmds.bold = LatexCmds.textbf =
-  makeTextBlock('\\textbf', 'b', 'class="mq-text-mode"');
-LatexCmds.sf = LatexCmds.textsf =
-  makeTextBlock('\\textsf', 'span', 'class="mq-sans-serif mq-text-mode"');
-LatexCmds.tt = LatexCmds.texttt =
-  makeTextBlock('\\texttt', 'span', 'class="mq-monospace mq-text-mode"');
-LatexCmds.textsc =
-  makeTextBlock('\\textsc', 'span', 'style="font-variant:small-caps" class="mq-text-mode"');
-LatexCmds.uppercase =
-  makeTextBlock('\\uppercase', 'span', 'style="text-transform:uppercase" class="mq-text-mode"');
-LatexCmds.lowercase =
-  makeTextBlock('\\lowercase', 'span', 'style="text-transform:lowercase" class="mq-text-mode"');
-
-
-var RootMathCommand = P(MathCommand, function(_, super_) {
-  _.init = function(cursor) {
-    super_.init.call(this, '$');
-    this.cursor = cursor;
-  };
-  _.htmlTemplate = '<span class="mq-math-mode">&0</span>';
-  _.createBlocks = function() {
-    super_.createBlocks.call(this);
-
-    this.ends[L].cursor = this.cursor;
-    this.ends[L].write = function(cursor, ch) {
-      if (ch !== '$')
-        MathBlock.prototype.write.call(this, cursor, ch);
-      else if (this.isEmpty()) {
-        cursor.insRightOf(this.parent);
-        this.parent.deleteTowards(dir, cursor);
-        VanillaSymbol('\\$','$').createLeftOf(cursor.show());
-      }
-      else if (!cursor[R])
-        cursor.insRightOf(this.parent);
-      else if (!cursor[L])
-        cursor.insLeftOf(this.parent);
-      else
-        MathBlock.prototype.write.call(this, cursor, ch);
-    };
-  };
-  _.latex = function() {
-    return '$' + this.ends[L].latex() + '$';
-  };
-});
-
-var RootTextBlock = P(RootMathBlock, function(_, super_) {
-  _.keystroke = function(key) {
-    if (key === 'Spacebar' || key === 'Shift-Spacebar') return;
-    return super_.keystroke.apply(this, arguments);
-  };
-  _.write = function(cursor, ch) {
-    cursor.show().deleteSelection();
-    if (ch === '$')
-      RootMathCommand(cursor).createLeftOf(cursor);
-    else {
-      var html;
-      if (ch === '<') html = '&lt;';
-      else if (ch === '>') html = '&gt;';
-      VanillaSymbol(ch, html).createLeftOf(cursor);
-    }
-  };
-});
-API.TextField = function(APIClasses) {
-  return P(APIClasses.EditableField, function(_, super_) {
-    this.RootBlock = RootTextBlock;
-    _.__mathquillify = function() {
-      return super_.__mathquillify.call(this, 'mq-editable-field mq-text-mode');
-    };
-    _.latex = function(latex) {
-      if (arguments.length > 0) {
-        this.__controller.renderLatexText(latex);
-        if (this.__controller.blurred) this.__controller.cursor.hide().parent.blur();
-        return this;
-      }
-      return this.__controller.exportLatex();
-    };
-  });
-};
-/************************************
- * Symbols for Advanced Mathematics
- ***********************************/
-
-LatexCmds.notin =
-LatexCmds.cong =
-LatexCmds.equiv =
-LatexCmds.oplus =
-LatexCmds.otimes = P(BinaryOperator, function(_, super_) {
-  _.init = function(latex) {
-    super_.init.call(this, '\\'+latex+' ', '&'+latex+';');
-  };
-});
-
-LatexCmds['\u2260'] = LatexCmds.ne = LatexCmds.neq = bind(BinaryOperator,'\\ne ','&ne;');
-
-LatexCmds.ast = LatexCmds.star = LatexCmds.loast = LatexCmds.lowast =
-  bind(BinaryOperator,'\\ast ','&lowast;');
-  //case 'there4 = // a special exception for this one, perhaps?
-LatexCmds.therefor = LatexCmds.therefore =
-  bind(BinaryOperator,'\\therefore ','&there4;');
-
-LatexCmds.cuz = // l33t
-LatexCmds.because = bind(BinaryOperator,'\\because ','&#8757;');
-
-LatexCmds.prop = LatexCmds.propto = bind(BinaryOperator,'\\propto ','&prop;');
-
-LatexCmds['\u2248'] = LatexCmds.asymp = LatexCmds.approx = bind(BinaryOperator,'\\approx ','&asymp;');
-
-LatexCmds.isin = LatexCmds['in'] = bind(BinaryOperator,'\\in ','&isin;');
-
-LatexCmds.ni = LatexCmds.contains = bind(BinaryOperator,'\\ni ','&ni;');
-
-LatexCmds.notni = LatexCmds.niton = LatexCmds.notcontains = LatexCmds.doesnotcontain =
-  bind(BinaryOperator,'\\not\\ni ','&#8716;');
-
-LatexCmds.sub = LatexCmds.subset = bind(BinaryOperator,'\\subset ','&sub;');
-
-LatexCmds.sup = LatexCmds.supset = LatexCmds.superset =
-  bind(BinaryOperator,'\\supset ','&sup;');
-
-LatexCmds.nsub = LatexCmds.notsub =
-LatexCmds.nsubset = LatexCmds.notsubset =
-  bind(BinaryOperator,'\\not\\subset ','&#8836;');
-
-LatexCmds.nsup = LatexCmds.notsup =
-LatexCmds.nsupset = LatexCmds.notsupset =
-LatexCmds.nsuperset = LatexCmds.notsuperset =
-  bind(BinaryOperator,'\\not\\supset ','&#8837;');
-
-LatexCmds.sube = LatexCmds.subeq = LatexCmds.subsete = LatexCmds.subseteq =
-  bind(BinaryOperator,'\\subseteq ','&sube;');
-
-LatexCmds.supe = LatexCmds.supeq =
-LatexCmds.supsete = LatexCmds.supseteq =
-LatexCmds.supersete = LatexCmds.superseteq =
-  bind(BinaryOperator,'\\supseteq ','&supe;');
-
-LatexCmds.nsube = LatexCmds.nsubeq =
-LatexCmds.notsube = LatexCmds.notsubeq =
-LatexCmds.nsubsete = LatexCmds.nsubseteq =
-LatexCmds.notsubsete = LatexCmds.notsubseteq =
-  bind(BinaryOperator,'\\not\\subseteq ','&#8840;');
-
-LatexCmds.nsupe = LatexCmds.nsupeq =
-LatexCmds.notsupe = LatexCmds.notsupeq =
-LatexCmds.nsupsete = LatexCmds.nsupseteq =
-LatexCmds.notsupsete = LatexCmds.notsupseteq =
-LatexCmds.nsupersete = LatexCmds.nsuperseteq =
-LatexCmds.notsupersete = LatexCmds.notsuperseteq =
-  bind(BinaryOperator,'\\not\\supseteq ','&#8841;');
-
-
-//the canonical sets of numbers
-LatexCmds.N = LatexCmds.naturals = LatexCmds.Naturals =
-  bind(VanillaSymbol,'\\mathbb{N}','&#8469;');
-
-LatexCmds.P =
-LatexCmds.primes = LatexCmds.Primes =
-LatexCmds.projective = LatexCmds.Projective =
-LatexCmds.probability = LatexCmds.Probability =
-  bind(VanillaSymbol,'\\mathbb{P}','&#8473;');
-
-LatexCmds.Z = LatexCmds.integers = LatexCmds.Integers =
-  bind(VanillaSymbol,'\\mathbb{Z}','&#8484;');
-
-LatexCmds.Q = LatexCmds.rationals = LatexCmds.Rationals =
-  bind(VanillaSymbol,'\\mathbb{Q}','&#8474;');
-
-LatexCmds.R = LatexCmds.reals = LatexCmds.Reals =
-  bind(VanillaSymbol,'\\mathbb{R}','&#8477;');
-
-LatexCmds.C =
-LatexCmds.complex = LatexCmds.Complex =
-LatexCmds.complexes = LatexCmds.Complexes =
-LatexCmds.complexplane = LatexCmds.Complexplane = LatexCmds.ComplexPlane =
-  bind(VanillaSymbol,'\\mathbb{C}','&#8450;');
-
-LatexCmds.H = LatexCmds.Hamiltonian = LatexCmds.quaternions = LatexCmds.Quaternions =
-  bind(VanillaSymbol,'\\mathbb{H}','&#8461;');
-
-//spacing
-LatexCmds.quad = LatexCmds.emsp = bind(VanillaSymbol,'\\quad ','    ');
-LatexCmds.qquad = bind(VanillaSymbol,'\\qquad ','        ');
-/* spacing special characters, gonna have to implement this in LatexCommandInput::onText somehow
-case ',':
-  return VanillaSymbol('\\, ',' ');
-case ':':
-  return VanillaSymbol('\\: ','  ');
-case ';':
-  return VanillaSymbol('\\; ','   ');
-case '!':
-  return Symbol('\\! ','<span style="margin-right:-.2em"></span>');
-*/
-
-//binary operators
-LatexCmds.diamond = bind(VanillaSymbol, '\\diamond ', '&#9671;');
-LatexCmds.bigtriangleup = bind(VanillaSymbol, '\\bigtriangleup ', '&#9651;');
-LatexCmds.ominus = bind(VanillaSymbol, '\\ominus ', '&#8854;');
-LatexCmds.uplus = bind(VanillaSymbol, '\\uplus ', '&#8846;');
-LatexCmds.bigtriangledown = bind(VanillaSymbol, '\\bigtriangledown ', '&#9661;');
-LatexCmds.sqcap = bind(VanillaSymbol, '\\sqcap ', '&#8851;');
-LatexCmds.triangleleft = bind(VanillaSymbol, '\\triangleleft ', '&#8882;');
-LatexCmds.sqcup = bind(VanillaSymbol, '\\sqcup ', '&#8852;');
-LatexCmds.triangleright = bind(VanillaSymbol, '\\triangleright ', '&#8883;');
-//circledot is not a not real LaTex command see https://github.com/mathquill/mathquill/pull/552 for more details
-LatexCmds.odot = LatexCmds.circledot = bind(VanillaSymbol, '\\odot ', '&#8857;');
-LatexCmds.bigcirc = bind(VanillaSymbol, '\\bigcirc ', '&#9711;');
-LatexCmds.dagger = bind(VanillaSymbol, '\\dagger ', '&#0134;');
-LatexCmds.ddagger = bind(VanillaSymbol, '\\ddagger ', '&#135;');
-LatexCmds.wr = bind(VanillaSymbol, '\\wr ', '&#8768;');
-LatexCmds.amalg = bind(VanillaSymbol, '\\amalg ', '&#8720;');
-
-//relationship symbols
-LatexCmds.models = bind(VanillaSymbol, '\\models ', '&#8872;');
-LatexCmds.prec = bind(VanillaSymbol, '\\prec ', '&#8826;');
-LatexCmds.succ = bind(VanillaSymbol, '\\succ ', '&#8827;');
-LatexCmds.preceq = bind(VanillaSymbol, '\\preceq ', '&#8828;');
-LatexCmds.succeq = bind(VanillaSymbol, '\\succeq ', '&#8829;');
-LatexCmds.simeq = bind(VanillaSymbol, '\\simeq ', '&#8771;');
-LatexCmds.mid = bind(VanillaSymbol, '\\mid ', '&#8739;');
-LatexCmds.ll = bind(VanillaSymbol, '\\ll ', '&#8810;');
-LatexCmds.gg = bind(VanillaSymbol, '\\gg ', '&#8811;');
-LatexCmds.parallel = bind(VanillaSymbol, '\\parallel ', '&#8741;');
-LatexCmds.nparallel = bind(VanillaSymbol, '\\nparallel ', '&#8742;');
-LatexCmds.bowtie = bind(VanillaSymbol, '\\bowtie ', '&#8904;');
-LatexCmds.sqsubset = bind(VanillaSymbol, '\\sqsubset ', '&#8847;');
-LatexCmds.sqsupset = bind(VanillaSymbol, '\\sqsupset ', '&#8848;');
-LatexCmds.smile = bind(VanillaSymbol, '\\smile ', '&#8995;');
-LatexCmds.sqsubseteq = bind(VanillaSymbol, '\\sqsubseteq ', '&#8849;');
-LatexCmds.sqsupseteq = bind(VanillaSymbol, '\\sqsupseteq ', '&#8850;');
-LatexCmds.doteq = bind(VanillaSymbol, '\\doteq ', '&#8784;');
-LatexCmds.frown = bind(VanillaSymbol, '\\frown ', '&#8994;');
-LatexCmds.vdash = bind(VanillaSymbol, '\\vdash ', '&#8870;');
-LatexCmds.dashv = bind(VanillaSymbol, '\\dashv ', '&#8867;');
-LatexCmds.nless = bind(VanillaSymbol, '\\nless ', '&#8814;');
-LatexCmds.ngtr = bind(VanillaSymbol, '\\ngtr ', '&#8815;');
-
-//arrows
-LatexCmds.longleftarrow = bind(VanillaSymbol, '\\longleftarrow ', '&#8592;');
-LatexCmds.longrightarrow = bind(VanillaSymbol, '\\longrightarrow ', '&#8594;');
-LatexCmds.Longleftarrow = bind(VanillaSymbol, '\\Longleftarrow ', '&#8656;');
-LatexCmds.Longrightarrow = bind(VanillaSymbol, '\\Longrightarrow ', '&#8658;');
-LatexCmds.longleftrightarrow = bind(VanillaSymbol, '\\longleftrightarrow ', '&#8596;');
-LatexCmds.updownarrow = bind(VanillaSymbol, '\\updownarrow ', '&#8597;');
-LatexCmds.Longleftrightarrow = bind(VanillaSymbol, '\\Longleftrightarrow ', '&#8660;');
-LatexCmds.Updownarrow = bind(VanillaSymbol, '\\Updownarrow ', '&#8661;');
-LatexCmds.mapsto = bind(VanillaSymbol, '\\mapsto ', '&#8614;');
-LatexCmds.nearrow = bind(VanillaSymbol, '\\nearrow ', '&#8599;');
-LatexCmds.hookleftarrow = bind(VanillaSymbol, '\\hookleftarrow ', '&#8617;');
-LatexCmds.hookrightarrow = bind(VanillaSymbol, '\\hookrightarrow ', '&#8618;');
-LatexCmds.searrow = bind(VanillaSymbol, '\\searrow ', '&#8600;');
-LatexCmds.leftharpoonup = bind(VanillaSymbol, '\\leftharpoonup ', '&#8636;');
-LatexCmds.rightharpoonup = bind(VanillaSymbol, '\\rightharpoonup ', '&#8640;');
-LatexCmds.swarrow = bind(VanillaSymbol, '\\swarrow ', '&#8601;');
-LatexCmds.leftharpoondown = bind(VanillaSymbol, '\\leftharpoondown ', '&#8637;');
-LatexCmds.rightharpoondown = bind(VanillaSymbol, '\\rightharpoondown ', '&#8641;');
-LatexCmds.nwarrow = bind(VanillaSymbol, '\\nwarrow ', '&#8598;');
-
-//Misc
-LatexCmds.ldots = bind(VanillaSymbol, '\\ldots ', '&#8230;');
-LatexCmds.cdots = bind(VanillaSymbol, '\\cdots ', '&#8943;');
-LatexCmds.vdots = bind(VanillaSymbol, '\\vdots ', '&#8942;');
-LatexCmds.ddots = bind(VanillaSymbol, '\\ddots ', '&#8945;');
-LatexCmds.surd = bind(VanillaSymbol, '\\surd ', '&#8730;');
-LatexCmds.triangle = bind(VanillaSymbol, '\\triangle ', '&#9651;');
-LatexCmds.ell = bind(VanillaSymbol, '\\ell ', '&#8467;');
-LatexCmds.top = bind(VanillaSymbol, '\\top ', '&#8868;');
-LatexCmds.flat = bind(VanillaSymbol, '\\flat ', '&#9837;');
-LatexCmds.natural = bind(VanillaSymbol, '\\natural ', '&#9838;');
-LatexCmds.sharp = bind(VanillaSymbol, '\\sharp ', '&#9839;');
-LatexCmds.wp = bind(VanillaSymbol, '\\wp ', '&#8472;');
-LatexCmds.bot = bind(VanillaSymbol, '\\bot ', '&#8869;');
-LatexCmds.clubsuit = bind(VanillaSymbol, '\\clubsuit ', '&#9827;');
-LatexCmds.diamondsuit = bind(VanillaSymbol, '\\diamondsuit ', '&#9826;');
-LatexCmds.heartsuit = bind(VanillaSymbol, '\\heartsuit ', '&#9825;');
-LatexCmds.spadesuit = bind(VanillaSymbol, '\\spadesuit ', '&#9824;');
-//not real LaTex command see https://github.com/mathquill/mathquill/pull/552 for more details
-LatexCmds.parallelogram = bind(VanillaSymbol, '\\parallelogram ', '&#9649;');
-LatexCmds.square = bind(VanillaSymbol, '\\square ', '&#11036;');
-
-//variable-sized
-LatexCmds.oint = bind(VanillaSymbol, '\\oint ', '&#8750;');
-LatexCmds.bigcap = bind(VanillaSymbol, '\\bigcap ', '&#8745;');
-LatexCmds.bigcup = bind(VanillaSymbol, '\\bigcup ', '&#8746;');
-LatexCmds.bigsqcup = bind(VanillaSymbol, '\\bigsqcup ', '&#8852;');
-LatexCmds.bigvee = bind(VanillaSymbol, '\\bigvee ', '&#8744;');
-LatexCmds.bigwedge = bind(VanillaSymbol, '\\bigwedge ', '&#8743;');
-LatexCmds.bigodot = bind(VanillaSymbol, '\\bigodot ', '&#8857;');
-LatexCmds.bigotimes = bind(VanillaSymbol, '\\bigotimes ', '&#8855;');
-LatexCmds.bigoplus = bind(VanillaSymbol, '\\bigoplus ', '&#8853;');
-LatexCmds.biguplus = bind(VanillaSymbol, '\\biguplus ', '&#8846;');
-
-//delimiters
-LatexCmds.lfloor = bind(VanillaSymbol, '\\lfloor ', '&#8970;');
-LatexCmds.rfloor = bind(VanillaSymbol, '\\rfloor ', '&#8971;');
-LatexCmds.lceil = bind(VanillaSymbol, '\\lceil ', '&#8968;');
-LatexCmds.rceil = bind(VanillaSymbol, '\\rceil ', '&#8969;');
-LatexCmds.opencurlybrace = LatexCmds.lbrace = bind(VanillaSymbol, '\\lbrace ', '{');
-LatexCmds.closecurlybrace = LatexCmds.rbrace = bind(VanillaSymbol, '\\rbrace ', '}');
-LatexCmds.lbrack = bind(VanillaSymbol, '[');
-LatexCmds.rbrack = bind(VanillaSymbol, ']');
-
-//various symbols
-LatexCmds.slash = bind(VanillaSymbol, '/');
-LatexCmds.vert = bind(VanillaSymbol,'|');
-LatexCmds.perp = LatexCmds.perpendicular = bind(VanillaSymbol,'\\perp ','&perp;');
-LatexCmds.nabla = LatexCmds.del = bind(VanillaSymbol,'\\nabla ','&nabla;');
-LatexCmds.hbar = bind(VanillaSymbol,'\\hbar ','&#8463;');
-
-LatexCmds.AA = LatexCmds.Angstrom = LatexCmds.angstrom =
-  bind(VanillaSymbol,'\\text\\AA ','&#8491;');
-
-LatexCmds.ring = LatexCmds.circ = LatexCmds.circle =
-  bind(VanillaSymbol,'\\circ ','&#8728;');
-
-LatexCmds.bull = LatexCmds.bullet = bind(VanillaSymbol,'\\bullet ','&bull;');
-
-LatexCmds.setminus = LatexCmds.smallsetminus =
-  bind(VanillaSymbol,'\\setminus ','&#8726;');
-
-LatexCmds.not = //bind(Symbol,'\\not ','<span class="not">/</span>');
-LatexCmds['\u00ac'] = LatexCmds.neg = bind(VanillaSymbol,'\\neg ','&not;');
-
-LatexCmds['\u2026'] = LatexCmds.dots = LatexCmds.ellip = LatexCmds.hellip =
-LatexCmds.ellipsis = LatexCmds.hellipsis =
-  bind(VanillaSymbol,'\\dots ','&hellip;');
-
-LatexCmds.converges =
-LatexCmds.darr = LatexCmds.dnarr = LatexCmds.dnarrow = LatexCmds.downarrow =
-  bind(VanillaSymbol,'\\downarrow ','&darr;');
-
-LatexCmds.dArr = LatexCmds.dnArr = LatexCmds.dnArrow = LatexCmds.Downarrow =
-  bind(VanillaSymbol,'\\Downarrow ','&dArr;');
-
-LatexCmds.diverges = LatexCmds.uarr = LatexCmds.uparrow =
-  bind(VanillaSymbol,'\\uparrow ','&uarr;');
-
-LatexCmds.uArr = LatexCmds.Uparrow = bind(VanillaSymbol,'\\Uparrow ','&uArr;');
-
-LatexCmds.to = bind(BinaryOperator,'\\to ','&rarr;');
-
-LatexCmds.rarr = LatexCmds.rightarrow = bind(VanillaSymbol,'\\rightarrow ','&rarr;');
-
-LatexCmds.implies = bind(BinaryOperator,'\\Rightarrow ','&rArr;');
-
-LatexCmds.rArr = LatexCmds.Rightarrow = bind(VanillaSymbol,'\\Rightarrow ','&rArr;');
-
-LatexCmds.gets = bind(BinaryOperator,'\\gets ','&larr;');
-
-LatexCmds.larr = LatexCmds.leftarrow = bind(VanillaSymbol,'\\leftarrow ','&larr;');
-
-LatexCmds.impliedby = bind(BinaryOperator,'\\Leftarrow ','&lArr;');
-
-LatexCmds.lArr = LatexCmds.Leftarrow = bind(VanillaSymbol,'\\Leftarrow ','&lArr;');
-
-LatexCmds.harr = LatexCmds.lrarr = LatexCmds.leftrightarrow =
-  bind(VanillaSymbol,'\\leftrightarrow ','&harr;');
-
-LatexCmds.iff = bind(BinaryOperator,'\\Leftrightarrow ','&hArr;');
-
-LatexCmds.hArr = LatexCmds.lrArr = LatexCmds.Leftrightarrow =
-  bind(VanillaSymbol,'\\Leftrightarrow ','&hArr;');
-
-LatexCmds.Re = LatexCmds.Real = LatexCmds.real = bind(VanillaSymbol,'\\Re ','&real;');
-
-LatexCmds.Im = LatexCmds.imag =
-LatexCmds.image = LatexCmds.imagin = LatexCmds.imaginary = LatexCmds.Imaginary =
-  bind(VanillaSymbol,'\\Im ','&image;');
-
-LatexCmds.part = LatexCmds.partial = bind(VanillaSymbol,'\\partial ','&part;');
-
-LatexCmds.infty = LatexCmds.infin = LatexCmds.infinity =
-  bind(VanillaSymbol,'\\infty ','&infin;');
-
-LatexCmds.alef = LatexCmds.alefsym = LatexCmds.aleph = LatexCmds.alephsym =
-  bind(VanillaSymbol,'\\aleph ','&alefsym;');
-
-LatexCmds.xist = //LOL
-LatexCmds.xists = LatexCmds.exist = LatexCmds.exists =
-  bind(VanillaSymbol,'\\exists ','&exist;');
-  
-LatexCmds.nexists = LatexCmds.nexist =
-      bind(VanillaSymbol, '\\nexists ', '&#8708;');
-
-LatexCmds.and = LatexCmds.land = LatexCmds.wedge =
-  bind(VanillaSymbol,'\\wedge ','&and;');
-
-LatexCmds.or = LatexCmds.lor = LatexCmds.vee = bind(VanillaSymbol,'\\vee ','&or;');
-
-LatexCmds.o = LatexCmds.O =
-LatexCmds.empty = LatexCmds.emptyset =
-LatexCmds.oslash = LatexCmds.Oslash =
-LatexCmds.nothing = LatexCmds.varnothing =
-  bind(BinaryOperator,'\\varnothing ','&empty;');
-
-LatexCmds.cup = LatexCmds.union = bind(BinaryOperator,'\\cup ','&cup;');
-
-LatexCmds.cap = LatexCmds.intersect = LatexCmds.intersection =
-  bind(BinaryOperator,'\\cap ','&cap;');
-
-// FIXME: the correct LaTeX would be ^\circ but we can't parse that
-LatexCmds.deg = LatexCmds.degree = bind(VanillaSymbol,'\\degree ','&deg;');
-
-LatexCmds.ang = LatexCmds.angle = bind(VanillaSymbol,'\\angle ','&ang;');
-LatexCmds.measuredangle = bind(VanillaSymbol,'\\measuredangle ','&#8737;');
 /*********************************
  * Symbols for Basic Mathematics
  ********************************/
@@ -3626,27 +2891,26 @@ optionProcessors.autoCommands = function(cmds) {
 var Letter = P(Variable, function(_, super_) {
   _.init = function(ch) { return super_.init.call(this, this.letter = ch); };
   _.createLeftOf = function(cursor) {
-    super_.createLeftOf.apply(this, arguments);
     var autoCmds = cursor.options.autoCommands, maxLength = autoCmds._maxLength;
     if (maxLength > 0) {
       // want longest possible autocommand, so join together longest
       // sequence of letters
-      var str = '', l = this, i = 0;
-      // FIXME: l.ctrlSeq === l.letter checks if first or last in an operator name
-      while (l instanceof Letter && l.ctrlSeq === l.letter && i < maxLength) {
+      var str = this.letter, l = cursor[L], i = 1;
+      while (l instanceof Letter && i < maxLength) {
         str = l.letter + str, l = l[L], i += 1;
       }
       // check for an autocommand, going thru substrings longest to shortest
       while (str.length) {
         if (autoCmds.hasOwnProperty(str)) {
-          for (var i = 1, l = this; i < str.length; i += 1, l = l[L]);
-          Fragment(l, this).remove();
+          for (var i = 2, l = cursor[L]; i < str.length; i += 1, l = l[L]);
+          Fragment(l, cursor[L]).remove();
           cursor[L] = l[L];
           return LatexCmds[str](str).createLeftOf(cursor);
         }
         str = str.slice(1);
       }
     }
+    super_.createLeftOf.apply(this, arguments);
   };
   _.italicize = function(bool) {
     this.isItalic = bool;
@@ -3671,7 +2935,7 @@ var Letter = P(Variable, function(_, super_) {
     // removeClass and delete flags from all letters before figuring out
     // which, if any, are part of an operator name
     Fragment(l[R] || this.parent.ends[L], r[L] || this.parent.ends[R]).each(function(el) {
-      el.italicize(true).jQ.removeClass('mq-first mq-last mq-followed-by-supsub');
+      el.italicize(true).jQ.removeClass('mq-first mq-last');
       el.ctrlSeq = el.letter;
     });
 
@@ -3690,21 +2954,8 @@ var Letter = P(Variable, function(_, super_) {
           first.ctrlSeq = (isBuiltIn ? '\\' : '\\operatorname{') + first.ctrlSeq;
           last.ctrlSeq += (isBuiltIn ? ' ' : '}');
           if (TwoWordOpNames.hasOwnProperty(word)) last[L][L][L].jQ.addClass('mq-last');
-          if (!shouldOmitPadding(first[L])) first.jQ.addClass('mq-first');
-          if (!shouldOmitPadding(last[R])) {
-            if (last[R] instanceof SupSub) {
-              var supsub = last[R]; // XXX monkey-patching, but what's the right thing here?
-              // Have operatorname-specific code in SupSub? A CSS-like language to style the
-              // math tree, but which ignores cursor and selection (which CSS can't)?
-              var respace = supsub.siblingCreated = supsub.siblingDeleted = function() {
-                supsub.jQ.toggleClass('mq-after-operator-name', !(supsub[R] instanceof Bracket));
-              };
-              respace();
-            }
-            else {
-              last.jQ.toggleClass('mq-last', !(last[R] instanceof Bracket));
-            }
-          }
+          if (nonOperatorSymbol(first[L])) first.jQ.addClass('mq-first');
+          if (nonOperatorSymbol(last[R])) last.jQ.addClass('mq-last');
 
           i += len - 1;
           first = last;
@@ -3713,13 +2964,12 @@ var Letter = P(Variable, function(_, super_) {
       }
     }
   };
-  function shouldOmitPadding(node) {
-    // omit padding if no node, or if node already has padding (to avoid double-padding)
-    return !node || (node instanceof BinaryOperator) || (node instanceof SummationNotation);
+  function nonOperatorSymbol(node) {
+    return node instanceof Symbol && !(node instanceof BinaryOperator);
   }
 });
 var BuiltInOpNames = {}; // the set of operator names like \sin, \cos, etc that
-  // are built-into LaTeX, see Section 3.17 of the Short Math Guide: http://tinyurl.com/jm9okjc
+  // are built-into LaTeX: http://latex.wikia.com/wiki/List_of_LaTeX_symbols#Named_operators:_sin.2C_cos.2C_etc.
   // MathQuill auto-unitalicizes some operator names not in that set, like 'hcf'
   // and 'arsinh', which must be exported as \operatorname{hcf} and
   // \operatorname{arsinh}. Note: over/under line/arrow \lim variants like
@@ -3989,11 +3239,8 @@ var PlusMinus = P(BinaryOperator, function(_) {
 
   _.contactWeld = _.siblingCreated = _.siblingDeleted = function(opts, dir) {
     if (dir === R) return; // ignore if sibling only changed on the right
-    // If the left sibling is a binary operator or a separator (comma, semicolon, colon)
-    // or an open bracket (open parenthesis, open square bracket)
-    // consider the operator to be unary, otherwise binary
     this.jQ[0].className =
-      (!this[L] || this[L] instanceof BinaryOperator || /^[,;:\(\[]$/.test(this[L].ctrlSeq) ? '' : 'mq-binary-operator');
+      (!this[L] || this[L] instanceof BinaryOperator ? '' : 'mq-binary-operator');
     return this;
   };
 });
@@ -4249,6 +3496,7 @@ var SupSub = P(MathCommand, function(_, super_) {
         break;
       }
     }
+    this.respace();
   };
   Options.p.charsThatBreakOutOfSupSub = '';
   _.finalizeTree = function() {
@@ -4296,6 +3544,10 @@ var SupSub = P(MathCommand, function(_, super_) {
       return block ? prefix + (l.length === 1 ? l : '{' + (l || ' ') + '}') : '';
     }
     return latex('_', this.sub) + latex('^', this.sup);
+  };
+  _.respace = _.siblingCreated = _.siblingDeleted = function(opts, dir) {
+    if (dir === R) return; // ignore if sibling only changed on the right
+    this.jQ.toggleClass('mq-limit', this[L].ctrlSeq === '\\int ');
   };
   _.addBlock = function(block) {
     if (this.supsub === 'sub') {
@@ -4442,26 +3694,6 @@ LatexCmds.product = bind(SummationNotation,'\\prod ','&prod;');
 
 LatexCmds.coprod =
 LatexCmds.coproduct = bind(SummationNotation,'\\coprod ','&#8720;');
-
-LatexCmds['\u222b'] =
-LatexCmds['int'] =
-LatexCmds.integral = P(SummationNotation, function(_, super_) {
-  _.init = function() {
-    var htmlTemplate =
-      '<span class="mq-int mq-non-leaf">'
-    +   '<big>&int;</big>'
-    +   '<span class="mq-supsub mq-non-leaf">'
-    +     '<span class="mq-sup"><span class="mq-sup-inner">&1</span></span>'
-    +     '<span class="mq-sub">&0</span>'
-    +     '<span style="display:inline-block;width:0">&#8203</span>'
-    +   '</span>'
-    + '</span>'
-    ;
-    Symbol.prototype.init.call(this, '\\int ', htmlTemplate);
-  };
-  // FIXME: refactor rather than overriding
-  _.createLeftOf = MathCommand.p.createLeftOf;
-});
 
 var Fraction =
 LatexCmds.frac =
@@ -4874,99 +4106,6 @@ var Embed = LatexCmds.embed = P(Symbol, function(_, super_) {
     ;
   };
 });
-/****************************************
- * Input box to type backslash commands
- ***************************************/
-
-var LatexCommandInput =
-CharCmds['\\'] = P(MathCommand, function(_, super_) {
-  _.ctrlSeq = '\\';
-  _.replaces = function(replacedFragment) {
-    this._replacedFragment = replacedFragment.disown();
-    this.isEmpty = function() { return false; };
-  };
-  _.htmlTemplate = '<span class="mq-latex-command-input mq-non-leaf">\\<span>&0</span></span>';
-  _.textTemplate = ['\\'];
-  _.createBlocks = function() {
-    super_.createBlocks.call(this);
-    this.ends[L].focus = function() {
-      this.parent.jQ.addClass('mq-hasCursor');
-      if (this.isEmpty())
-        this.parent.jQ.removeClass('mq-empty');
-
-      return this;
-    };
-    this.ends[L].blur = function() {
-      this.parent.jQ.removeClass('mq-hasCursor');
-      if (this.isEmpty())
-        this.parent.jQ.addClass('mq-empty');
-
-      return this;
-    };
-    this.ends[L].write = function(cursor, ch) {
-      cursor.show().deleteSelection();
-
-      if (ch.match(/[a-z]/i)) VanillaSymbol(ch).createLeftOf(cursor);
-      else {
-        this.parent.renderCommand(cursor);
-        if (ch !== '\\' || !this.isEmpty()) this.parent.parent.write(cursor, ch);
-      }
-    };
-    this.ends[L].keystroke = function(key, e, ctrlr) {
-      if (key === 'Tab' || key === 'Enter' || key === 'Spacebar') {
-        this.parent.renderCommand(ctrlr.cursor);
-        e.preventDefault();
-        return;
-      }
-      return super_.keystroke.apply(this, arguments);
-    };
-  };
-  _.createLeftOf = function(cursor) {
-    super_.createLeftOf.call(this, cursor);
-
-    if (this._replacedFragment) {
-      var el = this.jQ[0];
-      this.jQ =
-        this._replacedFragment.jQ.addClass('mq-blur').bind(
-          'mousedown mousemove', //FIXME: is monkey-patching the mousedown and mousemove handlers the right way to do this?
-          function(e) {
-            $(e.target = el).trigger(e);
-            return false;
-          }
-        ).insertBefore(this.jQ).add(this.jQ);
-    }
-  };
-  _.latex = function() {
-    return '\\' + this.ends[L].latex() + ' ';
-  };
-  _.renderCommand = function(cursor) {
-    this.jQ = this.jQ.last();
-    this.remove();
-    if (this[R]) {
-      cursor.insLeftOf(this[R]);
-    } else {
-      cursor.insAtRightEnd(this.parent);
-    }
-
-    var latex = this.ends[L].latex();
-    if (!latex) latex = ' ';
-    var cmd = LatexCmds[latex];
-    if (cmd) {
-      cmd = cmd(latex);
-      if (this._replacedFragment) cmd.replaces(this._replacedFragment);
-      cmd.createLeftOf(cursor);
-    }
-    else {
-      cmd = TextBlock();
-      cmd.replaces(latex);
-      cmd.createLeftOf(cursor);
-      cursor.insRightOf(cmd);
-      if (this._replacedFragment)
-        this._replacedFragment.remove();
-    }
-  };
-});
-
 var MQ1 = getInterface(1);
 for (var key in MQ1) (function(key, val) {
   if (typeof val === 'function') {
