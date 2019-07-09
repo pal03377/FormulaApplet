@@ -38,5 +38,9 @@ function load_2(){
 }
 
 function load_3(){
-  loader_log(out_log, 'ready.', '');
+  load_lib_or_fallback('http://algebrite.org/dist/1.2.0/algebrite.bundle-for-browser.js', '/js/lib/Algebrite/dist/algebrite.bundle-for-browser.js', load_4)  // MathQuill needs jQuery 1.5.2+
+}
+
+function load_4(){
+  loader_log(out_log, 'Loading finished.', '');
 }
