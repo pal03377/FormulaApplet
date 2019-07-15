@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "chrome",
+            "request": "attach",
+            "name": "Attach to Chrome",
+            "port": 9222,
+            "webRoot": "${workspaceFolder}"
+        },
+        {
             "type": "extensionHost",
             "request": "launch",
             "name": "Extension starten",
@@ -22,7 +29,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8088",
+            "url": "http://localhost:10001",
             "webRoot": "${workspaceFolder}"
         }
     ]
