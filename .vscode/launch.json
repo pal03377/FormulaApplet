@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome from XAMPP",
+            "url": "http://localhost/Algebrite.html",
+            "webRoot": "${workspaceFolder}",
+        },
+        {
+            "type": "chrome",
             "request": "attach",
             "name": "Attach to Chrome",
             "port": 9222,
@@ -24,7 +31,6 @@
             ],
             "preLaunchTask": "npm"
         },
-        
         {
             "type": "chrome",
             "request": "launch",

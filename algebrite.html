@@ -24,7 +24,9 @@
   <div style="width:100%;">
     <textarea id="terminal1" name="terminal" rows="1" cols="80" style="width:100%;margin-bottom:-5px;">input</textarea>
     <textarea id="output1" name="terminal" rows="4" cols="80" style="width:100%;"></textarea>
+    <!--
     <input name="execute" value="▶" onclick="execute(1);" type="button">
+    -->
   </div>
   <br>
 
@@ -33,9 +35,21 @@
   <!-- script src="./Algebrite_files/jquery.min.js"></script> -->
   <script src="./Algebrite_files/algebrite.bundle-for-browser.js"></script>
   <script type="text/javascript" language="javascript">
+    window.onkeypress = LogKey;
+    function LogKey(e) {
+      if (e.code == 'Enter') {
+        var el_id = e.target.id;
+        if (el_id == 'terminal1') {
+          // console.log( 'Enter on terminal1' );
+          execute(1);
+          //erase terminal1
+          $( '#terminal1' ).val( '' );
+        }
+      }
+    }
     function execute(whichTerminal) {
-      var sandbox = $('sandbox');
-      var jsResult = $('jsResult');
+      // var sandbox = $('sandbox');
+      // var jsResult = $('jsResult');
       try {
         var textToBeExecuted = $('#terminal' + whichTerminal).val();
         var result;
