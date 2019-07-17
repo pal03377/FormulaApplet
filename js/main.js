@@ -1,31 +1,35 @@
-function defer1(method) {
+function waitfor_loadjs(loadjs_ready) {
   if (loadjs) {
-    method();
+    loadjs_ready();
   } else {
-    setTimeout(function () { defer1(method) }, 50);
+    setTimeout(function () { waitfor_loadjs(loadjs_ready) }, 50);
   }
 }
 
-defer1(function () {
+waitfor_loadjs(function () {
   console.log("loadjs is now loaded");
 });
 
-load_lib_or_fallback('https://code.jquery.com/jquery-3.4.1.min.js', '/js/lib/jquery-3.4.1.min.js', function(){});  // MathQuill needs jQuery 1.5.2+
+load_lib_or_fallback('https://code.jquery.com/jquery-3.4.1.min.js', '/js/lib/jquery-3.4.1.min.js', function () { });  // MathQuill needs jQuery 1.5.2+
 
 // https://stackoverflow.com/questions/7486309/how-to-make-script-execution-wait-until-jquery-is-loaded
-function defer2(method) {
+function waitfor_jquery(jquery_ready) {
   if (window.jQuery) {
-    method();
+    jquery_ready();
   } else {
-    setTimeout(function () { defer2(method) }, 50);
+    setTimeout(function () { waitfor_jquery(jquery_ready) }, 50);
   }
 }
 
-defer2(function () {
+waitfor_jquery(function () {
   console.log("jQuery is now loaded");
   $(function () {
-    loader_log(out_log, 'DOM ready.', 'ok');
-    load_2();
+    load_1();
+
+    function load_1{
+      loader_log(out_log, 'DOM ready.', 'ok');
+      load_2();
+    }
 
     // mathquill: local lib from https://github.com/mathquill/mathquill/releases/download/v0.10.1/mathquill-0.10.1.zip (NOT source, lacks of mathquill.js)
 
@@ -55,7 +59,7 @@ defer2(function () {
     }
 
     function load_5() {
-      loader_log(out_log, 'Loading done.', '');
+      loader_log(out_log, 'Load complete.', '');
     }
 
   });
