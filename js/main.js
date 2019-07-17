@@ -26,7 +26,7 @@ waitfor_jquery(function () {
   $(function () {
     load_1();
 
-    function load_1{
+    function load_1(){
       loader_log(out_log, 'DOM ready.', 'ok');
       load_2();
     }
