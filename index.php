@@ -5,7 +5,7 @@
 
 <body>
     <h1><?php echo $title; ?></h1>
-    <p><a href='mathquill.html'>MathQuill - Test Page</a></p>
+    <p><a href='mathquill.php'>MathQuill - Test Page</a></p>
     <p><a href='algebrite.php'>Algebrite - Test Page</a></p>
     <p>This page uses </p>
 

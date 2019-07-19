@@ -1,5 +1,5 @@
 function waitfor_loadjs(loadjs_ready) {
-  if (loadjs) {
+    if (typeof loadjs !== 'undefined') {
     loadjs_ready();
   } else {
     setTimeout(function () { waitfor_loadjs(loadjs_ready) }, 50);
