@@ -1,5 +1,5 @@
 function waitfor_loadjs(loadjs_ready) {
-    if (typeof loadjs !== 'undefined') {
+  if (typeof loadjs !== 'undefined') {
     loadjs_ready();
   } else {
     setTimeout(function () { waitfor_loadjs(loadjs_ready) }, 50);
@@ -8,9 +8,8 @@ function waitfor_loadjs(loadjs_ready) {
 
 waitfor_loadjs(function () {
   console.log("loadjs is now loaded");
+  load_jquery();
 });
-
-load_lib_or_fallback('https://code.jquery.com/jquery-3.4.1.min.js', '/js/lib/jquery-3.4.1.min.js', function () { });  // MathQuill needs jQuery 1.5.2+
 
 // https://stackoverflow.com/questions/7486309/how-to-make-script-execution-wait-until-jquery-is-loaded
 function waitfor_jquery(jquery_ready) {
@@ -21,50 +20,54 @@ function waitfor_jquery(jquery_ready) {
   }
 }
 
-waitfor_jquery(function () {
-  console.log("jQuery is now loaded");
-  $(function () {
-    load_1();
+function load_jquery() {
+  load_lib_or_fallback('https://code.jquery.com/jquery-3.4.1.min.js', '/js/lib/jquery-3.4.1.min.js', function () { });  // MathQuill needs jQuery 1.5.2+
+  waitfor_jquery(function () {
+    console.log("jQuery is now loaded");
+    $(function () {
+      load_1();
 
-    function load_1(){
-      loader_log(out_log, 'DOM ready.', 'ok');
-      load_2();
-    }
+      function load_1() {
+        loader_log(out_log, 'DOM ready.', 'ok');
+        load_2();
+      }
 
-    // mathquill: local lib from https://github.com/mathquill/mathquill/releases/download/v0.10.1/mathquill-0.10.1.zip (NOT source, lacks of mathquill.js)
+      // mathquill: local lib from https://github.com/mathquill/mathquill/releases/download/v0.10.1/mathquill-0.10.1.zip (NOT source, lacks of mathquill.js)
 
-    function load_2() {
-      load_lib_or_fallback('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css', '/js/lib/mathquill-0.10.1/mathquill.css', function () { });
-      load_lib_or_fallback('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js', '/js/lib/mathquill-0.10.1/mathquill.js', load_3);
-    }
+      function load_2() {
+        load_lib_or_fallback('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css', '/js/lib/mathquill-0.10.1/mathquill.css', function () { });
+        load_lib_or_fallback('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js', '/js/lib/mathquill-0.10.1/mathquill.js', load_3);
+      }
 
-    function load_3() {
-      load_lib_or_fallback('http://algebrite.org/dist/1.2.0/algebrite.bundle-for-browser.js', '/js/lib/Algebrite/dist/algebrite.bundle-for-browser.js', load_4)  // MathQuill needs jQuery 1.5.2+
-    }
+      function load_3() {
+        load_lib_or_fallback('http://algebrite.org/dist/1.2.0/algebrite.bundle-for-browser.js', '/js/lib/Algebrite/dist/algebrite.bundle-for-browser.js', load_4)  // MathQuill needs jQuery 1.5.2+
+      }
 
-    function load_4() {
-      var mathFieldSpan = document.getElementById('math-field');
-      var latexSpan = document.getElementById('latex');
+      function load_4() {
+        var mathFieldSpan = document.getElementById('math-field');
+        var latexSpan = document.getElementById('latex');
 
-      var MQ = MathQuill.getInterface(2); // for backcompat
-      var mathField = MQ.MathField(mathFieldSpan, {
-        spaceBehavesLikeTab: true, // configurable
-        handlers: {
-          edit: function () { // useful event handlers
-            latexSpan.textContent = mathField.latex(); // simple API
+        var MQ = MathQuill.getInterface(2); // for backcompat
+        var mathField = MQ.MathField(mathFieldSpan, {
+          spaceBehavesLikeTab: true, // configurable
+          handlers: {
+            edit: function () { // useful event handlers
+              latexSpan.textContent = mathField.latex(); // simple API
+            }
           }
-        }
-      });
-      load_5();
-    }
+        });
+        load_5();
+      }
 
-    function load_5() {
-      loader_log(out_log, 'Load complete.', '');
-    }
+      function load_5() {
+        loader_log(out_log, 'Load complete.', '');
+      }
+
+    });
 
   });
 
-});
+}
 
 function loader_log(logger, message, state) {
   var d = new Date(), ts;
