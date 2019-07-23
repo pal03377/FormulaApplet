@@ -1,6 +1,16 @@
 {
 	"folders": [
 		{
+            // Source code
+            "name": "Product",
+			"path": "vscode",
+		},
+		{
+            // Source code
+            "name": "PHP files",
+			"uri": "*.php",
+		},
+		{
 			"path": "."
 		}
 	],
