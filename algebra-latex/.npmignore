@@ -1,0 +1,12 @@
+src/
+test/
+
+.babelrc
+.eslintrc.json
+.gitignore
+.travis.yml
+yarn.lock
+yarn-error.log
+.yarnclean
+.idea
+.prettierrc
