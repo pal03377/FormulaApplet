@@ -2,7 +2,7 @@
 <html lang="de">
 
 <head>
-  <script data-main="/js/app.js" src="/js/requirejs/require.js"></script>
+  <script data-main="/js/app" src="/js/requirejs/require.js"></script>
   <!-- script async src="/js/main.js" type="text/javascript"></script -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
