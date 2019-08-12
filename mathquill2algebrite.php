@@ -20,14 +20,24 @@
 
     waitfor_jquery(function () {
         console.log("jQuery is ready...");
-		
+        /**
+        loadjs(["/js/lib/algebra-latex/src/index.js"], "dummy_bundle", {
+      success: function () {
+        console.log('algebra-latex is loaded');
         //https://stackoverflow.com/questions/27541004/detect-paragraph-element-change-with-jquery
         this.observer = new MutationObserver( function(mutations) {
-            console.log( $( 'span#latex' ).text() );
-            execute($( 'span#latex' ).text());
+          console.log( $( 'span#latex' ).text() );
+          execute($( 'span#latex' ).text());
         }.bind(this));
         this.observer.observe($( 'span#latex' ).get(0), {characterData: true, childList: true});
-    })
+      },
+      error: function (pathsNotFound) {
+        console.log('error ' + lib + pathsNotFound);
+      }
+     });
+     **/
+    });
+
         
     function execute(textToBeExecuted) {
       try {
