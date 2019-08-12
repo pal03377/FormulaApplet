@@ -20,8 +20,7 @@
 
     waitfor_jquery(function () {
         console.log("jQuery is ready...");
-        /**
-        loadjs(["/js/lib/algebra-latex/src/index.js"], "dummy_bundle", {
+        loadjs(["/js/lib/algebra-latex/lib/index.js"], "dummy_bundle", {
       success: function () {
         console.log('algebra-latex is loaded');
         //https://stackoverflow.com/questions/27541004/detect-paragraph-element-change-with-jquery
@@ -35,7 +34,6 @@
         console.log('error ' + lib + pathsNotFound);
       }
      });
-     **/
     });
 
         
