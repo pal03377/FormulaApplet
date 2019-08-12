@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Revert Nearness - Peek</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+</head>
+
+<body>
+    <h1>Revert Nearness - Peek</h1>
+    <p id='output' style='font-family:courier;'>out</p>
+	<script>
+	  var out = "";	
+	  // console.log(localStorage.getItem("n"));
+	  out += "n=" + localStorage.getItem("n") + "<br>";
+	  out += localStorage.getItem("score") + "<br>";
+	  var itemString = localStorage.getItem("items");
+	  out += itemString+ "<br>";
+	  var item = JSON.parse(itemString);
+	  var positionString = localStorage.getItem("positions");
+	  out += positionString+ "<br>";
+	  var position = JSON.parse(positionString);
+	  document.getElementById("output").innerHTML = out;
+	</script>
+</body>
+</html>

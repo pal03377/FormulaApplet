@@ -1,17 +1,14 @@
 {
 	"folders": [
 		{
-            // Source code
-            "name": "Product",
-			"path": "vscode",
-		},
-		{
-            // Source code
-            "name": "PHP files",
-			"uri": "*.php",
+			"name": "Product",
+			"path": "vscode"
 		},
 		{
 			"path": "."
+		},
+		{
+			"path": "D:\\Users\\privat\\Documents\\Schule\\_Programmieren\\javascript\\rev_nearness"
 		}
 	],
 	"settings": {}

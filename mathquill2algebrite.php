@@ -19,7 +19,8 @@
     }
 
     waitfor_jquery(function () {
-        console.log("here is script...");
+        console.log("jQuery is ready...");
+		
         //https://stackoverflow.com/questions/27541004/detect-paragraph-element-change-with-jquery
         this.observer = new MutationObserver( function(mutations) {
             console.log( $( 'span#latex' ).text() );
