@@ -1,0 +1,106 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "algebra-latex",
+        "scope": null,
+        "escapedName": "algebra-latex",
+        "name": "algebra-latex",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Users\\privat"
+    ]
+  ],
+  "_from": "algebra-latex@latest",
+  "_hasShrinkwrap": false,
+  "_id": "algebra-latex@1.1.6",
+  "_inCache": true,
+  "_location": "/algebra-latex",
+  "_nodeVersion": "12.3.1",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/algebra-latex_1.1.6_1565620279070_0.2515245494237899"
+  },
+  "_npmUser": {
+    "name": "viktorstrate",
+    "email": "viktorstrate@gmail.com"
+  },
+  "_npmVersion": "6.9.0",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "algebra-latex",
+    "scope": null,
+    "escapedName": "algebra-latex",
+    "name": "algebra-latex",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/algebra-latex/-/algebra-latex-1.1.6.tgz",
+  "_shasum": "21f88d1e4c3f2bf21c79d9309a5034cfcb258788",
+  "_shrinkwrap": null,
+  "_spec": "algebra-latex",
+  "_where": "C:\\Users\\privat",
+  "author": {
+    "name": "viktorstrate",
+    "email": "viktorstrate@gmail.com"
+  },
+  "bin": {
+    "algebra-latex": "./lib/cli.js"
+  },
+  "bugs": {
+    "url": "https://github.com/viktorstrate/latex-mathify/issues"
+  },
+  "dependencies": {},
+  "description": "Parse Latex math to a regular math string or algebra.js",
+  "devDependencies": {
+    "algebra.js": "^0.2.6",
+    "algebrite": "^1.2.0",
+    "babel-cli": "^6.22.2",
+    "babel-preset-env": "^1.7.0",
+    "coffeequate": "^1.3.0",
+    "eslint-plugin-import": "^2.18.2",
+    "mocha": "^6.2.0",
+    "prettier": "^1.18.2"
+  },
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-zX6LUuQHtljLgFmvcDoFL+qYgKzcLJcqiIwPTnkp2efi6QOlDiPeKkGQcPEANqz4hfzqbHnC8sEOZvZbI7+Z8g==",
+    "shasum": "21f88d1e4c3f2bf21c79d9309a5034cfcb258788",
+    "tarball": "https://registry.npmjs.org/algebra-latex/-/algebra-latex-1.1.6.tgz",
+    "fileCount": 15,
+    "unpackedSize": 50972,
+    "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJdUXg5CRA9TVsSAnZWagAAMu0P/1t/lOYGgOl0k/KCdaxY\nvPeSOEN23F1OOvMGHngsMyMwvB/zPgpw0QD2BDeyhvlNruLeeCT9WAXhKPxa\n4zm1mGR29l8Wh/16Jag5xR+avJY+FXXxEiQAYQuDNZvMkjHomFistlDANA95\nRT4HgIhWJWVZYSVvMJTbtCjo2xlxauO6RItm/HnEFc0WT05uX0XwaVE/+4AX\nuh6bNSQntbz0eaIZuZX+cpvK3p2c+lQXLqMCKQ6zSEMnOl8U2TCZ1AIIvJHD\nqi/92cElGsC9AyH/TClIY06Hbs1wHX4Zp/wlPX//HRA0hc016XB7RiZ2YpjV\nqaXMMbv1OZ7ddbREZVqp3pU0/9e10GeStHaiwJQ62T+HGtLlQmTPI6A++uaB\nukLNHZFM0h/qFHtQdEwZtg9xnbvTe2A1E1NzSylhmY9zmDJjj1DG5WikocZk\ni/E6+rN1lCISu240grHj8wkDtaWa3HkjPdBVg3RjTVjf5CyT+Edj5cxRLdMx\n0EivTcWgQBA3wzbLW0d9aPBQvq141l0MBd/D1XZ47FK3RrrhpuBa8DyxZEA8\nAnZGqN+LhjJXgifqVkOV8VeAClwNzVQhipf8cIOJcZ5LsAJYw0qWpmaAIPG1\n0PiUDiJifZdaWkQYqOuiVFo25itEYEGL+s0rPb1oTAlqana5pQ9wuZFoFqtj\nZ42T\r\n=OHwO\r\n-----END PGP SIGNATURE-----\r\n"
+  },
+  "gitHead": "c11cf57c57b163a9436fb6bac6c9d8d3c6c391fb",
+  "homepage": "https://github.com/viktorstrate/latex-mathify#readme",
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "maintainers": [
+    {
+      "name": "viktorstrate",
+      "email": "viktorstrate@gmail.com"
+    }
+  ],
+  "name": "algebra-latex",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viktorstrate/latex-mathify.git"
+  },
+  "scripts": {
+    "build": "rm -rf ./lib && babel src -d lib",
+    "prepublish": "npm run build",
+    "prettify": "prettier **/*.js --write",
+    "start": "node .",
+    "test": "mocha --require babel-core/register --require babel-polyfill --recursive",
+    "test:watch": "mocha --require babel-core/register --recursive --watch"
+  },
+  "version": "1.1.6"
+}
