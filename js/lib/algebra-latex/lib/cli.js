@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+define(function (require, exports, module) {// #!/usr/bin/env node
 'use strict';
 
 var AlgebraLatex = require('./index');
@@ -44,3 +44,4 @@ function printHelp() {
   console.log('                     [-l]: convert from latex');
   console.log('                     [-m]: convert from math string');
 }
+});

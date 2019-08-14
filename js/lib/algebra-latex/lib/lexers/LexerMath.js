@@ -1,4 +1,4 @@
-'use strict';
+define(function (require, exports, module) {'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -161,3 +161,4 @@ var LatexLexer = function (_Lexer) {
 }(_Lexer3.default);
 
 exports.default = LatexLexer;
+});

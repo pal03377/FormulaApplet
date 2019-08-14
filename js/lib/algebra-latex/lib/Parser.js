@@ -1,4 +1,4 @@
-'use strict';
+define(function (require, exports, module) {'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -492,3 +492,4 @@ var ParserLatex = function () {
 }();
 
 exports.default = ParserLatex;
+});
