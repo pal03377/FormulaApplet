@@ -36,8 +36,8 @@ function loadCss(url) {
   document.getElementsByTagName("head")[0].appendChild(link);
 }
 
-function load_3() {
-  console.log('Here is load_3');
+function init_mathquill() {
+  console.log('Init MathQuill');
   var mathFieldSpan = document.getElementById('math-field');
   var latexSpan = document.getElementById('latex');
 
@@ -58,23 +58,19 @@ require(['jquery'], function ($) {
   require(['mathquill'], function (MQ) {
     console.log('MathQuill.js is loaded');
     loadCss('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css');
-    load_3();
     console.log('MathQuill.css is loaded');
+    init_mathquill();
   });
 });
 require(['algebrite'], function (Algebrite) {
   console.log('Algebrite is loaded');
 });
-// require(['r'], function (ehr) {
-//   console.log('r is loaded');
-// });
 // https://www.sitepoint.com/understanding-module-exports-exports-node-js/
-// var module = {'exports': {}};
 require(['algebralatex'], function (alglat) {
   console.log('Algebra-Latex is loaded');
 });
 require(['domReady'], function (domReady) {
-  domReady(function () {
+    domReady(function () {
     //This function is called once the DOM is ready.
     //It will be safe to query the DOM and manipulate
     //DOM nodes in this function.
