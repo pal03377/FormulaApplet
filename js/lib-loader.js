@@ -19,7 +19,7 @@ requirejs.config({
       '/js/lib/Algebrite/dist/algebrite.bundle-for-browser'
     ],
     algebralatex: [
-      '/js/lib/algebra-latex/index0'
+      '/js/lib/algebra-latex/index'
     ],
     r: [
       '/js/lib/r'
@@ -66,11 +66,11 @@ require(['algebrite'], function (Algebrite) {
   console.log('Algebrite is loaded');
 });
 // https://www.sitepoint.com/understanding-module-exports-exports-node-js/
-require(['algebralatex'], function (alglat) {
+const AlgebraLatex = require(['algebralatex'], function (alglat) {
   console.log('Algebra-Latex is loaded');
 });
 require(['domReady'], function (domReady) {
-    domReady(function () {
+  domReady(function () {
     //This function is called once the DOM is ready.
     //It will be safe to query the DOM and manipulate
     //DOM nodes in this function.

@@ -18,10 +18,10 @@
       <th scope="col">License</th>
     </tr>
     <tr>
-      <td>Loadjs</td>
-      <td>3.6.1 - April 11, 2019</td>
-      <td><a href="https://github.com/muicss/loadjs">https://github.com/muicss/loadjs</a></td>
-      <td>MIT License</td>
+      <td>require.js</td>
+      <td>2.3.6</td>
+      <td><a href="https://requirejs.org/docs/start.html">https://requirejs.org/docs/start.html</a></td>
+      <td>jQuery Foundation</td>
     </tr>
     <tr>
       <td>JQuery</td>
@@ -39,6 +39,13 @@
       <td>Algebrite</td>
       <td>1.2.1</td>
       <td><a href="https://github.com/davidedc/Algebrite">https://github.com/davidedc/Algebrite</a></td>
+      <td>MIT License</td>
+    </tr>
+    <tr>
+      <td>algebra-latex</td>
+      <td>1.1.6</td>
+      <td><a href="https://github.com/viktorstrate/algebra-latex">https://github.com/viktorstrate/algebra-latex</a><br>
+      See also <a href="https://www.npmjs.com/package/algebra-latex">https://www.npmjs.com/package/algebra-latex</a></td>
       <td>MIT License</td>
     </tr>
   </table>

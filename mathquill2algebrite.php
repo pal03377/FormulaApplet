@@ -27,8 +27,12 @@
         this.observer.observe($( 'span#latex' ).get(0), {characterData: true, childList: true});
     });
      
-  function execute(textToBeExecuted) {
-    console.log('execute ' + textToBeExecuted);
+  function execute(latexInput) {
+    console.log('execute ' + latexInput);
+    const AL= new AlgebraLatex();
+    console.log( AL );
+    const algebraObj = AL.parseLatex(latexInput);
+    console.log(algebraObj.toMath());
     try {
         var result;
       if (/Algebrite\.[a-z]/.test(textToBeExecuted) || /;[ \t]*$/.test(textToBeExecuted)) {
