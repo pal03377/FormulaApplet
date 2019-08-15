@@ -54,7 +54,7 @@ function init_mathquill() {
 
 // Start the main app logic.
 require(['jquery'], function ($) {
-  console.log('jquery is loaded');
+  console.log('jQuery is loaded');
   require(['mathquill'], function (MQ) {
     console.log('MathQuill.js is loaded');
     loadCss('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css');
