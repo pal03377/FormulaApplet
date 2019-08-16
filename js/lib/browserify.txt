@@ -1,0 +1,16 @@
+Installation of node.js from https://nodejs.org/en/, includes npm
+npm install -g browserify
+Doc at http://browserify.org/#install
+npm install -g algebra-latex
+
+Test:
+C:\Users\privat\AppData\Roaming\npm\\node_modules\algebra-latex\lib\cli.js" -l \sin(x)
+latex: \sin\left(x\right)
+ascii math: sin(x)
+
+C:\Users\privat\AppData\Roaming\npm\node_modules\algebra-latex\lib
+browserify cli.js -o alg-lat.js
+
+Copy C:\Users\privat\AppData\Roaming\npm\node_modules\algebra-latex\lib\alg-lat.js
+to E:\gut\gf09\js\lib\alg-lat.js
+

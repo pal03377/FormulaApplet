@@ -19,7 +19,7 @@ requirejs.config({
       '/js/lib/Algebrite/dist/algebrite.bundle-for-browser'
     ],
     algebralatex: [
-      '/js/lib/algebra-latex/index'
+      '/js/lib/algebra-latex/index0'
     ],
     r: [
       '/js/lib/r'
