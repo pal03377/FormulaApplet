@@ -1,0 +1,21 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 30.09.2018, 18:44:36
+    Author     : privat
+*/
+.mq-cursor { 
+    background-color: gray;
+    color: red;
+}
+.tex-example{
+    border: darkblue solid thin;
+    background-color: lightblue;
+}
+.tex-example.selected{
+    border: red solid medium;
+    background-color: lightpink;
+}

@@ -18,12 +18,12 @@ requirejs.config({
       'http://algebrite.org/dist/1.2.0/algebrite.bundle-for-browser',
       '/js/lib/Algebrite/dist/algebrite.bundle-for-browser'
     ],
-    algebralatex: [
-      '/js/lib/alg-lat'
+    parser1: [
+      '/js/lib/parse_brackets5.part1'
     ],
-    // r: [
-    //   '/js/lib/r'
-    // ],
+    parser2: [
+      '/js/lib/parse_brackets5.part2'
+    ],
     domReady: '/js/domReady/domReady'
   }
 });
@@ -66,8 +66,8 @@ require(['algebrite'], function (Algebrite) {
   console.log('Algebrite is loaded');
 });
 // https://www.sitepoint.com/understanding-module-exports-exports-node-js/
-const AlgebraLatex = require(['algebralatex'], function (alglat) {
-  console.log('Algebra-Latex is loaded');
+require(['parser1', 'parser2'], function (parse) {
+  console.log('Parser is loaded');
 });
 require(['domReady'], function (domReady) {
   domReady(function () {

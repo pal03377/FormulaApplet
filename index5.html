@@ -1,23 +1,28 @@
-<?php $title='Test Page' ?>
-<?php include_once( 'header.php' ); ?>
-<script>
-    console.log( 'test');
-
-    // Parse from LaTeX ...
-    const latexInput = '\\frac{1}{\\sqrt{2}}\\cdot x=10';
-    var link = document.createElement("link");
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    link.href = "/js/lib/tex-example.css";
-    document.getElementsByTagName("head")[0].appendChild(link);
-</script>
-</head>
-
-<body>
-<h1><?php echo $title; ?></h1>
-<h2>TEX Parser</h2>
-
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TEX Parser</title>
+        <link rel="stylesheet" href="./lib/mathquill-0.10.1/mathquill.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="./lib/mathquill-0.10.1/mathquill.js"></script>
+        <link rel="stylesheet" type="text/css" href="tex-example.css" />
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+        <script>
+            $.getScript("./lib/parse_brackets5.part1.js",
+                    function () {
+                        $.getScript("./lib/parse_brackets5.part2.js",
+                                function () {
+                                    part_3();
+                                });
+                    });
+        </script>
+    </head>
+    <body>
+        <h1>TEX Parser</h1>
         <p id="output">output</p>
+        <p id="ttt">test</p>
         <!-- p id="version">version</p -->
         <p class="tex-example">\sqrt{2}</p><br />
         <p class="tex-example">\sin x+5\cosh\left(x\right)+\tan xy+\sin^2\beta-\sin^{2+n}3\alpha</p><br />
@@ -49,7 +54,7 @@ transform: scale(.8);"></canvas>
                     var ctx = canvas.getContext("2d");
                 </script>-->
         <script>
-                function part_3() {
+            function part_3() {
                 var MQ = MathQuill.getInterface(2);
                 var mathField = new Array();
                 var out = '';
@@ -96,7 +101,19 @@ transform: scale(.8);"></canvas>
             }
         </script>
 
-
-<h2>Header </h2>
-
-<?php include_once( 'footer.php' ); ?>
+        <script language="javascript">var js_version = "1.0"</script>
+        <script language="javascript1.1">var js_version = "1.1"</script>
+        <script language="javascript1.2">var js_version = "1.2"</script>
+        <script language="javascript1.3">var js_version = "1.3"</script>
+        <script language="javascript1.4">var js_version = "1.4"</script>
+        <script language="javascript1.5">var js_version = "1.5"</script>
+        <script language="javascript1.6">var js_version = "1.6"</script>
+        <script language="javascript">
+            /**
+             document.getElementById('version').innerHTML = 'js version:' + js_version;
+             */
+        </script>
+        <hr>
+        <a href="index.html">MathQuill and Bracket Parser</a>
+    </body>
+</html>
