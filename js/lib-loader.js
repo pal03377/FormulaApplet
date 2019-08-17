@@ -10,6 +10,13 @@ requirejs.config({
       //Fallback - If the CDN location fails, load from this location
       '/js/lib/jquery-3.4.1.min'
     ],
+    // parser1: [
+    //   'js/lib/parse_brackets5.part1',
+    //   'dummy'
+    // ],
+    // parser2: [
+    //   '/js/lib/parse_brackets5.part2'
+    // ],
     mathquill: [
       'https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill',
       '/js/lib/mathquill-0.10.1/mathquill' //fallback
@@ -17,12 +24,6 @@ requirejs.config({
     algebrite: [
       'http://algebrite.org/dist/1.2.0/algebrite.bundle-for-browser',
       '/js/lib/Algebrite/dist/algebrite.bundle-for-browser'
-    ],
-    parser1: [
-      '/js/lib/parse_brackets5.part1'
-    ],
-    parser2: [
-      '/js/lib/parse_brackets5.part2'
     ],
     domReady: '/js/domReady/domReady'
   }
@@ -52,6 +53,8 @@ function init_mathquill() {
   });
 }
 
+
+
 // Start the main app logic.
 require(['jquery'], function ($) {
   console.log('jQuery is loaded');
@@ -66,9 +69,6 @@ require(['algebrite'], function (Algebrite) {
   console.log('Algebrite is loaded');
 });
 // https://www.sitepoint.com/understanding-module-exports-exports-node-js/
-require(['parser1', 'parser2'], function (parse) {
-  console.log('Parser is loaded');
-});
 require(['domReady'], function (domReady) {
   domReady(function () {
     //This function is called once the DOM is ready.

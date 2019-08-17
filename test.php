@@ -1,15 +1,76 @@
 <?php $title='Test Page' ?>
 <?php include_once( 'header.php' ); ?>
+<script src="/js/lib/parse_brackets5.part1.js"></script>
+<script src="/js/lib/parse_brackets5.part2.js"></script>
 <script>
-    console.log( 'test');
+  function part_3() {
+  var MQ = MathQuill.getInterface(2);
+  var mathField = new Array();
+  var out = '';
+  var canvas = document.getElementById("treecanvas");
+  var context = canvas.getContext("2d");
 
-    // Parse from LaTeX ...
-    const latexInput = '\\frac{1}{\\sqrt{2}}\\cdot x=10';
-    var link = document.createElement("link");
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    link.href = "/js/lib/tex-example.css";
-    document.getElementsByTagName("head")[0].appendChild(link);
+  $(document).ready(function () {
+    $(".tex-example").each(function () {
+      var index = $(".tex-example").index(this);
+      // console.log(index);
+      mf = MQ.MathField(this, {
+        handlers: {
+          edit: function () {
+            editHandler(index);
+          }
+        }
+      });
+      mathField.push(mf);
+    });
+    $(".tex-example").click(function () {
+      var index = $(".tex-example").index(this);
+      editHandler(index);
+      $(".tex-example").removeClass('selected');
+      $(this).addClass('selected');
+    });
+  });
+
+  function editHandler(index) {
+    mf = mathField[index];
+    // var out = mf.latex();
+    out = mf.latex();
+    var myTree = new tree();
+    myTree.leaf.content = mf.latex();
+    parse(myTree);
+    document.getElementById('output').innerHTML = out + '<br>';
+    // test = tree2TEX(myTree);
+    //                    var message = ' Error.';
+    //                    if (out === test) {
+    //                        message = ' OK.';
+    //                    }
+    //                    document.getElementById('ttt').innerHTML = test + message;
+    paint_tree(myTree, canvas, context);
+  }
+}
+
+require(['mathquill'], function (MQ) {
+    console.log('MathQuill.js is loaded');
+    loadCss('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css');
+    console.log('MathQuill.css is loaded');
+    init_mathquill();
+    console.log( 'part_3');
+    part_3();
+  });
+
+  //require(['parser'], function (parser) {
+      //console.log('Parser1 is loaded');
+      // require(['parser2'], function (parse2) {
+      // });
+  //});
+
+  // Parse from LaTeX ...
+  const latexInput = '\\frac{1}{\\sqrt{2}}\\cdot x=10';
+  var link = document.createElement("link");
+  link.type = "text/css";
+  link.rel = "stylesheet";
+  link.href = "/js/lib/tex-example.css";
+  document.getElementsByTagName("head")[0].appendChild(link);
 </script>
 </head>
 
@@ -38,65 +99,12 @@
         <p class="tex-example">15+\left[3,5 \cdot ab+\left(2a-3b\right)\left(3a+5b\right)\right]</p><br />
         <p class="tex-example">78x_{\min}-\left\{99 \cdot x_{\max}+\left(\frac{x_{\alpha}}{x_{\beta}+x_{\gamma}}\right)\right\}</p><br />
         <hr />
-        <canvas id="treecanvas" width="900" height="600" style="
+<canvas id="treecanvas" width="900" height="600" style="
 border: 1px solid #000000;
 position: fixed;
 right: 0;
 top: 0;
-transform: scale(.8);"></canvas>
-        <!--        <script>
-                    var canvas = document.getElementById("treecanvas");
-                    var ctx = canvas.getContext("2d");
-                </script>-->
-        <script>
-                function part_3() {
-                var MQ = MathQuill.getInterface(2);
-                var mathField = new Array();
-                var out = '';
-                var canvas = document.getElementById("treecanvas");
-                var context = canvas.getContext("2d");
-
-                $(document).ready(function () {
-                    $(".tex-example").each(function () {
-                        var index = $(".tex-example").index(this);
-                        // console.log(index);
-                        mf = MQ.MathField(this, {
-                            handlers: {
-                                edit: function () {
-                                    editHandler(index);
-                                }
-                            }
-                        });
-                        mathField.push(mf);
-                    });
-                    $(".tex-example").click(function () {
-                        var index = $(".tex-example").index(this);
-                        editHandler(index);
-                        $(".tex-example").removeClass('selected');
-                        $(this).addClass('selected');
-                    });
-                });
-
-                function editHandler(index) {
-                    mf = mathField[index];
-                    // var out = mf.latex();
-                    out = mf.latex();
-                    var myTree = new tree();
-                    myTree.leaf.content = mf.latex();
-                    parse(myTree);
-                    document.getElementById('output').innerHTML = out + '<br>';
-                    // test = tree2TEX(myTree);
-//                    var message = ' Error.';
-//                    if (out === test) {
-//                        message = ' OK.';
-//                    }
-//                    document.getElementById('ttt').innerHTML = test + message;
-                    paint_tree(myTree, canvas, context);
-                }
-            }
-        </script>
-
-
-<h2>Header </h2>
+transform: scale(.8);">
+</canvas>
 
 <?php include_once( 'footer.php' ); ?>

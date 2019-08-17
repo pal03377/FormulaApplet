@@ -54,51 +54,6 @@ transform: scale(.8);"></canvas>
                     var ctx = canvas.getContext("2d");
                 </script>-->
         <script>
-            function part_3() {
-                var MQ = MathQuill.getInterface(2);
-                var mathField = new Array();
-                var out = '';
-                var canvas = document.getElementById("treecanvas");
-                var context = canvas.getContext("2d");
-
-                $(document).ready(function () {
-                    $(".tex-example").each(function () {
-                        var index = $(".tex-example").index(this);
-                        // console.log(index);
-                        mf = MQ.MathField(this, {
-                            handlers: {
-                                edit: function () {
-                                    editHandler(index);
-                                }
-                            }
-                        });
-                        mathField.push(mf);
-                    });
-                    $(".tex-example").click(function () {
-                        var index = $(".tex-example").index(this);
-                        editHandler(index);
-                        $(".tex-example").removeClass('selected');
-                        $(this).addClass('selected');
-                    });
-                });
-
-                function editHandler(index) {
-                    mf = mathField[index];
-                    // var out = mf.latex();
-                    out = mf.latex();
-                    var myTree = new tree();
-                    myTree.leaf.content = mf.latex();
-                    parse(myTree);
-                    document.getElementById('output').innerHTML = out + '<br>';
-                    // test = tree2TEX(myTree);
-//                    var message = ' Error.';
-//                    if (out === test) {
-//                        message = ' OK.';
-//                    }
-//                    document.getElementById('ttt').innerHTML = test + message;
-                    paint_tree(myTree, canvas, context);
-                }
-            }
         </script>
 
         <script language="javascript">var js_version = "1.0"</script>
