@@ -10,13 +10,6 @@ requirejs.config({
       //Fallback - If the CDN location fails, load from this location
       '/js/lib/jquery-3.4.1.min'
     ],
-    // parser1: [
-    //   'js/lib/parse_brackets5.part1',
-    //   'dummy'
-    // ],
-    // parser2: [
-    //   '/js/lib/parse_brackets5.part2'
-    // ],
     mathquill: [
       'https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill',
       '/js/lib/mathquill-0.10.1/mathquill' //fallback

@@ -1,9 +1,9 @@
-<?php $title='Test Page' ?>
+<?php $title='TEX Parser' ?>
 <?php include_once( 'header.php' ); ?>
 <script src="/js/lib/parse_brackets5.part1.js"></script>
 <script src="/js/lib/parse_brackets5.part2.js"></script>
 <script>
-  function part_3() {
+  function prepare_page() {
   var MQ = MathQuill.getInterface(2);
   var mathField = new Array();
   var out = '';
@@ -46,23 +46,32 @@
     //                    }
     //                    document.getElementById('ttt').innerHTML = test + message;
     paint_tree(myTree, canvas, context);
+    console.log( '*** list of unknown leafs ***');
+    traverseSimple(
+            function (node) {
+              if (node.type == 'unknown leaf'){
+                console.log(node.id + ' ' + node.content);
+              }
+            }, myTree.nodelist);
   }
 }
 
-require(['mathquill'], function (MQ) {
-    console.log('MathQuill.js is loaded');
-    loadCss('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css');
-    console.log('MathQuill.css is loaded');
-    init_mathquill();
-    console.log( 'part_3');
-    part_3();
-  });
+function wait_for_mathquill(continue_method) {
+  if (typeof MathQuill !== 'undefined') {
+      continue_method();
+  } else {
+      setTimeout(function() { wait_for_mathquill(continue_method) }, 50);
+  }
+}
+// https://stackoverflow.com/questions/7486309/how-to-make-script-execution-wait-until-jquery-is-loaded
+// use:
+// wait_for_mathquill(function () {
+//   console.log("end of wait_for_mathquill");
+// });
 
-  //require(['parser'], function (parser) {
-      //console.log('Parser1 is loaded');
-      // require(['parser2'], function (parse2) {
-      // });
-  //});
+wait_for_mathquill(function () {
+  prepare_page();
+});
 
   // Parse from LaTeX ...
   const latexInput = '\\frac{1}{\\sqrt{2}}\\cdot x=10';
