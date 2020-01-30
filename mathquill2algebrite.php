@@ -1,5 +1,6 @@
-<?php $title='Test Page - MathQuill (gf09)' ?>
+<?php $title='Test Page - MathQuill2Algebrite (gf09)' ?>
 <?php include_once( 'header.php' ); ?>
+<!-- header - require - lib.loader - mathquill etc. -->
 </head>
 
 <body>
@@ -29,9 +30,10 @@
      
   function execute(latexInput) {
     console.log('execute ' + latexInput);
-    const AL= new AlgebraLatex();
-    AL.parseLatex(latexInput)
-    textToBeExecuted = AL.toMath();
+    // const AL= new AlgebraLatex();
+    // AL.parseLatex(latexInput)
+    // textToBeExecuted = AL.toMath();
+    textToBeExecuted = $( 'span#latex' ).text();
     try {
       var result;
       if (/Algebrite\.[a-z]/.test(textToBeExecuted) || /;[ \t]*$/.test(textToBeExecuted)) {
