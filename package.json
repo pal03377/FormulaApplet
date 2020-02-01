@@ -1,10 +1,10 @@
 { 
-   "name": "gf09-Demo", 
+   "name": "gf09_Demo", 
    "version": "0.9.9", 
    "description": "demo project.", 
    "scripts": { 
      "lite": "lite-server --port 10001", 
-     "start": "npm run lite" 
+      "start": "npm run lite" 
    }, 
    "author": "gro", 
    "license": "MIT", 
