@@ -10,30 +10,57 @@
   <textarea id="output" name="terminal" rows="4" cols="80" style="width:100%;"></textarea>
 
   <script>
-     // https://stackoverflow.com/questions/7486309/how-to-make-script-execution-wait-until-jquery-is-loaded
-     function waitfor_jquery(jquery_ready) {
-        if (window.jQuery) {
-            jquery_ready();
-        } else {
-            setTimeout(function () { waitfor_jquery(jquery_ready) }, 50);
-        }
-    }
+  var libLoader = false;
+  function waitfor_libLoader_and_if_ready_then_do(ll_ready) {
+          // console.log( 'libLoader=' + libLoader);
+          if ( libLoader == true ) {
+              ll_ready();
+          } else {
+              // console.log( 'waiting for libLoader...' );
+              setTimeout(function () { waitfor_libLoader_and_if_ready_then_do(ll_ready) }, 50);
+          }
+  }
 
-    waitfor_jquery(function () {
-        console.log("jQuery is ready...");
-        this.observer = new MutationObserver( function(mutations) {
-          console.log( $( 'span#latex' ).text() );
-          execute($( 'span#latex' ).text());
-        }.bind(this));
-        this.observer.observe($( 'span#latex' ).get(0), {characterData: true, childList: true});
-    });
-     
+  // https://stackoverflow.com/questions/7486309/how-to-make-script-execution-wait-until-jquery-is-loaded
+  function waitfor_jquery_and_if_ready_then_do(jquery_ready){
+    // console.log( 'window.jQuery =' + window.jQuery);
+    if (window.jQuery) {
+        // console.log( 'jQuery is available' );
+        jquery_ready();
+    } else {
+        // console.log( 'Waiting for jQuery...' );
+        setTimeout(function () { waitfor_jquery_and_if_ready_then_do(jquery_ready) }, 50);
+    }
+  }
+
+  // waitfor_jquery_and_if_ready_then_do( waitfor_libLoader_and_if_ready_then_do( init_observer(this) ) );
+  waitfor_jquery_and_if_ready_then_do( function(){
+      waitfor_libLoader_and_if_ready_then_do( function() {
+            // console.log( 'init observer.......' );
+            init_observer(this);
+        }
+      ) 
+    }
+  );
+
+  function init_observer(obj){
+      console.log( 'Init Observer' );
+      mathFieldSpan = $('span#math-field');
+      latexSpan = $('span#latex');
+      //MQ = MathQuill.getInterface(2); // for backcompat
+      obj.observer = new MutationObserver( function(mutations) {
+        console.log( latexSpan.text() );
+        execute( latexSpan.text() );
+      }.bind(obj));
+      obj.observer.observe(latexSpan.get(0), {characterData: true, childList: true});
+  }
+      
   function execute(latexInput) {
     console.log('execute ' + latexInput);
     // const AL= new AlgebraLatex();
     // AL.parseLatex(latexInput)
     // textToBeExecuted = AL.toMath();
-    textToBeExecuted = $( 'span#latex' ).text();
+    textToBeExecuted = mathField.text();
     try {
       var result;
       if (/Algebrite\.[a-z]/.test(textToBeExecuted) || /;[ \t]*$/.test(textToBeExecuted)) {
@@ -52,6 +79,7 @@
       console.log('Error: ' +  errDesc );
     }
   }
-</script>
+  // console.log( 'libLoader=' + libLoader );
+ </script>
 
  <?php include_once( 'footer.php' ); ?>

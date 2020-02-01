@@ -1,6 +1,6 @@
 // https://requirejs.org/docs/api.html#jsfiles
 // https://requirejs.org/docs/api.html#pathsfallbacks
-
+var libLoader = false;
 requirejs.config({
   //To get timely, correct error triggers in IE, force a define/shim exports check.
   //enforceDefine: true,
@@ -32,11 +32,11 @@ function loadCss(url) {
 
 function init_mathquill() {
   console.log('Init MathQuill');
-  var mathFieldSpan = document.getElementById('math-field');
-  var latexSpan = document.getElementById('latex');
+  mathFieldSpan = document.getElementById('span#math-field');
+  latexSpan = document.getElementById('span#latex');
 
-  var MQ = MathQuill.getInterface(2); // for backcompat
-  var mathField = MQ.MathField(mathFieldSpan, {
+  MQ = MathQuill.getInterface(2); // for backcompat
+  mathField = MQ.MathField(mathFieldSpan, {
     spaceBehavesLikeTab: true, // configurable
     handlers: {
       edit: function () { // useful event handlers
@@ -46,8 +46,6 @@ function init_mathquill() {
   });
 }
 
-
-
 // Start the main app logic.
 require(['jquery'], function ($) {
   console.log('jQuery is loaded');
@@ -55,18 +53,14 @@ require(['jquery'], function ($) {
     console.log('MathQuill.js is loaded');
     loadCss('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css');
     console.log('MathQuill.css is loaded');
-    init_mathquill();
-  });
-});
-require(['algebrite'], function (Algebrite) {
-  console.log('Algebrite is loaded');
-});
-// https://www.sitepoint.com/understanding-module-exports-exports-node-js/
-require(['domReady'], function (domReady) {
-  domReady(function () {
-    //This function is called once the DOM is ready.
-    //It will be safe to query the DOM and manipulate
-    //DOM nodes in this function.
-    console.log('domReady');
+    require(['algebrite'], function (Algebrite) {
+      console.log('Algebrite is loaded');
+        // https://api.jquery.com/ready/
+        $( function(){ 
+          libLoader = true;
+          // console.log( 'libLoader=true' );
+          init_mathquill();
+        });
+    });
   });
 });
