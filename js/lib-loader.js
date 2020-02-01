@@ -32,19 +32,20 @@ function loadCss(url) {
 
 function init_mathquill() {
   console.log('Init MathQuill');
-  mathFieldSpan = document.getElementById('span#math-field');
-  latexSpan = document.getElementById('span#latex');
-
   MQ = MathQuill.getInterface(2); // for backcompat
   mathField = MQ.MathField(mathFieldSpan, {
     spaceBehavesLikeTab: true, // configurable
     handlers: {
       edit: function () { // useful event handlers
-        latexSpan.textContent = mathField.latex(); // simple API
+       latexSpan.textContent = mathField.latex(); // simple API
       }
     }
   });
+  // console.log(mathField);
 }
+
+mathFieldSpan = document.getElementById('math-field');
+latexSpan = document.getElementById('latex');
 
 // Start the main app logic.
 require(['jquery'], function ($) {

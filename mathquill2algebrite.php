@@ -4,7 +4,7 @@
 </head>
 
 <body>
-  <p>Type math here: <span id="math-field"></span></p>
+  <p>Type math here: <span id="math-field">x^2</span></p>
   <p id="middle">LaTeX of what you typed: <span id="latex"></span></p>
 
   <textarea id="output" name="terminal" rows="4" cols="80" style="width:100%;"></textarea>
@@ -37,29 +37,28 @@
   waitfor_jquery_and_if_ready_then_do( function(){
       waitfor_libLoader_and_if_ready_then_do( function() {
             // console.log( 'init observer.......' );
-            init_observer(this);
+            init_observer();
         }
       ) 
     }
   );
 
-  function init_observer(obj){
+  function init_observer(){
       console.log( 'Init Observer' );
-      mathFieldSpan = $('span#math-field');
-      latexSpan = $('span#latex');
+      console.log( latexSpan.textContent );
+      // mathFieldSpan = $('span#math-field');
+      // latexSpan = $('span#latex');
       //MQ = MathQuill.getInterface(2); // for backcompat
-      obj.observer = new MutationObserver( function(mutations) {
-        console.log( latexSpan.text() );
-        execute( latexSpan.text() );
-      }.bind(obj));
-      obj.observer.observe(latexSpan.get(0), {characterData: true, childList: true});
+      this.observer = new MutationObserver( function(mutations) {
+        console.log( latexSpan.textContent );
+        execute( latexSpan.textContent );
+      }.bind(this));
+      //this.observer.observe(latexSpan.get(0), {characterData: true, childList: true});
+      this.observer.observe(latexSpan, {characterData: true, childList: true});
   }
       
   function execute(latexInput) {
     console.log('execute ' + latexInput);
-    // const AL= new AlgebraLatex();
-    // AL.parseLatex(latexInput)
-    // textToBeExecuted = AL.toMath();
     textToBeExecuted = mathField.text();
     try {
       var result;
