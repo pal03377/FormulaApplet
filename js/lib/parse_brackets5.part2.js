@@ -490,8 +490,8 @@ function paint_tree(tree, canvas, context) {
 //    } else {
 //        col = "#ffffdf";
 //    }
-    col = "#ffffdf";
-    context.fillStyle = col;
+    //col = "#ffffdf";
+    //context.fillStyle = col;
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.font = '7pt Consolas';
     paint_tree_recurse(tree.root, tree.nodelist, -9999, -9999, 0, 0, context, 1);

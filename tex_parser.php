@@ -111,9 +111,10 @@ wait_for_mathquill(function () {
 <canvas id="treecanvas" width="900" height="600" style="
 border: 1px solid #000000;
 position: fixed;
-right: 0;
-top: 0;
-transform: scale(.8);">
+right: 30px;
+top: 30px;
+transform: scale(1.05);
+background-color: #ffffdf; ">
 </canvas>
 
 <?php include_once( 'footer.php' ); ?>
