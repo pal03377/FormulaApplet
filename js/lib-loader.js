@@ -1,6 +1,6 @@
 // https://requirejs.org/docs/api.html#jsfiles
 // https://requirejs.org/docs/api.html#pathsfallbacks
-var libLoader = false;
+libLoad.libLoaderReady = false;
 requirejs.config({
   //To get timely, correct error triggers in IE, force a define/shim exports check.
   //enforceDefine: true,
@@ -58,8 +58,8 @@ require(['jquery'], function ($) {
       console.log('Algebrite is loaded');
         // https://api.jquery.com/ready/
         $( function(){ 
-          libLoader = true;
-          // console.log( 'libLoader=true' );
+          libLoad.libLoaderReady = true;
+          // console.log( 'libLoader:=true' );
           init_mathquill();
         });
     });

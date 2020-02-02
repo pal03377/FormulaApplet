@@ -4,16 +4,15 @@
 </head>
 
 <body>
-  <p>Type math here: <span id="math-field">x^2</span></p>
-  <p id="middle">LaTeX of what you typed: <span id="latex"></span></p>
-
+  <p>MathQuill Eingabe: <span id="math-field"></span></p>
+  <p id="middle">LaTeX: <span id="latex"></span></p>
+  <p>Algebrite Ausgabe: </p>
   <textarea id="output" name="terminal" rows="4" cols="80" style="width:100%;"></textarea>
 
   <script>
-  var libLoader = false;
   function waitfor_libLoader_and_if_ready_then_do(ll_ready) {
-          // console.log( 'libLoader=' + libLoader);
-          if ( libLoader == true ) {
+          // console.log( 'libLoader=' + libLoad.libLoaderReady);
+          if ( libLoad.libLoaderReady == true ) {
               ll_ready();
           } else {
               // console.log( 'waiting for libLoader...' );
