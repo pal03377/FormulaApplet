@@ -31,7 +31,7 @@ function loadCss(url) {
 }
 
 function init_mathquill() {
-  console.log('Init MathQuill');
+  console.log('Lib-Loader: Init MathQuill');
   MQ = MathQuill.getInterface(2); // for backcompat
   mathField = MQ.MathField(mathFieldSpan, {
     spaceBehavesLikeTab: true, // configurable
