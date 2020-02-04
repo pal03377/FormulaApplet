@@ -1,6 +1,6 @@
 <?php 
 $title='Test Page - Tex2MathQuill';
-$liblist = "['mathquill', 'algebrite' ]";
+$liblist = "['mathquill', 'mathquillcss', 'algebrite' ]";
 include_once( 'header.php' );
 ?>
 
@@ -30,7 +30,7 @@ include_once( 'header.php' );
 
   function waitfor_mathquill_and_if_ready_then_do(mq_ready) {
     // console.log( typeof MathQuill );
-    if ( (typeof MathQuill) === "undefined" ) {s
+    if ( (typeof MathQuill) === "undefined" ) {
         console.log( 'waiting for MathQuill...' );
         setTimeout(function () { waitfor_mathquill_and_if_ready_then_do(mq_ready) }, 50);
     } else {
