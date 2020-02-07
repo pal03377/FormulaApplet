@@ -19,26 +19,6 @@
   <script>
   // TODO: put these waiting functions into glue.js
   
-  function waitfor_libLoader_and_if_ready_then_do(ll_ready) {
-          if ( libLoaderReady == true ) {
-              ll_ready();
-          } else {
-              console.log( 'waiting for libLoader...' );
-              setTimeout(function () { waitfor_libLoader_and_if_ready_then_do(ll_ready) }, 50);
-          }
-  }
-
-  function waitfor_mathquill_and_if_ready_then_do(mq_ready) {
-    // console.log( typeof MathQuill );
-    if ( (typeof MathQuill) === "undefined" ) {
-        console.log( 'waiting for MathQuill...' );
-        setTimeout(function () { waitfor_mathquill_and_if_ready_then_do(mq_ready) }, 50);
-    } else {
-       console.log( 'MathQuill ready......' );
-       mq_ready();
-    }
-  }
-
   waitfor_libLoader_and_if_ready_then_do( function() {
       waitfor_mathquill_and_if_ready_then_do( init );
   }) 
