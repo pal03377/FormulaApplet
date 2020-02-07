@@ -68,7 +68,7 @@ function appendStyleSheet(url, errorFunc, nexttask) {
 
 // load javaScript or CSS
 function getScriptOrFallback(task) {
-	console.log('Start task: ' + task);
+	console.log('Start loading: ' + task);
 	if (task === 'end') {
 		return;
 	} else {
@@ -108,7 +108,7 @@ function getScriptOrFallback(task) {
 	}
 };
 
-/**
+/** DEPRECATED
 function start_loading() {
 	getScriptOrFallback('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js',
 		libPath + 'mathquill-0.10.1/mathquill.js',
@@ -129,7 +129,6 @@ function continue_loading_2() {
 
 // start_loading();
 */
-
 $(document).ready(function () {
 	console.log("Document ready.");
 	libLoaderReady = true;
