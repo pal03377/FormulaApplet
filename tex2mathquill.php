@@ -4,11 +4,10 @@
   include_once( 'header.php' );
 ?>
 
-
 <body>
-  <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3,5 \textcolor{blue}{\frac{km}{h}} </textarea>
   <p>MathQuill: <span id="editable-math"></span></p>
-  <p>Algebrite: </p>
+ <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3,5 \textcolor{blue}{\frac{km}{h}} </textarea>
+   <p>Algebrite: </p>
   <textarea id="output" name="terminal" rows="4" cols="80" style="width:100%;"></textarea>
   <hr>
   <pre id="math-text">empty</pre>

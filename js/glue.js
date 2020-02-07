@@ -52,6 +52,7 @@ function waitfor_jquery_and_if_ready_then_do(jquery_ready) {
 
 function waitfor_libLoader_and_if_ready_then_do(ll_ready) {
 	if (libLoaderReady == true) {
+		console.log('libLoader ready.');
 		ll_ready();
 	} else {
 		console.log('waiting for libLoader...');

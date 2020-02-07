@@ -7,8 +7,7 @@
     <h1><?php echo $title; ?></h1>
     <p><a href='mathquill.php'>MathQuill - Test Page</a></p>
     <p><a href='algebrite.php'>Algebrite - Test Page</a></p>
-    <p><a href='mathquill2algebrite.php'>Mathquill2Algebrite</a></p>
-    <p><a href='tex2mathquill.php'>TEX &lt;-&gt; MathQuill</a></p>
+    <p><a href='tex2mathquill.php'>TEX &lt;-&gt; MathQuill -&gt; Algebrite</a></p>
     <p><a href='tex_parser.php'>TEX Parser</a></p>
 	<hr>
     <p>This page uses </p>
