@@ -20,6 +20,12 @@ paths.algebrite = {
 	css: false,
 	next: 'end'
 };
+paths.kas = {
+	path: libPath + 'KAS/KAS_loader.js',
+	fallback: libPath + 'KAS/KAS_loader.js',
+	css: false,
+	next: 'end'
+};
 
 // $liblist is set in *.php file as a php variable
 // header.php converts it to a javascript variable

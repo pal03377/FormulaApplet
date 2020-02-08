@@ -1,5 +1,8 @@
-<?php $title='TEX Parser' ?>
-<?php include_once( 'header.php' ); ?>
+<?php $title='TEX Parser';
+  $liblist = "[ 'mathquill', 'mathquillcss' ]";
+  include_once( 'header.php' );
+ ?>
+
 <script src="/js/lib/parse_brackets5.part1.js"></script>
 <script src="/js/lib/parse_brackets5.part2.js"></script>
 <script>
@@ -56,20 +59,7 @@
   }
 }
 
-function wait_for_mathquill(continue_method) {
-  if (typeof MathQuill !== 'undefined') {
-      continue_method();
-  } else {
-      setTimeout(function() { wait_for_mathquill(continue_method) }, 50);
-  }
-}
-// https://stackoverflow.com/questions/7486309/how-to-make-script-execution-wait-until-jquery-is-loaded
-// use:
-// wait_for_mathquill(function () {
-//   console.log("end of wait_for_mathquill");
-// });
-
-wait_for_mathquill(function () {
+waitfor_mathquill_and_if_ready_then_do(function () {
   prepare_page();
 });
 
@@ -114,7 +104,8 @@ position: fixed;
 right: 30px;
 top: 30px;
 transform: scale(1.05);
-background-color: #ffffdf; ">
+background-color: #ffffdf !important;">
 </canvas>
+
 
 <?php include_once( 'footer.php' ); ?>
