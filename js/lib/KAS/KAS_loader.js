@@ -10,7 +10,7 @@ function loadScript( scriptName ){
 }
 
 function loadKAS(){
-    loadScript( './underscore.js' );
+    loadScript( 'underscore.js' );
     loadScript( 'parser.js' );
     loadScript( 'nodes.js' );
     loadScript( 'compare.js' );

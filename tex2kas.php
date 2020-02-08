@@ -6,40 +6,56 @@
 
 <body>
   <p>MathQuill: <span id="editable-math"></span></p>
- <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3,5 \textcolor{blue}{\frac{km}{h}} </textarea>
-   <p>KAS: </p>
-  <textarea id="output" name="terminal" rows="4" cols="80" style="width:100%;"></textarea>
+  <p>LaTeX:</p>
+  <!-- textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3.5 \textcolor{blue}{\frac{km}{h}} </textarea -->
+  <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3.5\frac{km}{h} </textarea>
+   <p>KAS: Printed Representation</p>
+  <textarea id="output" name="terminal" rows="4" cols="80" style="width:100%;">KAS</textarea>
   <hr>
   
   <script>
- 
+  function waitfor_KAS_and_if_ready_then_do(KAS_ready) {
+    // console.log( 'window.jQuery =' + window.jQuery);
+    if (typeof KAS !== 'undefined') {
+      console.log('KAS is available');
+      KAS_ready();
+    } else {
+      console.log('Waiting for KAS...');
+      setTimeout(function () {
+        waitfor_KAS_and_if_ready_then_do(KAS_ready)
+      }, 50);
+    }
+  }
+
   waitfor_libLoader_and_if_ready_then_do( function() {
-      waitfor_mathquill_and_if_ready_then_do( init );
-  }) 
+     waitfor_mathquill_and_if_ready_then_do( function(){
+        waitfor_KAS_and_if_ready_then_do( function(){ init();  });
+      });
+    });
   
-  function init(){};
- 
-  function init_off(){
+  function init(){
     console.log( 'init' );
-    var eMath = $('#editable-math')[0]; latexSource = $('#latex'), htmlSource = $('#html-source'), MathText = $('#math-text');
+
+
+    var eMath = $('#editable-math')[0]; latexSource = $('#latex');
     var MQ = MathQuill.getInterface(2);
     mf = MQ.MathField(eMath, {handlers:{
       edit: function(){
         // console.log(mf.latex());
         latexSource.val(mf.latex());
-        MathText.text(mf.text());
-        htmlSource.text(printTree(mf.html()));
-        runAlgebrite(mf);
+        parseKAS(mf);
       }
     }});
+
     mf.latex(latexSource.val());
+    parseKAS(mf);
 
     latexSource.bind('keydown keypress', function() {
     var oldtext = latexSource.val();
     setTimeout(function() {
       var newtext = latexSource.val();
       if(newtext !== oldtext) {
-        console.log(newtext);
+        // console.log(newtext);
         mf.latex(newtext);
         //mf.reflow();
       }
@@ -47,53 +63,18 @@
   });
  }
       
-  function runAlgebrite(mf) {
-    textToBeExecuted = mf.text();
-    console.log(textToBeExecuted);
+  function parseKAS(mf) {
     try {
-      var result;
-      if (/Algebrite\.[a-z]/.test(textToBeExecuted) || /;[ \t]*$/.test(textToBeExecuted)) {
-        result = eval(textToBeExecuted);
-      }
-      else {
-        result = Algebrite.run(textToBeExecuted);
-      }
-      //alert(result);
-      $('#output').val(result)
+      // console.log(mf.latex());
+      var parsed = KAS.parse(mf.latex(), {}).expr;
+      var result = parsed.normalize().print() + "\n" + parsed.simplify().normalize().print();
+      $('#output').val(result);
     }
     catch (err) {
       var errDesc = err;
-      // errorBox.update('<h4>Error!<\/h4><code>' + errDesc + '<\/code>');
-      // errorBox.show();
       console.log('Error: ' +  errDesc );
     }
   }
-  
- //print the HTML source as an indented tree. TODO: syntax highlight
-function printTree(html) {
-  html = html.match(/<[a-z]+|<\/[a-z]+>|./ig);
-  if (!html) return '';
-  var indent = '\n', tree = [];
-  for (var i = 0; i < html.length; i += 1) {
-    var token = html[i];
-    if (token.charAt(0) === '<') {
-      if (token.charAt(1) === '/') { //dedent on close tag
-        indent = indent.slice(0,-2);
-        if (html[i+1] && html[i+1].slice(0,2) === '</') //but maintain indent for close tags that come after other close tags
-          token += indent.slice(0,-2);
-      }
-      else { //indent on open tag
-        tree.push(indent);
-        indent += '  ';
-      }
-
-      token = token.toLowerCase();
-    }
-
-    tree.push(token);
-  }
-  return tree.join('').slice(1);
-}
-</script>
+ </script>
 
  <?php include_once( 'footer.php' ); ?>
