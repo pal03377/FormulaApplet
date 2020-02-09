@@ -1,4 +1,7 @@
-<?php $title='Test Page - Algebrite (gf09) ' ?>
+<?php $title='Test Page - Algebrite (gf09) ';
+  $liblist = "['algebrite' ]";
+  include_once( 'header.php' );
+?>
 <?php include_once( 'header.php' ); ?>
   
   <link rel="stylesheet" href="./Algebrite_files/styles.css">

@@ -3,11 +3,6 @@ if (typeof jsPath !== 'undefined') { //wiki
     libPath = jsPath + '/lib/';
 }
 console.log( 'libPath=' + libPath );
-
-if (typeof liblist === 'undefined'){ //wiki
-   liblist = ['mathquill', 'mathquillcss', 'kas' ];
-}
-
 // TODO fallback for jquery (maybe in header.php)
 var paths = {};
 paths.mathquillcss = {
