@@ -1,7 +1,7 @@
 <?php
-  $title='Test Page - KAS Compare';
-  $liblist = "['mathquill', 'mathquillcss', 'kas' ]";
-  include_once( 'header.php' );
+$title = 'Test Page - KAS Compare';
+$liblist = "['mathquill', 'mathquillcss', 'kas' ]";
+include_once 'header.php';
 ?>
 
 <body>
@@ -13,8 +13,20 @@
   <textarea id="output-right" name="terminal" rows="4" cols="80" style="width:40%;" readonly>KAS</textarea>
   <textarea id="output-compare" name="terminal" rows="4" cols="80" style="width:80%;" readonly>KAS</textarea>
   <hr>
-  
-  <script>
+
+  <style>
+  textarea#output-compare.equal { 
+    background-color: #00ff0033;
+  }
+  textarea#output-compare.notequal {
+    background-color: #ff000033;
+  }
+  textarea#output-compare.error {
+    background-color: #ffff0033;
+  }
+
+  </style>
+<script>
   function waitfor_KAS_and_if_ready_then_do(KAS_ready) {
     // console.log( 'window.jQuery =' + window.jQuery);
     if (typeof KAS !== 'undefined') {
@@ -33,7 +45,7 @@
         waitfor_KAS_and_if_ready_then_do( function(){ init();  });
       });
     });
-  
+
   function init(){
     console.log( 'init' );
 
@@ -86,7 +98,7 @@
     });
   });
  }
-      
+
   function parseKAS(mf) {
     try {
       // console.log(mf.latex());
@@ -108,13 +120,20 @@
       var eq = KAS.compare(left, right).equal;
       console.log( eq );
       $('#output-compare').val( 'equal=' + eq);
+      if (eq === true){
+        $('#output-compare').removeClass('notequal error').addClass('equal');
+      } else {
+        $('#output-compare').removeClass('equal error').addClass('notequal');
+      }
+
     }
     catch (err) {
       var errDesc = err;
       console.log('Error: ' +  errDesc );
+      $('#output-compare').removeClass('equal notequal').addClass('error');
     }
 
   }
  </script>
 
- <?php include_once( 'footer.php' ); ?>
+ <?php include_once 'footer.php'; ?>
