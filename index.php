@@ -9,6 +9,7 @@
 <body>
     <h1><?php echo $title; ?></h1>
     <p><a href='mathquill.php'>MathQuill - Test Page</a></p>
+    <p><a href='mathquill_buttons.php'>MathQuill Buttons</a></p>
     <p><a href='algebrite.php'>Algebrite - Test Page</a></p>
     <p><a href='tex2mathquill.php'>TEX &lt;-&gt; MathQuill -&gt; Algebrite</a></p>
     <p><a href='tex2kas.php'>TEX &lt;-&gt; MathQuill -&gt; KAS</a></p>
