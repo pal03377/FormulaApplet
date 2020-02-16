@@ -9,8 +9,9 @@
   <textarea id="latex-left" style="width:40%;vertical-align:top">\frac{1}{u} - \frac{1}{v}</textarea>
   <textarea id="latex-right" style="width:40%;vertical-align:top">\frac{v - u}{uv} </textarea>
    <p>KAS</p>
-  <textarea id="output-left" name="terminal" rows="4" cols="80" style="width:100%;">KAS</textarea>
-  <textarea id="output-right" name="terminal" rows="4" cols="80" style="width:100%;">KAS</textarea>
+  <textarea id="output-left" name="terminal" rows="4" cols="80" style="width:40%;" readonly>KAS</textarea>
+  <textarea id="output-right" name="terminal" rows="4" cols="80" style="width:40%;" readonly>KAS</textarea>
+  <textarea id="output-compare" name="terminal" rows="4" cols="80" style="width:80%;" readonly>KAS</textarea>
   <hr>
   
   <script>
@@ -45,6 +46,7 @@
         // console.log(mf.latex());
         latexLeft.val(mfLeft.latex());
         $('#output-left').val(parseKAS(mfLeft));
+        compare();
       }
     }});
     mfRight = MQ.MathField(eMathRight, {handlers:{
@@ -52,6 +54,7 @@
         // console.log(mf.latex());
         latexRight.val(mfRight.latex());
         $('#output-right').val(parseKAS(mfRight));
+        compare();
       }
     }});
 
@@ -65,7 +68,7 @@
     setTimeout(function() {
       var newtext = latexLeft.val();
       if(newtext !== oldtext) {
-        // console.log(newtext);
+        console.log(newtext);
         mfLeft.latex(newtext);
         //mf.reflow();
       }
@@ -76,7 +79,7 @@
     setTimeout(function() {
       var newtext = latexRight.val();
       if(newtext !== oldtext) {
-        // console.log(newtext);
+        console.log(newtext);
         mfRight.latex(newtext);
         //mf.reflow();
       }
@@ -88,13 +91,29 @@
     try {
       // console.log(mf.latex());
       var parsed = KAS.parse(mf.latex(), {}).expr;
-      var result = parsed.normalize().print() + "\n" + parsed.simplify().normalize().print();
+      var result = parsed.print();
+      // var result = parsed.normalize().print() + "\n" + parsed.simplify().normalize().print();
       return result;
     }
     catch (err) {
       var errDesc = err;
       console.log('Error: ' +  errDesc );
     }
+  }
+
+  function compare(){
+    try {
+      var left = KAS.parse(mfLeft.latex()).expr;
+      var right = KAS.parse(mfRight.latex()).expr;
+      var eq = KAS.compare(left, right).equal;
+      console.log( eq );
+      $('#output-compare').val( 'equal=' + eq);
+    }
+    catch (err) {
+      var errDesc = err;
+      console.log('Error: ' +  errDesc );
+    }
+
   }
  </script>
 
