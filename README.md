@@ -8,3 +8,5 @@
 * Start Apache. MySQL is not used
 * Use Browser (e.g. Chrome) with URL http://localhost
 * Link in D:\Users\privat\Documents\xampp_gf09\apache\conf\httpd.conf points to E:\gut\gf09 (php, JavaScript source)
+## Oder
+* Ausführen - Debugging starten mit F5 -> Chrome wird mit localhost gestartet.

@@ -55,9 +55,9 @@ function parse_frac(tree) {
     for (var i = 0; i < list_of_nodes.length; i++) {
         var node = list_of_nodes[i];
          if (node.content === '\\frac§§' && node.children.length === 2) {
-            console.log('found \\\\frac§§ at ' + node.id);
+            // console.log('found", "\\\\\frac§§ at ' + node.id);
             node.type = 'frac';
-            node.content = 'frac';
+            node.content = '';
         }
         //}
     }
@@ -77,6 +77,17 @@ function function_list() {
     return result;
 }
 ;
+
+function greek_list(){
+    var result = ["\\alpha", "\\beta", "\\gamma", "\\delta", "\\epsilon", "\\zeta", "\\eta", "\\theta"];
+    result += ["\\iota", "\\kappa", "\\lambda", "\\mu", "\\nu", "\\xi", "\\omicron", "\\pi"];
+    result += ["\\rho", "\\sigma", "\\tau", "\\upsilon", "\\phi", "\\chi", "\\psi", "\\omega"];
+    result += ["\\varepsilon", "\\vartheta", "\\varkappa", "\\varpi", "\\varrho", "\\varsigma", "\\varphi"];
+    result += ["\\Alpha", "\\Beta", "\\Gamma", "\\Delta", "\\Epsilon", "\\Zeta", "\\Eta", "\\Theta"];
+    result += ["\\Iota", "\\Kappa", "\\Lambda", "\\Mu", "\\Nu", "\\Xi", "\\Omicron", "\\Pi"];
+    result += ["\\Rho", "\\Sigma", "\\Tau", "\\Upsilon", "\\Phi", "\\Chi", "\\Psi", "\\Omega"];
+    return result;
+}
 
 function parse_function(tree) {
     var i = 0;
@@ -112,17 +123,17 @@ function parse_function(tree) {
                     rest = rest.substring(1);
                     console.log('found ' + fu + '^ at ' + node.id + ' rest=' + rest);
                     if (rest.startsWith('§')) {
-                        // \sin^§...
+                        //", "\\sin^§...
                         pow = '§';
                         rest = rest.substring(1);
                         if (rest.startsWith('§')) {
-                            // \sin^§§...
+                            //", "\\sin^§§...
                             fu_node.children[0] = remember;
                             tree.nodelist[remember].parent = fu_node.id;
                             fu_node.children[1] = node.children[left_count + 1];
                             tree.nodelist[node.children[left_count + 1]].parent = fu_node.id;
                         } else {
-                            // \sin^§x
+                            //", "\\sin^§x
                             var arg = create_node('leaf', rest, tree);
                             fu_node.children[0] = remember;
                             tree.nodelist[remember].parent = fu_node.id;
@@ -130,18 +141,18 @@ function parse_function(tree) {
                             arg.parent = fu_node.id;
                         }
                     } else {
-                        // \sin^3...
+                        //", "\\sin^3...
                         pow = rest.substr(0, 1);
                         rest = rest.substring(1);
                         if (rest.startsWith('§')) {
-                            // \sin^3§
+                            //", "\\sin^3§
                             var node_pow = create_node('leaf', pow, tree);
                             fu_node.children[0] = node_pow.id;
                             node_pow.parent = fu_node.id;
                             fu_node.children[1] = remember;
                             arg.parent = fu_node.id;
                         } else {
-                            // \sin^32\alpha
+                            //", "\\sin^32\alpha
                             var node_pow = create_node('leaf', pow, tree);
                             var arg = create_node('leaf', rest, tree);
                             fu_node.children = [node_pow.id, arg.id];
@@ -153,13 +164,13 @@ function parse_function(tree) {
                     }
                     console.log('type=' + type + ' pow=' + pow + ' rest=' + rest);
                 } else {
-                    // no power: \sin...
+                    // no power:", "\\sin...
                     if (rest.startsWith('§')) {
-                        // \sin§
+                        //", "\\sin§
                         fu_node.children[0] = remember;
                         tree.nodelist[remember].parent = fu_node.id;
                     } else {
-                        // \sin2\alpha
+                        //", "\\sin2\alpha
                         var arg = create_node('leaf', rest, tree);
                         fu_node.children[0] = arg.id;
                         arg.parent = fu_node.id;
@@ -187,14 +198,14 @@ function parse_int(tree) {
         var node = tree.nodelist[i];
         var content = node.content;
         if (content.startsWith('\\int')) {
-            console.log('****** \\int found at node # ' + node.id);
+            console.log('******", "\\\int found at node # ' + node.id);
             var pos_sub = content.indexOf('_');
             var pos_pow = content.indexOf('^');
             var rest = '';
             console.log('sub found at ' + pos_sub + ' pow found at ' + pos_pow);
             if (pos_sub === -1 || pos_pow === -1) {
                 // indefinite integral
-                rest = content.substring(4); //remove \\int = 4 chars
+                rest = content.substring(4); //remove", "\\\int = 4 chars
                 node.type = 'indefinite_integral';
                 console.log(node.type + ' ' + rest);
             } else {
