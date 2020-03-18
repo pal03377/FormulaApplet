@@ -14,6 +14,7 @@
     <p><a href='tex2mathquill.php'>TEX &lt;-&gt; MathQuill -&gt; Algebrite</a></p>
     <p><a href='tex2kas.php'>TEX &lt;-&gt; MathQuill -&gt; KAS</a></p>
     <p><a href='tex_parser.php'>TEX Parser</a></p>
+    <p><a href='mathquill2tex2parser.php'>MathQuill -> TEX -> Parsen</a></p>
     <p><a href='kas_compare.php'>KAS Compare</a></p>
 	<hr>
     <p>This page uses </p>
