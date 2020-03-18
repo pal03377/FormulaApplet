@@ -1,7 +1,7 @@
 <?php
-  $title='Test Page - MathQuill2Tex2Parser';
-  $liblist = "['mathquill', 'mathquillcss']";
-  include_once( 'header.php' );
+$title = 'Test Page - MathQuill2Tex2Parser';
+$liblist = "['mathquill', 'mathquillcss']";
+include_once 'header.php';
 ?>
 
 <script src="/js/lib/parse_brackets5.part1.js"></script>
@@ -13,13 +13,13 @@
   <hr>
   <textarea id="tree_out" rows="30" cols="80" style="width:80%;" readonly>tree</textarea>
  <hr>
-  
+
   <script>
-  
+
   waitfor_libLoader_and_if_ready_then_do( function() {
       waitfor_mathquill_and_if_ready_then_do( init );
-  }) 
- 
+  })
+
   function init(){
     console.log( 'init' );
     var eMath = $('#editable-math')[0]; latexSource = $('#latex'), tree_out = $('#tree_out');
@@ -44,7 +44,7 @@
     });
   });
  }
- 
+
  function tree_output(){
     var myTree = new tree();
    myTree.leaf.content = latexSource.val();
@@ -56,13 +56,13 @@
      indent++;
      output += points.substr(0, indent * 2) + node.type + ' ' + node.content + '\n';
    }
-   function callback(node){ 
+   function callback(node){
      indent--;
     };
    traverseDepthFirstWithPrefix(prefix, callback,  myTree.nodelist);
    tree_out.val(output);
  }
-      
+
 </script>
 
- <?php include_once( 'footer.php' ); ?>
+ <?php include_once 'footer.php'; ?>
