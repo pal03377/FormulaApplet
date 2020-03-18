@@ -54,8 +54,7 @@ function parse_frac(tree) {
     var list_of_nodes = tree.nodelist;
     for (var i = 0; i < list_of_nodes.length; i++) {
         var node = list_of_nodes[i];
-        //if (node.type.startsWith('unknown')) {
-        if (node.content === '\\frac§§' && node.children.length === 2) {
+         if (node.content === '\\frac§§' && node.children.length === 2) {
             console.log('found \\\\frac§§ at ' + node.id);
             node.type = 'frac';
             node.content = 'frac';
@@ -124,7 +123,7 @@ function parse_function(tree) {
                             tree.nodelist[node.children[left_count + 1]].parent = fu_node.id;
                         } else {
                             // \sin^§x
-                            var arg = create_node('unknown leaf', rest, tree);
+                            var arg = create_node('leaf', rest, tree);
                             fu_node.children[0] = remember;
                             tree.nodelist[remember].parent = fu_node.id;
                             fu_node.children[1] = arg.id;
@@ -136,15 +135,15 @@ function parse_function(tree) {
                         rest = rest.substring(1);
                         if (rest.startsWith('§')) {
                             // \sin^3§
-                            var node_pow = create_node('unknown leaf', pow, tree);
+                            var node_pow = create_node('leaf', pow, tree);
                             fu_node.children[0] = node_pow.id;
                             node_pow.parent = fu_node.id;
                             fu_node.children[1] = remember;
                             arg.parent = fu_node.id;
                         } else {
                             // \sin^32\alpha
-                            var node_pow = create_node('unknown leaf', pow, tree);
-                            var arg = create_node('unknown leaf', rest, tree);
+                            var node_pow = create_node('leaf', pow, tree);
+                            var arg = create_node('leaf', rest, tree);
                             fu_node.children = [node_pow.id, arg.id];
                             node_pow.parent = fu_node.id;
                             arg.parent = fu_node.id;
@@ -161,7 +160,7 @@ function parse_function(tree) {
                         tree.nodelist[remember].parent = fu_node.id;
                     } else {
                         // \sin2\alpha
-                        var arg = create_node('unknown leaf', rest, tree);
+                        var arg = create_node('leaf', rest, tree);
                         fu_node.children[0] = arg.id;
                         arg.parent = fu_node.id;
                     }
@@ -268,7 +267,7 @@ function parse_radix(tree, nthroot) {
     do {
         var node = tree.nodelist[i];
         var pos = -1;
-        if (node.type.startsWith('unknown')) {
+        if (node.type.startsWith('leaf')) {
             do {
                 pos = node.content.indexOf(needle);
                 if (pos > -1) {

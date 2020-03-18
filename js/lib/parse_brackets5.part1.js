@@ -61,7 +61,7 @@ node.prototype.addBracket = function (tree) {
         var rightpart = this.content.substring(right_pos + rightbra_len);
         this.content = leftpart + '§' + rightpart;
         var bracket = create_node('bracket-' + bra, '', tree);
-        var middle = create_node('unknown leaf', middlepart, tree);
+        var middle = create_node('leaf', middlepart, tree);
         // first connection
         this.children.push(bracket.id);
        
@@ -79,7 +79,7 @@ node.prototype.debug = function () {
     text += ' type=' + this.type;
     text += ' content=' + this.content;
     // text += ' rightmost=' + this.isRightmostChild(nodelist);
-    if (this.type.startsWith('unknown')) {
+    if (this.type.startsWith('leaf')) {
     } else {
         // text = '';
     }
@@ -96,9 +96,8 @@ function tree() {
     this.root.type = 'root';
     this.root.id = 0;
     this.root.parent = -1;
-    // this.leaf = create_node('unknown leaf content', 'my first leaf', this.nodelist);
     this.leaf = new node();
-    this.leaf.type = 'unknown leaf content';
+    this.leaf.type = 'leaf';
     this.leaf.content = 'my first leaf';
     this.nodelist[1] = this.leaf;
     this.leaf.id = 1;
@@ -348,7 +347,7 @@ function remove_operators(tree, kind_of_operators) {
         var node = tree.nodelist[index];
         // console.log(index + ': ' + node.content);
         var omitted = true;
-        if (node.type.startsWith('unknown')) {
+        if (node.type.startsWith('leaf')) {
             var pos_one = node.content.lastIndexOf(op_one);
             var pos_two = node.content.lastIndexOf(op_two);
             var pos_one_flag = false;
@@ -421,7 +420,7 @@ function remove_operators(tree, kind_of_operators) {
                 if (kind_of_operators === 'sub') {
                     operator.type = 'sub';
                 }
-                var rest = create_node('unknown leaf', rightpart, tree);
+                var rest = create_node('leaf', rightpart, tree);
                 var siblings = tree.nodelist[node.parent].children;
                 var position = siblings.indexOf(node.id);
 //            console.log('position=' + position);
