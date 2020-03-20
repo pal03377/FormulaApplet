@@ -54,12 +54,13 @@ include_once 'header.php';
    var points = '.'.repeat(50);
    function prefix(node){
      indent++;
-     output += points.substr(0, indent * 2) + node.type + ' ' + node.content + '\n';
+     output += node.id + ' ' + points.substr(0, indent * 2) + node.type + ' ' + node.content + '\n';
    }
    function callback(node){
      indent--;
     };
    traverseDepthFirstWithPrefix(prefix, callback,  myTree.nodelist);
+   // output += greek_list();
    tree_out.val(output);
  }
 
