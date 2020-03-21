@@ -331,6 +331,10 @@ function remove_operators(tree, kind_of_operators) {
         op_one = '\\cdot';
         op_two = ':';
     }
+    if (kind_of_operators === 'invisible_times') {
+        op_one = '*';
+        op_two = '@%';
+    }
 // before power, \int has to be parsed
     if (kind_of_operators === 'power') {
         op_one = '^';
@@ -413,6 +417,10 @@ function remove_operators(tree, kind_of_operators) {
                 var operator = create_node('plusminus', middlepart, tree);
                 if (kind_of_operators === 'timesdivided') {
                     operator.type = 'timesdivided';
+                }
+                if (kind_of_operators === 'invisible_times') {
+                    operator.type = '*';
+                    operator.content = '';
                 }
                 if (kind_of_operators === 'power') {
                     operator.type = 'power';

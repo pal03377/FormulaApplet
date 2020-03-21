@@ -46,7 +46,7 @@ include_once 'header.php';
  }
 
  function tree_output(){
-    var myTree = new tree();
+   var myTree = new tree();
    myTree.leaf.content = latexSource.val();
    parse(myTree);
    var output = "";

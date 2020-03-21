@@ -65,16 +65,7 @@ function parse_frac(tree) {
 };
 
 function function_list() {
-    var result = [];
-    result.push('sinh');
-    result.push('cosh');
-    result.push('tanh');
-    result.push('sin');
-    result.push('cos');
-    result.push('tan');
-    result.push('ln');
-    result.push('log');
-    result.push('exp');
+    var result = ['sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'log', 'exp', 'textcolor'];
     return result;
 };
 
@@ -183,12 +174,12 @@ function parse_function(tree) {
 
 function greek_list() {
     result = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta"];
-    result.concat(["iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi"]);
-    result.concat(["rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega"]);
-    result.concat(["varepsilon", "vartheta", "varkappa", "varpi", "varrho", "varsigma", "varphi"]);
-    result.concat(["Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta"]);
-    result.concat(["Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi"]);
-    result.concat(["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"]);
+    result = result.concat(["iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi"]);
+    result = result.concat(["rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega"]);
+    result = result.concat(["varepsilon", "vartheta", "varkappa", "varpi", "varrho", "varsigma", "varphi"]);
+    result = result.concat(["Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta"]);
+    result = result.concat(["Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi"]);
+    result = result.concat(["Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega"]);
     return result;
 }
 
@@ -204,6 +195,7 @@ function parse_greek(tree) {
             var pos = -1;
             do {
                 var greek = '\\' + greek_list()[k];
+                console.log('search for ' + greek);
                 var type = 'greek';
                 pos = node.content.indexOf(greek);
                 if (pos > -1) {
@@ -230,6 +222,32 @@ function parse_greek(tree) {
         }
         i++;
     } while (i < tree.nodelist.length);
+};
+
+function parse_factors(tree) {
+    var i = 0;
+    // length of tree.nodelist may change -> 
+    // do not use "for", but "do-while"
+    do {
+        var node = tree.nodelist[i];
+        if (node.type == 'leaf') {
+            var content = node.content.trim();
+            console.log('factor leaf ' + content);
+            if (content.length == 1) {
+                console.log('nothing to do');
+            } else {
+                // abc -> a*b*c
+                var content_with_times = content[0];
+                for (var k = 1; k < content.length; k++) {
+                    content_with_times += '*' + content[k];
+                }
+                node.content = content_with_times;
+                console.log(i + ' content with times ' + content_with_times);
+            }
+        }
+        i++;
+    } while (i < tree.nodelist.length);
+    remove_operators(tree, 'invisible_times')
 };
 
 function parse_integral(tree) {
@@ -378,9 +396,14 @@ function parse_radix(tree, nthroot) {
 }
 
 function parse(tree) {
-    result = parse_brackets(tree);
     console.clear();
+    var temp = tree.leaf.content;
+    // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
+    // http://www.javascripter.net/faq/backslashinregularexpressions.htm
+     tree.leaf.content = temp.replace(/\\\s/g,'');
+
     console.log('brackets');
+    result = parse_brackets(tree);
     //    traverseSimple(
     //            function (node) {
     //                node.debug(tree.nodelist);
@@ -400,8 +423,6 @@ function parse(tree) {
     //
     console.log('integral');
     parse_integral(tree);
-    console.log('greek');
-    parse_greek(tree);
     console.log('square root / nth root');
     parse_nthroot(tree);
     parse_sqrt(tree);
@@ -412,6 +433,8 @@ function parse(tree) {
         }, tree.nodelist);
     console.log('function');
     parse_function(tree);
+    console.log('greek');
+    parse_greek(tree);
     console.log('power');
     result = remove_operators(tree, 'power');
     //    traverseSimple(
@@ -423,6 +446,10 @@ function parse(tree) {
     var list_of_free = delete_single_nodes(tree);
     console.log('frac');
     parse_frac(tree);
+    console.log('factorize');
+    parse_factors(tree);
+    var list_of_free = delete_single_nodes(tree);
+
     traverseSimple(
         function (node) {
             node.debug(tree.nodelist);
