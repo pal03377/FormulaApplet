@@ -131,7 +131,7 @@ function parse_function(tree) {
                                 fu_node.children[0] = node_pow.id;
                                 node_pow.parent = fu_node.id;
                                 fu_node.children[1] = remember;
-                                arg.parent = fu_node.id;
+                                tree.nodelist[remember].parent = fu_node.id;
                             } else {
                                 //", "\\sin^32\alpha
                                 var node_pow = create_node('leaf', pow, tree);
@@ -139,8 +139,7 @@ function parse_function(tree) {
                                 fu_node.children = [node_pow.id, arg.id];
                                 node_pow.parent = fu_node.id;
                                 arg.parent = fu_node.id;
-                                //                            console.log('remember3=' + remember);
-                                tree.nodelist[remember].parent = fu_node.id;
+                                //                           console.log('remember3=' + remember);
                             }
                         }
                         console.log('type=' + type + ' pow=' + pow + ' rest=' + rest);
@@ -160,7 +159,6 @@ function parse_function(tree) {
                     }
                     node.content = leftpart + '§';
                 }
-
             }
 
             k++;
@@ -400,7 +398,7 @@ function parse(tree) {
     var temp = tree.leaf.content;
     // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
     // http://www.javascripter.net/faq/backslashinregularexpressions.htm
-     tree.leaf.content = temp.replace(/\\\s/g,'');
+    tree.leaf.content = temp.replace(/\\\s/g, '');
 
     console.log('parse brackets');
     result = parse_brackets(tree);
@@ -451,10 +449,10 @@ function parse(tree) {
     console.log('delete single § nodes');
     var list_of_free = delete_single_nodes(tree);
     console.log('end of parse');
-/*     traverseSimple(
-        function (node) {
-            node.debug(tree.nodelist);
-        }, tree.nodelist); */
+    /*     traverseSimple(
+            function (node) {
+                node.debug(tree.nodelist);
+            }, tree.nodelist); */
 };
 
 function tree2TEX(tree) {
