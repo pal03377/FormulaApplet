@@ -402,28 +402,28 @@ function parse(tree) {
     // http://www.javascripter.net/faq/backslashinregularexpressions.htm
      tree.leaf.content = temp.replace(/\\\s/g,'');
 
-    console.log('brackets');
+    console.log('parse brackets');
     result = parse_brackets(tree);
     //    traverseSimple(
     //            function (node) {
     //                node.debug(tree.nodelist);
     //            }, tree.nodelist);
-    console.log('plusminus');
+    console.log('parse plusminus');
     result = remove_operators(tree, 'plusminus');
     //    traverseSimple(
     //            function (node) {
     //                node.debug(tree.nodelist);
     //            }, tree.nodelist);
-    console.log('timesdivided');
+    console.log('parse timesdivided');
     result = remove_operators(tree, 'timesdivided');
     //    traverseSimple(
     //            function (node) {
     //                node.debug(tree.nodelist);
     //            }, result);
     //
-    console.log('integral');
+    console.log('parse integral');
     parse_integral(tree);
-    console.log('square root / nth root');
+    console.log('parse square root / nth root');
     parse_nthroot(tree);
     parse_sqrt(tree);
     //traverseDepthFirst(
@@ -431,25 +431,26 @@ function parse(tree) {
         function (node) {
             node.debug(tree.nodelist);
         }, tree.nodelist);
-    console.log('function');
+    console.log('parse functions');
     parse_function(tree);
-    console.log('greek');
+    console.log('parse greek');
     parse_greek(tree);
-    console.log('power');
+    console.log('parse power');
     result = remove_operators(tree, 'power');
     //    traverseSimple(
     //            function (node) {
     //                node.debug(tree.nodelist);
     //            }, tree.nodelist);
-    console.log('sub');
+    console.log('parse subscripts');
     result = remove_operators(tree, 'sub');
     var list_of_free = delete_single_nodes(tree);
-    console.log('frac');
+    console.log('parse fractions');
     parse_frac(tree);
-    console.log('factorize');
+    console.log('parse factors');
     parse_factors(tree);
+    console.log('delete single § nodes');
     var list_of_free = delete_single_nodes(tree);
-
+    console.log('end of parse');
 /*     traverseSimple(
         function (node) {
             node.debug(tree.nodelist);
