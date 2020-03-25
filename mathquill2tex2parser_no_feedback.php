@@ -1,5 +1,5 @@
 <?php
-$title = 'Test Page - MathQuill2Tex2Parser';
+$title = 'Test Page - MathQuill2Tex2Parser (no feedback)';
 $liblist = "['mathquill', 'mathquillcss']";
 include_once 'header.php';
 ?>
@@ -38,8 +38,9 @@ include_once 'header.php';
     setTimeout(function() {
       var newtext = latexSource.val();
       if(newtext !== oldtext) {
-        //latexSource -> mf
-        mf.latex(newtext);
+        // no feedback latexSource -> mf
+        // mf.latex(newtext);
+        tree_output();
       }
     });
   });

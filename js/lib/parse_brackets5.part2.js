@@ -83,7 +83,7 @@ function parse_function(tree) {
             var type = 'fu-' + fu;
             fu = '\\' + fu;
             if (node.type == 'leaf') {
-                console.log('searching for ' + fu + ' in ' + node.content);
+                // console.log('searching for ' + fu + ' in ' + node.content);
                 pos = node.content.indexOf(fu);
                 if (pos > -1) {
                     var pow = '';
@@ -195,7 +195,7 @@ function parse_greek(tree) {
             var pos = -1;
             do {
                 var greek = '\\' + greek_list()[k];
-                console.log('search for ' + greek);
+                // console.log('search for ' + greek);
                 var type = 'greek';
                 pos = node.content.indexOf(greek);
                 if (pos > -1) {
@@ -450,10 +450,10 @@ function parse(tree) {
     parse_factors(tree);
     var list_of_free = delete_single_nodes(tree);
 
-    traverseSimple(
+/*     traverseSimple(
         function (node) {
             node.debug(tree.nodelist);
-        }, tree.nodelist);
+        }, tree.nodelist); */
 };
 
 function tree2TEX(tree) {
