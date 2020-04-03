@@ -37,10 +37,10 @@ function parse_brackets(tree) {
     var stop = false;
     do {
         var node = list_of_nodes[index];
-        //console.log(index + ': ' + node.content);
+        console.log('parsing brackets in ' + index + ': ' + node.content);
         var left_pos = node.addBracket(tree);
-        index_of_last_node = tree.nodelist.length;
-        //console.log('left_pos=' + left_pos + ' index_of_last_node =' + index_of_last_node);
+        index_of_last_node = tree.nodelist.length; // maybe changing -> no 'for loop' possible
+        console.log('left_pos=' + left_pos + ' index_of_last_node =' + index_of_last_node);
         if (left_pos === -1) {
             index++;
             if (index >= index_of_last_node) {
@@ -222,6 +222,25 @@ function parse_greek(tree) {
     } while (i < tree.nodelist.length);
 };
 
+function parse_numbers(tree) {
+    var i = 0;
+    // length of tree.nodelist may change -> 
+    // do not use "for", but "do-while"
+    do {
+        var node = tree.nodelist[i];
+        if (node.type == 'leaf') {
+            var content = node.content;
+            console.log('number leaf ' + content);
+            var regex = '/\d+(\.\d+)?/';
+            var pos = content.search(regex);
+            var number = content.match(regex);
+            console.log(pos + ' ' + number);
+        }
+        i++;
+    } while (i < tree.nodelist.length);
+    remove_operators(tree, 'invisible_times')
+};
+
 function parse_factors(tree) {
     var i = 0;
     // length of tree.nodelist may change -> 
@@ -240,7 +259,7 @@ function parse_factors(tree) {
                     content_with_times += '*' + content[k];
                 }
                 node.content = content_with_times;
-                console.log(i + ' content with times ' + content_with_times);
+                console.log('time-ified:' + content_with_times);
             }
         }
         i++;
@@ -444,6 +463,8 @@ function parse(tree) {
     var list_of_free = delete_single_nodes(tree);
     console.log('parse fractions');
     parse_frac(tree);
+    console.log('parse numbers');
+    parse_numbers(tree);
     console.log('parse factors');
     parse_factors(tree);
     console.log('delete single § nodes');
