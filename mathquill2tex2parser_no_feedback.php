@@ -8,10 +8,12 @@ include_once 'header.php';
 <script src="/js/lib/parse_brackets5.part2.js"></script>
 
 <body>
+<!--
   <p>MathQuill: <span id="editable-math"></span></p>
- <textarea id="latex" style="width:80%;vertical-align:top">\sin(3\delta)</textarea>
+  -->
+  <textarea id="latex" style="width:90%;vertical-align:top">\sin(3\delta)</textarea>
   <hr>
-  <textarea id="tree_out" rows="30" cols="80" style="width:80%;" readonly>tree</textarea>
+  <textarea id="tree_out" rows="30" cols="80" style="width:90%;" readonly>tree</textarea>
  <hr>
 
   <script>
@@ -31,7 +33,7 @@ include_once 'header.php';
         tree_output();
       }
     }});
-    mf.latex(latexSource.val());
+    // mf.latex(latexSource.val());
 
     latexSource.bind('keydown keypress', function() {
     var oldtext = latexSource.val();

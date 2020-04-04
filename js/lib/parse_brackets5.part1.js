@@ -13,8 +13,7 @@ function node() {
     this.content = '';
     this.comes_from = 1; //above
     this.way_back = false;
-}
-;
+};
 
 node.prototype.insertMeOver = function (insertPointId, leaf, nodelist) {
     // insertMeOver <-> JAVA: void InsertUnodeOverCursor(Node u)
@@ -42,11 +41,13 @@ node.prototype.insertMeOver = function (insertPointId, leaf, nodelist) {
     nodelist[insertPointId] = insertPoint;
     return 'ok';
 };
+
 node.prototype.addBracket = function (tree) {
     var temp = find_leftmost_bracket(this.content);
     var left_pos = temp[0];
     var bra = temp[1];
     temp = find_corresponding_right_bracket(this.content, bra);
+    // console.log(temp);
     var left_pos2 = temp[0];
     var bra_len = temp[1];
     var right_pos = temp[2];
@@ -55,7 +56,7 @@ node.prototype.addBracket = function (tree) {
     if (left_pos !== left_pos2) {
         throw 'Inconsistent left positions ';
     }
-    if (left_pos > -1) {
+    if (left_pos > -1 && right_pos > -1) {
         var leftpart = this.content.substring(0, left_pos);
         var middlepart = this.content.substring(left_pos + bra_len, right_pos);
         var rightpart = this.content.substring(right_pos + rightbra_len);
@@ -64,12 +65,15 @@ node.prototype.addBracket = function (tree) {
         var middle = create_node('leaf', middlepart, tree);
         // first connection
         this.children.push(bracket.id);
-       
+
         bracket.parent = this.id;
         // second connection
         bracket.children.push(middle.id);
         middle.parent = bracket.id;
-    } // else no bracket found, do nothing
+    } else {
+        // else no pair of brackets found
+        left_pos = -1;
+    }
     return left_pos;
 };
 node.prototype.debug = function () {
@@ -79,8 +83,7 @@ node.prototype.debug = function () {
     text += ' type=' + this.type;
     text += ' content=' + this.content;
     // text += ' rightmost=' + this.isRightmostChild(nodelist);
-    if (this.type.startsWith('leaf')) {
-    } else {
+    if (this.type.startsWith('leaf')) {} else {
         // text = '';
     }
     console.log(text);
@@ -105,8 +108,8 @@ function tree() {
     this.root.children = [this.leaf.id];
     console.log('len nodelist ' + this.nodelist.length);
     console.log('tree ' + this.root.id + ' ' + this.leaf.id);
-}
-;
+};
+
 function create_node(type, content, tree) {
     var nodelist = tree.nodelist;
     var lof = tree.list_of_free || [];
@@ -122,11 +125,12 @@ function create_node(type, content, tree) {
         temp = nodelist[last_free];
         temp.type = type;
         temp.content = content;
+        temp.children = [];
         console.log('recycling ' + last_free);
         return temp;
     }
-}
-;
+};
+
 function delete_single_nodes(tree) {
     // delete § nodes
     var list_of_nodes = tree.nodelist;
@@ -145,8 +149,7 @@ function delete_single_nodes(tree) {
         }
     }
     return tree.list_of_free;
-}
-;
+};
 node.prototype.isRightmostChild = function (nodelist) {
     if (this.id === 0) {
         return false;
@@ -167,7 +170,7 @@ function find_left_bracket(node, bra) {
     var bra_kind = 'nothing';
     var pos = node.indexOf(long);
     var masked = node;
-//    console.log('Start searching ' + bra + ' in ' + masked);
+    //    console.log('Start searching ' + bra + ' in ' + masked);
     if (pos >= 0) {
         min_pos = pos;
         bra_kind = long;
@@ -211,7 +214,7 @@ function find_left_bracket(node, bra) {
             }
         }
     }
-//    console.log('Result for ' + bra + ': Found ' + bra_kind + ' at ' + min_pos);
+    //    console.log('Result for ' + bra + ': Found ' + bra_kind + ' at ' + min_pos);
     return [min_pos, bra_kind];
 }
 
@@ -231,7 +234,7 @@ function find_leftmost_bracket(node) {
             }
         }
     }
-// maybe there is a better (smaller) pos for a [ bracket
+    // maybe there is a better (smaller) pos for a [ bracket
     var result = find_left_bracket(node, '[');
     var pos = result[0];
     if (pos > -1) {
@@ -245,7 +248,7 @@ function find_leftmost_bracket(node) {
             }
         }
     }
-// maybe there is a better (smaller) pos for a { bracket
+    // maybe there is a better (smaller) pos for a { bracket
     var result = find_left_bracket(node, '{');
     var pos = result[0];
     if (pos > -1) {
@@ -262,34 +265,33 @@ function find_leftmost_bracket(node) {
     return [left_pos, bra_kind];
 }
 
-function find_corresponding_right_bracket(node, bra) {
+function find_corresponding_right_bracket(content, bra) {
     var rightbra = '';
-//    console.log('look for ' + bra + ' in ' + node);
+    //    console.log('look for ' + bra + ' in ' + content);
     var pos = ['(', '[', '{', '\\left(', '\\left[', '\\left\\{'].indexOf(bra);
-//    console.log('pos=' + pos);
+    //    console.log('pos=' + pos);
     if (pos === -1) {
-        var rightbra = 'no corresponding bracket found error';
+        var rightbra = 'no bracket found error';
     } else {
         var rightbra = [')', ']', '}', '\\right)', '\\right]', '\\right\\}'][pos];
     }
-//    console.log('rightbra=' + rightbra);
+    //    console.log('rightbra=' + rightbra);
     var stop = false;
     var mass = [];
-    for (var i = 0; i < node.length; i++) {
+    for (var i = 0; i < content.length; i++) {
         mass[i] = 0;
     }
     var left_pos = -1;
     var right_pos = -1;
     pos = -1;
-    do
-    {
-        var pos = node.indexOf(bra, pos + 1);
-//        console.log(pos);
+    do {
+        var pos = content.indexOf(bra, pos + 1);
+        // console.log(bra + '-pos=' + pos);
         if (pos === -1) {
             stop = true;
         } else {
             mass[pos] = 1;
-//            console.log('mass=1 at ' + pos);
+            //            console.log('mass=1 at ' + pos);
             if (left_pos === -1) {
                 left_pos = pos;
             }
@@ -297,31 +299,31 @@ function find_corresponding_right_bracket(node, bra) {
     } while (stop === false);
     pos = -1;
     stop = false;
-    do
-    {
-        var pos = node.indexOf(rightbra, pos + 1);
-//        console.log('rightbra pos=' + pos + ' in ' + node);
+    do {
+        var pos = content.indexOf(rightbra, pos + 1);
+        // console.log(rightbra + '-pos=' + pos + ' in ' + content);
         if (pos === -1) {
             stop = true;
         } else {
             mass[pos] = -1;
-//            console.log('mass=-1 at ' + pos);
+            //            console.log('mass=-1 at ' + pos);
         }
     } while (stop === false);
     // sum of masses
-    for (var i = 1; i < node.length; i++) {
+    for (var i = 1; i < content.length; i++) {
         var sum = mass[i - 1] + mass[i];
         if (mass[i] === -1 && sum === 0) {
             right_pos = i;
             break;
         }
         mass[i] = sum;
-//        console.log('mass[' + i + ']=' + sum);
+        //        console.log('mass[' + i + ']=' + sum);
     }
     return [left_pos, bra.length, right_pos, rightbra.length];
 }
 
 function remove_operators(tree, kind_of_operators) {
+    console.log('remove ' + kind_of_operators);
     var index = 1;
     var stop = false;
     var pos = -1;
@@ -335,12 +337,12 @@ function remove_operators(tree, kind_of_operators) {
         op_one = '*';
         op_two = '@%';
     }
-// before power, \int has to be parsed
+    // before power, \int has to be parsed
     if (kind_of_operators === 'power') {
         op_one = '^';
         op_two = '@%';
     }
-// before sub, \int has to be parsed
+    // before sub, \int has to be parsed
     if (kind_of_operators === 'sub') {
         op_one = '_';
         op_two = '@%';
@@ -391,9 +393,9 @@ function remove_operators(tree, kind_of_operators) {
                 // number of § markers
                 var leftcount = (leftpart.match(/§/g) || []).length;
                 var rightcount = (rightpart.match(/§/g) || []).length;
-//                console.log('leftpart=' + leftpart + ' leftcount=' + leftcount);
-//                console.log('rightpart=' + rightpart + ' rightcount=' + rightcount);
-//                console.log('# of children=' + node.children.length || 0);
+                //                console.log('leftpart=' + leftpart + ' leftcount=' + leftcount);
+                //                console.log('rightpart=' + rightpart + ' rightcount=' + rightcount);
+                //                console.log('# of children=' + node.children.length || 0);
                 var check = ((leftcount + rightcount) === node.children.length);
                 if (node.type.startsWith('definite')) {
                     // children[0] = lower_boundary, children[1] = upper_boundary
@@ -429,11 +431,15 @@ function remove_operators(tree, kind_of_operators) {
                     operator.type = 'sub';
                 }
                 var rest = create_node('leaf', rightpart, tree);
+                if (rest.content == "") {
+                    rest.content = "0";
+                    rest.type = "invisible zero";
+                }
                 var siblings = tree.nodelist[node.parent].children;
                 var position = siblings.indexOf(node.id);
-//            console.log('position=' + position);
-//            console.log('siblings[position]=' + siblings[position]);
-//            console.log('node.id=' + node.id);
+                //            console.log('position=' + position);
+                //            console.log('siblings[position]=' + siblings[position]);
+                //            console.log('node.id=' + node.id);
 
                 // Upper connection: connect new node operator with former parent of node
                 tree.nodelist[node.parent].children[position] = operator.id;
@@ -443,6 +449,10 @@ function remove_operators(tree, kind_of_operators) {
                 // connect new node operator at right side with new node rest
                 // Direction "up"
                 node.content = leftpart;
+                if (node.content == "") {
+                    node.content = "0";
+                    node.type = "invisible zero";
+                }
                 node.parent = operator.id;
                 rest.parent = operator.id;
                 // Direction "down"
@@ -460,5 +470,4 @@ function remove_operators(tree, kind_of_operators) {
         }
     } while (stop === false);
     return tree.nodelist;
-}
-;
+};

@@ -231,14 +231,38 @@ function parse_numbers(tree) {
         if (node.type == 'leaf') {
             var content = node.content;
             console.log('number leaf ' + content);
-            var regex = '/\d+(\.\d+)?/';
+            // var regex = '\\d+((\\.|\\,)\\d+)?';
+            var regex = '(\\d+(\\.|\\,))?\\d+';
+            // backslash must be masked: \\
             var pos = content.search(regex);
-            var number = content.match(regex);
-            console.log(pos + ' ' + number);
+            if (pos == 0) {
+                var match = content.match(regex);
+                var num = content.substr(0, match[0].length);
+                var rest = content.substring(match[0].length);
+                /**
+                 if (rest.length > 0) {
+                    var left = create_node("number", number, tree);
+                    var right = create_node("leaf", rest, tree);
+                    // linking
+                    node.content = "*";
+                    node.type = "invisible_times";
+                    right.children = node.children;
+                    node.children = [left.id, right.id];
+                    left.parent = node.id;
+                    right.parent = node.id;
+                } else {
+                    node.type = "number";
+                }
+                 * 
+                 */
+                node.content = "§" + rest;
+                var number = create_node("number", num, tree);
+                number.parent = node.id;
+                node.children.splice(0, 0, number.id)
+            }
         }
         i++;
     } while (i < tree.nodelist.length);
-    remove_operators(tree, 'invisible_times')
 };
 
 function parse_factors(tree) {
@@ -465,15 +489,23 @@ function parse(tree) {
     parse_frac(tree);
     console.log('parse numbers');
     parse_numbers(tree);
+    traverseSimple(
+        function (node) {
+            node.debug(tree.nodelist);
+        }, tree.nodelist);
     console.log('parse factors');
     parse_factors(tree);
+    traverseSimple(
+        function (node) {
+            node.debug(tree.nodelist);
+        }, tree.nodelist);
     console.log('delete single § nodes');
     var list_of_free = delete_single_nodes(tree);
     console.log('end of parse');
-    /*     traverseSimple(
-            function (node) {
-                node.debug(tree.nodelist);
-            }, tree.nodelist); */
+    traverseSimple(
+        function (node) {
+            node.debug(tree.nodelist);
+        }, tree.nodelist);
 };
 
 function tree2TEX(tree) {
