@@ -274,6 +274,9 @@ function parse_factors(tree) {
         if (node.type == 'leaf') {
             var content = node.content.trim();
             console.log('factor leaf ' + content);
+            if (content == "") {
+                content = "?";
+            }
             if (content.length == 1) {
                 console.log('nothing to do');
             } else {
@@ -489,16 +492,20 @@ function parse(tree) {
     parse_frac(tree);
     console.log('parse numbers');
     parse_numbers(tree);
+    /**
     traverseSimple(
         function (node) {
             node.debug(tree.nodelist);
         }, tree.nodelist);
     console.log('parse factors');
+    */
     parse_factors(tree);
+    /**
     traverseSimple(
         function (node) {
             node.debug(tree.nodelist);
         }, tree.nodelist);
+    */
     console.log('delete single § nodes');
     var list_of_free = delete_single_nodes(tree);
     console.log('end of parse');
