@@ -76,6 +76,7 @@ node.prototype.addBracket = function (tree) {
     }
     return left_pos;
 };
+
 node.prototype.debug = function () {
     var text = this.id + ': parent=' + this.parent;
     // var text = this.id;
@@ -94,7 +95,6 @@ function tree() {
     this.list_of_free = [];
     this.nodelist = [];
     this.nodelist[0] = new node();
-    console.log('len nodelist ' + this.nodelist.length);
     this.root = this.nodelist[0];
     this.root.type = 'root';
     this.root.id = 0;
@@ -106,9 +106,24 @@ function tree() {
     this.leaf.id = 1;
     this.leaf.parent = this.root.id;
     this.root.children = [this.leaf.id];
-    console.log('len nodelist ' + this.nodelist.length);
-    console.log('tree ' + this.root.id + ' ' + this.leaf.id);
 };
+
+tree.prototype.withEachNode = function (doThis) {
+    var i = 0;
+    var stop = false;
+    var list_of_nodes = this.nodelist;
+    console.log(list_of_nodes);
+    do {
+        var node = list_of_nodes[i];
+        // doThis may add or delete nodes!
+        doThis(node);
+        i++;
+        if (i === this.nodelist.length) {
+            stop = true;
+        }
+    } while (stop === false);
+}
+
 
 function create_node(type, content, tree) {
     var nodelist = tree.nodelist;

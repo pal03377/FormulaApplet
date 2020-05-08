@@ -12,6 +12,7 @@
   var out = '';
   var canvas = document.getElementById("treecanvas");
   var context = canvas.getContext("2d");
+  // var click_state = "up";
 
   $(document).ready(function () {
     $(".tex-example").each(function () {
@@ -32,6 +33,9 @@
       $(".tex-example").removeClass('selected');
       $(this).addClass('selected');
     });
+    button = $("#cont");
+    button.mousedown( switch_to_next());
+    // button.mouseup( function(){button.attr('data-clickstate', 'up')});
   });
 
   function editHandler(index) {
@@ -78,6 +82,7 @@ waitfor_mathquill_and_if_ready_then_do(function () {
 <h2>TEX Parser</h2>
 
         <p id="output">output</p>
+        <p><button id="cont">Weiter</button></p>
         <!-- p id="version">version</p -->
         <p class="tex-example">\sqrt{2}</p><br />
         <p class="tex-example">\sin x+5\cosh\left(x\right)+\tan xy+\sin^2\beta-\sin^{2+n}3\alpha</p><br />
