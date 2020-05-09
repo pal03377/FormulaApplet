@@ -516,7 +516,7 @@ function parsetree_by_index(tree, canvas) {
     }
     var context = canvas.getContext("2d");
     paint_tree(tree, canvas, context);
-    return end;
+    return end_parse;
 }
 
 // https://hackernoon.com/lets-make-a-javascript-wait-function-fa3a2eb88f11
