@@ -1,7 +1,7 @@
-<?php $title='TEX Parser';
-  $liblist = "[ 'mathquill', 'mathquillcss' ]";
-  include_once( 'header.php' );
- ?>
+<?php $title = 'TEX Parser';
+$liblist = "[ 'mathquill', 'mathquillcss' ]";
+include_once 'header.php';
+?>
 
 <script src="/js/lib/parse_brackets5.part1.js"></script>
 <script src="/js/lib/parse_brackets5.part2.js"></script>
@@ -11,7 +11,8 @@
   var mathField = new Array();
   var out = '';
   var canvas = document.getElementById("treecanvas");
-  var context = canvas.getContext("2d");
+  // var context = canvas.getContext("2d");
+  var myTree = new tree();
   // var click_state = "up";
 
   $(document).ready(function () {
@@ -34,7 +35,7 @@
       $(this).addClass('selected');
     });
     button = $("#cont");
-    button.mousedown( switch_to_next());
+    button.click( function(){parsetree_by_index(myTree, canvas)});
     // button.mouseup( function(){button.attr('data-clickstate', 'up')});
   });
 
@@ -42,9 +43,8 @@
     mf = mathField[index];
     // var out = mf.latex();
     out = mf.latex();
-    var myTree = new tree();
-    myTree.leaf.content = mf.latex();
-    parse(myTree);
+     myTree.leaf.content = mf.latex();
+    // parse(myTree);
     document.getElementById('output').innerHTML = out + '<br>';
     // test = tree2TEX(myTree);
     //                    var message = ' Error.';
@@ -52,6 +52,7 @@
     //                        message = ' OK.';
     //                    }
     //                    document.getElementById('ttt').innerHTML = test + message;
+    var context = canvas.getContext("2d");
     paint_tree(myTree, canvas, context);
     console.log( '*** list of unknown leafs ***');
     traverseSimple(
@@ -113,4 +114,4 @@ background-color: #ffffdf !important;">
 </canvas>
 
 
-<?php include_once( 'footer.php' ); ?>
+<?php include_once 'footer.php'; ?>

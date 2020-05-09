@@ -441,99 +441,153 @@ function parse_radix(tree, nthroot) {
     } while (stop === false);
 }
 
-
-function switch_to_next(){
+function parsetree_by_index(tree, canvas) {
     counter++;
-    console.log('switch to ' + counter)
-}
-
-function waitaLitteBit(tree) {
-    console.log('waitAlittle');
-    var canvas = document.getElementById("treecanvas");
-    var context = canvas.getContext("2d");
-    waitForIt();
-    paint_tree(tree, canvas, context);
-    //canvas.width +=0;
-    // prompt('weiter');
-}
-
-function waitForIt() {
-    console.log('stoploop=' + stoploop);
-    if (!stoploop) {
-        setTimeout(waitForIt, 500);
+    var end_parse = false;
+    // console.log('switch to ' + counter)
+    // console.log(tree);
+    switch (counter) {
+        case 1:
+            console.clear();
+            var temp = tree.leaf.content;
+            // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
+            // http://www.javascripter.net/faq/backslashinregularexpressions.htm
+            tree.leaf.content = temp.replace(/\\\s/g, '');
+            break;
+        case 2:
+            console.log('parse brackets');
+            result = parse_brackets(tree);
+            break;
+        case 3:
+            console.log('parse plusminus');
+            result = remove_operators(tree, 'plusminus');
+            break;
+        case 4:
+            console.log('parse timesdivided');
+            result = remove_operators(tree, 'timesdivided');
+            break;
+        case 5:
+            console.log('parse integral');
+            parse_integral(tree);
+            break;
+        case 6:
+            console.log('parse square root / nth root');
+            parse_nthroot(tree);
+            parse_sqrt(tree);
+            break;
+        case 7:
+            console.log('parse functions');
+            parse_function(tree);
+            break;
+        case 8:
+            console.log('parse greek');
+            parse_greek(tree);
+            break;
+        case 9:
+            console.log('parse power');
+            result = remove_operators(tree, 'power');
+            break;
+        case 10:
+            console.log('parse subscripts');
+            result = remove_operators(tree, 'sub');
+            break;
+        case 11:
+            var list_of_free = delete_single_nodes(tree);
+            break;
+        case 12:
+            console.log('parse fractions');
+            parse_frac(tree);
+            break;
+        case 13:
+            console.log('parse numbers');
+            parse_numbers(tree);
+            break;
+        case 14:
+            console.log('parse factors');
+            parse_factors(tree);
+            break;
+        case 15:
+            console.log('delete single § nodes');
+            var list_of_free = delete_single_nodes(tree);
+            break;
+        default:
+            console.log('end of parse');
+            end_parse = true;
     }
+    var context = canvas.getContext("2d");
+    paint_tree(tree, canvas, context);
+    return end;
 }
 
 // https://hackernoon.com/lets-make-a-javascript-wait-function-fa3a2eb88f11
-// var wait = ms => new Promise((r, j)=>setTimeout(r, ms))
 
 function parse(tree) {
-    console.clear();
-    var temp = tree.leaf.content;
-    // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
-    // http://www.javascripter.net/faq/backslashinregularexpressions.htm
-    tree.leaf.content = temp.replace(/\\\s/g, '');
-    waitaLitteBit(tree);
-    console.log('parse brackets');
-    result = parse_brackets(tree);
-    waitaLitteBit(tree);
-    //    traverseSimple(
-    //            function (node) {
-    //                node.debug(tree.nodelist);
-    //            }, tree.nodelist);
-    console.log('parse plusminus');
-    result = remove_operators(tree, 'plusminus');
-    waitaLitteBit(tree);
+    // console.clear();
+    // var temp = tree.leaf.content;
+    // // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
+    // // http://www.javascripter.net/faq/backslashinregularexpressions.htm
+    // tree.leaf.content = temp.replace(/\\\s/g, '');
+    // waitaLitteBit(tree);
+    // console.log('parse brackets');
+    // result = parse_brackets(tree);
+    // waitaLitteBit(tree);
+    // //    traverseSimple(
+    // //            function (node) {
+    // //                node.debug(tree.nodelist);
+    // //            }, tree.nodelist);
+    // console.log('parse plusminus');
+    // result = remove_operators(tree, 'plusminus');
+    // waitaLitteBit(tree);
 
     //    traverseSimple(
     //            function (node) {
     //                node.debug(tree.nodelist);
     //            }, tree.nodelist);
-    console.log('parse timesdivided');
-    result = remove_operators(tree, 'timesdivided');
-    waitaLitteBit(tree);
+    // console.log('parse timesdivided');
+    // result = remove_operators(tree, 'timesdivided');
+    // waitaLitteBit(tree);
     //    traverseSimple(
     //            function (node) {
     //                node.debug(tree.nodelist);
     //            }, result);
     //
-    console.log('parse integral');
-    parse_integral(tree);
-    waitaLitteBit(tree);
-    console.log('parse square root / nth root');
-    parse_nthroot(tree);
-    waitaLitteBit(tree);
-    parse_sqrt(tree);
-    waitaLitteBit(tree);
+    // console.log('parse integral');
+    // parse_integral(tree);
+    // waitaLitteBit(tree);
+    // console.log('parse square root / nth root');
+    // parse_nthroot(tree);
+    // waitaLitteBit(tree);
+    // parse_sqrt(tree);
+    // waitaLitteBit(tree);
     //traverseDepthFirst(
-    traverseSimple(
-        function (node) {
-            node.debug(tree.nodelist);
-        }, tree.nodelist);
-    console.log('parse functions');
-    parse_function(tree);
-    waitaLitteBit(tree);
-    console.log('parse greek');
-    parse_greek(tree);
-    waitaLitteBit(tree);
-    console.log('parse power');
-    result = remove_operators(tree, 'power');
-    waitaLitteBit(tree);
-    //    traverseSimple(
+    // traverseSimple(
+    //     function (node) {
+    //         node.debug(tree.nodelist);
+    //     }, tree.nodelist);
+    // console.log('parse functions');
+    // parse_function(tree);
+    // waitaLitteBit(tree);
+    // console.log('parse greek');
+    // parse_greek(tree);
+    // waitaLitteBit(tree);
+    // console.log('parse power');
+    // result = remove_operators(tree, 'power');
+    // waitaLitteBit(tree);
+    // //    traverseSimple(
     //            function (node) {
     //                node.debug(tree.nodelist);
     //            }, tree.nodelist);
-    console.log('parse subscripts');
-    result = remove_operators(tree, 'sub');
-    waitaLitteBit(tree);
-    var list_of_free = delete_single_nodes(tree);
-    waitaLitteBit(tree);
-    console.log('parse fractions');
-    parse_frac(tree);
-    waitaLitteBit(tree);
-    console.log('parse numbers');
-    parse_numbers(tree);
-    waitaLitteBit(tree);
+    // console.log('parse subscripts');
+    // result = remove_operators(tree, 'sub');
+    // waitaLitteBit(tree);
+    // var list_of_free = delete_single_nodes(tree);
+    // waitaLitteBit(tree);
+    // console.log('parse fractions');
+    // parse_frac(tree);
+    // waitaLitteBit(tree);
+    // console.log('parse numbers');
+    // parse_numbers(tree);
+    // waitaLitteBit(tree);
     /**
     traverseSimple(
         function (node) {
@@ -541,26 +595,31 @@ function parse(tree) {
         }, tree.nodelist);
     console.log('parse factors');
     */
-    parse_factors(tree);
-    waitaLitteBit(tree);
+    // parse_factors(tree);
+    // waitaLitteBit(tree);
     /**
     traverseSimple(
         function (node) {
             node.debug(tree.nodelist);
         }, tree.nodelist);
     */
-    console.log('delete single § nodes');
-    var list_of_free = delete_single_nodes(tree);
-    waitaLitteBit(tree);
-    console.log('end of parse');
-    traverseSimple(
-        function (node) {
-            node.debug(tree.nodelist);
-        }, tree.nodelist);
+    // console.log('delete single § nodes');
+    // var list_of_free = delete_single_nodes(tree);
+    // waitaLitteBit(tree);
+    // console.log('end of parse');
+    // traverseSimple(
+    //     function (node) {
+    //         node.debug(tree.nodelist);
+    //     }, tree.nodelist);
 
-    tree.withEachNode(function (node) {
-        console.log(node.id);
-    })
+    var end_parse = false;
+    while (!end_parse) {
+        end_parse = parsetree_by_index(tree, canvas);
+    }
+
+    // tree.withEachNode(function (node) {
+    //     console.log(node.id);
+    // })
 };
 
 function tree2TEX(tree) {
@@ -675,11 +734,6 @@ function tree2TEX(tree) {
 col = 0;
 
 function paint_tree(tree, canvas, context) {
-    //    if (col === "#ffffdf") {
-    //        col = "#ffdfff";
-    //    } else {
-    //        col = "#ffffdf";
-    //    }
     col = "#ffffdf";
     context.fillStyle = col;
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -688,8 +742,8 @@ function paint_tree(tree, canvas, context) {
 };
 
 function paint_tree_callback(currentNode, xa, ya, x, y, ctx) {
-    console.log(currentNode.id + '::' + currentNode.children);
-    console.log(xa + ' ' + ya + ' ' + x + ' ' + y);
+    // console.log(currentNode.id + '::' + currentNode.children);
+    // console.log(xa + ' ' + ya + ' ' + x + ' ' + y);
     if (xa > -9999) {
         //        var xf = 600;
         var xf = ctx.canvas.width / 2 - 100;
