@@ -446,8 +446,10 @@ function parsetree_by_index(tree, canvas) {
     var end_parse = false;
     // console.log('switch to ' + counter)
     // console.log(tree);
+    var message = '';
     switch (counter) {
         case 1:
+            message = 'delete spaces';
             console.clear();
             var temp = tree.leaf.content;
             // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
@@ -455,67 +457,67 @@ function parsetree_by_index(tree, canvas) {
             tree.leaf.content = temp.replace(/\\\s/g, '');
             break;
         case 2:
-            console.log('parse brackets');
+            message = 'parse brackets';
             result = parse_brackets(tree);
             break;
         case 3:
-            console.log('parse plusminus');
+            message = 'parse plusminus';
             result = remove_operators(tree, 'plusminus');
             break;
         case 4:
-            console.log('parse timesdivided');
+            message = 'parse timesdivided';
             result = remove_operators(tree, 'timesdivided');
             break;
         case 5:
-            console.log('parse integral');
+            message = 'parse integral';
             parse_integral(tree);
             break;
         case 6:
-            console.log('parse square root / nth root');
+            message = 'parse square root / nth root';
             parse_nthroot(tree);
             parse_sqrt(tree);
             break;
         case 7:
-            console.log('parse functions');
+            message = 'parse functions';
             parse_function(tree);
             break;
         case 8:
-            console.log('parse greek');
+            message = 'parse greek';
             parse_greek(tree);
             break;
         case 9:
-            console.log('parse power');
+            message = 'parse power';
             result = remove_operators(tree, 'power');
             break;
         case 10:
-            console.log('parse subscripts');
+            message = 'parse subscripts';
             result = remove_operators(tree, 'sub');
             break;
         case 11:
             var list_of_free = delete_single_nodes(tree);
             break;
         case 12:
-            console.log('parse fractions');
+            message = 'parse fractions';
             parse_frac(tree);
             break;
         case 13:
-            console.log('parse numbers');
+            message = 'parse numbers';
             parse_numbers(tree);
             break;
         case 14:
-            console.log('parse factors');
+            message = 'parse factors';
             parse_factors(tree);
             break;
         case 15:
-            console.log('delete single § nodes');
+            message = 'delete single § nodes';
             var list_of_free = delete_single_nodes(tree);
             break;
         default:
-            console.log('end of parse');
+            message = 'end of parse';
             end_parse = true;
     }
     var context = canvas.getContext("2d");
-    paint_tree(tree, canvas, context);
+    paint_tree(tree, canvas, context, message);
     return end_parse;
 }
 
@@ -733,12 +735,13 @@ function tree2TEX(tree) {
 
 col = 0;
 
-function paint_tree(tree, canvas, context) {
+function paint_tree(tree, canvas, context, message) {
     col = "#ffffdf";
     context.fillStyle = col;
     context.fillRect(0, 0, canvas.width, canvas.height);
-    context.font = '7pt Consolas';
+    context.font = '9pt Consolas';
     paint_tree_recurse(tree.root, tree.nodelist, -9999, -9999, 0, 0, context, 1);
+    context.fillText(message, 20, 30);
 };
 
 function paint_tree_callback(currentNode, xa, ya, x, y, ctx) {

@@ -34,8 +34,8 @@ include_once 'header.php';
       $(".tex-example").removeClass('selected');
       $(this).addClass('selected');
     });
-    button = $("#cont");
-    button.click( function(){parsetree_by_index(myTree, canvas)});
+    // button = $("#cont");
+    $( '#treecanvas' ).click( function(){parsetree_by_index(myTree, canvas)});
     // button.mouseup( function(){button.attr('data-clickstate', 'up')});
   });
 
@@ -83,7 +83,7 @@ waitfor_mathquill_and_if_ready_then_do(function () {
 <h2>TEX Parser</h2>
 
         <p id="output">output</p>
-        <p><button id="cont">Weiter</button></p>
+        <!-- p><button id="cont">Weiter</button></p -->
         <!-- p id="version">version</p -->
         <p class="tex-example">\sqrt{2}</p><br />
         <p class="tex-example">\sin x+5\cosh\left(x\right)+\tan xy+\sin^2\beta-\sin^{2+n}3\alpha</p><br />
