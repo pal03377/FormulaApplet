@@ -12,7 +12,7 @@ include_once 'header.php';
   var out = '';
   var canvas = document.getElementById("treecanvas");
   var myTree = new tree();
- 
+
   $(document).ready(function () {
     $(".tex-example").each(function () {
       var index = $(".tex-example").index(this);
@@ -35,7 +35,10 @@ include_once 'header.php';
     // button = $("#cont");
     // canvas.click(...) sucks
     $( '#treecanvas' ).click( function(event){
-        parsetree_by_index(myTree, canvas)
+        var temp = parsetree_by_index(myTree);
+        var message = temp[0];
+        end_parse = temp[1];
+        paint_tree(myTree, canvas, message);
     });
     // button.mouseup( function(){button.attr('data-clickstate', 'up')});
   });

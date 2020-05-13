@@ -445,7 +445,7 @@ function parsetree_init() {
     counter = 0;
 }
 
-function parsetree_by_index(tree, canvas) {
+function parsetree_by_index(tree) {
     counter++;
     var end_parse = false;
     // console.log('switch to ' + counter)
@@ -498,6 +498,7 @@ function parsetree_by_index(tree, canvas) {
             result = remove_operators(tree, 'sub');
             break;
         case 11:
+            message = 'delete single § nodes'
             var list_of_free = delete_single_nodes(tree);
             break;
         case 12:
@@ -520,14 +521,18 @@ function parsetree_by_index(tree, canvas) {
             message = 'end of parse';
             end_parse = true;
     }
-    paint_tree(tree, canvas, message);
-    return end_parse;
+    return [message, end_parse];
 }
 
 function parse(tree) {
     var end_parse = false;
+    parsetree_init();
     while (!end_parse) {
-        end_parse = parsetree_by_index(tree, canvas);
+        var temp = parsetree_by_index(tree);
+        var message = temp[0];
+        console.log( 'parse: ' + message );
+        end_parse = temp[1];
+        //paint_tree(tree, canvas, message);
     }
 };
 
@@ -673,9 +678,22 @@ function paint_tree_callback(currentNode, xa, ya, x, y, ctx) {
         ctx.lineTo(xx, yy);
         ctx.stroke();
         ctx.fillStyle = "#5050ff";
-        ctx.fillText(currentNode.type, xx + 2, yy);
+        var curr = currentNode.type;
+        if (curr.startsWith('bracket-')) {
+            curr = curr.substring(8);
+        }
+        if (curr == 'leaf') {
+            curr = '';
+        }
+        if (curr == 'plusminus') {
+            curr = '+/-';
+        }
+        if (curr == 'number') {
+            curr = 'num';
+        }
+        ctx.fillText(curr, xx + 2, yy);
         ctx.fillStyle = "#ff5050";
-        ctx.fillText(currentNode.content, xx + 2, yy + 10);
+        ctx.fillText(currentNode.content, xx + 2, yy + 15);
     }
 };
 
