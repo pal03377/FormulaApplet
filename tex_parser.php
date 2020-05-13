@@ -11,10 +11,8 @@ include_once 'header.php';
   var mathField = new Array();
   var out = '';
   var canvas = document.getElementById("treecanvas");
-  // var context = canvas.getContext("2d");
   var myTree = new tree();
-  // var click_state = "up";
-
+ 
   $(document).ready(function () {
     $(".tex-example").each(function () {
       var index = $(".tex-example").index(this);
@@ -35,7 +33,10 @@ include_once 'header.php';
       $(this).addClass('selected');
     });
     // button = $("#cont");
-    $( '#treecanvas' ).click( function(){parsetree_by_index(myTree, canvas)});
+    // canvas.click(...) sucks
+    $( '#treecanvas' ).click( function(event){
+        parsetree_by_index(myTree, canvas)
+    });
     // button.mouseup( function(){button.attr('data-clickstate', 'up')});
   });
 
@@ -43,17 +44,18 @@ include_once 'header.php';
     mf = mathField[index];
     // var out = mf.latex();
     out = mf.latex();
+     myTree = new tree();
      myTree.leaf.content = mf.latex();
     // parse(myTree);
     document.getElementById('output').innerHTML = out + '<br>';
+    parsetree_init();
     // test = tree2TEX(myTree);
     //                    var message = ' Error.';
     //                    if (out === test) {
     //                        message = ' OK.';
     //                    }
     //                    document.getElementById('ttt').innerHTML = test + message;
-    var context = canvas.getContext("2d");
-    paint_tree(myTree, canvas, context);
+    paint_tree(myTree, canvas, 'start of parsing');
     console.log( '*** list of unknown leafs ***');
     traverseSimple(
             function (node) {

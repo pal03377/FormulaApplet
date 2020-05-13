@@ -441,6 +441,10 @@ function parse_radix(tree, nthroot) {
     } while (stop === false);
 }
 
+function parsetree_init() {
+    counter = 0;
+}
+
 function parsetree_by_index(tree, canvas) {
     counter++;
     var end_parse = false;
@@ -516,8 +520,7 @@ function parsetree_by_index(tree, canvas) {
             message = 'end of parse';
             end_parse = true;
     }
-    var context = canvas.getContext("2d");
-    paint_tree(tree, canvas, context, message);
+    paint_tree(tree, canvas, message);
     return end_parse;
 }
 
@@ -639,13 +642,16 @@ function tree2TEX(tree) {
 
 col = 0;
 
-function paint_tree(tree, canvas, context, message) {
+function paint_tree(tree, canvas, message) {
+    var ctx = canvas.getContext("2d");
     col = "#ffffdf";
-    context.fillStyle = col;
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.font = '9pt Consolas';
-    paint_tree_recurse(tree.root, tree.nodelist, -9999, -9999, 0, 0, context, 1);
-    context.fillText(message, 20, 30);
+    ctx.fillStyle = col;
+    ctx.beginPath();
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.stroke;
+    ctx.font = '12pt Consolas';
+    paint_tree_recurse(tree.root, tree.nodelist, -9999, -9999, 0, 0, ctx, 1);
+    ctx.fillText(message, 20, 30);
 };
 
 function paint_tree_callback(currentNode, xa, ya, x, y, ctx) {
