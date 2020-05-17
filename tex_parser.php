@@ -90,6 +90,9 @@ waitfor_mathquill_and_if_ready_then_do(function () {
         <p id="output">output</p>
         <!-- p><button id="cont">Weiter</button></p -->
         <!-- p id="version">version</p -->
+        <p class="tex-example">5,6^3ab^5(p+q)rs^e \cdot 2vw^{\left(n-2\right)}\ \cdot\ \Gamma^\alpha</p><br />
+        <p class="tex-example">5,7y_n+rs_{n+2}-z_{\max}^8</p><br />
+        <p class="tex-example">5,7y^n+rs^{n+2}-z_{\max}^{t-8}</p><br />
         <p class="tex-example">\sqrt{2}</p><br />
         <p class="tex-example">\sin x+5\cosh\left(x\right)+\tan xy+\sin^2\beta-\sin^{2+n}3\alpha</p><br />
         <p class="tex-example">\ln x+5\exp\left(x\right)+\log xy+\lg\beta-\log_{2+n}3\alpha</p><br />
@@ -109,7 +112,7 @@ waitfor_mathquill_and_if_ready_then_do(function () {
         <p class="tex-example">15+\left[3,5 \cdot ab+\left(2a-3b\right)\left(3a+5b\right)\right]</p><br />
         <p class="tex-example">78x_{\min}-\left\{99 \cdot x_{\max}+\left(\frac{x_{\alpha}}{x_{\beta}+x_{\gamma}}\right)\right\}</p><br />
         <hr />
-<canvas id="treecanvas" width="900" height="600" style="
+<canvas id="treecanvas" width="1200" height="600" style="
 border: 1px solid #000000;
 position: fixed;
 right: 30px;

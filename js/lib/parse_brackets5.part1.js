@@ -112,7 +112,7 @@ tree.prototype.withEachNode = function (doThis) {
     var i = 0;
     var stop = false;
     var list_of_nodes = this.nodelist;
-    console.log(list_of_nodes);
+    // console.log(list_of_nodes);
     do {
         var node = list_of_nodes[i];
         // doThis may add or delete nodes!
@@ -123,6 +123,16 @@ tree.prototype.withEachNode = function (doThis) {
         }
     } while (stop === false);
 }
+
+// tree.prototype.withEachLeaf = function (doThis) {
+//     this.withEachNode(
+//         function (node) {
+//             if (node.type == 'leaf') {
+//                 doThis(node)
+//             }
+//         }
+//     )
+// }
 
 
 function create_node(type, content, tree) {
@@ -155,8 +165,8 @@ function delete_single_nodes(tree) {
             console.log('found single § node at ' + node.id);
             var siblings = list_of_nodes[node.parent].children;
             var position = siblings.indexOf(node.id);
-            console.log('position=' + position);
-            console.log('siblings[position]=' + siblings[position]);
+            // console.log('position=' + position);
+            // console.log('siblings[position]=' + siblings[position]);
             // short circuit
             siblings[position] = node.children[0];
             list_of_nodes[node.children[0]].parent = node.parent;
