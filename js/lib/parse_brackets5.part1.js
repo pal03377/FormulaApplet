@@ -187,6 +187,38 @@ node.prototype.isRightmostChild = function (nodelist) {
     }
 };
 
+var traverseDepthFirstWithPrefix = function (prefix, callback, nodelist) {
+    (function recurse(currentNode) {
+        prefix(currentNode);
+        for (var i = 0, length = currentNode.children.length; i < length; i++) {
+            recurse(nodelist[currentNode.children[i]]);
+        }
+        callback(currentNode);
+    })(nodelist[0]);
+};
+var traverseDepthFirst = function (callback, nodelist) {
+    (function recurse(currentNode) {
+        for (var i = 0, length = currentNode.children.length; i < length; i++) {
+            recurse(nodelist[currentNode.children[i]]);
+        }
+        callback(currentNode);
+    })(nodelist[0]);
+};
+var traverseRootFirst = function (callback, nodelist) {
+    (function recurse(currentNode) {
+        callback(currentNode);
+        for (var i = 0, length = currentNode.children.length; i < length; i++) {
+            recurse(nodelist[currentNode.children[i]]);
+        }
+    })(nodelist[0]);
+};
+var traverseSimple = function (callback, nodelist) {
+    for (var i = 0; i < nodelist.length; i++) {
+        var node = nodelist[i];
+        callback(node);
+    }
+};
+
 function find_left_bracket(node, bra) {
     var long = '\\left' + bra;
     if (bra === '{') {

@@ -1,37 +1,5 @@
 var counter = 0;
 
-var traverseDepthFirstWithPrefix = function (prefix, callback, nodelist) {
-    (function recurse(currentNode) {
-        prefix(currentNode);
-        for (var i = 0, length = currentNode.children.length; i < length; i++) {
-            recurse(nodelist[currentNode.children[i]]);
-        }
-        callback(currentNode);
-    })(nodelist[0]);
-};
-var traverseDepthFirst = function (callback, nodelist) {
-    (function recurse(currentNode) {
-        for (var i = 0, length = currentNode.children.length; i < length; i++) {
-            recurse(nodelist[currentNode.children[i]]);
-        }
-        callback(currentNode);
-    })(nodelist[0]);
-};
-var traverseRootFirst = function (callback, nodelist) {
-    (function recurse(currentNode) {
-        callback(currentNode);
-        for (var i = 0, length = currentNode.children.length; i < length; i++) {
-            recurse(nodelist[currentNode.children[i]]);
-        }
-    })(nodelist[0]);
-};
-var traverseSimple = function (callback, nodelist) {
-    for (var i = 0; i < nodelist.length; i++) {
-        var node = nodelist[i];
-        callback(node);
-    }
-};
-
 function parse_brackets(tree) {
     var list_of_nodes = tree.nodelist;
     var index_of_last_node = 0;
@@ -470,27 +438,42 @@ function parse_integral(tree) {
             console.log('int found at ' + content + ' pos= ' + pos);
             var left = node.content.substring(0, pos);
             var right = node.content.substring(pos + needle.length);
-            var left_index = (left.match(/§/g) || []).length;
-            // if there is no § in left, then left_index = 0
+            var left_count = (left.match(/§/g) || []).length;
+            var right_count = (right.match(/§/g) || []).length;
+            // if there is no § in left, then left_count = 0
             console.log(' content=' + node.content + ' pos=' + pos);
             // console.log(' left=###' + left + '###' + ' right=###' + right + '###');
-            var newcontent = left + '§' + right;
+            var newcontent = left + '§';
             // node has one § less! 
             console.log('newcontent=' + newcontent);
             node.content = newcontent;
             //check
-            var lower_bound = tree.nodelist[node.children[left_index]];
-            var upper_bound = tree.nodelist[node.children[left_index + 1]];
-            var integral = create_node('integral', right, tree);
+            var lower_bound = tree.nodelist[node.children[left_count]];
+            var upper_bound = tree.nodelist[node.children[left_count + 1]];
+            var integral = create_node('integral', '', tree);
+            var integrand = create_node('integrand', right, tree);
             // link integral
             integral.parent = node.id;
-            //integral has two children 
-            integral.children = [lower_bound.id, upper_bound.id];
+            //integral has three children 
+            integral.children = [lower_bound.id, upper_bound.id, integrand.id];
             // now the other directions
             lower_bound.parent = integral.id;
             upper_bound.parent = integral.id;
-            node.children[left_index] = integral.id;
-            node.children.splice(left_index + 1, 1);
+            integrand.parent = integral.id;
+            node.children[left_count] = integral.id;
+            node.children.splice(left_count + 1, 1);
+            console.log('left_count=' + left_count);
+            console.log('right_count=' + right_count);
+            for (var i = left_count + 1; i <= left_count + right_count; i++){
+                var id = node.children[i];
+                console.log( 'i=' + i + ' id=' + id);
+                console.log(tree.nodelist[id]);
+                integrand.children.push(id);
+                tree.nodelist[id].parent = integrand.id;
+            }
+            for (var i = left_count + 1; i <= left_count + right_count; i++){
+                node.children.splice(i, 1);
+            }
         }
     });
 }

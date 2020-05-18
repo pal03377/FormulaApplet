@@ -103,8 +103,8 @@ waitfor_mathquill_and_if_ready_then_do(function () {
         <p class="tex-example">2^{\frac{3}{2}}+\frac{3+x}{4+x}</p><br />
         <p class="tex-example">\int_a^b\sin\left(x\right)dx</p><br />
         <p class="tex-example">\int\left(x^3-\frac{7}{5}x\right)dx</p><br />
-        <p class="tex-example">\int_{1,5}^{^{4,8}}\frac{y}{y+2}dy</p><br />
-        <p class="tex-example">3a + 5\int_{a+1}^{b+2}z^2dz</p><br />
+        <p class="tex-example">\int_{1,5}^{4,8}\frac{y}{y+2}dy</p><br />
+        <p class="tex-example">3a + 5\int_{a+1}^{b+2}z^7dz</p><br />
         <p class="tex-example">\int_{a-7}^b\frac{dt}{4+t^2}</p><br />
         <p class="tex-example">d-e</p><br />
         <p class="tex-example">7^{\frac{3}{2}}</p><br />
