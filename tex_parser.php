@@ -95,7 +95,7 @@ waitfor_mathquill_and_if_ready_then_do(function () {
         <p class="tex-example">5,7y^n+rs^{n+2}-z_{\max}^{t-8}</p><br />
         <p class="tex-example">\sqrt{2}</p><br />
         <p class="tex-example">\sin x+5\cosh\left(x\right)+\tan xy+\sin^2\beta-\sin^{2+n}3\alpha</p><br />
-        <p class="tex-example">\ln x+5\exp\left(x\right)+\log xy+\lg\beta-\log_{2+n}3\alpha</p><br />
+        <p class="tex-example">\ln x+5\exp\left(x\right)+\log xy+\lg\beta-\log_{2+n}3\alpha+log_749</p><br />
         <p class="tex-example">3,4+5\sqrt{a^2+b^2}-(y+5)\sqrt{x+4}</p><br />
         <p class="tex-example">\sqrt[3]2</p><br />
         <p class="tex-example">\sqrt[7]{x+3y}</p><br />

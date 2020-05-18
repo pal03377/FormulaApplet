@@ -67,7 +67,7 @@ function parse_frac(tree) {
 };
 
 function function_list() {
-    var result = ['sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'log', 'exp', 'textcolor'];
+    var result = ['sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'lg', 'log', 'exp', 'textcolor'];
     return result;
 };
 
@@ -100,6 +100,22 @@ function parse_function(tree) {
                     //                console.log('remember1=' + remember);
                     node.children[left_count] = fu_node.id;
                     //                console.log('remember2=' + remember);
+                    var basenode = null;
+                    if (type == 'fu-log') {
+                        console.log('fu-log rest=' + rest);
+                        if (rest.startsWith('_')) {
+                            rest = rest.substring(1);
+                            if (rest.startsWith('§')) {
+                                // log_§
+                                basenode = '§';
+                            } else {
+                                var base = rest.substr(0, 1);
+                                rest = '§' + rest.substring(1);
+                                basenode = create_node('leaf', base, tree);
+                                basenode.parent = fu_node.id;
+                            }
+                        }
+                    }
                     if (rest.startsWith('^')) {
                         //fu-power
                         fu_node.content = 'power';
@@ -147,15 +163,22 @@ function parse_function(tree) {
                         console.log('type=' + type + ' pow=' + pow + ' rest=' + rest);
                     } else {
                         // no power:", "\\sin...
+                        var arg = create_node('leaf', rest, tree);
+                        arg.parent = fu_node.id;
                         if (rest.startsWith('§')) {
                             //", "\\sin§
-                            fu_node.children[0] = remember;
-                            tree.nodelist[remember].parent = fu_node.id;
+                            // fu_node.children[0] = remember;
+                            // tree.nodelist[remember].parent = fu_node.id;
+                            // if (basenode !== null){
+                            //     fu_node.children[1] = basenode.id;
+                            // }
+                            if (basenode !== null) {
+                                fu_node.children[0] = basenode.id;
+                                fu_node.children[1] = arg.id;
+                            }
                         } else {
                             //", "\\sin2\alpha
-                            var arg = create_node('leaf', rest, tree);
                             fu_node.children[0] = arg.id;
-                            arg.parent = fu_node.id;
                         }
                         console.log('found ' + fu + ' at ' + node.id + ' rest=' + rest);
                     }
@@ -225,7 +248,58 @@ function parse_greek(tree) {
     } while (i < tree.nodelist.length);
 };
 
-function prepare_sub_power(tree, power) {
+function prepare_sub_power(tree) {
+    for (var needle of ['_', '^']) {
+        tree.withEachNode(function (node) {
+            var nextnode = false;
+            var start = 0;
+            do {
+                if (node.type == 'leaf') {
+                    // console.log('parsing ' + node.content + ' with ' + needle);
+                    var pos = node.content.indexOf(needle, start);
+                    if (pos < 0) {
+                        nextnode = true;
+                    } else {
+                        start = pos + 1;
+                        var leftpart = node.content.substring(0, pos);
+                        var left_count = (leftpart.match(/§/g) || []).length;
+                        var rest = node.content.substr(pos + 2);
+                        // var predecessor = node.content.substr(pos - 1, 1);
+                        var exponent_or_subscript = node.content.substr(pos + 1, 1);
+                        console.log(leftpart + ' | ' + needle + exponent_or_subscript + ' | ' + rest + ' left_count=' + left_count);
+
+                        // if (predecessor !== '§') {
+                        //     new_node = create_node('leaf', predecessor, tree);
+                        //     new_node.parent = node.id;
+                        //     node.children.splice(left_count, 0, new_node.id);
+                        //     // for (var i = 0; i < node.children.length; i++) {
+                        //     //     console.log(i, node.children[i], tree.nodelist[node.children[i]].content);
+                        //     // }
+                        // }
+                        // Now in any case predecessor equals '§'. 
+                        // Number of § in leftpart+predecessor is one higher al old left_count
+                        // left_count++;
+
+                        if (exponent_or_subscript !== '§') {
+                            new_node = create_node('leaf', exponent_or_subscript, tree);
+                            new_node.parent = node.id;
+                            node.children.splice(left_count, 0, new_node.id);
+                            // for (var i = 0; i < node.children.length; i++) {
+                            //     console.log(i, node.children[i], tree.nodelist[node.children[i]].content);
+                            // }
+                        }
+                        node.content = leftpart + needle + '§' + rest;
+                    }
+                } else {
+                    nextnode = true;
+                }
+            }
+            while (nextnode == false)
+        });
+    }
+}
+
+function prepare_sub_power_backup(tree, power) {
     tree.withEachNode(function (node) {
         var needle = '_';
         if (power) {
@@ -245,7 +319,7 @@ function prepare_sub_power(tree, power) {
                     var rest = node.content.substr(pos + 2);
                     var predecessor = node.content.substr(pos - 1, 1);
                     var successor = node.content.substr(pos + 1, 1);
-                    // console.log(leftpart + ' | ' + predecessor + needle + successor + ' | ' + rest + 'left_count=' + left_count);
+                    console.log(leftpart + ' | ' + predecessor + needle + successor + ' | ' + rest + 'left_count=' + left_count);
 
                     if (predecessor !== '§') {
                         new_node = create_node('leaf', predecessor, tree);
@@ -388,73 +462,99 @@ function parse_factors(tree) {
 function parse_integral(tree) {
     // for (var i = 0; i < list_of_nodes.length; i++) {
     // does not fit because length of list changes
-    var i = 0;
-    var stop = false;
-    do {
-        var node = tree.nodelist[i];
-        var content = node.content;
-        if (content.startsWith('\\int')) {
-            console.log('******", "\\\int found at node # ' + node.id);
-            var pos_sub = content.indexOf('_');
-            var pos_pow = content.indexOf('^');
-            var rest = '';
-            console.log('sub found at ' + pos_sub + ' pow found at ' + pos_pow);
-            if (pos_sub === -1 || pos_pow === -1) {
-                // indefinite integral
-                rest = content.substring(4); //remove", "\\\int = 4 chars
-                node.type = 'indefinite_integral';
-                console.log(node.type + ' ' + rest);
-            } else {
-                // definite integral
-                var lower_bound = content.substring(pos_sub + 1, pos_pow);
-                var upper_bound = content.substring(pos_pow + 1, pos_pow + 2);
-                rest = content.substring(pos_pow + 2);
-                console.log(lower_bound + ' ' + upper_bound + ' rest=' + rest);
-                // for every *_bound which is no § an unshift of children[] is necessary
-                // check # of §
-                var lower_count = (lower_bound.match(/§/g) || []).length;
-                if (lower_count === 0) {
-                    // no bracket, new node needed
-                    var lower = create_node('lower_bound', lower_bound, tree);
-                    lower.parent = node.id;
-                    //console.log('before unshift: node,children.length=' + node.children.length);
-                    node.children.unshift(lower.id);
-                    //console.log('after unshift: node,children.length=' + node.children.length);
-                    // now children[0] is free
-                    // node.children[0] = lower.id;
-                } else {
-                    // children[0] remains at its place and contains id of bracket
-                }
-                // console.log('children=' + node.children);
-                var upper_count = (upper_bound.match(/§/g) || []).length;
-                if (upper_count === 0) {
-                    var upper = create_node('upper_bound', upper_bound, tree);
-                    upper.parent = node.id;
-                    node.children.unshift(0); //dummy
-                    // now children[0] is free, but we need children[1]
-                    node.children[0] = node.children[1];
-                    node.children[1] = upper.id;
-                } // else do nothing
-                console.log('children=' + node.children);
-                // check # of brackets (§)
-                var rest_count = (rest.match(/§/g) || []).length;
-                if (node.children.length !== 2 + rest_count) {
-                    throw ('(parse_integral) Wrong number of bracket markers');
-                }
+    tree.withEachLeaf(function (node) {
+        content = node.content;
+        var needle = '\\int_§^§';
+        var pos = content.indexOf(needle);
+        if (pos > -1) {
+            console.log('int found at ' + content + ' pos= ' + pos);
+            var left = node.content.substring(0, pos);
+            var right = node.content.substring(pos + needle.length);
+            var left_index = (left.match(/§/g) || []).length;
+            // if there is no § in left, then left_index = 0
+            console.log(' content=' + node.content + ' pos=' + pos);
+            // console.log(' left=###' + left + '###' + ' right=###' + right + '###');
+            var newcontent = left + '§' + right;
+            // node has one § less! 
+            console.log('newcontent=' + newcontent);
+            node.content = newcontent;
+            //check
+            var lower_bound = tree.nodelist[node.children[left_index]];
+            var upper_bound = tree.nodelist[node.children[left_index + 1]];
+            var integral = create_node('integral', right, tree);
+            // link integral
+            integral.parent = node.id;
+            //integral has two children 
+            integral.children = [lower_bound.id, upper_bound.id];
+            // now the other directions
+            lower_bound.parent = integral.id;
+            upper_bound.parent = integral.id;
+            node.children[left_index] = integral.id;
+            node.children.splice(left_index + 1, 1);
+        }
+    });
+}
+//     do {
+//         var node = tree.nodelist[i];
+//         var content = node.content;
+//         if (content.startsWith('\\int')) {
+//             console.log('******", "\\\int found at node # ' + node.id);
+//             var pos_sub = content.indexOf('_');
+//             var pos_pow = content.indexOf('^');
+//             var rest = '';
+//             console.log('sub found at ' + pos_sub + ' pow found at ' + pos_pow);
+//             if (pos_sub === -1 || pos_pow === -1) {
+//                 // indefinite integral
+//                 rest = content.substring(4); //remove", "\\\int = 4 chars
+//                 node.type = 'indefinite_integral';
+//                 console.log(node.type + ' ' + rest);
+//             } else {
+//                 // definite integral
+//                 var lower_bound = content.substring(pos_sub + 1, pos_pow);
+//                 var upper_bound = content.substring(pos_pow + 1, pos_pow + 2);
+//                 rest = content.substring(pos_pow + 2);
+//                 console.log(lower_bound + ' ' + upper_bound + ' rest=' + rest);
+//                 // for every *_bound which is no § an unshift of children[] is necessary
+//                 // check # of §
+//                 var lower_count = (lower_bound.match(/§/g) || []).length;
+//                 if (lower_count === 0) {
+//                     // no bracket, new node needed
+//                     var lower = create_node('lower_bound', lower_bound, tree);
+//                     lower.parent = node.id;
+//                     //console.log('before unshift: node,children.length=' + node.children.length);
+//                     node.children.unshift(lower.id);
+//                     //console.log('after unshift: node,children.length=' + node.children.length);
+//                     // now children[0] is free
+//                     // node.children[0] = lower.id;
+//                 } else {
+//                     // children[0] remains at its place and contains id of bracket
+//                 }
+//                 // console.log('children=' + node.children);
+//                 var upper_count = (upper_bound.match(/§/g) || []).length;
+//                 if (upper_count === 0) {
+//                     var upper = create_node('upper_bound', upper_bound, tree);
+//                     upper.parent = node.id;
+//                     node.children.unshift(0); //dummy
+//                     // now children[0] is free, but we need children[1]
+//                     node.children[0] = node.children[1];
+//                     node.children[1] = upper.id;
+//                 } // else do nothing
+//                 console.log('children=' + node.children);
+//                 // check # of brackets (§)
+//                 var rest_count = (rest.match(/§/g) || []).length;
+//                 if (node.children.length !== 2 + rest_count) {
+//                     throw ('(parse_integral) Wrong number of bracket markers');
+//                 }
 
-                node.type = 'definite_integral';
-                node.content = rest;
-                console.log(node.type);
-                console.log('lower_bound=' + node.children[0] + ' upper_bound=' + node.children[1] + ' rest=' + node.content);
-            }
-        }
-        // console.log('i=' + i + ' tree.nodelist.length=' + tree.nodelist.length + 'content=' + node.content);
-        i++;
-        if (i === tree.nodelist.length) {
-            stop = true;
-        }
-    } while (stop === false);
-};
+//                 node.type = 'definite_integral';
+//                 node.content = rest;
+//                 console.log(node.type);
+//                 console.log('lower_bound=' + node.children[0] + ' upper_bound=' + node.children[1] + ' rest=' + node.content);
+//             }
+//         }
+//     }
+//     // console.log('i=' + i + ' tree.nodelist.length=' + tree.nodelist.length + 'content=' + node.content);
+// };
 
 function parse_sqrt(tree) {
     parse_radix(tree, false);
@@ -562,62 +662,66 @@ function parsetree_by_index(tree) {
             result = remove_operators(tree, 'timesdivided');
             break;
         case 5:
+            message = 'prepare subscript and power';
+            prepare_sub_power(tree);
+            break;
+        case 6:
             message = 'parse integral';
             parse_integral(tree);
             break;
-        case 6:
-            message = 'parse square root / nth root';
-            parse_nthroot(tree);
-            parse_sqrt(tree);
-            break;
-        case 7:
-            message = 'parse functions';
-            parse_function(tree);
-            break;
-        case 8:
-            message = 'parse greek';
-            parse_greek(tree);
-            break;
-        case 9:
-            message = 'parse numbers';
-            parse_numbers(tree);
-            break;
-        case 10:
-            message = 'prepare subscripts';
-            // result = remove_operators(tree, 'sub');
-            prepare_sub_power(tree, false);
-            break;
-        case 11:
-            message = 'parse subscripts';
-            // result = remove_operators(tree, 'sub');
-            parse_sub_power(tree, false);
-            break;
-        case 12:
-            message = 'prepare power';
-            // result = remove_operators(tree, 'power');
-            prepare_sub_power(tree, true);
-            break;
-        case 13:
-            message = 'parse power';
-            // result = remove_operators(tree, 'power');
-            parse_sub_power(tree, true);
-            break;
-        case 14:
-            message = 'delete single § nodes'
-            var list_of_free = delete_single_nodes(tree);
-            break;
-        case 15:
-            message = 'parse fractions';
-            parse_frac(tree);
-            break;
-        case 16:
-            message = 'parse factors';
-            parse_factors(tree);
-            break;
-        case 17:
-            message = 'delete single § nodes';
-            var list_of_free = delete_single_nodes(tree);
-            break;
+            // case 6:
+            //     message = 'parse square root / nth root';
+            //     parse_nthroot(tree);
+            //     parse_sqrt(tree);
+            //     break;
+            // case 7:
+            //     message = 'parse functions';
+            //     parse_function(tree);
+            //     break;
+            // case 8:
+            //     message = 'parse greek';
+            //     parse_greek(tree);
+            //     break;
+            // case 9:
+            //     message = 'parse numbers';
+            //     parse_numbers(tree);
+            //     break;
+            // case 10:
+            //     message = 'prepare subscripts';
+            //     // result = remove_operators(tree, 'sub');
+            //     prepare_sub_power(tree, false);
+            //     break;
+            // case 11:
+            //     message = 'parse subscripts';
+            //     // result = remove_operators(tree, 'sub');
+            //     parse_sub_power(tree, false);
+            //     break;
+            // case 12:
+            //     message = 'prepare power';
+            //     // result = remove_operators(tree, 'power');
+            //     prepare_sub_power(tree, true);
+            //     break;
+            // case 13:
+            //     message = 'parse power';
+            //     // result = remove_operators(tree, 'power');
+            //     parse_sub_power(tree, true);
+            //     break;
+            // case 14:
+            //     message = 'delete single § nodes'
+            //     var list_of_free = delete_single_nodes(tree);
+            //     break;
+            // case 15:
+            //     message = 'parse fractions';
+            //     parse_frac(tree);
+            //     break;
+            // case 16:
+            //     message = 'parse factors';
+            //     parse_factors(tree);
+            //     break;
+            // case 17:
+            //     message = 'delete single § nodes';
+            //     var list_of_free = delete_single_nodes(tree);
+            //     break;
         default:
             message = 'end of parse';
             end_parse = true;

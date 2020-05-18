@@ -1,9 +1,11 @@
 # *ToDo* #
-* Test und Debugging 
+* Test und Debugging
+  * power und sub ok
+  * integral
 * <s>Vorzeichen</s>
 * <s>reelle Zahlen</s>
-* Grad, Minuten, Sekunden
 * Einheiten
+    * Grad, Minuten, Sekunden
 * Gemischte Zahlen
 * Limes
 * Objektorientierte Programmierung

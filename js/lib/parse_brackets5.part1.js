@@ -124,15 +124,16 @@ tree.prototype.withEachNode = function (doThis) {
     } while (stop === false);
 }
 
-// tree.prototype.withEachLeaf = function (doThis) {
-//     this.withEachNode(
-//         function (node) {
-//             if (node.type == 'leaf') {
-//                 doThis(node)
-//             }
-//         }
-//     )
-// }
+tree.prototype.withEachLeaf = function (doThis) {
+    // var tree = this;
+    this.withEachNode(
+        function (node) {
+            if (node.type == 'leaf') {
+                doThis(node)
+            }
+        }
+    )
+}
 
 
 function create_node(type, content, tree) {
