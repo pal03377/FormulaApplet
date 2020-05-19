@@ -4,7 +4,6 @@
  * https://code.tutsplus.com/articles/data-structures-with-javascript-tree--cms-23393 **/
 
 // node-Konstruktor
-// var node = function () {
 function node() {
     this.id = -1;
     this.parent = 0;
@@ -13,7 +12,7 @@ function node() {
     this.content = '';
     this.comes_from = 1; //above
     this.way_back = false;
-};
+}
 
 node.prototype.insertMeOver = function (insertPointId, leaf, nodelist) {
     // insertMeOver <-> JAVA: void InsertUnodeOverCursor(Node u)
@@ -91,6 +90,27 @@ node.prototype.debug = function () {
     return text;
 };
 
+function create_node(type, content, tree) {
+    var nodelist = tree.nodelist;
+    var lof = tree.list_of_free || [];
+    if (lof.length === 0) {
+        temp = new node();
+        temp.type = type;
+        temp.content = content;
+        nodelist.push(temp);
+        temp.id = nodelist.length - 1;
+        return temp;
+    } else {
+        var last_free = lof.pop();
+        temp = nodelist[last_free];
+        temp.type = type;
+        temp.content = content;
+        temp.children = [];
+        console.log('recycling ' + last_free);
+        return temp;
+    }
+}
+
 function tree() {
     this.list_of_free = [];
     this.nodelist = [];
@@ -135,28 +155,6 @@ tree.prototype.withEachLeaf = function (doThis) {
     )
 }
 
-
-function create_node(type, content, tree) {
-    var nodelist = tree.nodelist;
-    var lof = tree.list_of_free || [];
-    if (lof.length === 0) {
-        temp = new node();
-        temp.type = type;
-        temp.content = content;
-        nodelist.push(temp);
-        temp.id = nodelist.length - 1;
-        return temp;
-    } else {
-        var last_free = lof.pop();
-        temp = nodelist[last_free];
-        temp.type = type;
-        temp.content = content;
-        temp.children = [];
-        console.log('recycling ' + last_free);
-        return temp;
-    }
-};
-
 function delete_single_nodes(tree) {
     // delete § nodes
     var list_of_nodes = tree.nodelist;
@@ -175,7 +173,7 @@ function delete_single_nodes(tree) {
         }
     }
     return tree.list_of_free;
-};
+}
 node.prototype.isRightmostChild = function (nodelist) {
     if (this.id === 0) {
         return false;
