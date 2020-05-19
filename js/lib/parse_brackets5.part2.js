@@ -80,33 +80,26 @@ function parsetree_by_index(tree) {
             message = 'parse subscript'
             parse_sub_power(tree, false);
             break;
-            // case 11:
-            //     message = 'parse subscripts';
-            //     // result = remove_operators(tree, 'sub');
-            //     parse_sub_power(tree, false);
-            //     break;
-            // case 12:
-            //     message = 'prepare power';
-            //     // result = remove_operators(tree, 'power');
-            //     unify_sub_power(tree, true);
-            //     break;
-            // case 13:
-            //     message = 'parse power';
-            //     // result = remove_operators(tree, 'power');
-            //     parse_sub_power(tree, true);
-            //     break;
-            // case 14:
-            //     message = 'delete single § nodes'
-            //     var list_of_free = delete_single_nodes(tree);
-            //     break;
-            // case 16:
-            //     message = 'parse factors';
-            //     parse_factors(tree);
-            //     break;
-            // case 17:
-            //     message = 'delete single § nodes';
-            //     var list_of_free = delete_single_nodes(tree);
-            //     break;
+        case 17:
+            message = 'unify power (part 2) '
+            unify_sub_or_power(tree, true);
+            break;
+        case 18:
+            message = 'parse power'
+            parse_sub_power(tree, true);
+            break;
+        case 19:
+            message = 'delete single § nodes'
+            var list_of_free = delete_single_nodes(tree);
+            break;
+        case 20:
+            message = 'parse factors';
+            parse_factors(tree);
+            break;
+        case 21:
+            message = 'delete single § nodes';
+            var list_of_free = delete_single_nodes(tree);
+            break;
         default:
             message = 'end of parse';
             end_parse = true;
@@ -197,7 +190,9 @@ function parse_function(tree) {
                         //", "\\sin2\alpha
                         var arg = create_node('leaf', rest, tree);
                         arg.parent = fu_node.id;
+                        //fu_node.children[0] = remember;
                         fu_node.children[0] = arg.id;
+                        //tree.nodelist[remember].parent = fu_node.id;
                     }
                 }
                 node.content = leftpart + '§';
@@ -683,7 +678,7 @@ function parse_integral(tree) {
             var lower_bound = tree.nodelist[node.children[left_count]];
             var upper_bound = tree.nodelist[node.children[left_count + 1]];
             var integral = create_node('integral', '', tree);
-            var integrand = create_node('integrand', right, tree);
+            var integrand = create_node('leaf', right, tree);
             // link integral
             integral.parent = node.id;
             //integral has three children 
@@ -789,45 +784,51 @@ function parse_log(tree) {
         content = node.content;
         var needle = '\\log_§';
         var pos = content.indexOf(needle);
-        if (pos > -1) {
-            console.log('log_§ found at ' + content + ' pos= ' + pos);
-            var left = node.content.substring(0, pos);
-            var right = node.content.substring(pos + needle.length);
-            var left_count = (left.match(/§/g) || []).length;
-            var right_count = (right.match(/§/g) || []).length;
-            // if there is no § in left, then left_count = 0
-            console.log(' content=' + node.content + ' pos=' + pos);
-            // console.log(' left=###' + left + '###' + ' right=###' + right + '###');
-            var newcontent = left + '§';
-            // node has one § less! 
-            console.log('newcontent=' + newcontent);
-            node.content = newcontent;
-            //check
-            var base = tree.nodelist[node.children[left_count]];
-            var log = create_node('fn-log', '', tree);
-            var arg = create_node('leaf', right, tree);
-            // link log
-            log.parent = node.id;
-            //log has two children 
-            log.children = [base.id, arg.id];
-            // now the other directions
-            base.parent = log.id;
-            arg.parent = log.id;
-            node.children[left_count] = log.id;
-            node.children.splice(left_count + 1, 1);
-            console.log('left_count=' + left_count);
-            // console.log('right_count=' + right_count);
-            // for (var i = left_count + 1; i <= left_count + right_count; i++) {
-            //     var id = node.children[i];
-            //     console.log('i=' + i + ' id=' + id);
-            //     console.log(tree.nodelist[id]);
-            //     integrand.children.push(id);
-            //     tree.nodelist[id].parent = integrand.id;
-            // }
-            // console.log(node.children);
-            // node.children.splice(left_count + 1, right_count);
-            // console.log(node.children);
-        }
+        var stop = false;
+        do {
+            if (pos > -1) {
+                console.log('log_§ found at ' + content + ' pos= ' + pos);
+                var left = node.content.substring(0, pos);
+                var right = node.content.substring(pos + needle.length);
+                var left_count = (left.match(/§/g) || []).length;
+                var right_count = (right.match(/§/g) || []).length;
+                // if there is no § in left, then left_count = 0
+                console.log(' content=' + node.content + ' pos=' + pos);
+                // console.log(' left=###' + left + '###' + ' right=###' + right + '###');
+                var newcontent = left + '§';
+                // node has one § less! 
+                console.log('newcontent=' + newcontent);
+                node.content = newcontent;
+                //check
+                var base = tree.nodelist[node.children[left_count]];
+                var log = create_node('fn-log', '', tree);
+                var arg = create_node('leaf', right, tree);
+                // link log
+                log.parent = node.id;
+                //log has two children 
+                log.children = [base.id, arg.id];
+                // now the other directions
+                base.parent = log.id;
+                arg.parent = log.id;
+                node.children[left_count] = log.id;
+                node.children.splice(left_count + 1, 1);
+                console.log('left_count=' + left_count);
+                // console.log('right_count=' + right_count);
+                // for (var i = left_count + 1; i <= left_count + right_count; i++) {
+                //     var id = node.children[i];
+                //     console.log('i=' + i + ' id=' + id);
+                //     console.log(tree.nodelist[id]);
+                //     integrand.children.push(id);
+                //     tree.nodelist[id].parent = integrand.id;
+                // }
+                // console.log(node.children);
+                // node.children.splice(left_count + 1, right_count);
+                // console.log(node.children);
+            } else {
+                stop = true;
+            }
+
+        } while (stop == false)
     });
 }
 
