@@ -1,7 +1,7 @@
 # *ToDo* #
 * Test und Debugging
-  * power und sub ok
-  * integral
+  * power und sub: use unifying
+  * integral ok
 * <s>Vorzeichen</s>
 * <s>reelle Zahlen</s>
 * Einheiten
