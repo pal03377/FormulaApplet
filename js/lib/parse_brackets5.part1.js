@@ -62,6 +62,9 @@ node.prototype.addBracket = function (tree) {
         this.content = leftpart + '§' + rightpart;
         var bracket = create_node('bracket-' + bra, '', tree);
         var middle = create_node('leaf', middlepart, tree);
+        if (middlepart == ' ') { // e.g. indefinite integral
+            middle.type = 'empty';
+        }
         // first connection
         this.children.push(bracket.id);
 
@@ -169,6 +172,7 @@ function delete_single_nodes(tree) {
             // short circuit
             siblings[position] = node.children[0];
             list_of_nodes[node.children[0]].parent = node.parent;
+            node.type = 'free';
             tree.list_of_free.push(node.id);
         }
     }
@@ -515,7 +519,12 @@ function remove_operators(tree, kind_of_operators) {
                 operator.children = [node.id, rest.id];
                 // children of node and rest have to be adjusted
                 node.children = leftchildren;
+                // node stays parent of left children: nothing to do
                 rest.children = rightchildren;
+                // node "rest" becomes parent of right children
+                for (var i = 0; i < rightchildren.length; i++) {
+                    tree.nodelist[rightchildren[i]].parent = rest.id;
+                }
             }
         } else {
             // omit if type is not 'unknown'

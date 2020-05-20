@@ -104,6 +104,7 @@ function parsetree_by_index(tree) {
             message = 'end of parse';
             end_parse = true;
     }
+    check_children(tree);
     return [message, end_parse];
 }
 
@@ -359,7 +360,7 @@ function parse_frac(tree) {
                 fraction.children = [node.children[frac_index], node.children[frac_index + 1]];
                 // now the other directions
                 tree.nodelist[node.children[frac_index]].parent = fraction.id;
-                tree.nodelist[node.children[frac_index + 1]].fraction = fraction.id;
+                tree.nodelist[node.children[frac_index + 1]].parent = fraction.id;
                 node.children[frac_index] = fraction.id;
                 node.children.splice(frac_index + 1, 1);
             } else {
@@ -1008,3 +1009,25 @@ function paint_tree_recurse(currentNode, nodelist, xa, ya, x, y, ctx, factor) {
         paint_tree_recurse(nodelist[currentNode.children[i]], nodelist, xa, ya, xa + factor * (i - 0.5 * (cnchl - 1)), y + 1, ctx, factor);
     }
 };
+
+function check_children(tree) {
+    // console.clear();
+    tree.withEachNode(function (node) {
+        console.log('node.id=' + node.id + ' ' + node.content);
+        if (node.type == 'free') {
+            console.log('deleted');
+        } else {
+            for (var i = 0; i < node.children.length; i++) {
+                var childindex = node.children[i];
+                var child = tree.nodelist[childindex];
+                console.log(childindex + ' ' + child.type + ' ' + child.content);
+                var parent = child.parent;
+                if (parent == node.id) {
+                    console.log('parent ok');
+                } else {
+                    console.log('parent link ERROR - parent=' + parent);
+                }
+            }
+        }
+    })
+}

@@ -1,7 +1,8 @@
 # *ToDo* #
 * Test und Debugging
-  * power und sub: use unifying
-  * integral ok
+  * <s>power und sub: use unifying</s>
+  * <s>integral</s>
+  * Bug bei einem Integral: dx wird vergessen
 * <s>Vorzeichen</s>
 * <s>reelle Zahlen</s>
 * Einheiten
