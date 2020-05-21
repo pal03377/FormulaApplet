@@ -104,7 +104,7 @@ function parsetree_by_index(tree) {
             message = 'end of parse';
             end_parse = true;
     }
-    check_children(tree);
+    // check_children(tree);
     return [message, end_parse];
 }
 
@@ -652,7 +652,9 @@ function parse_factors(tree) {
         }
         i++;
     } while (i < tree.nodelist.length);
+    //check_children(tree);
     remove_operators(tree, 'invisible_times')
+    //check_children(tree);
 }
 
 function parse_integral(tree) {
@@ -1011,9 +1013,9 @@ function paint_tree_recurse(currentNode, nodelist, xa, ya, x, y, ctx, factor) {
 };
 
 function check_children(tree) {
-    // console.clear();
+    console.clear();
     tree.withEachNode(function (node) {
-        console.log('node.id=' + node.id + ' ' + node.content);
+        console.log('node # =' + node.id + ' ' +node.type + ' ' + node.content + 'parent=' + node.parent);
         if (node.type == 'free') {
             console.log('deleted');
         } else {
@@ -1023,7 +1025,7 @@ function check_children(tree) {
                 console.log(childindex + ' ' + child.type + ' ' + child.content);
                 var parent = child.parent;
                 if (parent == node.id) {
-                    console.log('parent ok');
+                    // console.log('parent ok');
                 } else {
                     console.log('parent link ERROR - parent=' + parent);
                 }

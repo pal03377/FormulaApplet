@@ -163,7 +163,7 @@ function delete_single_nodes(tree) {
     var list_of_nodes = tree.nodelist;
     for (var i = 0; i < list_of_nodes.length; i++) {
         var node = list_of_nodes[i];
-        if (node.content === '§' && node.children.length === 1) {
+        if (node.content === '§' && node.children.length === 1 && node.type !== 'free') {
             console.log('found single § node at ' + node.id);
             var siblings = list_of_nodes[node.parent].children;
             var position = siblings.indexOf(node.id);
