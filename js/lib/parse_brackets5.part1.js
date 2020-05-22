@@ -160,6 +160,8 @@ tree.prototype.withEachLeaf = function (doThis) {
 
 function delete_single_nodes(tree) {
     // delete § nodes
+    // nodes with type='free' cannot be deleted a second time
+    // without this attribute the same node was pushed to tree.list_of_free twice or more
     var list_of_nodes = tree.nodelist;
     for (var i = 0; i < list_of_nodes.length; i++) {
         var node = list_of_nodes[i];

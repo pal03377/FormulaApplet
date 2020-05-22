@@ -47,10 +47,12 @@ function parsetree_by_index(tree) {
         case 8:
             message = 'parse log with base';
             parse_log(tree);
+            check_children(tree);
             break;
         case 9:
             message = 'parse functions';
             parse_function(tree);
+            check_children(tree);
             break;
         case 10:
             message = 'parse fractions';
@@ -183,7 +185,7 @@ function parse_function(tree) {
                 } else {
                     // no power:", "\\sin...
                     console.log('found ' + fu + ' at ' + node.id + ' rest=' + rest);
-                    if (rest.startsWith('§')) {
+                    if (rest == '§') {
                         // \\sin§
                         fu_node.children[0] = remember;
                         tree.nodelist[remember].parent = fu_node.id;
@@ -194,6 +196,8 @@ function parse_function(tree) {
                         //fu_node.children[0] = remember;
                         fu_node.children[0] = arg.id;
                         //tree.nodelist[remember].parent = fu_node.id;
+                        arg.children[0] = remember;
+                        tree.nodelist[remember].parent = arg.id;
                     }
                 }
                 node.content = leftpart + '§';
@@ -682,10 +686,25 @@ function parse_integral(tree) {
             var upper_bound = tree.nodelist[node.children[left_count + 1]];
             var integral = create_node('integral', '', tree);
             var integrand = create_node('leaf', right, tree);
+            // last two characters
+            var differential = right.substring(right.length - 2);
+            if (differential.startsWith('d')) {
+                // repair if differential is too short
+                if (differential.length == 1) {
+                    differential += 'x';
+                }
+                integrand.content = right.substr(0, right.length - 2);
+                var diff = create_node('differential', differential, tree);
+                //integral has four children 
+                integral.children = [lower_bound.id, upper_bound.id, integrand.id, diff.id];
+                diff.parent = integral.id;
+            } else {
+                //integral has three children 
+                integral.children = [lower_bound.id, upper_bound.id, integrand.id];
+            }
+
             // link integral
             integral.parent = node.id;
-            //integral has three children 
-            integral.children = [lower_bound.id, upper_bound.id, integrand.id];
             // now the other directions
             lower_bound.parent = integral.id;
             upper_bound.parent = integral.id;
@@ -1015,7 +1034,7 @@ function paint_tree_recurse(currentNode, nodelist, xa, ya, x, y, ctx, factor) {
 function check_children(tree) {
     console.clear();
     tree.withEachNode(function (node) {
-        console.log('node # =' + node.id + ' ' +node.type + ' ' + node.content + 'parent=' + node.parent);
+        console.log('node #' + node.id + ' ' + node.type + ' ' + node.content + ' parent=' + node.parent);
         if (node.type == 'free') {
             console.log('deleted');
         } else {

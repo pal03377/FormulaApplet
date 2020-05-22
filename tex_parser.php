@@ -59,7 +59,7 @@ include_once 'header.php';
     //                    }
     //                    document.getElementById('ttt').innerHTML = test + message;
     paint_tree(myTree, canvas, 'start of parsing');
-    console.log( '*** list of unknown leafs ***');
+    // console.log( '*** list of unknown leafs ***');
     traverseSimple(
             function (node) {
               if (node.type == 'unknown leaf'){
