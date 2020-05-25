@@ -13,7 +13,7 @@ function parsetree_by_index(tree) {
     switch (counter) {
         case 1:
             message = 'delete spaces';
-            console.clear();
+            // console.clear();
             var temp = tree.leaf.content;
             // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
             // http://www.javascripter.net/faq/backslashinregularexpressions.htm
@@ -47,17 +47,17 @@ function parsetree_by_index(tree) {
         case 8:
             message = 'parse log_base';
             parse_log_lim(tree, 'log'); //log
-            check_children(tree);
+            // check_children(tree);
             break;
         case 9:
             message = 'parse lim';
-            parse_log_lim(tree,'lim'); //lim
-            check_children(tree);
+            parse_log_lim(tree, 'lim'); //lim
+            // check_children(tree);
             break;
         case 10:
             message = 'parse functions';
             parse_function(tree);
-            check_children(tree);
+            // check_children(tree);
             break;
         case 11:
             message = 'parse fractions';
@@ -121,7 +121,7 @@ function parse(tree) {
     while (!end_parse) {
         var temp = parsetree_by_index(tree);
         var message = temp[0];
-        console.log('parse: ' + message);
+        // console.log('parse: ' + message);
         end_parse = temp[1];
         //paint_tree(tree, canvas, message);
     }
@@ -173,24 +173,24 @@ function parse_function(tree) {
                 var fu_node = create_node(type, '', tree);
                 // link node <-> fu_node
                 fu_node.parent = node.id;
-                console.log('left_count=' + left_count + ' id=' + node.id + ' children=' + node.children);
+                // console.log('left_count=' + left_count + ' id=' + node.id + ' children=' + node.children);
                 var remember = node.children[left_count] || 0;
-                console.log('remember=' + remember);
+                // console.log('remember=' + remember);
                 node.children[left_count] = fu_node.id;
                 if (rest.startsWith('^§')) {
                     //fu-power
                     fu_node.content = 'power';
                     rest = rest.substring(2);
-                    console.log('found ' + fu + '^§ (power) at ' + node.id + ' rest=' + rest);
+                    // console.log('found ' + fu + '^§ (power) at ' + node.id + ' rest=' + rest);
                     var arg = create_node('leaf', rest, tree);
                     fu_node.children[0] = remember;
                     tree.nodelist[remember].parent = fu_node.id;
                     fu_node.children[1] = arg.id;
                     arg.parent = fu_node.id;
-                    console.log('type=' + type + ' rest=' + rest);
+                    // console.log('type=' + type + ' rest=' + rest);
                 } else {
                     // no power:", "\\sin...
-                    console.log('found ' + fu + ' rest=' + rest);
+                    // console.log('found ' + fu + ' rest=' + rest);
                     if (rest == '§') {
                         // \\sin§
                         fu_node.children[0] = remember;
@@ -202,16 +202,16 @@ function parse_function(tree) {
                         //fu_node.children[0] = remember;
                         fu_node.children[0] = arg.id;
 
-                        console.log('right_count=' + right_count);
+                        // console.log('right_count=' + right_count);
                         for (var i = left_count + 1; i <= left_count + right_count; i++) {
                             var id = node.children[i];
-                            console.log('i=' + i + ' id=' + id + ' ' + tree.nodelist[id]);
+                            // console.log('i=' + i + ' id=' + id + ' ' + tree.nodelist[id]);
                             arg.children.push(id);
                             tree.nodelist[id].parent = arg.id;
                         }
-                        console.log('node.children=' + node.children);
+                        // console.log('node.children=' + node.children);
                         node.children.splice(left_count, right_count);
-                        console.log('node.children=' + node.children);
+                        // console.log('node.children=' + node.children);
 
                         //tree.nodelist[remember].parent = fu_node.id;
                         //arg.children[0] = remember;
@@ -243,16 +243,16 @@ function parse_frac(tree) {
                 var right = node.content.substring(pos + needle.length);
                 var frac_index = (left.match(/§/g) || []).length; //= left_count
                 // if there is no § in left, then frac_index = 0
-                console.log(i + ' content=' + node.content + ' pos=' + pos);
-                console.log(' left=###' + left + '###' + ' right=###' + right + '###');
+                // console.log(i + ' content=' + node.content + ' pos=' + pos);
+                // console.log(' left=###' + left + '###' + ' right=###' + right + '###');
                 // node has one § less! 
                 node.content = left + '§' + right;
-                console.log('new=' + node.content);
+                // console.log('new=' + node.content);
                 //check
                 var test = tree.nodelist[node.children[frac_index]].type;
-                console.log(test + ' should be bracket-{');
+                // console.log(test + ' should be bracket-{');
                 test = tree.nodelist[node.children[frac_index + 1]].type;
-                console.log(test + ' should be bracket-{');
+                // console.log(test + ' should be bracket-{');
 
                 var fraction = create_node('frac', '', tree);
                 // link fraction
@@ -342,7 +342,7 @@ function unify_sub_exponent(tree) {
                         var rest = node.content.substr(pos + 2);
                         // var predecessor = node.content.substr(pos - 1, 1);
                         var exponent_or_subscript = node.content.substr(pos + 1, 1);
-                        console.log(leftpart + ' | ' + needle + exponent_or_subscript + ' | ' + rest + ' left_count=' + left_count);
+                        // console.log(leftpart + ' | ' + needle + exponent_or_subscript + ' | ' + rest + ' left_count=' + left_count);
 
                         // if (predecessor !== '§') {
                         //     new_node = create_node('leaf', predecessor, tree);
@@ -394,7 +394,7 @@ function unify_sub_or_power(tree, power) {
                 var left_count = (leftpart.match(/§/g) || []).length;
                 var base = node.content.substr(pos - 1, 1);
                 var rest = node.content.substr(pos + 2);
-                console.log(leftpart + ' | ' + base + needle + ' | ' + rest + ' left_count=' + left_count);
+                // console.log(leftpart + ' | ' + base + needle + ' | ' + rest + ' left_count=' + left_count);
                 if (base !== '§') {
                     new_node = create_node('leaf', base, tree);
                     new_node.parent = node.id;
@@ -422,7 +422,7 @@ function parse_sub_power(tree, power) {
                 var leftpart = node.content.substring(0, pos);
                 var middlepart = node.content.substr(pos, 3);
                 var rest = node.content.substr(pos + 3);
-                console.log('#>' + leftpart + ' | ' + middlepart + ' | ' + rest);
+                // console.log('#>' + leftpart + ' | ' + middlepart + ' | ' + rest);
                 var left_count = (leftpart.match(/§/g) || []).length; //same for ^ and _
                 var base = tree.nodelist[node.children[left_count]];
                 var exponent_or_subscript = tree.nodelist[node.children[left_count + 1]];
@@ -495,7 +495,7 @@ function parse_factors(tree) {
                     content_with_times += '*' + content[k];
                 }
                 node.content = content_with_times;
-                console.log('time-ified:' + content_with_times);
+                // console.log('time-ified:' + content_with_times);
             }
         }
         i++;
@@ -513,17 +513,17 @@ function parse_integral(tree) {
         var needle = '\\int_§^§';
         var pos = content.indexOf(needle);
         if (pos > -1) {
-            console.log('int found at ' + content + ' pos= ' + pos);
+            // console.log('int found at ' + content + ' pos= ' + pos);
             var left = node.content.substring(0, pos);
             var right = node.content.substring(pos + needle.length);
             var left_count = (left.match(/§/g) || []).length;
             var right_count = (right.match(/§/g) || []).length;
             // if there is no § in left, then left_count = 0
-            console.log(' content=' + node.content + ' pos=' + pos);
+            // console.log(' content=' + node.content + ' pos=' + pos);
             // console.log(' left=###' + left + '###' + ' right=###' + right + '###');
             var newcontent = left + '§';
             // node has one § less! 
-            console.log('newcontent=' + newcontent);
+            // console.log('newcontent=' + newcontent);
             node.content = newcontent;
             //check
             var lower_bound = tree.nodelist[node.children[left_count]];
@@ -555,18 +555,18 @@ function parse_integral(tree) {
             integrand.parent = integral.id;
             node.children[left_count] = integral.id;
             node.children.splice(left_count + 1, 1);
-            console.log('left_count=' + left_count);
-            console.log('right_count=' + right_count);
+            // console.log('left_count=' + left_count);
+            // console.log('right_count=' + right_count);
             for (var i = left_count + 1; i <= left_count + right_count; i++) {
                 var id = node.children[i];
-                console.log('i=' + i + ' id=' + id);
-                console.log(tree.nodelist[id]);
+                // console.log('i=' + i + ' id=' + id);
+                // console.log(tree.nodelist[id]);
                 integrand.children.push(id);
                 tree.nodelist[id].parent = integrand.id;
             }
-            console.log(node.children);
+            // console.log(node.children);
             node.children.splice(left_count + 1, right_count);
-            console.log(node.children);
+            // console.log(node.children);
         }
     });
 }
@@ -597,12 +597,12 @@ function parse_radix(tree, nthroot) {
                     var right = node.content.substring(pos + needle.length);
                     var rad_index = (left.match(/§/g) || []).length;
                     // if there is no § in left, then rad_index = 0
-                    console.log(i + ' content=' + node.content + ' pos=' + pos);
-                    console.log(' left=###' + left + '###' + ' right=###' + right + '###');
+                    // console.log(i + ' content=' + node.content + ' pos=' + pos);
+                    // console.log(' left=###' + left + '###' + ' right=###' + right + '###');
                     if (nthroot === true) {
                         var newcontent = left + '§' + right;
                         // node has one § less! 
-                        console.log('new=' + newcontent);
+                        // console.log('new=' + newcontent);
                         node.content = newcontent;
                         //check
                         var test = tree.nodelist[node.children[rad_index]].type;
@@ -624,7 +624,7 @@ function parse_radix(tree, nthroot) {
                         // console.log('new=' + newcontent);
                         //check
                         var test = tree.nodelist[node.children[rad_index]].type;
-                        console.log(test + ' should be bracket-{');
+                        // console.log(test + ' should be bracket-{');
                         node.content = newcontent;
                         var radix = create_node('sqrt', '', tree);
                         // link radix
@@ -652,22 +652,22 @@ function parse_log_lim(tree, kind) {
         do {
             var pos = node.content.indexOf(needle);
             if (pos > -1) {
-                console.log(needle + ' found at ' + node.content + ' pos= ' + pos);
+                // console.log(needle + ' found at ' + node.content + ' pos= ' + pos);
                 var left = node.content.substring(0, pos);
                 var right = node.content.substring(pos + needle.length);
                 var left_count = (left.match(/§/g) || []).length;
                 var right_count = (right.match(/§/g) || []).length;
                 // if there is no § in left, then left_count = 0
-                console.log(' content=' + node.content + ' pos=' + pos);
+                // console.log(' content=' + node.content + ' pos=' + pos);
                 // console.log(' left=###' + left + '###' + ' right=###' + right + '###');
                 var newcontent = left + '§'; //right is moved to arg
                 // node has one § less! 
-                console.log('newcontent=' + newcontent);
+                // console.log('newcontent=' + newcontent);
                 node.content = newcontent;
                 //check
                 var base = tree.nodelist[node.children[left_count]];
                 var log = create_node('fn-' + kind, '', tree);
-                var arg = create_node('leaf', right, tree); 
+                var arg = create_node('leaf', right, tree);
                 // link log
                 log.parent = node.id;
                 //log has two children 
@@ -708,6 +708,7 @@ function tree2TEX(tree) {
         var number_of_childs = (node.children || []).length;
         // console.log('children=' + node.children);
         depth++;
+        // console.log(depth);
         var res = [];
         for (var i = 0; i < number_of_childs; i++) {
             var child = tree.nodelist[node.children[i]];
@@ -715,8 +716,13 @@ function tree2TEX(tree) {
         }
         var done = false;
         if (number_of_childs === 0) {
-            // leaf
-            result = node.content;
+            // leaf, num, text
+            if (node.type.startsWith('greek')) {
+                result = '\\' + node.content;
+            } else {
+                result = node.content;
+            }
+            done = true;
         }
         if (number_of_childs === 1) {
             if (node.type.startsWith('root')) {
@@ -749,9 +755,12 @@ function tree2TEX(tree) {
             if (node.type.startsWith('plusminus') || node.type.startsWith('timesdivided')) {
                 binaryoperator = true;
             }
-            if (node.type.startsWith('power') || node.type.startsWith('sub')) {
+            if (node.type.startsWith('*')) {
                 binaryoperator = true;
             }
+            // if (node.type.startsWith('power') || node.type.startsWith('sub')) {
+            //     binaryoperator = true;
+            // }
             if (binaryoperator) {
                 result = res[0];
                 result += node.content;
@@ -764,18 +773,43 @@ function tree2TEX(tree) {
                 result += res[1];
                 done = true;
             }
+            if ((!done) && node.type.startsWith('sub')) {
+                result = res[0];
+                result += '_';
+                result += res[1];
+                done = true;
+            }
+            if ((!done) && node.type.startsWith('power')) {
+                result = res[0];
+                result += '^';
+                result += res[1];
+                done = true;
+            }
             if ((!done) && node.type.startsWith('nthroot')) {
                 result = '\\sqrt';
                 result += res[0];
                 result += res[1];
                 done = true;
             }
-            if (node.type.startsWith('definite_integral')) {
+            if ((!done) && node.type.startsWith('log')) {
+                result = '\\log_';
+                result += res[0];
+                result += res[1];
+                done = true;
+            }
+            if ((!done) && node.type.startsWith('lim')) {
+                result = '\\lim_';
+                result += res[0];
+                result += res[1];
+                done = true;
+            }
+            if (node.type.startsWith('integral')) {
                 result = '\\int_';
                 result += res[0];
                 result += '^';
                 result += res[1];
                 result += res[2];
+                result += res[3];
                 done = true;
             }
         }

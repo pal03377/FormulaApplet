@@ -38,8 +38,35 @@ include_once 'header.php';
         var temp = parsetree_by_index(myTree);
         var message = temp[0];
         end_parse = temp[1];
+        // parse(myTree);
+        // var tex = tree2TEX(myTree);
+        // message = 'end parse';
         paint_tree(myTree, canvas, message);
+        // if(end_parse){
+            // console.log(tex);
+        // }
     });
+    $( '#check' ).click( function(event){
+      console.log('check button clicked');
+      $(".tex-example").each(function () {
+        var index = $(".tex-example").index(this);
+        mf = mathField[index];
+        myTree = new tree();
+        var tex_1 = mf.latex();
+        myTree.leaf.content = tex_1;
+        parse(myTree);
+        var tex_2 = tree2TEX(myTree);
+        var equal = (tex_1 == tex_2);
+        if (equal){
+          $(this).removeClass('isNotEqual').addClass('isEqual');
+        } else {
+          $(this).removeClass('isEqual').addClass('isNotEqual');
+          console.log( tex_1 );
+        console.log( tex_2 );
+       }
+      });
+    });
+
     // button.mouseup( function(){button.attr('data-clickstate', 'up')});
   });
 
@@ -88,7 +115,7 @@ waitfor_mathquill_and_if_ready_then_do(function () {
 <h2>TEX Parser</h2>
 
         <p id="output">output</p>
-        <!-- p><button id="cont">Weiter</button></p -->
+        <p><button id="check">Check all</button></p>
         <!-- p id="version">version</p -->
         <p class="tex-example">5,6^3ab^5(p+q)rs^e \cdot 2vw^{\left(n-2\right)}\ \cdot\ \Gamma^\alpha</p><br />
         <p class="tex-example">5,7y_n+rs_{n+2}-z_{\max}^8</p><br />

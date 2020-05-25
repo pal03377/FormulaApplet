@@ -109,7 +109,7 @@ function create_node(type, content, tree) {
         temp.type = type;
         temp.content = content;
         temp.children = [];
-        console.log('recycling ' + last_free);
+        // console.log('recycling ' + last_free);
         return temp;
     }
 }
@@ -166,7 +166,7 @@ function delete_single_nodes(tree) {
     for (var i = 0; i < list_of_nodes.length; i++) {
         var node = list_of_nodes[i];
         if (node.content === '§' && node.children.length === 1 && node.type !== 'free') {
-            console.log('found single § node at ' + node.id);
+            // console.log('found single § node at ' + node.id);
             var siblings = list_of_nodes[node.parent].children;
             var position = siblings.indexOf(node.id);
             // console.log('position=' + position);
@@ -385,7 +385,7 @@ function find_corresponding_right_bracket(content, bra) {
 }
 
 function remove_operators(tree, kind_of_operators) {
-    console.log('remove ' + kind_of_operators);
+    // console.log('remove ' + kind_of_operators);
     var index = 1;
     var stop = false;
     var pos = -1;

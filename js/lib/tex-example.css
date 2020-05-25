@@ -19,3 +19,11 @@ and open the template in the editor.
     border: red solid medium;
     background-color: lightpink;
 }
+.tex-example.isEqual{
+    border: green solid medium;
+    background-color: lightgreen;
+}
+.tex-example.isNotEqual{
+    border: red solid medium;
+    background-color: salmon;
+}
