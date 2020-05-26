@@ -53,6 +53,8 @@ include_once 'header.php';
         mf = mathField[index];
         myTree = new tree();
         var tex_1 = mf.latex();
+        //delete spaces
+        tex_1 = tex_1.replace(/\\\s/g, '');
         myTree.leaf.content = tex_1;
         parse(myTree);
         var tex_2 = tree2TEX(myTree);

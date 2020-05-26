@@ -708,12 +708,13 @@ function tree2TEX(tree) {
         var number_of_childs = (node.children || []).length;
         // console.log('children=' + node.children);
         depth++;
-        // console.log(depth);
         var res = [];
         for (var i = 0; i < number_of_childs; i++) {
             var child = tree.nodelist[node.children[i]];
             res[i] = recurse(child);
         }
+        console.log(depth + ' type ' + node.type + ' content ' + node.content);
+
         var done = false;
         if (number_of_childs === 0) {
             // leaf, num, text
@@ -746,25 +747,27 @@ function tree2TEX(tree) {
                 result += res[0];
                 done = true;
             }
+            if (node.type.startsWith('fu-')) {
+                result = '\\';
+                result += node.type.substr(3);
+                result += res[0];
+                done = true;
+            }
             if (!done) {
                 result = res[0];
             }
         }
         if (number_of_childs >= 2) {
-            var binaryoperator = false;
-            if (node.type.startsWith('plusminus') || node.type.startsWith('timesdivided')) {
-                binaryoperator = true;
-            }
-            if (node.type.startsWith('*')) {
-                binaryoperator = true;
-            }
-            // if (node.type.startsWith('power') || node.type.startsWith('sub')) {
-            //     binaryoperator = true;
-            // }
-            if (binaryoperator) {
+            if (node.type.startsWith('plusminus') || node.type.startsWith('timesdivided') || node.type.startsWith('*')) {
                 result = res[0];
                 result += node.content;
                 result += res[1];
+                if (node.type.startsWith('timesdivided')) {
+                    console.log('before ' + result);
+                    var temp = result.replace(/\\cdot/g, '\\cdot ');
+                    result = temp.replace(/\\cdot  /g, '\\cdot ');
+                    console.log('after  ' + result);
+                }
                 done = true;
             }
             if ((!done) && node.type.startsWith('frac')) {
@@ -783,6 +786,14 @@ function tree2TEX(tree) {
                 result = res[0];
                 result += '^';
                 result += res[1];
+                done = true;
+            }
+            if ((!done) && node.type.startsWith('fu-') && node.content.startsWith('power')) {
+                var fu = node.type.substr(3);
+                result = '\\' + fu + '^';
+                result += res[0];
+                result += res[1];
+                console.log('fu-power ' + result);
                 done = true;
             }
             if ((!done) && node.type.startsWith('nthroot')) {
@@ -809,7 +820,11 @@ function tree2TEX(tree) {
                 result += '^';
                 result += res[1];
                 result += res[2];
-                result += res[3];
+                var r3 = res[3];
+                if (typeof (r3) !== 'undefined') {
+                    result += r3;
+                }
+                console.log('integral=' + result);
                 done = true;
             }
         }
@@ -835,7 +850,7 @@ function tree2TEX(tree) {
             } while (pos > -1)
             result = temp;
         }
-
+        console.log('result ' + result);
         depth--;
         // console.log(node.id + '-----------------------'.slice(0, 2 * depth) + result);
         // console.log('(' + depth + ') ' + result);
