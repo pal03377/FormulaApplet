@@ -58,13 +58,22 @@ include_once 'header.php';
         myTree.leaf.content = tex_1;
         parse(myTree);
         var tex_2 = tree2TEX(myTree);
+        console.log('tex_1 before ' + tex_1);
+        var temp = tex_1.replace(/\\cdot/g, '\\cdot ');
+        tex_1 = temp.replace(/\\cdot  /g, '\\cdot ');
+        console.log('tex_1 after  ' + tex_1);
+        console.log('tex_2 before ' + tex_2);
+        var temp = tex_2.replace(/\\cdot/g, '\\cdot ');
+        tex_2 = temp.replace(/\\cdot  /g, '\\cdot ');
+        console.log('tex_2 after  ' + tex_2);
+
         var equal = (tex_1 == tex_2);
         if (equal){
           $(this).removeClass('isNotEqual').addClass('isEqual');
         } else {
           $(this).removeClass('isEqual').addClass('isNotEqual');
           console.log( tex_1 );
-        console.log( tex_2 );
+          console.log( tex_2 );
        }
       });
     });
