@@ -666,7 +666,7 @@ function parse_log_lim(tree, kind) {
                 node.content = newcontent;
                 //check
                 var base = tree.nodelist[node.children[left_count]];
-                var log = create_node('fn-' + kind, '', tree);
+                var log = create_node('fu-' + kind, '', tree);
                 var arg = create_node('leaf', right, tree);
                 // link log
                 log.parent = node.id;
@@ -707,13 +707,13 @@ function tree2TEX(tree) {
     function recurse(node) {
         var number_of_childs = (node.children || []).length;
         // console.log('children=' + node.children);
+        // console.log(depth + ' type ' + node.type + ' content ' + node.content + 'num_of_childs=' + number_of_childs);
         depth++;
         var res = [];
         for (var i = 0; i < number_of_childs; i++) {
             var child = tree.nodelist[node.children[i]];
             res[i] = recurse(child);
         }
-        console.log(depth + ' type ' + node.type + ' content ' + node.content);
 
         var done = false;
         if (number_of_childs === 0) {
@@ -750,6 +750,21 @@ function tree2TEX(tree) {
             if (node.type.startsWith('fu-')) {
                 result = '\\';
                 result += node.type.substr(3);
+                var child = tree.nodelist[node.children[0]];
+                // \tanxy -> \tan xy
+                var insert_space = true;
+                if (child.type.startsWith('bracket')) {
+                    insert_space = false
+                };
+                if (child.content.startsWith(' ')) {
+                    insert_space = false
+                };
+                if (child.type.startsWith('greek')) {
+                    insert_space = false
+                };
+                if (insert_space) {
+                    result += ' ';
+                }
                 result += res[0];
                 done = true;
             }
@@ -763,10 +778,10 @@ function tree2TEX(tree) {
                 result += node.content;
                 result += res[1];
                 if (node.type.startsWith('timesdivided')) {
-                    console.log('before ' + result);
+                    // console.log('before ' + result);
                     var temp = result.replace(/\\cdot/g, '\\cdot ');
                     result = temp.replace(/\\cdot  /g, '\\cdot ');
-                    console.log('after  ' + result);
+                    // console.log('after  ' + result);
                 }
                 done = true;
             }
@@ -793,7 +808,7 @@ function tree2TEX(tree) {
                 result = '\\' + fu + '^';
                 result += res[0];
                 result += res[1];
-                console.log('fu-power ' + result);
+                console.log('fu-power: ' + result);
                 done = true;
             }
             if ((!done) && node.type.startsWith('nthroot')) {
@@ -802,16 +817,18 @@ function tree2TEX(tree) {
                 result += res[1];
                 done = true;
             }
-            if ((!done) && node.type.startsWith('log')) {
+            if ((!done) && node.type.startsWith('fu-log')) {
                 result = '\\log_';
                 result += res[0];
                 result += res[1];
                 done = true;
             }
-            if ((!done) && node.type.startsWith('lim')) {
+            // if ((!done) && node.type.startsWith('fu-lim')) {
+            if (node.type.startsWith('fu-lim')) {
                 result = '\\lim_';
                 result += res[0];
                 result += res[1];
+                console.log('lim: ' + result);
                 done = true;
             }
             if (node.type.startsWith('integral')) {
@@ -850,7 +867,7 @@ function tree2TEX(tree) {
             } while (pos > -1)
             result = temp;
         }
-        console.log('result ' + result);
+        // console.log('result ' + result);
         depth--;
         // console.log(node.id + '-----------------------'.slice(0, 2 * depth) + result);
         // console.log('(' + depth + ') ' + result);
