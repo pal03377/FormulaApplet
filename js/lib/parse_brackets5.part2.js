@@ -808,7 +808,7 @@ function tree2TEX(tree) {
                 result = '\\' + fu + '^';
                 result += res[0];
                 result += res[1];
-                console.log('fu-power: ' + result);
+                // console.log('fu-power: ' + result);
                 done = true;
             }
             if ((!done) && node.type.startsWith('nthroot')) {
@@ -828,7 +828,7 @@ function tree2TEX(tree) {
                 result = '\\lim_';
                 result += res[0];
                 result += res[1];
-                console.log('lim: ' + result);
+                // console.log('lim: ' + result);
                 done = true;
             }
             if (node.type.startsWith('integral')) {
@@ -841,7 +841,7 @@ function tree2TEX(tree) {
                 if (typeof (r3) !== 'undefined') {
                     result += r3;
                 }
-                console.log('integral=' + result);
+                // console.log('integral=' + result);
                 done = true;
             }
         }
