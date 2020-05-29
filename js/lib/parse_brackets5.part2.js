@@ -59,51 +59,55 @@ function parsetree_by_index(tree) {
             parse_function(tree);
             // check_children(tree);
             break;
-        case 11:
-            message = 'parse fractions';
-            parse_frac(tree);
-            break;
         case 12:
+            message = 'parse fractions';
+            parse_frac_textcolor(tree, 'frac');
+            break;
+        case 13:
+            message = 'parse textcolor (unit)';
+            parse_frac_textcolor(tree, 'textcolor');
+            break;
+        case 13:
             message = 'delete single § nodes'
             var list_of_free = delete_single_nodes(tree);
             break;
-        case 13:
+        case 14:
             message = 'parse greek';
             parse_greek(tree);
             break;
-        case 14:
+        case 15:
             message = 'parse numbers';
             parse_numbers(tree);
             break;
-        case 15:
+        case 16:
             message = 'delete single § nodes'
             var list_of_free = delete_single_nodes(tree);
             break;
-        case 16:
+        case 17:
             message = 'unify subscript (part 2) '
             unify_sub_or_power(tree, false);
             break;
-        case 17:
+        case 18:
             message = 'parse subscript'
             parse_sub_power(tree, false);
             break;
-        case 18:
+        case 19:
             message = 'unify power (part 2) '
             unify_sub_or_power(tree, true);
             break;
-        case 19:
+        case 20:
             message = 'parse power'
             parse_sub_power(tree, true);
             break;
-        case 20:
+        case 21:
             message = 'delete single § nodes'
             var list_of_free = delete_single_nodes(tree);
             break;
-        case 21:
+        case 22:
             message = 'parse factors';
             parse_factors(tree);
             break;
-        case 22:
+        case 23:
             message = 'delete single § nodes';
             var list_of_free = delete_single_nodes(tree);
             break;
@@ -149,7 +153,7 @@ function parse_brackets(tree) {
 }
 
 function function_list() {
-    var result = ['sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'lg', 'log', 'exp', 'textcolor'];
+    var result = ['sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'lg', 'log', 'exp'];
     return result;
 }
 
@@ -173,9 +177,9 @@ function parse_function(tree) {
                 var fu_node = create_node(type, '', tree);
                 // link node <-> fu_node
                 fu_node.parent = node.id;
-                // console.log('left_count=' + left_count + ' id=' + node.id + ' children=' + node.children);
+                console.log('left_count=' + left_count + ' id=' + node.id + ' children=' + node.children);
                 var remember = node.children[left_count] || 0;
-                // console.log('remember=' + remember);
+                console.log('remember=' + remember);
                 node.children[left_count] = fu_node.id;
                 if (rest.startsWith('^§')) {
                     //fu-power
@@ -190,7 +194,7 @@ function parse_function(tree) {
                     // console.log('type=' + type + ' rest=' + rest);
                 } else {
                     // no power:", "\\sin...
-                    // console.log('found ' + fu + ' rest=' + rest);
+                    console.log('found ' + fu + ' rest=' + rest);
                     if (rest == '§') {
                         // \\sin§
                         fu_node.children[0] = remember;
@@ -202,10 +206,10 @@ function parse_function(tree) {
                         //fu_node.children[0] = remember;
                         fu_node.children[0] = arg.id;
 
-                        // console.log('right_count=' + right_count);
+                        console.log('node=' + node.content + ' right_count=' + right_count + ' rest=' + rest);
                         for (var i = left_count + 1; i <= left_count + right_count; i++) {
                             var id = node.children[i];
-                            // console.log('i=' + i + ' id=' + id + ' ' + tree.nodelist[id]);
+                            console.log('i=' + i + ' id=' + id + ' ' + tree.nodelist[id]);
                             arg.children.push(id);
                             tree.nodelist[id].parent = arg.id;
                         }
@@ -232,8 +236,8 @@ function parse_function(tree) {
 
 }
 
-function parse_frac(tree) {
-    needle = '\\frac§§';
+function parse_frac_textcolor(tree, kind) {
+    needle = '\\' + kind + '§§';
     tree.withEachNode(function (node) {
         var stop = false;
         do {
@@ -254,7 +258,7 @@ function parse_frac(tree) {
                 test = tree.nodelist[node.children[frac_index + 1]].type;
                 // console.log(test + ' should be bracket-{');
 
-                var fraction = create_node('frac', '', tree);
+                var fraction = create_node(kind, '', tree);
                 // link fraction
                 fraction.parent = node.id;
                 //radix has two children 
