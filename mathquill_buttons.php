@@ -5,10 +5,11 @@ include_once 'header.php';
 
 <body>
 <h1><?php echo $title; ?></h1>
-<p>MathQuill: <span id="editable-math"></span> 
+<p>MathQuill: <span id="editable-math"></span> <br />
 <button id="sqrtA" class='button'> Square Root (cmd)</button>
 <button id="sqrtB" class='button'> Square Root (typedText)</button>
-<button id="integral" class='button'> Integral</button></p>
+<button id="integral" class='button'> Integral</button>
+<button id="unit" class='button'> Unit</button></p>
 <br />
 <style>
 .button {
@@ -40,7 +41,7 @@ include_once 'header.php';
 
 
     var eMath = $('#editable-math')[0]; latexSource = $('#latex'); 
-    sqrt_buttonA = $('#sqrtA'); sqrt_buttonB = $('#sqrtB'); integral_button = $('#integral');
+    sqrt_buttonA = $('#sqrtA'); sqrt_buttonB = $('#sqrtB'); integral_button = $('#integral'); unit_button = $('#unit');
 
     var MQ = MathQuill.getInterface(2);
     mf = MQ.MathField(eMath, {handlers:{
@@ -63,6 +64,12 @@ include_once 'header.php';
       console.log('integral_button event');
       mf.typedText('\\int ');
     });
+    unit_button.click( function() {
+      console.log('unit_button event');
+      var temp = mf.latex();
+      temp +='\\textcolor{blue}{ }';
+      mf.latex(temp);
+   });
 
     latexSource.bind('keydown keypress', function() {
     var oldtext = latexSource.val();
