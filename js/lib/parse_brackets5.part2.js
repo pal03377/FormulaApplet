@@ -59,11 +59,11 @@ function parsetree_by_index(tree) {
             parse_function(tree);
             // check_children(tree);
             break;
-        case 12:
+        case 11:
             message = 'parse fractions';
             parse_frac_textcolor(tree, 'frac');
             break;
-        case 13:
+        case 12:
             message = 'parse textcolor (unit)';
             parse_frac_textcolor(tree, 'textcolor');
             break;
