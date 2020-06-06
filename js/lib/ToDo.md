@@ -1,8 +1,12 @@
 # *ToDo* #
-* Test und Debugging
-* Einheiten
+* Einheiten etc.
+    * physikalische Einheiten
     * Grad, Minuten, Sekunden
-* Gemischte Zahlen
+    * Gemischte Zahlen
 * <s>Limes</s>
 * Objektorientierte Programmierung
+    * Vereinheitlichung des Slice-Teils
+    * Test und Debugging
+    * TypeScript
 * Auf Gleichheit testen
+    * Gleichheitszeichen

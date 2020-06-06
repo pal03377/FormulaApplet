@@ -3,7 +3,6 @@ var counter = 0;
 function parsetree_init() {
     counter = 0;
 }
-
 function parsetree_by_index(tree) {
     counter++;
     var end_parse = false;
@@ -118,7 +117,6 @@ function parsetree_by_index(tree) {
     // check_children(tree);
     return [message, end_parse];
 }
-
 function parse(tree) {
     var end_parse = false;
     parsetree_init();
@@ -130,7 +128,6 @@ function parse(tree) {
         //paint_tree(tree, canvas, message);
     }
 }
-
 function parse_brackets(tree) {
     var list_of_nodes = tree.nodelist;
     var index_of_last_node = 0;
@@ -151,12 +148,10 @@ function parse_brackets(tree) {
     } while (stop === false);
     return list_of_nodes;
 }
-
 function function_list() {
     var result = ['sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'lg', 'log', 'exp'];
     return result;
 }
-
 function parse_function(tree) {
     // including function^exponent syntax, e.g. sin^2(x)
 
@@ -235,7 +230,6 @@ function parse_function(tree) {
     });
 
 }
-
 function parse_frac_textcolor(tree, kind) {
     needle = '\\' + kind + '§§';
     tree.withEachNode(function (node) {
@@ -274,7 +268,6 @@ function parse_frac_textcolor(tree, kind) {
         } while (stop === false)
     })
 }
-
 function greek_list() {
     result = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta"];
     result = result.concat(["iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi"]);
@@ -286,7 +279,6 @@ function greek_list() {
     result = result.concat(["to", "infty"]);
     return result;
 }
-
 function parse_greek(tree) {
     var i = 0;
     // length of tree.nodelist may change -> 
@@ -327,7 +319,6 @@ function parse_greek(tree) {
         i++;
     } while (i < tree.nodelist.length);
 }
-
 function unify_sub_exponent(tree) {
     for (var needle of ['_', '^']) {
         tree.withEachNode(function (node) {
@@ -378,7 +369,6 @@ function unify_sub_exponent(tree) {
         });
     }
 }
-
 function unify_sub_or_power(tree, power) {
     var needle = '_§';
     if (power) {
@@ -409,7 +399,6 @@ function unify_sub_or_power(tree, power) {
         } while (nextnode == false)
     });
 }
-
 function parse_sub_power(tree, power) {
     var needle = '§_§';
     var type = 'sub';
@@ -455,7 +444,6 @@ function parse_sub_power(tree, power) {
         } while (stop === false);
     });
 }
-
 function parse_numbers(tree) {
     tree.withEachNode(function (node) {
         if (node.type == 'leaf') {
@@ -477,7 +465,6 @@ function parse_numbers(tree) {
         }
     })
 }
-
 function parse_factors(tree) {
     var i = 0;
     // length of tree.nodelist may change -> 
@@ -508,7 +495,6 @@ function parse_factors(tree) {
     remove_operators(tree, 'invisible_times')
     //check_children(tree);
 }
-
 function parse_integral(tree) {
     // for (var i = 0; i < list_of_nodes.length; i++) {
     // does not fit because length of list changes
@@ -574,15 +560,12 @@ function parse_integral(tree) {
         }
     });
 }
-
 function parse_sqrt(tree) {
     parse_radix(tree, false);
 }
-
 function parse_nthroot(tree) {
     parse_radix(tree, true);
 }
-
 function parse_radix(tree, nthroot) {
     var i = 0;
     var stop = false;
@@ -648,7 +631,6 @@ function parse_radix(tree, nthroot) {
         }
     } while (stop === false);
 }
-
 function parse_log_lim(tree, kind) {
     var needle = '\\' + kind + '_§';
     tree.withEachLeaf(function (node) {
@@ -699,11 +681,9 @@ function parse_log_lim(tree, kind) {
             } else {
                 stop = true;
             }
-
         } while (stop == false)
     });
 }
-
 function tree2TEX(tree) {
     var depth = 0;
     return recurse(tree.root);
@@ -878,10 +858,8 @@ function tree2TEX(tree) {
         return result;
     }
 }
-
 // output to canvas
 col = 0;
-
 function paint_tree(tree, canvas, message) {
     var ctx = canvas.getContext("2d");
     col = "#ffffdf";
@@ -893,7 +871,6 @@ function paint_tree(tree, canvas, message) {
     paint_tree_recurse(tree.root, tree.nodelist, -9999, -9999, 0, 0, ctx, 1);
     ctx.fillText(message, 20, 30);
 };
-
 function paint_tree_callback(currentNode, xa, ya, x, y, ctx) {
     // console.log(currentNode.id + '::' + currentNode.children);
     // console.log(xa + ' ' + ya + ' ' + x + ' ' + y);
@@ -934,7 +911,6 @@ function paint_tree_callback(currentNode, xa, ya, x, y, ctx) {
         ctx.fillText(currentNode.content, xx + 2, yy + 15);
     }
 };
-
 function paint_tree_recurse(currentNode, nodelist, xa, ya, x, y, ctx, factor) {
     paint_tree_callback(currentNode, xa, ya, x, y, ctx);
     var xa = x;
@@ -946,7 +922,6 @@ function paint_tree_recurse(currentNode, nodelist, xa, ya, x, y, ctx, factor) {
         paint_tree_recurse(nodelist[currentNode.children[i]], nodelist, xa, ya, xa + factor * (i - 0.5 * (cnchl - 1)), y + 1, ctx, factor);
     }
 };
-
 function check_children(tree) {
     console.clear();
     tree.withEachNode(function (node) {

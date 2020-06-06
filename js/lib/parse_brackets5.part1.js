@@ -190,7 +190,6 @@ node.prototype.isRightmostChild = function (nodelist) {
         return isRightmost;
     }
 };
-
 var traverseDepthFirstWithPrefix = function (prefix, callback, nodelist) {
     (function recurse(currentNode) {
         prefix(currentNode);
@@ -222,7 +221,6 @@ var traverseSimple = function (callback, nodelist) {
         callback(node);
     }
 };
-
 function find_left_bracket(node, bra) {
     var long = '\\left' + bra;
     if (bra === '{') {
@@ -279,7 +277,6 @@ function find_left_bracket(node, bra) {
     //    console.log('Result for ' + bra + ': Found ' + bra_kind + ' at ' + min_pos);
     return [min_pos, bra_kind];
 }
-
 function find_leftmost_bracket(node) {
     var left_pos = -1;
     var bra_kind = 'nothing';
@@ -326,7 +323,6 @@ function find_leftmost_bracket(node) {
     }
     return [left_pos, bra_kind];
 }
-
 function find_corresponding_right_bracket(content, bra) {
     var rightbra = '';
     //    console.log('look for ' + bra + ' in ' + content);
@@ -383,7 +379,6 @@ function find_corresponding_right_bracket(content, bra) {
     }
     return [left_pos, bra.length, right_pos, rightbra.length];
 }
-
 function remove_operators(tree, kind_of_operators) {
     // console.log('remove ' + kind_of_operators);
     var index = 1;
@@ -504,7 +499,7 @@ function remove_operators(tree, kind_of_operators) {
                 //            console.log('node.id=' + node.id);
 
                 // Upper connection: connect new node operator with former parent of node
-                tree.nodelist[node.parent].children[position] = operator.id;
+                tree.nodelist[node.parent].children[position] = operator.id; 
                 operator.parent = node.parent;
                 // Left and right connection: 
                 // connect new node operator at left side with old node, but left part only
