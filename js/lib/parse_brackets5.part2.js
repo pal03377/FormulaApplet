@@ -72,11 +72,11 @@ function parsetree_by_index(tree) {
             break;
         case 11:
             message = 'parse fractions';
-            parse_frac_textcolor(tree, 'frac');
+            parse_frac(tree);
             break;
         case 12:
             message = 'parse textcolor (unit)';
-            parse_frac_textcolor(tree, 'textcolor');
+            parse_unit(tree);
             break;
         case 13:
             message = 'delete single § nodes'
@@ -151,7 +151,7 @@ function parse_brackets(tree) {
             if (left_pos == -1) {
                 stop = true;
             }
-        } while (stop == false)
+        } while (stop === false)
     });
     return tree.nodelist;
 }
@@ -197,7 +197,7 @@ function unify_sub_exponent(tree) {
                     }
                     node.content = leftpart + needle + '§' + rest;
                 }
-            } while (stop == false)
+            } while (stop === false)
         });
     }
 }
@@ -332,7 +332,7 @@ function parse_radix(tree, nthroot) {
             } else {
                 stop = true;
             }
-        } while (stop == false)
+        } while (stop === false)
     });
 }
 
@@ -375,7 +375,7 @@ function parse_log_lim(tree, kind) {
             } else {
                 stop = true;
             }
-        } while (stop == false)
+        } while (stop === false)
     });
 }
 
@@ -463,8 +463,8 @@ function parse_function(tree) {
 
 }
 
-function parse_frac_textcolor(tree, kind) {
-    needle = '\\' + kind + '§§';
+function parse_frac(tree) {
+    needle = '\\frac§§';
     tree.withEachLeaf(function (node) {
         var stop = false;
         do {
@@ -485,7 +485,7 @@ function parse_frac_textcolor(tree, kind) {
                 test = tree.nodelist[node.children[frac_index + 1]].type;
                 // console.log(test + ' should be bracket-{');
 
-                var fraction = create_node(kind, '', tree);
+                var fraction = create_node('frac', '', tree);
                 // link fraction
                 fraction.parent = node.id;
                 //radix has two children 
@@ -495,6 +495,44 @@ function parse_frac_textcolor(tree, kind) {
                 tree.nodelist[node.children[frac_index + 1]].parent = fraction.id;
                 node.children[frac_index] = fraction.id;
                 node.children.splice(frac_index + 1, 1);
+            } else {
+                stop = true;
+            }
+        } while (stop === false)
+    })
+}
+
+function parse_unit(tree) {
+    needle = '\\textcolor§§';
+    tree.withEachLeaf(function (node) {
+        var stop = false;
+        do {
+            pos = node.content.indexOf(needle);
+            if (pos > -1) {
+                var left = node.content.substring(0, pos);
+                var right = node.content.substring(pos + needle.length);
+                var unit_index = (left.match(/§/g) || []).length; //= left_count
+                // if there is no § in left, then unit_index = 0
+                // console.log(i + ' content=' + node.content + ' pos=' + pos);
+                // console.log(' left=###' + left + '###' + ' right=###' + right + '###');
+                // node has one § less! 
+                node.content = left + '§' + right;
+                // console.log('new=' + node.content);
+                var bracket = tree.nodelist[node.children[unit_index]];
+                var test = tree.nodelist[node.children[unit_index + 1]].type;
+                //check
+                console.log(bracket.type + ' and ' + test + ' should be bracket-{');
+                // fetch the color
+                var color = tree.nodelist[bracket.children[0]].content;
+                var unit = create_node('unit', color, tree);
+                // link unit
+                unit.parent = node.id;
+                //unit has one child 
+                unit.children[0] = node.children[unit_index + 1];
+                // now the other directions
+                tree.nodelist[node.children[unit_index + 1]].parent = unit.id;
+                node.children[unit_index ] = unit.id;
+                node.children.splice(unit_index + 1, 1); //one child less
             } else {
                 stop = true;
             }
