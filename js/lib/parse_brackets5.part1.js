@@ -158,6 +158,24 @@ tree.prototype.withEachLeaf = function (doThis) {
     )
 }
 
+node.prototype.isInUnit = function(tree) {
+    var result = false;
+    var stop = false;
+    var temp = this;
+    do {
+        if (temp.type == 'unit') {
+            result = true;
+            stop = true;
+        } else {
+            temp = tree.nodelist[temp.parent];
+            if (temp.type == 'root') {
+                stop = true;
+            }
+        }
+    } while (stop === false);
+    return result;
+}
+
 function delete_single_nodes_backup(tree) {
     // delete § nodes
     // nodes with type='free' cannot be deleted a second time
@@ -200,6 +218,8 @@ function delete_single_nodes(tree) {
     });
     return tree.list_of_free;
 }
+
+
 node.prototype.isRightmostChild = function (nodelist) {
     if (this.id === 0) {
         return false;

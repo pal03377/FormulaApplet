@@ -7,7 +7,8 @@
     * Vereinheitlichung des Slice-Teils
     * Test und Debugging
     * TypeScript
-    * Vereinheitlichen der do-while-Schleifen (loop <-> stop)
+    * <s>Vereinheitlichen der do-while-Schleifen (loop <-> stop)</s>
 * Auf Gleichheit testen
     * Gleichheitszeichen
 * Legacy: Applet-Parameter decodieren
+* try-catch

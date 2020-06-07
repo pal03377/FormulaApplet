@@ -163,4 +163,4 @@ background-color: #ffffdf !important;">
 </canvas>
 
 
-<?php include_once 'footer.php'; ?>
+<?php include_once 'footer.php';?>

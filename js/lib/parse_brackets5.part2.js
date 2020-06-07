@@ -531,7 +531,7 @@ function parse_unit(tree) {
                 unit.children[0] = node.children[unit_index + 1];
                 // now the other directions
                 tree.nodelist[node.children[unit_index + 1]].parent = unit.id;
-                node.children[unit_index ] = unit.id;
+                node.children[unit_index] = unit.id;
                 node.children.splice(unit_index + 1, 1); //one child less
             } else {
                 stop = true;
@@ -684,21 +684,23 @@ function parse_sub_power(tree, power) {
 
 function parse_factors(tree) {
     tree.withEachLeaf(function (node) {
-        var content = node.content.trim();
-        // console.log('factor leaf ' + content);
-        if (content == "") {
-            content = "?";
-        }
-        if (content.length == 1) {
-            // console.log('nothing to do');
-        } else {
-            // abc -> a*b*c
-            var content_with_times = content[0];
-            for (var k = 1; k < content.length; k++) {
-                content_with_times += '*' + content[k];
+        if (!node.isInUnit(tree)) {
+            var content = node.content.trim();
+            // console.log('factor leaf ' + content);
+            if (content == "") {
+                content = "?";
             }
-            node.content = content_with_times;
-            // console.log('time-ified:' + content_with_times);
+            if (content.length == 1) {
+                // console.log('nothing to do');
+            } else {
+                // abc -> a*b*c
+                var content_with_times = content[0];
+                for (var k = 1; k < content.length; k++) {
+                    content_with_times += '*' + content[k];
+                }
+                node.content = content_with_times;
+                // console.log('time-ified:' + content_with_times);
+            }
         }
     });
     remove_operators(tree, 'invisible_times');
@@ -751,6 +753,13 @@ function tree2TEX(tree) {
             }
             if (node.type.startsWith('sqrt')) {
                 result = '\\sqrt';
+                result += res[0];
+                done = true;
+            }
+            if (node.type.startsWith('unit')) {
+                result = '\\textcolor{';
+                result += node.content;
+                result += '}';
                 result += res[0];
                 done = true;
             }
@@ -893,11 +902,11 @@ function paint_tree(tree, canvas, message) {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.stroke;
     ctx.font = '12pt Consolas';
-    paint_tree_recurse(tree.root, tree.nodelist, -9999, -9999, 0, 0, ctx, 1);
+    paint_tree_recurse(tree.root, tree.nodelist, -9999, -9999, 0, 0, ctx, 1, tree);
     ctx.fillText(message, 20, 30);
 };
 
-function paint_tree_callback(currentNode, xa, ya, x, y, ctx) {
+function paint_tree_callback(currentNode, xa, ya, x, y, ctx, tree) {
     // console.log(currentNode.id + '::' + currentNode.children);
     // console.log(xa + ' ' + ya + ' ' + x + ' ' + y);
     if (xa > -9999) {
@@ -932,21 +941,24 @@ function paint_tree_callback(currentNode, xa, ya, x, y, ctx) {
         if (curr == 'number') {
             curr = 'num';
         }
+        if (currentNode.isInUnit(tree)) {
+            curr += '(U)';
+        }
         ctx.fillText(curr, xx + 2, yy);
         ctx.fillStyle = "#ff5050";
         ctx.fillText(currentNode.content, xx + 2, yy + 15);
     }
 };
 
-function paint_tree_recurse(currentNode, nodelist, xa, ya, x, y, ctx, factor) {
-    paint_tree_callback(currentNode, xa, ya, x, y, ctx);
+function paint_tree_recurse(currentNode, nodelist, xa, ya, x, y, ctx, factor, tree) {
+    paint_tree_callback(currentNode, xa, ya, x, y, ctx, tree);
     var xa = x;
     var ya = y;
     // factor = factor * 0.75;
     factor = factor * 0.7;
     var cnchl = currentNode.children.length;
     for (var i = 0, length = cnchl; i < length; i++) {
-        paint_tree_recurse(nodelist[currentNode.children[i]], nodelist, xa, ya, xa + factor * (i - 0.5 * (cnchl - 1)), y + 1, ctx, factor);
+        paint_tree_recurse(nodelist[currentNode.children[i]], nodelist, xa, ya, xa + factor * (i - 0.5 * (cnchl - 1)), y + 1, ctx, factor, tree);
     }
 };
 
