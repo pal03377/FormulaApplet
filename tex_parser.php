@@ -89,7 +89,8 @@ include_once 'header.php';
      myTree.leaf.content = mf.latex();
     // parse(myTree);
     document.getElementById('output').innerHTML = out + '<br>';
-    parsetree_init();
+    // parsetree_init();
+    parsetree_counter.setCounter(0);
     // test = tree2TEX(myTree);
     //                    var message = ' Error.';
     //                    if (out === test) {

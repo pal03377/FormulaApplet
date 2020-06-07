@@ -1,16 +1,33 @@
 var counter = 0;
 
-function parsetree_init() {
-    counter = 0;
+// function parsetree_init() {
+//     counter = 0;
+// }
+
+let parsetree_counter={
+    counter: 0,
+
+    getCounter(){
+        return this.counter;
+    },
+
+    setCounter(value){
+        this.counter = value;
+    },
+
+    inc(){
+        this.counter++;
+    }
 }
 
 function parsetree_by_index(tree) {
-    counter++;
+    // counter++;
+    parsetree_counter.inc();
     var end_parse = false;
     // console.log('switch to ' + counter)
     // console.log(tree);
     var message = '';
-    switch (counter) {
+    switch (parsetree_counter.getCounter()) {
         case 1:
             message = 'delete spaces';
             // console.clear();
@@ -121,7 +138,8 @@ function parsetree_by_index(tree) {
 
 function parse(tree) {
     var end_parse = false;
-    parsetree_init();
+    // parsetree_init();
+    parsetree_counter.setCounter(0);
     while (!end_parse) {
         var temp = parsetree_by_index(tree);
         var message = temp[0];
