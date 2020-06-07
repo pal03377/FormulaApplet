@@ -158,7 +158,7 @@ tree.prototype.withEachLeaf = function (doThis) {
     )
 }
 
-function delete_single_nodes(tree) {
+function delete_single_nodes_backup(tree) {
     // delete § nodes
     // nodes with type='free' cannot be deleted a second time
     // without this attribute the same node was pushed to tree.list_of_free twice or more
@@ -178,6 +178,26 @@ function delete_single_nodes(tree) {
             tree.list_of_free.push(node.id);
         }
     }
+    return tree.list_of_free;
+}
+
+function delete_single_nodes(tree) {
+    // delete § nodes
+    // nodes with type='free' may not be deleted a second time
+    tree.withEachNode(function (node) {
+        if (node.content === '§' && node.children.length === 1 && node.type !== 'free') {
+            // console.log('found single § node at ' + node.id);
+            var siblings = tree.nodelist[node.parent].children;
+            var position = siblings.indexOf(node.id);
+            // console.log('position=' + position);
+            // console.log('siblings[position]=' + siblings[position]);
+            // short circuit
+            siblings[position] = node.children[0];
+            tree.nodelist[node.children[0]].parent = node.parent;
+            node.type = 'free';
+            tree.list_of_free.push(node.id);
+        }
+    });
     return tree.list_of_free;
 }
 node.prototype.isRightmostChild = function (nodelist) {
