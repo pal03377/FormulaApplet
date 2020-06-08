@@ -766,10 +766,10 @@ function get_prefix(unitstring) {
                 // } else {
                 //     // default
                 // }
+                prefix = '';
+                name = unitstring;
+                power = 1;
             }
-            prefix = '';
-            name = unitstring;
-            power = 1;
         }
     } else {
         prefix = '';
@@ -805,6 +805,7 @@ function unit2value(unitname) {
     unitlist["bar"] = 100000 * unitlist["Pa"];
     unitlist["Liter"] = 0.001 * unitlist["m"] * unitlist["m"] * unitlist["m"];
     unitlist["Ar"] = 100 * unitlist["m"] * unitlist["m"];
+    
     return unitlist[unitname];
 }
 

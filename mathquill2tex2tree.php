@@ -9,8 +9,9 @@ include_once 'header.php';
 
 <body>
   <p>MathQuill: <span id="editable-math"></span></p>
- <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3,5 \textcolor{blue}{\frac{km}{h}} </textarea>
-  <hr>
+ <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3,5 \textcolor{blue}{\frac{km}{h}} </textarea><br />
+ <button id="unit" class='button'>Insert Unit</button>
+ <hr>
   <textarea id="tree2TEX" style="width:80%;vertical-align:top" class="tex-example">tex2</textarea>
   <canvas id="treecanvas" width="1200" height="600" style="
 border: 1px solid #000000;
@@ -52,6 +53,13 @@ background-color: #ffffdf !important;">
       }
     });
   });
+  unit_button = $('#unit');
+  unit_button.click( function() {
+      console.log('unit_button event');
+      var temp = mf.latex();
+      temp +='\\textcolor{blue}{ }';
+      mf.latex(temp);
+   });
 }
 var canvas = document.getElementById("treecanvas");
 
