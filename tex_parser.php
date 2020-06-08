@@ -129,7 +129,7 @@ waitfor_mathquill_and_if_ready_then_do(function () {
         <p id="output">output</p>
         <p><button id="check">Check all</button></p>
         <!-- p id="version">version</p -->
-        <p class="tex-example">3,5\textcolor{blue}{\frac{km}{h}}+ 2,7\textcolor{blue}{\frac{m}{min}}</p><br />
+        <p class="tex-example">3,5\textcolor{blue}{\frac{km}{h}}+0,045\textcolor{blue}{\frac{cm^3}{s^2}}</p><br />
         <p class="tex-example">5,6^3ab^5(p+q)rs^e \cdot 2vw^{\left(n-2\right)}\ \cdot\ \Gamma^\alpha</p><br />
         <p class="tex-example">5,7y_n+rs_{n+2}-z_{\max}^8</p><br />
         <p class="tex-example">5,7y^n+rs^{n+2}-z_{\max}^{t-8}</p><br />

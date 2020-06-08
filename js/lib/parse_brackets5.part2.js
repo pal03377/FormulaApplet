@@ -76,7 +76,7 @@ function parsetree_by_index(tree) {
             break;
         case 12:
             message = 'parse textcolor (unit)';
-            parse_unit(tree);
+            parse_textcolor(tree);
             break;
         case 13:
             message = 'delete single § nodes'
@@ -115,10 +115,14 @@ function parsetree_by_index(tree) {
             var list_of_free = delete_single_nodes(tree);
             break;
         case 22:
+            message = 'parse unit'
+            parse_unit(tree);
+            break;
+        case 23:
             message = 'parse factors';
             parse_factors(tree);
             break;
-        case 23:
+        case 24:
             message = 'delete single § nodes';
             var list_of_free = delete_single_nodes(tree);
             break;
@@ -502,7 +506,7 @@ function parse_frac(tree) {
     })
 }
 
-function parse_unit(tree) {
+function parse_textcolor(tree) {
     needle = '\\textcolor§§';
     tree.withEachLeaf(function (node) {
         var stop = false;
@@ -521,7 +525,7 @@ function parse_unit(tree) {
                 var bracket = tree.nodelist[node.children[unit_index]];
                 var test = tree.nodelist[node.children[unit_index + 1]].type;
                 //check
-                console.log(bracket.type + ' and ' + test + ' should be bracket-{');
+                // console.log(bracket.type + ' and ' + test + ' should be bracket-{');
                 // fetch the color
                 var color = tree.nodelist[bracket.children[0]].content;
                 var unit = create_node('unit', color, tree);
@@ -624,6 +628,11 @@ function unify_sub_or_power(tree, power) {
                 var left_count = (leftpart.match(/§/g) || []).length;
                 var base = node.content.substr(pos - 1, 1);
                 var rest = node.content.substr(pos + 2);
+                if (node.isInUnit(tree)) {
+                    leftpart = '';
+                    left_count = 0;
+                    base = node.content.substr(0, pos);
+                }
                 // console.log(leftpart + ' | ' + base + needle + ' | ' + rest + ' left_count=' + left_count);
                 if (base !== '§') {
                     new_node = create_node('leaf', base, tree);
@@ -644,6 +653,7 @@ function parse_sub_power(tree, power) {
         type = 'power';
     }
     tree.withEachLeaf(function (node) {
+        // if (!node.isInUnit(tree)) {
         var stop = false;
         var pos = -1;
         do {
@@ -679,6 +689,16 @@ function parse_sub_power(tree, power) {
                 stop = true;
             }
         } while (stop === false);
+        // }
+    });
+}
+
+function parse_unit(tree) {
+    tree.withEachLeaf(function (node) {
+        if (node.isInUnit(tree)) {
+            var temp = get_prefix(node.content);
+            console.log(temp[0] + ' ' + temp[1] + ' ' + temp[2]);
+        }
     });
 }
 
@@ -707,7 +727,45 @@ function parse_factors(tree) {
     //check_children(tree);
 }
 
-// *** output ***//
+function get_prefix(unitstring) {
+    let prefixes = "y__z__a__f__p__n__µ__mcd__hk__M__G__T__P__E__Z__Y";
+    let Mu = String.fromCharCode(956);
+    var prefix = '';
+    var name = 'm';
+    var power = 1;
+    if (unitstring.length > 1) { //e.g. ha, dag, mol, mmol, Pa, hPa, mm
+        if (unitstring.startsWith('da')) { //dag = Dekagramm
+            prefix = 'da';
+            name = unitstring.substr(2);
+            power = 10;
+        } else {
+            // e.g. ha, mol, mmol, Pa, hPa, mm
+            needle = unitstring.substr(0, 1);
+            var pos = prefixes.indexOf(needle);
+            if (pos > -1) {
+                prefix = needle;
+                name = unitstring.substr(1);
+                power = Math.pow(10, pos - 24);
+            } else {
+                if (needle.toLowerCase().equals("µ".toLowerCase()) ||
+                    needle.toLowerCase().equals(Mu.toLowerCase())) {
+                    prefix = "µ";
+                    unitName = unitString.substring(1);
+                    power = 1e-6;
+                } else {
+                    // default
+                }
+            }
+        }
+    } else {
+        prefix = '';
+        name = unitstring;
+        power = 1;
+    }
+    return [prefix, name, power]
+}
+
+// *** output to TEX string ***//
 
 function tree2TEX(tree) {
     var depth = 0;
@@ -892,12 +950,10 @@ function tree2TEX(tree) {
 }
 
 // output to canvas
-col = 0;
 
 function paint_tree(tree, canvas, message) {
     var ctx = canvas.getContext("2d");
-    col = "#ffffdf";
-    ctx.fillStyle = col;
+    ctx.fillStyle = "#ffffdf";
     ctx.beginPath();
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.stroke;
@@ -942,7 +998,8 @@ function paint_tree_callback(currentNode, xa, ya, x, y, ctx, tree) {
             curr = 'num';
         }
         if (currentNode.isInUnit(tree)) {
-            curr += '(U)';
+            // curr += '(U)';
+            ctx.fillStyle = "#e050e0";
         }
         ctx.fillText(curr, xx + 2, yy);
         ctx.fillStyle = "#ff5050";
