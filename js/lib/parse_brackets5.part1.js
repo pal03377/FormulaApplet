@@ -176,29 +176,6 @@ node.prototype.isInUnit = function(tree) {
     return result;
 }
 
-function delete_single_nodes_backup(tree) {
-    // delete § nodes
-    // nodes with type='free' cannot be deleted a second time
-    // without this attribute the same node was pushed to tree.list_of_free twice or more
-    var list_of_nodes = tree.nodelist;
-    for (var i = 0; i < list_of_nodes.length; i++) {
-        var node = list_of_nodes[i];
-        if (node.content === '§' && node.children.length === 1 && node.type !== 'free') {
-            // console.log('found single § node at ' + node.id);
-            var siblings = list_of_nodes[node.parent].children;
-            var position = siblings.indexOf(node.id);
-            // console.log('position=' + position);
-            // console.log('siblings[position]=' + siblings[position]);
-            // short circuit
-            siblings[position] = node.children[0];
-            list_of_nodes[node.children[0]].parent = node.parent;
-            node.type = 'free';
-            tree.list_of_free.push(node.id);
-        }
-    }
-    return tree.list_of_free;
-}
-
 function delete_single_nodes(tree) {
     // delete § nodes
     // nodes with type='free' may not be deleted a second time
@@ -218,7 +195,6 @@ function delete_single_nodes(tree) {
     });
     return tree.list_of_free;
 }
-
 
 node.prototype.isRightmostChild = function (nodelist) {
     if (this.id === 0) {
@@ -422,161 +398,6 @@ function find_corresponding_right_bracket(content, bra) {
     }
     return [left_pos, bra.length, right_pos, rightbra.length];
 }
-
-function remove_operators_backup(tree, kind_of_operators) {
-    // console.log('remove ' + kind_of_operators);
-    var index = 1;
-    var stop = false;
-    var pos = -1;
-    var op_one = '+';
-    var op_two = '-';
-    if (kind_of_operators === 'timesdivided') {
-        op_one = '\\cdot';
-        op_two = ':';
-    }
-    if (kind_of_operators === 'invisible_times') {
-        op_one = '*';
-        op_two = '@%';
-    }
-    // before power, \int has to be parsed
-    if (kind_of_operators === 'power') {
-        op_one = '^';
-        op_two = '@%';
-    }
-    // before sub, \int has to be parsed
-    if (kind_of_operators === 'sub') {
-        op_one = '_';
-        op_two = '@%';
-    }
-    var op_one_len = op_one.length;
-    var op_two_len = op_two.length;
-    do {
-        var node = tree.nodelist[index];
-        // console.log(index + ': ' + node.content);
-        var omitted = true;
-        if (node.type.startsWith('leaf')) {
-            var pos_one = node.content.lastIndexOf(op_one);
-            var pos_two = node.content.lastIndexOf(op_two);
-            var pos_one_flag = false;
-            if (pos_one === -1 && pos_two === -1) {
-                pos = -1;
-            } else {
-                if (pos_one === -1) {
-                    pos = pos_two;
-                }
-                if (pos_two === -1) {
-                    pos = pos_one;
-                    pos_one_flag = true;
-                }
-                if (pos_one > -1 && pos_two > -1) {
-                    pos = pos_one;
-                    pos_one_flag = true;
-                    if (pos_two > pos) {
-                        pos = pos_two;
-                        pos_one_flag = false;
-                    }
-                }
-            }
-
-            if (pos === -1) {
-                index++;
-            } else {
-                // found an operator op_one or op_two in node[index]
-                // console.log(index + ': ' + node.content + ' pos=' + pos);
-                var leftpart = node.content.substring(0, pos);
-                if (pos_one_flag) {
-                    var middlepart = node.content.substring(pos, pos + op_one_len);
-                    var rightpart = node.content.substring(pos + op_one_len);
-                } else {
-                    var middlepart = node.content.substring(pos, pos + op_two_len);
-                    var rightpart = node.content.substring(pos + op_two_len);
-                }
-                // number of § markers
-                var leftcount = (leftpart.match(/§/g) || []).length;
-                var rightcount = (rightpart.match(/§/g) || []).length;
-                //                console.log('leftpart=' + leftpart + ' leftcount=' + leftcount);
-                //                console.log('rightpart=' + rightpart + ' rightcount=' + rightcount);
-                //                console.log('# of children=' + node.children.length || 0);
-                var check = ((leftcount + rightcount) === node.children.length);
-                if (node.type.startsWith('definite')) {
-                    // children[0] = lower_boundary, children[1] = upper_boundary
-                    check = ((leftcount + rightcount) === node.children.length - 2);
-                }
-                if (check === false) {
-                    ///throw('(remove operators) Wrong number of bracket markers');
-                    console.log('(remove operators) Wrong number of bracket markers');
-                }
-                var rememberchildren = node.children;
-                if (leftcount > 0) {
-                    var leftchildren = rememberchildren.slice(0, leftcount);
-                } else {
-                    var leftchildren = [];
-                }
-                if (rightcount > 0) {
-                    var rightchildren = rememberchildren.slice(leftcount, rememberchildren.length);
-                } else {
-                    var rightchildren = [];
-                }
-                var operator = create_node('plusminus', middlepart, tree);
-                if (kind_of_operators === 'timesdivided') {
-                    operator.type = 'timesdivided';
-                }
-                if (kind_of_operators === 'invisible_times') {
-                    operator.type = '*';
-                    operator.content = '';
-                }
-                if (kind_of_operators === 'power') {
-                    operator.type = 'power';
-                }
-                if (kind_of_operators === 'sub') {
-                    operator.type = 'sub';
-                }
-                var rest = create_node('leaf', rightpart, tree);
-                if (rest.content == "") {
-                    rest.content = "0";
-                    rest.type = "invisible zero";
-                }
-                var siblings = tree.nodelist[node.parent].children;
-                var position = siblings.indexOf(node.id);
-                //            console.log('position=' + position);
-                //            console.log('siblings[position]=' + siblings[position]);
-                //            console.log('node.id=' + node.id);
-
-                // Upper connection: connect new node operator with former parent of node
-                tree.nodelist[node.parent].children[position] = operator.id;
-                operator.parent = node.parent;
-                // Left and right connection: 
-                // connect new node operator at left side with old node, but left part only
-                // connect new node operator at right side with new node rest
-                // Direction "up"
-                node.content = leftpart;
-                if (node.content == "") {
-                    node.content = "0";
-                    node.type = "invisible zero";
-                }
-                node.parent = operator.id;
-                rest.parent = operator.id;
-                // Direction "down"
-                operator.children = [node.id, rest.id];
-                // children of node and rest have to be adjusted
-                node.children = leftchildren;
-                // node stays parent of left children: nothing to do
-                rest.children = rightchildren;
-                // node "rest" becomes parent of right children
-                for (var i = 0; i < rightchildren.length; i++) {
-                    tree.nodelist[rightchildren[i]].parent = rest.id;
-                }
-            }
-        } else {
-            // omit if type is not 'unknown'
-            index++;
-        }
-        if (index > tree.nodelist.length - 1) {
-            stop = true;
-        }
-    } while (stop === false);
-    return tree.nodelist;
-};
 
 function remove_operators(tree, kind_of_operators) {
     var pos = -1;

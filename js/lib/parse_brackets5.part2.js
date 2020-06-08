@@ -23,9 +23,10 @@ function parsetree_by_index(tree) {
     var message = '';
     switch (parsetree_counter.getCounter()) {
         case 1:
-            message = 'delete spaces';
+            message = 'delete spaces and remove backslash at \min';
             // console.clear();
             var temp = tree.leaf.content;
+            temp = temp.replace(/\\min/g, 'min');
             // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
             // http://www.javascripter.net/faq/backslashinregularexpressions.htm
             tree.leaf.content = temp.replace(/\\\s/g, '');
@@ -696,8 +697,9 @@ function parse_sub_power(tree, power) {
 function parse_unit(tree) {
     tree.withEachLeaf(function (node) {
         if (node.isInUnit(tree)) {
-            var temp = get_prefix(node.content);
-            console.log(temp[0] + ' ' + temp[1] + ' ' + temp[2]);
+            var temp = get_prefix(node.content); //[prefix, name, power]
+            var value = unit2value(temp[1]);
+            console.log(temp[0] + ' ' + temp[1] + ' ' + temp[2] + ' ' + value);
         }
     });
 }
@@ -728,6 +730,8 @@ function parse_factors(tree) {
 }
 
 function get_prefix(unitstring) {
+    // let prefixes = "y__z__a__f__p__n__µ__mcd__hk__M__G__T__P__E__Z__Y";
+    // avoid Pa = Peta-ar quick and dirty fix
     let prefixes = "y__z__a__f__p__n__µ__mcd__hk__M__G__T__P__E__Z__Y";
     let Mu = String.fromCharCode(956);
     var prefix = '';
@@ -738,8 +742,12 @@ function get_prefix(unitstring) {
             prefix = 'da';
             name = unitstring.substr(2);
             power = 10;
+        } else if (unitstring.startsWith('Pa')) {
+            prefix = '';
+            name = unitstring;
+            power = 1;
         } else {
-            // e.g. ha, mol, mmol, Pa, hPa, mm
+            // e.g. ha, mol, mmol, hPa, mm
             needle = unitstring.substr(0, 1);
             var pos = prefixes.indexOf(needle);
             if (pos > -1) {
@@ -747,15 +755,21 @@ function get_prefix(unitstring) {
                 name = unitstring.substr(1);
                 power = Math.pow(10, pos - 24);
             } else {
-                if (needle.toLowerCase().equals("µ".toLowerCase()) ||
-                    needle.toLowerCase().equals(Mu.toLowerCase())) {
-                    prefix = "µ";
-                    unitName = unitString.substring(1);
-                    power = 1e-6;
-                } else {
-                    // default
-                }
+                // if (unitstring.startsWith('\\')){
+                //     name = unitstring.substr(1);
+                // }
+                // if (needle.toLowerCase().equals("µ".toLowerCase()) ||
+                //     needle.toLowerCase().equals(Mu.toLowerCase())) {
+                //     prefix = "µ";
+                //     unitName = unitString.substring(1);
+                //     power = 1e-6;
+                // } else {
+                //     // default
+                // }
             }
+            prefix = '';
+            name = unitstring;
+            power = 1;
         }
     } else {
         prefix = '';
@@ -763,6 +777,35 @@ function get_prefix(unitstring) {
         power = 1;
     }
     return [prefix, name, power]
+}
+
+function unit2value(unitname) {
+    var unitlist = {
+        // dummy values, phantasy 
+        // do not matter for purpose of comparison
+        "g": 7.003725611783e-2,
+        "m": 5.933875512401e-1,
+        "A": 8.049921777482e1,
+        "s": 9.066344172904e-3,
+        "mol": 3.904471947388e-4,
+        "Celsius": 7.2209518210337e-3,
+        "Kelvin": 8.573310992341e2
+    }
+    unitlist["min"] = 60 * unitlist["s"];
+    unitlist["h"] = 60 * unitlist["min"];
+    unitlist["d"] = 24 * unitlist["h"];
+    unitlist["C"] = unitlist["A"] * unitlist["s"];
+    unitlist["e"] = 1.60217648740e-19 * unitlist["C"];
+    unitlist["N"] = 1000 * unitlist["g"] * unitlist["m"] / (unitlist["s"] * unitlist["s"]);
+    unitlist["J"] = unitlist["N"] * unitlist["m"];
+    unitlist["W"] = unitlist["J"] * unitlist["s"];
+    unitlist["V"] = unitlist["W"] * unitlist["A"];
+    unitlist["Ohm"] = unitlist["V"] / unitlist["A"];
+    unitlist["Pa"] = unitlist["N"] / (unitlist["m"] * unitlist["m"]);
+    unitlist["bar"] = 100000 * unitlist["Pa"];
+    unitlist["Liter"] = 0.001 * unitlist["m"] * unitlist["m"] * unitlist["m"];
+    unitlist["Ar"] = 100 * unitlist["m"] * unitlist["m"];
+    return unitlist[unitname];
 }
 
 // *** output to TEX string ***//
