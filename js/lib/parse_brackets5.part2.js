@@ -697,9 +697,9 @@ function parse_sub_power(tree, power) {
 function parse_unit(tree) {
     tree.withEachLeaf(function (node) {
         if (node.isInUnit(tree)) {
-            var temp = get_prefix(node.content); //[prefix, name, power]
-            var value = unit2value(temp[1]);
-            console.log(temp[0] + ' ' + temp[1] + ' ' + temp[2] + ' ' + value);
+            console.log(node.content + " -> " + decompose_unit(node.content));
+            // console.log("Pa -> " + decompose_unit("Pa"));
+            // console.log("Pu -> " + decompose_unit("Pu"));
         }
     });
 }
@@ -729,58 +729,54 @@ function parse_factors(tree) {
     //check_children(tree);
 }
 
-function get_prefix(unitstring) {
-    // let prefixes = "y__z__a__f__p__n__µ__mcd__hk__M__G__T__P__E__Z__Y";
-    // avoid Pa = Peta-ar quick and dirty fix
-    let prefixes = "y__z__a__f__p__n__µ__mcd__hk__M__G__T__P__E__Z__Y";
-    let Mu = String.fromCharCode(956);
+function decompose_unit(unitstring) {
+
+    // default 
     var prefix = '';
-    var name = 'm';
-    var power = 1;
-    if (unitstring.length > 1) { //e.g. ha, dag, mol, mmol, Pa, hPa, mm
-        if (unitstring.startsWith('da')) { //dag = Dekagramm
-            prefix = 'da';
-            name = unitstring.substr(2);
-            power = 10;
-        } else if (unitstring.startsWith('Pa')) {
-            prefix = '';
-            name = unitstring;
-            power = 1;
-        } else {
-            // e.g. ha, mol, mmol, hPa, mm
-            needle = unitstring.substr(0, 1);
-            var pos = prefixes.indexOf(needle);
-            if (pos > -1) {
-                prefix = needle;
-                name = unitstring.substr(1);
-                power = Math.pow(10, pos - 24);
-            } else {
-                // if (unitstring.startsWith('\\')){
-                //     name = unitstring.substr(1);
-                // }
-                // if (needle.toLowerCase().equals("µ".toLowerCase()) ||
-                //     needle.toLowerCase().equals(Mu.toLowerCase())) {
-                //     prefix = "µ";
-                //     unitName = unitString.substring(1);
-                //     power = 1e-6;
-                // } else {
-                //     // default
-                // }
-                prefix = '';
-                name = unitstring;
-                power = 1;
+    var value = unit2value(unitstring);
+    var unit = '?';
+
+    if (typeof value == 'undefined') {
+        if (unitstring.length > 1) {
+            // attempt to separate prefix and unit
+            var prefix = unitstring.substr(0, 1);
+            // preserve default value of var unit
+            var rest = unitstring.substr(1);
+            var power = prefix2power(prefix);
+            if (typeof power !== 'undefined') {
+                temp = unit2value(rest);
+                if (typeof temp !== 'undefined') {
+                    // success of separation
+                    value = power * temp;
+                    unit = rest;
+                }
             }
         }
     } else {
-        prefix = '';
-        name = unitstring;
-        power = 1;
+        // value exists. No separation
+        unit = unitstring;
     }
-    return [prefix, name, power]
+    if ( unit == '?'){
+        value = 1;
+        unit = '<unknown unit>';
+    }
+    return [prefix, unit, value];
+}
+
+function prefix2power(needle) {
+    let prefixes = "y__z__a__f__p__n__µ__mcd__hk__M__G__T__P__E__Z__Y";
+    // let Mu = String.fromCharCode(956);
+    var pos = prefixes.indexOf(needle);
+    if (pos > -1) {
+        power = Math.pow(10, pos - 24);
+    } else {
+        power = undefined;
+    }
+    return power;
 }
 
 function unit2value(unitname) {
-    var unitlist = {
+    var valueOf = {
         // dummy values, phantasy 
         // do not matter for purpose of comparison
         "g": 7.003725611783e-2,
@@ -791,22 +787,27 @@ function unit2value(unitname) {
         "Celsius": 7.2209518210337e-3,
         "Kelvin": 8.573310992341e2
     }
-    unitlist["min"] = 60 * unitlist["s"];
-    unitlist["h"] = 60 * unitlist["min"];
-    unitlist["d"] = 24 * unitlist["h"];
-    unitlist["C"] = unitlist["A"] * unitlist["s"];
-    unitlist["e"] = 1.60217648740e-19 * unitlist["C"];
-    unitlist["N"] = 1000 * unitlist["g"] * unitlist["m"] / (unitlist["s"] * unitlist["s"]);
-    unitlist["J"] = unitlist["N"] * unitlist["m"];
-    unitlist["W"] = unitlist["J"] * unitlist["s"];
-    unitlist["V"] = unitlist["W"] * unitlist["A"];
-    unitlist["Ohm"] = unitlist["V"] / unitlist["A"];
-    unitlist["Pa"] = unitlist["N"] / (unitlist["m"] * unitlist["m"]);
-    unitlist["bar"] = 100000 * unitlist["Pa"];
-    unitlist["Liter"] = 0.001 * unitlist["m"] * unitlist["m"] * unitlist["m"];
-    unitlist["Ar"] = 100 * unitlist["m"] * unitlist["m"];
-    
-    return unitlist[unitname];
+    valueOf["min"] = 60 * valueOf["s"];
+    valueOf["h"] = 60 * valueOf["min"];
+    valueOf["d"] = 24 * valueOf["h"];
+    valueOf["C"] = valueOf["A"] * valueOf["s"];
+    valueOf["e"] = 1.60217648740e-19 * valueOf["C"];
+    valueOf["N"] = 1000 * valueOf["g"] * valueOf["m"] / (valueOf["s"] * valueOf["s"]);
+    valueOf["J"] = valueOf["N"] * valueOf["m"];
+    valueOf["W"] = valueOf["J"] * valueOf["s"];
+    valueOf["V"] = valueOf["W"] * valueOf["A"];
+    valueOf["Ohm"] = valueOf["V"] / valueOf["A"];
+    valueOf["Pa"] = valueOf["N"] / (valueOf["m"] * valueOf["m"]);
+    valueOf["bar"] = 100000 * valueOf["Pa"];
+    valueOf["Liter"] = 0.001 * valueOf["m"] * valueOf["m"] * valueOf["m"];
+    valueOf["Ar"] = 100 * valueOf["m"] * valueOf["m"];
+    valueOf["°C"] = valueOf["Celsius"];
+    valueOf["K"] = valueOf["Kelvin"];
+    valueOf["dag"] = 10 * valueOf["g"];
+    // console.log(valueOf);
+    var result = valueOf[unitname];
+
+    return result;
 }
 
 // *** output to TEX string ***//
