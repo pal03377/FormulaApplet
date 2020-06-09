@@ -697,9 +697,9 @@ function parse_sub_power(tree, power) {
 function parse_unit(tree) {
     tree.withEachLeaf(function (node) {
         if (node.isInUnit(tree)) {
-            console.log(node.content + " -> " + decompose_unit(node.content));
-            // console.log("Pa -> " + decompose_unit("Pa"));
-            // console.log("Pu -> " + decompose_unit("Pu"));
+            var temp = decompose_unit(node.content);
+            var out = temp[1] + '-' + temp[2] + ' value=' + temp[3];
+            console.log(node.content + " -> " + out);
         }
     });
 }
@@ -723,6 +723,19 @@ function parse_factors(tree) {
                 node.content = content_with_times;
                 // console.log('time-ified:' + content_with_times);
             }
+        } else {
+            var content = node.content.trim();
+            if (decompose_unit(content)[0] == false) {
+                // try to separate rightmost (youngest) character
+                var left = content.substr(0, content.length - 1);
+                var right = content.substr(content.length - 1);
+                console.log(left + ':' + right);
+                if (decompose_unit(left)[0] == true) {  //left is Unit
+                    if (decompose_unit(right)[0] == true) { // right isUnit
+                        node.content = left + "*" + right;
+                    }
+                }
+            }
         }
     });
     remove_operators(tree, 'invisible_times');
@@ -731,11 +744,12 @@ function parse_factors(tree) {
 
 function decompose_unit(unitstring) {
 
+    unitstring = unitstring.trim();
+    var isUnit = false;
     // default 
     var prefix = '';
+    var unit = 'dummy';
     var value = unit2value(unitstring);
-    var unit = '?';
-
     if (typeof value == 'undefined') {
         if (unitstring.length > 1) {
             // attempt to separate prefix and unit
@@ -743,24 +757,32 @@ function decompose_unit(unitstring) {
             // preserve default value of var unit
             var rest = unitstring.substr(1);
             var power = prefix2power(prefix);
-            if (typeof power !== 'undefined') {
+            if (typeof power == 'undefined') {
+                isUnit = false;
+            } else {
                 temp = unit2value(rest);
-                if (typeof temp !== 'undefined') {
+                if (typeof temp == 'undefined') {
+                    isUnit = false;
+                } else {
                     // success of separation
                     value = power * temp;
                     unit = rest;
+                    isUnit = true;
                 }
             }
         }
     } else {
-        // value exists. No separation
+        // length= 1. value exists. No separation necessary.
+        // e.g. m, s, A,...
         unit = unitstring;
+        isUnit = true;
     }
-    if ( unit == '?'){
+    if (isUnit == false) {
+        prefix = '';
         value = 1;
         unit = '<unknown unit>';
     }
-    return [prefix, unit, value];
+    return [isUnit, prefix, unit, value];
 }
 
 function prefix2power(needle) {

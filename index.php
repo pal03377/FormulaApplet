@@ -16,6 +16,7 @@
     <p><a href='tex_parser.php'>TEX Parser</a></p>
     <p><a href='mathquill2tex2parser.php'>MathQuill <-> TEX -> Parser</a></p>
     <p><a href='mathquill2tex2tree.php'>MathQuill <-> TEX -> Tree</a> and tree2TEX check</p>
+    <p><a href='check_unit_decomposition.php'>Check Unit Decomposition</a></p>
     <p><a href='mathquill2tex2parser_no_feedback.php'>MathQuill -> TEX (without feedback) -> Parser </a></p>
     <p><a href='kas_compare.php'>KAS Compare</a></p>
 	<hr>
