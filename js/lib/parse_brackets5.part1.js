@@ -12,6 +12,7 @@ function node() {
     this.content = '';
     this.comes_from = 1; //above
     this.way_back = false;
+    this.value = 1;
 }
 
 node.prototype.insertMeOver = function (insertPointId, leaf, nodelist) {
@@ -131,6 +132,19 @@ function tree() {
     this.root.children = [this.leaf.id];
 };
 
+node.prototype.val = function (){
+    var result = 1;
+    var numOfChildren = this.children.length;
+    if (numOfChildren == 0){
+        this.value = 1;
+    }
+    return result;
+}
+
+tree.prototype.val = function() {
+    return tree.root.val;
+}
+
 tree.prototype.withEachNode = function (doThis) {
     var i = 0;
     var stop = false;
@@ -152,6 +166,17 @@ tree.prototype.withEachLeaf = function (doThis) {
     this.withEachNode(
         function (node) {
             if (node.type == 'leaf') {
+                doThis(node)
+            }
+        }
+    )
+}
+
+tree.prototype.withEachLeafOrGreek = function (doThis) {
+    // var tree = this;
+    this.withEachNode(
+        function (node) {
+            if (node.type == 'leaf' || node.type == 'greek') {
                 doThis(node)
             }
         }
@@ -403,6 +428,10 @@ function remove_operators(tree, kind_of_operators) {
     var pos = -1;
     var op_one = '+';
     var op_two = '-';
+    if (kind_of_operators === 'equal') {
+        op_one = '=';
+        op_two = '@%';
+    }
     if (kind_of_operators === 'timesdivided') {
         op_one = '\\cdot';
         op_two = ':';
@@ -489,6 +518,9 @@ function remove_operators(tree, kind_of_operators) {
                     var rightchildren = [];
                 }
                 var operator = create_node('plusminus', middlepart, tree);
+                if (kind_of_operators === 'equal') {
+                    operator.type = 'equal';
+                }
                 if (kind_of_operators === 'timesdivided') {
                     operator.type = 'timesdivided';
                 }

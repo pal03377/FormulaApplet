@@ -36,6 +36,8 @@ function parsetree_by_index(tree) {
             result = parse_brackets(tree);
             break;
         case 3:
+            message = 'parse equal';
+            result = remove_operators(tree, 'equal');
             message = 'parse plusminus';
             result = remove_operators(tree, 'plusminus');
             break;
@@ -730,7 +732,7 @@ function parse_factors(tree) {
                 var left = content.substr(0, content.length - 1);
                 var right = content.substr(content.length - 1);
                 console.log(left + ':' + right);
-                if (decompose_unit(left)[0] == true) {  //left is Unit
+                if (decompose_unit(left)[0] == true) { //left is Unit
                     if (decompose_unit(right)[0] == true) { // right isUnit
                         node.content = left + "*" + right;
                     }
@@ -1106,4 +1108,77 @@ function check_children(tree) {
             }
         }
     })
+}
+
+function fillWithRandomValues(tree) {
+    console.clear();
+    console.log('fill leafs & greek with random values');
+    hasValue = true;
+    tree.withEachNode(function (node) {
+        if (node.type == 'integral') hasValue = false;
+        if (node.type == 'lim') hasValue = false;
+        if (node.type == 'text') hasValue = false;
+    });
+    if (hasValue) {
+        tree.withEachLeafOrGreek(function (node) {
+            node.value = undefined;
+        });
+        do {
+            var i = 0;
+            var stop = false;
+            var found = false;
+            var nodelist = tree.nodelist;
+            do {
+                var node = nodelist[i];
+                // doThis may add or delete nodes!
+                if ((node.type == 'leaf' || node.type == 'greek') && node.value == undefined) {
+                    found = true;
+                    stop = true;
+                } else {
+                    i++;
+                }
+                if (i === nodelist.length) {
+                    stop = true;
+                }
+            } while (stop === false);
+            if (found) {
+                var content = node.content;
+                // Box-Muller
+                var u1 = 2*Math.PI*Math.random();
+                var u2 = -2 * Math.log(Math.random());
+                var value = 1000 * Math.cos(u1) * Math.sqrt(u2);
+                tree.withEachLeafOrGreek(function (node) {
+                    if (node.content == content) {
+                        node.value = value;
+                        console.log(node.value + '->' +
+                            node.content + ' ' + node.type);
+                    }
+                })
+            }
+        } while (found);
+
+        // tree.withEachLeafOrGreek(function (node) {
+        //     if (node.children.length == 0) {
+        //         var done = false;
+        //         if (node.type == 'number') {
+        //             node.value = node.content;
+        //             done = true;
+        //         }
+        //         if (node.type == 'leaf') {
+        //             node.value = 1;
+        //             done = true;
+        //         }
+        //         if (node.type == 'greek') {
+        //             node.value = 1;
+        //              done = true;
+        //         }
+        //         console.log(node.content + ' ' + node.type);
+        //         if (!done) {
+        //             console.log('*** ');
+        //         }
+        //     }
+        // });
+    } else {
+        console.log('tree not evaluable');
+    }
 }

@@ -34,17 +34,21 @@ include_once 'header.php';
     });
     // button = $("#cont");
     // canvas.click(...) sucks
+    // $( '#treecanvas' ).click( function(event){
+    //     var temp = parsetree_by_index(myTree);
+    //     var message = temp[0];
+    //     end_parse = temp[1];
+    //     paint_tree(myTree, canvas, message);
+    //     if(end_parse){
+    //         inspect_tree(myTree);
+    //     }
+    // });
     $( '#treecanvas' ).click( function(event){
-        var temp = parsetree_by_index(myTree);
-        var message = temp[0];
-        end_parse = temp[1];
-        // parse(myTree);
-        // var tex = tree2TEX(myTree);
-        // message = 'end parse';
+        parse(myTree);
+        var tex = tree2TEX(myTree);
+        message = 'end parse';
         paint_tree(myTree, canvas, message);
-        // if(end_parse){
-            // console.log(tex);
-        // }
+        fillWithRandomValues(myTree);
     });
     $( '#check' ).click( function(event){
       console.log('check button clicked');
@@ -75,13 +79,14 @@ include_once 'header.php';
           console.log( tex_1 );
           console.log( tex_2 );
        }
-      });
+       // inspect_tree(myTree);
+     });
     });
 
     // button.mouseup( function(){button.attr('data-clickstate', 'up')});
   });
 
-  function editHandler(index) {
+    function editHandler(index) {
     mf = mathField[index];
     // var out = mf.latex();
     out = mf.latex();
