@@ -48,7 +48,8 @@ include_once 'header.php';
         var tex = tree2TEX(myTree);
         message = 'end parse';
         paint_tree(myTree, canvas, message);
-        fillWithRandomValues(myTree);
+        //fillWithRandomValues(myTree);
+        var dummy = value(myTree);
     });
     $( '#check' ).click( function(event){
       console.log('check button clicked');

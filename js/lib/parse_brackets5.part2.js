@@ -1110,6 +1110,62 @@ function check_children(tree) {
     })
 }
 
+function value(tree) {
+    fillWithRandomValues(tree);
+    return val(tree.root, tree);
+}
+
+function val(node, tree) {
+    //recursive
+    var children = node.children;
+    var num_of_childs = children.length;
+    if (num_of_childs == 0) {
+        if (node.type == 'number') {
+            node.value = node.content;
+        }
+    }
+    if (num_of_childs == 1) {
+        if (node.type.startsWith('bracket-') || node.type == 'root'){
+            var child_0 = tree.nodelist[children[0]];
+            node.value = val(child_0, tree);
+        } else {
+            var child_0 = tree.nodelist[children[0]];
+            dummy = val(child_0, tree);
+        }
+    }
+    if (num_of_childs == 2) {
+        var child_0 = tree.nodelist[children[0]];
+        var child_1 = tree.nodelist[children[1]];
+        // console.log(child_0);
+        var ch0 = val(child_0, tree);
+        var ch1 = val(child_1, tree);
+        console.log(ch0 + ' # ' + ch1);
+        if (node.type == '*') {
+            // console.log(ch0 + '*' + ch1);
+            node.value = Number(ch0) * Number(ch1);
+        }
+        if (node.type == 'plusminus') {
+            if (node.content == '+'){
+                node.value = Number(ch0) + Number(ch1);
+            }
+            if (node.content == '-'){
+                node.value = Number(ch0) - Number(ch1);
+            }
+        }
+    }
+    if (num_of_childs > 2) {
+        var child_0 = tree.nodelist[children[0]];
+        var child_1 = tree.nodelist[children[1]];
+        var child_2 = tree.nodelist[children[2]];
+        var dummy = val(child_0, tree);
+        var dummy = val(child_1, tree);
+        var dummy = val(child_2, tree);
+    }
+    //console.log(node.content + ' ' + node.type);
+    console.log(node.type + ' (' + num_of_childs + ') ' + node.content + ' val=' + node.value);
+    return node.value;
+}
+
 function fillWithRandomValues(tree) {
     console.clear();
     console.log('fill leafs & greek with random values');
@@ -1144,7 +1200,7 @@ function fillWithRandomValues(tree) {
             if (found) {
                 var content = node.content;
                 // Box-Muller
-                var u1 = 2*Math.PI*Math.random();
+                var u1 = 2 * Math.PI * Math.random();
                 var u2 = -2 * Math.log(Math.random());
                 var value = 1000 * Math.cos(u1) * Math.sqrt(u2);
                 tree.withEachLeafOrGreek(function (node) {
