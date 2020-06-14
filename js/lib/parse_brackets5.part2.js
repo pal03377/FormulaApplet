@@ -14,17 +14,6 @@ let parsetree_counter = {
     }
 }
 
-function deleteSpaceAndRemoveBackslash(text) {
-    // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
-    // http://www.javascripter.net/faq/backslashinregularexpressions.htm
-    var temp = text.replace(/\\\s/g, '');
-    temp = temp.replace(/\\min/g, 'min');
-    temp = temp.replace(/\\max/g, 'max');
-    temp = temp.replace(/\\cdot/g, '\\cdot '); // no space -> one space, but one space -> two spaces
-    temp = temp.replace(/\\cdot  /g, '\\cdot '); // two spaces -> one space
-    return temp;
-}
-
 function parsetree_by_index(tree) {
     // counter++;
     parsetree_counter.inc();
@@ -37,7 +26,7 @@ function parsetree_by_index(tree) {
             message = 'delete spaces and remove backslash at \min';
             // console.clear();
             tree.leaf.content = deleteSpaceAndRemoveBackslash(tree.leaf.content);
-             break;
+            break;
         case 2:
             message = 'parse brackets';
             result = parse_brackets(tree);
@@ -155,6 +144,17 @@ function parse(tree) {
         end_parse = temp[1];
         //paint_tree(tree, canvas, message);
     }
+}
+
+function deleteSpaceAndRemoveBackslash(text) {
+    // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
+    // http://www.javascripter.net/faq/backslashinregularexpressions.htm
+    var temp = text.replace(/\\\s/g, '');
+    temp = temp.replace(/\\min/g, 'min');
+    temp = temp.replace(/\\max/g, 'max');
+    temp = temp.replace(/\\cdot/g, '\\cdot '); // no space -> one space, but one space -> two spaces
+    temp = temp.replace(/\\cdot  /g, '\\cdot '); // two spaces -> one space
+    return temp;
 }
 
 function parse_brackets(tree) {
@@ -1141,10 +1141,11 @@ function val(node, tree) {
             if (node.type.startsWith('fu-')) {
                 var fu = node.type.substr(3)
                 console.log('fu=' + fu);
-                if (fu == 'tan') {
-                    node.value = Math.tan(arg);
-                }
+                node.value = trigonometry(fu, arg);
             }
+        }
+        if (node.type == 'sqrt') {
+            node.value = Math.sqrt(arg);
         }
     }
 
@@ -1158,6 +1159,20 @@ function val(node, tree) {
         if (node.type == '*') {
             // console.log(ch0 + '*' + ch1);
             node.value = Number(ch0) * Number(ch1);
+        }
+        if (node.type == 'nthroot') {
+            console.log(ch1 + ' ^ 1/' + ch0);
+            node.value = Math.pow(Number(ch1), (1 / Number(ch0)));
+        }
+        if (node.type == 'power') {
+            console.log(ch1 + ' ^ ' + ch0);
+            node.value = Math.pow(Number(ch1), Number(ch0));
+        }
+        if (node.type.startsWith('fu-') && node.content == 'power') {
+            var fu = node.type.substr(3)
+            console.log('fu power ' + fu);
+            var base = trigonometry(fu, ch1);
+            node.value = Math.pow(base, ch0)
         }
         if (node.type == 'plusminus') {
             if (node.content == '+') {
@@ -1181,6 +1196,29 @@ function val(node, tree) {
     return node.value;
 }
 
+function trigonometry(fu, arg) {
+    var result = undefined;
+    if (fu == 'sin') {
+        result = Math.sin(arg);
+    }
+    if (fu == 'cos') {
+        result = Math.cos(arg);
+    }
+    if (fu == 'tan') {
+        result = Math.tan(arg);
+    }
+    if (fu == 'sinh') {
+        result = Math.sinh(arg);
+    }
+    if (fu == 'cosh') {
+        result = Math.cosh(arg);
+    }
+    if (fu == 'tanh') {
+        result = Math.tanh(arg);
+    }
+    return result;
+}
+
 function fillWithRandomValues(tree) {
     // console.clear();
     console.log('fill leafs & greek with random values');
@@ -1191,7 +1229,8 @@ function fillWithRandomValues(tree) {
         if (node.type == 'text') hasValue = false;
     });
     if (hasValue) {
-        tree.withEachLeafOrGreek(function (node) {
+        tree.withEachNode(function (node) {
+            // tree.withEachLeafOrGreek(function (node) {
             node.value = undefined;
         });
         do {
@@ -1204,7 +1243,7 @@ function fillWithRandomValues(tree) {
                 // doThis may add or delete nodes!
                 if ((node.type == 'leaf' || node.type == 'greek') && node.value == undefined) {
                     found = true;
-                    stop = true;
+                    stop = true; //short circuit
                 } else {
                     i++;
                 }

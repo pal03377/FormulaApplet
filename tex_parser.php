@@ -34,23 +34,23 @@ include_once 'header.php';
     });
     // button = $("#cont");
     // canvas.click(...) sucks
-    // $( '#treecanvas' ).click( function(event){
-    //     var temp = parsetree_by_index(myTree);
-    //     var message = temp[0];
-    //     end_parse = temp[1];
-    //     paint_tree(myTree, canvas, message);
-    //     if(end_parse){
-    //         inspect_tree(myTree);
-    //     }
-    // });
     $( '#treecanvas' ).click( function(event){
-        parse(myTree);
-        var tex = tree2TEX(myTree);
-        message = 'end parse';
+        var temp = parsetree_by_index(myTree);
+        var message = temp[0];
+        end_parse = temp[1];
         paint_tree(myTree, canvas, message);
-        //fillWithRandomValues(myTree);
-        var dummy = value(myTree);
+        if(end_parse){
+            inspect_tree(myTree);
+        }
     });
+    // $( '#treecanvas' ).click( function(event){
+    //     parse(myTree);
+    //     var tex = tree2TEX(myTree);
+    //     message = 'end parse';
+    //     paint_tree(myTree, canvas, message);
+    //     //fillWithRandomValues(myTree);
+    //     var dummy = value(myTree);
+    // });
     $( '#check' ).click( function(event){
       console.log('check button clicked');
       $(".tex-example").each(function () {
@@ -128,7 +128,7 @@ waitfor_mathquill_and_if_ready_then_do(function () {
         <p><button id="check">Check all</button></p>
         <!-- p id="version">version</p -->
         <p class="tex-example">3,5\textcolor{blue}{\frac{km}{min}}+0,045\textcolor{blue}{\frac{cm^3}{s^2}}</p><br />
-        <p class="tex-example">5,6^3ab^5(p+q)rs^e \cdot 2vw^{\left(n-2\right)}\ \cdot\ \Gamma^\alpha</p><br />
+        <p class="tex-example">5,6^3ab^5(p+q)rs^e \cdot 2vw^{\left(n:2\right)}\ \cdot\ \Gamma^\alpha</p><br />
         <p class="tex-example">5,7y_n+rs_{n+2}-z_{\max}^8</p><br />
         <p class="tex-example">5,7y^n+rs^{n+2}-z_{\max}^{t-8}</p><br />
         <p class="tex-example">\sqrt{2}</p><br />
