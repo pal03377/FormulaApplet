@@ -14,6 +14,17 @@ let parsetree_counter = {
     }
 }
 
+function deleteSpaceAndRemoveBackslash(text) {
+    // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
+    // http://www.javascripter.net/faq/backslashinregularexpressions.htm
+    var temp = text.replace(/\\\s/g, '');
+    temp = temp.replace(/\\min/g, 'min');
+    temp = temp.replace(/\\max/g, 'max');
+    temp = temp.replace(/\\cdot/g, '\\cdot '); // no space -> one space, but one space -> two spaces
+    temp = temp.replace(/\\cdot  /g, '\\cdot '); // two spaces -> one space
+    return temp;
+}
+
 function parsetree_by_index(tree) {
     // counter++;
     parsetree_counter.inc();
@@ -25,12 +36,8 @@ function parsetree_by_index(tree) {
         case 1:
             message = 'delete spaces and remove backslash at \min';
             // console.clear();
-            var temp = tree.leaf.content;
-            temp = temp.replace(/\\min/g, 'min');
-            // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
-            // http://www.javascripter.net/faq/backslashinregularexpressions.htm
-            tree.leaf.content = temp.replace(/\\\s/g, '');
-            break;
+            tree.leaf.content = deleteSpaceAndRemoveBackslash(tree.leaf.content);
+             break;
         case 2:
             message = 'parse brackets';
             result = parse_brackets(tree);
@@ -435,6 +442,7 @@ function parse_function(tree) {
                         tree.nodelist[remember].parent = fu_node.id;
                     } else {
                         //", "\\sin2\alpha
+                        rest = rest.trim();
                         var arg = create_node('leaf', rest, tree);
                         arg.parent = fu_node.id;
                         //fu_node.children[0] = remember;
@@ -700,7 +708,7 @@ function parse_unit(tree) {
     tree.withEachLeaf(function (node) {
         if (node.isInUnit(tree)) {
             var temp = decompose_unit(node.content);
-            var out = temp[1] + '-' + temp[2] + ' value=' + temp[3];
+            var out = temp[1] + '_' + temp[2] + ' value=' + temp[3];
             console.log(node.content + " -> " + out);
         }
     });
@@ -1125,14 +1133,21 @@ function val(node, tree) {
         }
     }
     if (num_of_childs == 1) {
-        if (node.type.startsWith('bracket-') || node.type == 'root'){
-            var child_0 = tree.nodelist[children[0]];
-            node.value = val(child_0, tree);
+        var child_0 = tree.nodelist[children[0]];
+        var arg = val(child_0, tree);
+        if (node.type.startsWith('bracket-') || node.type == 'root') {
+            node.value = arg;
         } else {
-            var child_0 = tree.nodelist[children[0]];
-            dummy = val(child_0, tree);
+            if (node.type.startsWith('fu-')) {
+                var fu = node.type.substr(3)
+                console.log('fu=' + fu);
+                if (fu == 'tan') {
+                    node.value = Math.tan(arg);
+                }
+            }
         }
     }
+
     if (num_of_childs == 2) {
         var child_0 = tree.nodelist[children[0]];
         var child_1 = tree.nodelist[children[1]];
@@ -1145,10 +1160,10 @@ function val(node, tree) {
             node.value = Number(ch0) * Number(ch1);
         }
         if (node.type == 'plusminus') {
-            if (node.content == '+'){
+            if (node.content == '+') {
                 node.value = Number(ch0) + Number(ch1);
             }
-            if (node.content == '-'){
+            if (node.content == '-') {
                 node.value = Number(ch0) - Number(ch1);
             }
         }
@@ -1167,7 +1182,7 @@ function val(node, tree) {
 }
 
 function fillWithRandomValues(tree) {
-    console.clear();
+    // console.clear();
     console.log('fill leafs & greek with random values');
     hasValue = true;
     tree.withEachNode(function (node) {

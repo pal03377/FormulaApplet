@@ -3,6 +3,7 @@
     * physikalische Einheiten
     * Grad, Minuten, Sekunden
     * Gemischte Zahlen
+    * abs(x), |x|
 * Objektorientierte Programmierung
     * Vereinheitlichung des Slice-Teils
     * Test und Debugging

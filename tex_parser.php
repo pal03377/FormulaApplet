@@ -56,22 +56,14 @@ include_once 'header.php';
       $(".tex-example").each(function () {
         var index = $(".tex-example").index(this);
         mf = mathField[index];
-        myTree = new tree();
         var tex_1 = mf.latex();
-        //delete spaces
-        tex_1 = tex_1.replace(/\\\s/g, '');
+        tex_1 = deleteSpaceAndRemoveBackslash(tex_1);
+        myTree = new tree();
         myTree.leaf.content = tex_1;
         parse(myTree);
         var tex_2 = tree2TEX(myTree);
-        // console.log('tex_1 before ' + tex_1);
-        var temp = tex_1.replace(/\\cdot/g, '\\cdot ');
-        tex_1 = temp.replace(/\\cdot  /g, '\\cdot ');
-        // console.log('tex_1 after  ' + tex_1);
-        // console.log('tex_2 before ' + tex_2);
-        var temp = tex_2.replace(/\\cdot/g, '\\cdot ');
-        tex_2 = temp.replace(/\\cdot  /g, '\\cdot ');
-        // console.log('tex_2 after  ' + tex_2);
-
+        tex_2 = deleteSpaceAndRemoveBackslash(tex_2);
+ 
         var equal = (tex_1 == tex_2);
         if (equal){
           $(this).removeClass('isNotEqual').addClass('isEqual');
