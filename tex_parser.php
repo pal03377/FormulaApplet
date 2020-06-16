@@ -34,23 +34,28 @@ include_once 'header.php';
     });
     // button = $("#cont");
     // canvas.click(...) sucks
-    $( '#treecanvas' ).click( function(event){
+    var single_step = true;
+    if (single_step){
+      $( '#treecanvas' ).click( function(event){
         var temp = parsetree_by_index(myTree);
-        var message = temp[0];
-        end_parse = temp[1];
-        paint_tree(myTree, canvas, message);
-        if(end_parse){
-            inspect_tree(myTree);
-        }
-    });
-    // $( '#treecanvas' ).click( function(event){
-    //     parse(myTree);
-    //     var tex = tree2TEX(myTree);
-    //     message = 'end parse';
-    //     paint_tree(myTree, canvas, message);
-    //     //fillWithRandomValues(myTree);
-    //     var dummy = value(myTree);
-    // });
+          var message = temp[0];
+          end_parse = temp[1];
+          paint_tree(myTree, canvas, message);
+          if(end_parse){
+              var dummy = value(myTree);
+          }
+      });
+    } else {
+      // one step
+      $( '#treecanvas' ).click( function(event){
+          parse(myTree);
+          var tex = tree2TEX(myTree);
+          message = 'end parse';
+          paint_tree(myTree, canvas, message);
+          //fillWithRandomValues(myTree);
+          var dummy = value(myTree);
+      });
+    }
     $( '#check' ).click( function(event){
       console.log('check button clicked');
       $(".tex-example").each(function () {
@@ -63,7 +68,7 @@ include_once 'header.php';
         parse(myTree);
         var tex_2 = tree2TEX(myTree);
         tex_2 = deleteSpaceAndRemoveBackslash(tex_2);
- 
+
         var equal = (tex_1 == tex_2);
         if (equal){
           $(this).removeClass('isNotEqual').addClass('isEqual');
@@ -72,7 +77,7 @@ include_once 'header.php';
           console.log( tex_1 );
           console.log( tex_2 );
        }
-       // inspect_tree(myTree);
+      var dummy = value(myTree);
      });
     });
 

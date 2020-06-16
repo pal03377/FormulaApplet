@@ -394,7 +394,7 @@ function parse_log_lim(tree, kind) {
 }
 
 function function_list() {
-    var result = ['sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'lg', 'log', 'exp'];
+    var result = ['sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'lg', 'log', 'exp', 'abs'];
     return result;
 }
 
@@ -1182,6 +1182,9 @@ function val(node, tree) {
                 node.value = Number(ch0) - Number(ch1);
             }
         }
+        if (node.type == 'frac') {
+            node.value = Number(ch0) / Number(ch1);
+        }
     }
     if (num_of_childs > 2) {
         var child_0 = tree.nodelist[children[0]];
@@ -1197,7 +1200,17 @@ function val(node, tree) {
 }
 
 function trigonometry(fu, arg) {
+    //'sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'lg', 'log', 'exp', 'abs'
     var result = undefined;
+    if (fu == 'sinh') {
+        result = Math.sinh(arg);
+    }
+    if (fu == 'cosh') {
+        result = Math.cosh(arg);
+    }
+    if (fu == 'tanh') {
+        result = Math.tanh(arg);
+    }
     if (fu == 'sin') {
         result = Math.sin(arg);
     }
@@ -1207,14 +1220,17 @@ function trigonometry(fu, arg) {
     if (fu == 'tan') {
         result = Math.tan(arg);
     }
-    if (fu == 'sinh') {
-        result = Math.sinh(arg);
+    if (fu == 'ln' || fu == 'log') {
+        result = Math.log(arg);
     }
-    if (fu == 'cosh') {
-        result = Math.cosh(arg);
+    if (fu == 'lg') {
+        result = Math.log10(arg);
     }
-    if (fu == 'tanh') {
-        result = Math.tanh(arg);
+    if (fu == 'exp') {
+        result = Math.exp(arg);
+    }
+    if (fu == 'abs') {
+        result = Math.abs(arg);
     }
     return result;
 }
@@ -1233,8 +1249,8 @@ function fillWithRandomValues(tree) {
             // tree.withEachLeafOrGreek(function (node) {
             node.value = undefined;
         });
+        var i = 0;
         do {
-            var i = 0;
             var stop = false;
             var found = false;
             var nodelist = tree.nodelist;
@@ -1250,21 +1266,21 @@ function fillWithRandomValues(tree) {
                 if (i === nodelist.length) {
                     stop = true;
                 }
+                if (found) {
+                    var content = node.content;
+                    // Box-Muller
+                    var u1 = 2 * Math.PI * Math.random();
+                    var u2 = -2 * Math.log(Math.random());
+                    var value = 1000 * Math.cos(u1) * Math.sqrt(u2);
+                    tree.withEachLeafOrGreek(function (node) {
+                        if (node.content == content) {
+                            node.value = value;
+                            console.log(node.value + '->' +
+                                node.content + ' ' + node.type);
+                        }
+                    })
+                }
             } while (stop === false);
-            if (found) {
-                var content = node.content;
-                // Box-Muller
-                var u1 = 2 * Math.PI * Math.random();
-                var u2 = -2 * Math.log(Math.random());
-                var value = 1000 * Math.cos(u1) * Math.sqrt(u2);
-                tree.withEachLeafOrGreek(function (node) {
-                    if (node.content == content) {
-                        node.value = value;
-                        console.log(node.value + '->' +
-                            node.content + ' ' + node.type);
-                    }
-                })
-            }
         } while (found);
 
         // tree.withEachLeafOrGreek(function (node) {
