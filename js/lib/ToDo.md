@@ -1,6 +1,6 @@
 # *ToDo* #
 * Einheiten etc.
-    * physikalische Einheiten
+    * <s>physikalische Einheiten</s>
     * Grad, Minuten, Sekunden
     * Gemischte Zahlen
     * abs(x), |x|
@@ -10,6 +10,7 @@
     * TypeScript
     * <s>Vereinheitlichen der do-while-Schleifen (loop <-> stop)</s>
 * Auf Gleichheit testen
-    * Gleichheitszeichen
+    * <s>Gleichheitszeichen</s>
 * Legacy: Applet-Parameter decodieren
 * try-catch
+* definite integral obsolete?

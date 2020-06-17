@@ -1119,8 +1119,12 @@ function check_children(tree) {
 }
 
 function value(tree) {
-    fillWithRandomValues(tree);
-    return val(tree.root, tree);
+    var hasValue = fillWithRandomValues(tree);
+    if (hasValue){
+        return val(tree.root, tree);
+    } else {
+        console.log('tree not evaluable');
+    }
 }
 
 function val(node, tree) {
@@ -1129,13 +1133,14 @@ function val(node, tree) {
     var num_of_childs = children.length;
     if (num_of_childs == 0) {
         if (node.type == 'number') {
-            node.value = node.content;
+            var temp = node.content.replace(',', '.');
+            node.value = temp;
         }
     }
     if (num_of_childs == 1) {
         var child_0 = tree.nodelist[children[0]];
         var arg = val(child_0, tree);
-        if (node.type.startsWith('bracket-') || node.type == 'root') {
+        if (node.type.startsWith('bracket-') || node.type == 'root' || node.type == 'unit') {
             node.value = arg;
         } else {
             if (node.type.startsWith('fu-')) {
@@ -1246,8 +1251,14 @@ function fillWithRandomValues(tree) {
     });
     if (hasValue) {
         tree.withEachNode(function (node) {
-            // tree.withEachLeafOrGreek(function (node) {
             node.value = undefined;
+        });
+        tree.withEachLeafOrGreek(function (node) {
+            if (node.isInUnit(tree)) {
+                var temp = decompose_unit(node.content);
+                node.value =  temp[3];
+                node.type = 'unit';
+            }
         });
         var i = 0;
         do {
@@ -1282,29 +1293,16 @@ function fillWithRandomValues(tree) {
                 }
             } while (stop === false);
         } while (found);
-
-        // tree.withEachLeafOrGreek(function (node) {
-        //     if (node.children.length == 0) {
-        //         var done = false;
-        //         if (node.type == 'number') {
-        //             node.value = node.content;
-        //             done = true;
-        //         }
-        //         if (node.type == 'leaf') {
-        //             node.value = 1;
-        //             done = true;
-        //         }
-        //         if (node.type == 'greek') {
-        //             node.value = 1;
-        //              done = true;
-        //         }
-        //         console.log(node.content + ' ' + node.type);
-        //         if (!done) {
-        //             console.log('*** ');
-        //         }
-        //     }
-        // });
-    } else {
-        console.log('tree not evaluable');
-    }
+    } 
+    return hasValue;
 }
+
+// function concat(tree1, tree2){
+//     var shift = tree1.nodelist.length;
+//     tree2.withEachNode(function(node){
+//         var children = node.children;
+//         for(var i=0; i<children.length; i++){
+//             node.children[i] += shift;
+//         }
+//     })
+// }

@@ -262,16 +262,15 @@ var traverseSimple = function (callback, nodelist) {
         callback(node);
     }
 };
-
-function find_left_bracket(node, bra) {
+function find_left_bracket(content, bra) {
     var long = '\\left' + bra;
     if (bra === '{') {
         long = '\\left\\{';
     }
     var min_pos = -1;
     var bra_kind = 'nothing';
-    var pos = node.indexOf(long);
-    var masked = node;
+    var pos = content.indexOf(long);
+    var masked = content;
     //    console.log('Start searching ' + bra + ' in ' + masked);
     if (pos >= 0) {
         min_pos = pos;
@@ -320,10 +319,10 @@ function find_left_bracket(node, bra) {
     return [min_pos, bra_kind];
 }
 
-function find_leftmost_bracket(node) {
+function find_leftmost_bracket(content) {
     var left_pos = -1;
     var bra_kind = 'nothing';
-    var result = find_left_bracket(node, "(");
+    var result = find_left_bracket(content, "(");
     var pos = result[0];
     if (pos > -1) {
         if (left_pos === -1) {
@@ -337,7 +336,7 @@ function find_leftmost_bracket(node) {
         }
     }
     // maybe there is a better (smaller) pos for a [ bracket
-    var result = find_left_bracket(node, '[');
+    var result = find_left_bracket(content, '[');
     var pos = result[0];
     if (pos > -1) {
         if (left_pos === -1) {
@@ -351,7 +350,7 @@ function find_leftmost_bracket(node) {
         }
     }
     // maybe there is a better (smaller) pos for a { bracket
-    var result = find_left_bracket(node, '{');
+    var result = find_left_bracket(content, '{');
     var pos = result[0];
     if (pos > -1) {
         if (left_pos === -1) {
