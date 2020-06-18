@@ -41,10 +41,10 @@ include_once 'header.php';
           var message = temp[0];
           end_parse = temp[1];
           paint_tree(myTree, canvas, message);
-          console.log('***' + message);
-           for(var i=0; i <7; i++){
-            console.log('node ' + i + ': ' + myTree.nodelist[i].type + ' ' + myTree.nodelist[i].content);
-          }
+          // console.log('***' + message);
+          //  for(var i=0; i <7; i++){
+          //   console.log('node ' + i + ': ' + myTree.nodelist[i].type + ' ' + myTree.nodelist[i].content);
+          // }
           if(end_parse){
               var hasValue = fillWithRandomValues(myTree);
               paint_tree(myTree, canvas, 'filWithRandomValues');

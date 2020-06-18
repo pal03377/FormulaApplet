@@ -12,7 +12,7 @@ function node() {
     this.content = '';
     this.comes_from = 1; //above
     this.way_back = false;
-    this.value = 1;
+    this.value = undefined;
 }
 
 node.prototype.insertMeOver = function (insertPointId, leaf, nodelist) {
@@ -132,18 +132,18 @@ function tree() {
     this.root.children = [this.leaf.id];
 };
 
-node.prototype.val = function () {
-    var result = 1;
-    var numOfChildren = this.children.length;
-    if (numOfChildren == 0) {
-        this.value = 1;
-    }
-    return result;
-}
+// node.prototype.val = function () {
+//     var result = 1;
+//     var numOfChildren = this.children.length;
+//     if (numOfChildren == 0) {
+//         this.value = undefined;
+//     }
+//     return result;
+// }
 
-tree.prototype.val = function () {
-    return tree.root.val;
-}
+// tree.prototype.val = function () {
+//     return tree.root.val;
+// }
 
 tree.prototype.withEachNode = function (doThis) {
     var i = 0;

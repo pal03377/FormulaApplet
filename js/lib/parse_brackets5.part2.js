@@ -75,9 +75,9 @@ function parsetree_by_index(tree) {
             break;
         case 12:
             message = 'parse textcolor (unit)';
-            check_children(tree);
+            //check_children(tree);
             parse_textcolor(tree);
-            check_children(tree);
+            //check_children(tree);
             break;
         case 13:
             message = 'delete single § nodes'
@@ -118,12 +118,12 @@ function parsetree_by_index(tree) {
         case 22:
             message = 'parse unit'
             parse_unit(tree);
-            check_children(tree);
+            //check_children(tree);
             break;
         case 23:
             message = 'parse factors';
             parse_factors(tree);
-            check_children(tree);
+            //check_children(tree);
             break;
         case 24:
             message = 'delete single § nodes';
@@ -133,6 +133,15 @@ function parsetree_by_index(tree) {
             message = 'end of parse';
             end_parse = true;
     }
+
+    console.log(' ');
+    for (var i = 0; i < tree.nodelist.length; i++) {
+        var temp = tree.nodelist[i];
+        if (temp.type !== 'free') {
+            console.log('node[' + i + ']=' + temp.content + ' ' + temp.type + ' ' + temp.value)
+        }
+    }
+
     // check_children(tree);
     return [message, end_parse];
 }
@@ -623,6 +632,7 @@ function parse_numbers(tree) {
             var rest = content.substring(match[0].length);
             node.content = "§" + rest;
             var number = create_node("number", num, tree);
+            number.value = num;
             number.parent = node.id;
             node.children.splice(0, 0, number.id)
         }
@@ -714,6 +724,10 @@ function parse_sub_power(tree, power) {
 }
 
 function parse_unit(tree) {
+    tree.withEachNode(function (node) {
+        node.value = undefined;
+        // console.log(node.id + ' ' + node.content + ' ' + node.type);
+    });
     tree.withEachLeaf(function (node) {
         if (node.isInUnit(tree)) {
             var temp = decompose_unit(node.content);
@@ -726,7 +740,7 @@ function parse_unit(tree) {
 
 function parse_factors(tree) {
     tree.withEachLeaf(function (node) {
-        console.log('processing ' + node.content + ' ' + node.type);
+        // console.log('processing ' + node.content + ' ' + node.type);
         if (!node.isInUnit(tree)) {
             // no unit
             var content = node.content.trim();
@@ -760,7 +774,7 @@ function parse_factors(tree) {
                 }
             }
         }
-        console.log('processed: ' + node.content);
+        // console.log('processed: ' + node.content);
     });
     //check_children(tree);
     remove_operators(tree, 'invisible_times');
@@ -843,7 +857,7 @@ function unit2value(unitname) {
     valueOf["e"] = 1.60217648740e-19 * valueOf["C"];
     valueOf["N"] = 1000 * valueOf["g"] * valueOf["m"] / (valueOf["s"] * valueOf["s"]);
     valueOf["J"] = valueOf["N"] * valueOf["m"];
-    valueOf["W"] = valueOf["J"] * valueOf["s"];
+    valueOf["W"] = valueOf["J"] / valueOf["s"];
     valueOf["V"] = valueOf["W"] * valueOf["A"];
     valueOf["Ohm"] = valueOf["V"] / valueOf["A"];
     valueOf["Pa"] = valueOf["N"] / (valueOf["m"] * valueOf["m"]);
@@ -1153,6 +1167,12 @@ function val(node, tree) {
             var temp = node.content.replace(',', '.');
             node.value = temp;
         }
+        if (node.isInUnit(tree)) {
+            var temp = decompose_unit(node.content);
+            if (temp[0] == true) {
+                node.value = temp[3];
+            }
+        }
     }
     if (num_of_childs == 1) {
         var child_0 = tree.nodelist[children[0]];
@@ -1205,6 +1225,9 @@ function val(node, tree) {
             }
         }
         if (node.type == 'frac') {
+            node.value = Number(ch0) / Number(ch1);
+        }
+        if (node.type == 'equal') {
             node.value = Number(ch0) / Number(ch1);
         }
     }
@@ -1267,10 +1290,6 @@ function fillWithRandomValues(tree) {
         if (node.type == 'text') hasValue = false;
     });
     if (hasValue) {
-        tree.withEachNode(function (node) {
-            node.value = undefined;
-            console.log(node.id + ' ' + node.content + ' ' + node.type);
-        });
         // tree.withEachLeafOrGreek(function (node) {
         //     if (node.isInUnit(tree)) {
         //         var temp = decompose_unit(node.content);
@@ -1302,10 +1321,12 @@ function fillWithRandomValues(tree) {
                     var u2 = -2 * Math.log(Math.random());
                     var value = 1000 * Math.cos(u1) * Math.sqrt(u2);
                     tree.withEachLeafOrGreek(function (node) {
-                        if (node.content == content) {
-                            node.value = value;
-                            console.log(node.value + '->' +
-                                node.content + ' ' + node.type);
+                        if (typeof node.value == 'undefined') {
+                            if (node.content == content) {
+                                node.value = value;
+                                console.log(node.value + '->' +
+                                    node.content + ' ' + node.type);
+                            }
                         }
                     })
                 }
