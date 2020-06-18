@@ -132,16 +132,16 @@ function tree() {
     this.root.children = [this.leaf.id];
 };
 
-node.prototype.val = function (){
+node.prototype.val = function () {
     var result = 1;
     var numOfChildren = this.children.length;
-    if (numOfChildren == 0){
+    if (numOfChildren == 0) {
         this.value = 1;
     }
     return result;
 }
 
-tree.prototype.val = function() {
+tree.prototype.val = function () {
     return tree.root.val;
 }
 
@@ -183,7 +183,7 @@ tree.prototype.withEachLeafOrGreek = function (doThis) {
     )
 }
 
-node.prototype.isInUnit = function(tree) {
+node.prototype.isInUnit = function (tree) {
     var result = false;
     var stop = false;
     var temp = this;
@@ -218,6 +218,7 @@ function delete_single_nodes(tree) {
             tree.list_of_free.push(node.id);
         }
     });
+    console.log('list of free=' + tree.list_of_free);
     return tree.list_of_free;
 }
 
@@ -262,6 +263,7 @@ var traverseSimple = function (callback, nodelist) {
         callback(node);
     }
 };
+
 function find_left_bracket(content, bra) {
     var long = '\\left' + bra;
     if (bra === '{') {

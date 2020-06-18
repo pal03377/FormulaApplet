@@ -75,7 +75,9 @@ function parsetree_by_index(tree) {
             break;
         case 12:
             message = 'parse textcolor (unit)';
+            check_children(tree);
             parse_textcolor(tree);
+            check_children(tree);
             break;
         case 13:
             message = 'delete single § nodes'
@@ -116,10 +118,12 @@ function parsetree_by_index(tree) {
         case 22:
             message = 'parse unit'
             parse_unit(tree);
+            check_children(tree);
             break;
         case 23:
             message = 'parse factors';
             parse_factors(tree);
+            check_children(tree);
             break;
         case 24:
             message = 'delete single § nodes';
@@ -135,7 +139,6 @@ function parsetree_by_index(tree) {
 
 function parse(tree) {
     var end_parse = false;
-    // parsetree_init();
     parsetree_counter.setCounter(0);
     while (!end_parse) {
         var temp = parsetree_by_index(tree);
@@ -538,7 +541,8 @@ function parse_textcolor(tree) {
                 //check
                 // console.log(bracket.type + ' and ' + test + ' should be bracket-{');
                 // fetch the color
-                var color = tree.nodelist[bracket.children[0]].content;
+                var colornode = tree.nodelist[bracket.children[0]];
+                var color = colornode.content;
                 var unit = create_node('unit', color, tree);
                 // link unit
                 unit.parent = node.id;
@@ -547,7 +551,12 @@ function parse_textcolor(tree) {
                 // now the other directions
                 tree.nodelist[node.children[unit_index + 1]].parent = unit.id;
                 node.children[unit_index] = unit.id;
-                node.children.splice(unit_index + 1, 1); //one child less
+                node.children.splice(unit_index + 1, 1);
+                // delete two nodes
+                bracket.type = 'free';
+                tree.list_of_free.push(bracket.id);
+                colornode.type = 'free';
+                tree.list_of_free.push(colornode.id);
             } else {
                 stop = true;
             }
@@ -710,13 +719,16 @@ function parse_unit(tree) {
             var temp = decompose_unit(node.content);
             var out = temp[1] + '_' + temp[2] + ' value=' + temp[3];
             console.log(node.content + " -> " + out);
+            node.value = temp[3];
         }
     });
 }
 
 function parse_factors(tree) {
     tree.withEachLeaf(function (node) {
+        console.log('processing ' + node.content + ' ' + node.type);
         if (!node.isInUnit(tree)) {
+            // no unit
             var content = node.content.trim();
             // console.log('factor leaf ' + content);
             if (content == "") {
@@ -731,9 +743,10 @@ function parse_factors(tree) {
                     content_with_times += '*' + content[k];
                 }
                 node.content = content_with_times;
-                // console.log('time-ified:' + content_with_times);
+                console.log('time-ified:' + content_with_times);
             }
         } else {
+            // unit
             var content = node.content.trim();
             if (decompose_unit(content)[0] == false) {
                 // try to separate rightmost (youngest) character
@@ -747,8 +760,12 @@ function parse_factors(tree) {
                 }
             }
         }
+        console.log('processed: ' + node.content);
     });
+    //check_children(tree);
     remove_operators(tree, 'invisible_times');
+    //check_children(tree);
+
     //check_children(tree);
 }
 
@@ -1097,7 +1114,7 @@ function paint_tree_recurse(currentNode, nodelist, xa, ya, x, y, ctx, factor, tr
 };
 
 function check_children(tree) {
-    console.clear();
+    /// console.clear();
     tree.withEachNode(function (node) {
         console.log('node #' + node.id + ' ' + node.type + ' ' + node.content + ' parent=' + node.parent);
         if (node.type == 'free') {
@@ -1120,7 +1137,7 @@ function check_children(tree) {
 
 function value(tree) {
     var hasValue = fillWithRandomValues(tree);
-    if (hasValue){
+    if (hasValue) {
         return val(tree.root, tree);
     } else {
         console.log('tree not evaluable');
@@ -1170,8 +1187,8 @@ function val(node, tree) {
             node.value = Math.pow(Number(ch1), (1 / Number(ch0)));
         }
         if (node.type == 'power') {
-            console.log(ch1 + ' ^ ' + ch0);
-            node.value = Math.pow(Number(ch1), Number(ch0));
+            console.log(ch0 + ' ^ ' + ch1);
+            node.value = Math.pow(Number(ch0), Number(ch1));
         }
         if (node.type.startsWith('fu-') && node.content == 'power') {
             var fu = node.type.substr(3)
@@ -1252,14 +1269,15 @@ function fillWithRandomValues(tree) {
     if (hasValue) {
         tree.withEachNode(function (node) {
             node.value = undefined;
+            console.log(node.id + ' ' + node.content + ' ' + node.type);
         });
-        tree.withEachLeafOrGreek(function (node) {
-            if (node.isInUnit(tree)) {
-                var temp = decompose_unit(node.content);
-                node.value =  temp[3];
-                node.type = 'unit';
-            }
-        });
+        // tree.withEachLeafOrGreek(function (node) {
+        //     if (node.isInUnit(tree)) {
+        //         var temp = decompose_unit(node.content);
+        //         node.value =  temp[3];
+        //         //node.type = 'unit';
+        //     }
+        // });
         var i = 0;
         do {
             var stop = false;
@@ -1293,7 +1311,7 @@ function fillWithRandomValues(tree) {
                 }
             } while (stop === false);
         } while (found);
-    } 
+    }
     return hasValue;
 }
 
