@@ -1,0 +1,17 @@
+div.mod_ok {
+	background: url(haken.svg) no-repeat;
+	width: 50px;
+	height: 50px;
+	zoom: 0.8;
+	padding: 1px;
+	margin: 8px;
+}
+
+div.mod_wrong {
+	background: url(blitz.svg) no-repeat;
+	width: 50px;
+	height: 50px;
+	zoom: 0.8;
+	padding: 1px;
+	margin: 8px;
+}

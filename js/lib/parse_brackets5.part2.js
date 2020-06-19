@@ -134,13 +134,13 @@ function parsetree_by_index(tree) {
             end_parse = true;
     }
 
-    console.log(' ');
-    for (var i = 0; i < tree.nodelist.length; i++) {
-        var temp = tree.nodelist[i];
-        if (temp.type !== 'free') {
-            console.log('node[' + i + ']=' + temp.content + ' ' + temp.type + ' ' + temp.value)
-        }
-    }
+    // console.log(' ');
+    // for (var i = 0; i < tree.nodelist.length; i++) {
+    //     var temp = tree.nodelist[i];
+    //     if (temp.type !== 'free') {
+    //         console.log('node[' + i + ']=' + temp.content + ' ' + temp.type + ' ' + temp.value)
+    //     }
+    // }
 
     // check_children(tree);
     return [message, end_parse];

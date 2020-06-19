@@ -34,7 +34,7 @@ include_once 'header.php';
     });
     // button = $("#cont");
     // canvas.click(...) sucks
-    var single_step = true;
+    var single_step = false;
     if (single_step){
       $( '#treecanvas' ).click( function(event){
         var temp = parsetree_by_index(myTree);
@@ -124,6 +124,7 @@ waitfor_mathquill_and_if_ready_then_do(function () {
   link.href = "/js/lib/tex-example.css";
   document.getElementsByTagName("head")[0].appendChild(link);
 </script>
+<link href="css/gf09.css" rel="stylesheet">
 </head>
 
 <body>
@@ -135,9 +136,11 @@ waitfor_mathquill_and_if_ready_then_do(function () {
         <!-- p id="version">version</p -->
         <p class="tex-example">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,97\textcolor{blue}{\frac{m}{s}}</p><br />
         <p class="tex-example">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
-        <p class="tex-example">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
-               <hr />
+        <span><p class="tex-example">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><div class='mod_wrong'></div></span><br />
+        <p class="tex-example">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}<div class='mod_ok'></div></p><br />
+              
 <canvas id="treecanvas" width="1200" height="600" style="
+display: none;
 border: 1px solid #000000;
 position: fixed;
 right: 30px;

@@ -1,5 +1,5 @@
 <?php 
-  $title='Test Page - Formula Applet (gf09) ';
+  $title='Other solutions - Demo ';
   $liblist = "['end' ]";
 ?>
 <?php include_once( 'header.php' ); ?>
@@ -8,14 +8,14 @@
 
 <body>
     <h1><?php echo $title; ?></h1>
-    <p><a href='tex_parser.php'>TEX Parser</a></p>
-    <p><a href='check_if_equal.php'>Check if equal</a></p>
-    <p><a href='mathquill2tex2parser.php'>MathQuill <-> TEX -> Parser</a></p>
-    <p><a href='mathquill2tex2tree.php'>MathQuill <-> TEX -> Tree</a> and tree2TEX check</p>
-    <p><a href='check_unit_decomposition.php'>Check Unit Decomposition</a></p>
-    <p><a href='mathquill2tex2parser_no_feedback.php'>MathQuill -> TEX (without feedback) -> Parser </a></p>
-    <p><a href='other.php'>Other solutions</a> KAS, Algebrite, MathQuill</p>
-	<hr>
+    <p><a href='mathquill.php'>MathQuill - Test Page</a></p>
+    <p><a href='mathquill_buttons.php'>MathQuill Buttons</a></p>
+    <p><a href='algebrite.php'>Algebrite - Test Page</a></p>
+    <p><a href='tex2mathquill.php'>TEX &lt;-&gt; MathQuill -&gt; Algebrite</a></p>
+    <p><a href='tex2kas.php'>TEX &lt;-&gt; MathQuill -&gt; KAS</a></p>
+    <p><a href='kas_compare.php'>KAS Compare</a></p>
+    <p><a href='index.php'> gf09 test and demos</a></p>
+    <hr>
     <p>This page uses </p>
   <table>
     <tr>
