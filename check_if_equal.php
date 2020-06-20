@@ -134,9 +134,9 @@ waitfor_mathquill_and_if_ready_then_do(function () {
         <p id="output">output</p>
         <p><button id="check">Check all</button></p>
         <!-- p id="version">version</p -->
-        <p class="tex-example">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,97\textcolor{blue}{\frac{m}{s}}</p><br />
+        <span><p class="tex-example">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,97\textcolor{blue}{\frac{m}{s}}</p><div class='mod_wrong'></div></span><br />
         <p class="tex-example">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
-        <span><p class="tex-example">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><div class='mod_wrong'></div></span><br />
+        <p class="tex-example">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><img src="css/blitz.svg" alt="wrong" style="width:52px;height:52px;"><br />
         <p class="tex-example">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}<div class='mod_ok'></div></p><br />
               
 <canvas id="treecanvas" width="1200" height="600" style="

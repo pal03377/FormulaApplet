@@ -14,7 +14,9 @@
     <p><a href='mathquill2tex2tree.php'>MathQuill <-> TEX -> Tree</a> and tree2TEX check</p>
     <p><a href='check_unit_decomposition.php'>Check Unit Decomposition</a></p>
     <p><a href='mathquill2tex2parser_no_feedback.php'>MathQuill -> TEX (without feedback) -> Parser </a></p>
+    <p><a href='background_pic.php'>background pictures </a> for 'wrong' and 'ok'</p>
     <p><a href='other.php'>Other solutions</a> KAS, Algebrite, MathQuill</p>
+    
 	<hr>
     <p>This page uses </p>
   <table>
