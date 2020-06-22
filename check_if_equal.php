@@ -26,6 +26,11 @@ include_once 'header.php';
       });
       mathField.push(mf);
     });
+    $( '.tex-example').each(function(){
+      console.log(this.id);
+      var selector = '#' + this.id+ ' .mq-textarea';
+      $( selector ).append($('<img>',{id:this.id+'-img-wrong',src:'css/blitz.svg', width:25, height:50}));
+    });
     $(".tex-example").click(function () {
       var index = $(".tex-example").index(this);
       editHandler(index);
@@ -123,6 +128,7 @@ waitfor_mathquill_and_if_ready_then_do(function () {
   link.rel = "stylesheet";
   link.href = "/js/lib/tex-example.css";
   document.getElementsByTagName("head")[0].appendChild(link);
+
 </script>
 <link href="css/gf09.css" rel="stylesheet">
 </head>
@@ -134,10 +140,11 @@ waitfor_mathquill_and_if_ready_then_do(function () {
         <p id="output">output</p>
         <p><button id="check">Check all</button></p>
         <!-- p id="version">version</p -->
-        <span><p class="tex-example">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,97\textcolor{blue}{\frac{m}{s}}</p><div class='mod_wrong'></div></span><br />
-        <p class="tex-example">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
-        <p class="tex-example">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><img src="css/blitz.svg" alt="wrong" style="width:52px;height:52px;"><br />
-        <p class="tex-example">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}<div class='mod_ok'></div></p><br />
+        <p class="tex-example" id="unu683">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,97\textcolor{blue}{\frac{m}{s}}</p><br />
+        <p class="tex-example" id="inv862">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
+        <!-- <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><img src="css/blitz.svg" alt="wrong" style="width:52px;height:52px;"><br /> -->
+        <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
+        <p class="tex-example" id="con335">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}</p><br />
               
 <canvas id="treecanvas" width="1200" height="600" style="
 display: none;
