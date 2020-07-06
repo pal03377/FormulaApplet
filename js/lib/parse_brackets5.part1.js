@@ -218,7 +218,7 @@ function delete_single_nodes(tree) {
             tree.list_of_free.push(node.id);
         }
     });
-    console.log('list of free=' + tree.list_of_free);
+    // console.log('list of free=' + tree.list_of_free);
     return tree.list_of_free;
 }
 

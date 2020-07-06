@@ -732,7 +732,7 @@ function parse_unit(tree) {
         if (node.isInUnit(tree)) {
             var temp = decompose_unit(node.content);
             var out = temp[1] + '_' + temp[2] + ' value=' + temp[3];
-            console.log(node.content + " -> " + out);
+            // console.log(node.content + " -> " + out);
             node.value = temp[3];
         }
     });
@@ -757,7 +757,7 @@ function parse_factors(tree) {
                     content_with_times += '*' + content[k];
                 }
                 node.content = content_with_times;
-                console.log('time-ified:' + content_with_times);
+                // console.log('time-ified:' + content_with_times);
             }
         } else {
             // unit
@@ -766,7 +766,7 @@ function parse_factors(tree) {
                 // try to separate rightmost (youngest) character
                 var left = content.substr(0, content.length - 1);
                 var right = content.substr(content.length - 1);
-                console.log(left + ':' + right);
+                // console.log(left + ':' + right);
                 if (decompose_unit(left)[0] == true) { //left is Unit
                     if (decompose_unit(right)[0] == true) { // right isUnit
                         node.content = left + "*" + right;
@@ -1197,22 +1197,22 @@ function val(node, tree) {
         // console.log(child_0);
         var ch0 = val(child_0, tree);
         var ch1 = val(child_1, tree);
-        console.log(ch0 + ' # ' + ch1);
+        // console.log(ch0 + ' # ' + ch1);
         if (node.type == '*') {
             // console.log(ch0 + '*' + ch1);
             node.value = Number(ch0) * Number(ch1);
         }
         if (node.type == 'nthroot') {
-            console.log(ch1 + ' ^ 1/' + ch0);
+            // console.log(ch1 + ' ^ 1/' + ch0);
             node.value = Math.pow(Number(ch1), (1 / Number(ch0)));
         }
         if (node.type == 'power') {
-            console.log(ch0 + ' ^ ' + ch1);
+            // console.log(ch0 + ' ^ ' + ch1);
             node.value = Math.pow(Number(ch0), Number(ch1));
         }
         if (node.type.startsWith('fu-') && node.content == 'power') {
             var fu = node.type.substr(3)
-            console.log('fu power ' + fu);
+            // console.log('fu power ' + fu);
             var base = trigonometry(fu, ch1);
             node.value = Math.pow(base, ch0)
         }
@@ -1239,8 +1239,7 @@ function val(node, tree) {
         var dummy = val(child_1, tree);
         var dummy = val(child_2, tree);
     }
-    //console.log(node.content + ' ' + node.type);
-    console.log(node.type + ' (' + num_of_childs + ') ' + node.content + ' val=' + node.value);
+    // console.log(node.type + ' (' + num_of_childs + ') ' + node.content + ' val=' + node.value);
     return node.value;
 }
 
@@ -1282,7 +1281,7 @@ function trigonometry(fu, arg) {
 
 function fillWithRandomValues(tree) {
     // console.clear();
-    console.log('fill leafs & greek with random values');
+    // console.log('fill leafs & greek with random values');
     hasValue = true;
     tree.withEachNode(function (node) {
         if (node.type == 'integral') hasValue = false;
@@ -1324,8 +1323,8 @@ function fillWithRandomValues(tree) {
                         if (typeof node.value == 'undefined') {
                             if (node.content == content) {
                                 node.value = value;
-                                console.log(node.value + '->' +
-                                    node.content + ' ' + node.type);
+                                // console.log(node.value + '->' +
+                                    // node.content + ' ' + node.type);
                             }
                         }
                     })
