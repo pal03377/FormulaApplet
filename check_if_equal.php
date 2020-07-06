@@ -39,9 +39,9 @@ include_once 'header.php';
   });
 
     $( '.tex-example').each(function(){
-      var selector = '#' + this.id+ ' .mq-textarea';
+      var selector = '#' + this.id+ ' .tex-example';
       console.log(selector);
-     $( selector ).append($('<img>',{id:this.id+'-img-wrong',src:'css/blitz.svg', width:25, height:50}));
+     $( selector ).append($('<img>',{id:this.id+'-img-wrong', src:'css/blitz.svg', width:25, height:50}));
     });
     $(".tex-example").click(function () {
       var index = $(".tex-example").index(this);
@@ -94,7 +94,7 @@ include_once 'header.php';
         <!-- p id="version">version</p -->
         <p class="tex-example" id="unu683">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,97\textcolor{blue}{\frac{m}{s}}</p><br />
         <p class="tex-example" id="inv862">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
-        <!-- <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><img src="css/blitz.svg" alt="wrong" style="width:52px;height:52px;"><br /> -->
+        <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><img src="css/blitz.svg" alt="wrong" style="width:12px;height:25px;"><br />
         <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
         <p class="tex-example" id="con335">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}</p><br />
 
