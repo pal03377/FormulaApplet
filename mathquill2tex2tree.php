@@ -13,7 +13,7 @@ include_once 'header.php';
  <button id="unit" class='button'>Insert Unit</button>
  <hr>
   <textarea id="tree2TEX" style="width:80%;vertical-align:top" class="tex-example">tex2</textarea>
-  <canvas id="treecanvas" width="1200" height="600" style="
+  <canvas id="treecanvas" width="600" height="300" style="
 border: 1px solid #000000;
 position: fixed;
 right: 30px;
