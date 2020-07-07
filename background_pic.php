@@ -3,7 +3,7 @@
   $liblist = "['end' ]";
 ?>
 <?php include_once( 'header.php' ); ?>
-<link href="css/gf09.css" rel="stylesheet">
+<link href="/css/gf09.css" rel="stylesheet">
 <script>
  $(document).ready(function(){
 
@@ -56,7 +56,7 @@ function editHandler(id) {
     <hr>
     <p>Click. clear -> mod_wrong -> mod_ok -> clear </p>
     <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
-    <p class="tex-example mod_ask" id="s83ghx">Bli</p><br />
+    <p class="tex-example mod_ok" id="s83ghx">Bli</p><br />
     <p class="tex-example" id="779wyx">Bla</p><br />
     <p class="tex-example" id="782ggl">Blu</p><br />
   <?php include_once( 'footer.php' ); ?>
