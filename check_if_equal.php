@@ -82,7 +82,7 @@ include_once 'header.php';
 
 </script>
 
-<link href="css/gf09.css" rel="stylesheet">
+<link href="/css/gf09.css" rel="stylesheet">
 </head>
 
 <body>

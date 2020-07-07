@@ -1,3 +1,24 @@
+.mq-cursor { 
+    background-color: gray;
+    color: red;
+}
+.tex-example{
+    border: darkblue solid thin;
+    background-color: lightblue;
+}
+.tex-example.selected{
+    border: red solid medium;
+    background-color: lightpink;
+}
+.tex-example.isEqual{
+    border: green solid medium;
+    background-color: lightgreen;
+}
+.tex-example.isNotEqual{
+    border: red solid medium;
+    background-color: salmon;
+}
+
 .tex-example.mod_wrong img#theImg {
 	background: url(blitz.svg) no-repeat;
 	width: 25px;
@@ -14,9 +35,4 @@
 	zoom: 0.4;
 	padding: 1px;
 	margin: 2px;
-}
-
-.tex-example {
-    border: darkblue solid thin;
-    background-color: #ffffef;
 }

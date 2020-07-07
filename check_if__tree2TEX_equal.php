@@ -6,6 +6,8 @@ include_once 'header.php';
 
 <script src="/js/lib/parse_brackets5.part1.js"></script>
 <script src="/js/lib/parse_brackets5.part2.js"></script>
+<link href="/css/gf09.css" rel="stylesheet">
+
 <script>
   function prepare_page() {
   var MQ = MathQuill.getInterface(2);

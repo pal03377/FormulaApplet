@@ -126,11 +126,11 @@ waitfor_mathquill_and_if_ready_then_do(function () {
 });
 
   // Parse from LaTeX ...
-  const latexInput = '\\frac{1}{\\sqrt{2}}\\cdot x=10';
+  // const latexInput = '\\frac{1}{\\sqrt{2}}\\cdot x=10';
   var link = document.createElement("link");
   link.type = "text/css";
   link.rel = "stylesheet";
-  link.href = "/js/lib/tex-example.css";
+  link.href = "/css/gf09.css";
   document.getElementsByTagName("head")[0].appendChild(link);
 </script>
 </head>
