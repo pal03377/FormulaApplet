@@ -85,7 +85,7 @@ function tree_output(){
   var link = document.createElement("link");
   link.type = "text/css";
   link.rel = "stylesheet";
-  link.href = "/js/lib/tex-example.css";
+  link.href = "/css/gf09.css";
   document.getElementsByTagName("head")[0].appendChild(link);
 
  }

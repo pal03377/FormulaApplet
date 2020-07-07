@@ -20,10 +20,11 @@ include_once 'header.php';
     var link = document.createElement("link");
     link.type = "text/css";
     link.rel = "stylesheet";
-    link.href = "/js/lib/tex-example.css";
+    link.href = "/css/gf09.css";
     document.getElementsByTagName("head")[0].appendChild(link);
 
     $(document).ready(function () {
+    
     $(".tex-example").each(function () {
       var index = $(".tex-example").index(this);
       // console.log(index);
@@ -36,6 +37,7 @@ include_once 'header.php';
       });
       mathField.push(mf);
     });
+    $(".tex-example").append($('<img>',{id:'theImg'}));
   });
 
     $( '.tex-example').each(function(){
@@ -44,8 +46,9 @@ include_once 'header.php';
      $( selector ).append($('<img>',{id:this.id+'-img-wrong', src:'css/blitz.svg', width:25, height:50}));
     });
     $(".tex-example").click(function () {
-      var index = $(".tex-example").index(this);
-      editHandler(index);
+      // var index = $(".tex-example").index(this);
+      var id = $(this).attr('id');
+      editHandler(id);
       $(".tex-example").removeClass('selected');
       $(this).addClass('selected');
     });
@@ -66,14 +69,23 @@ include_once 'header.php';
          });
     });
 
-    function editHandler(index) {
+    function editHandler(id) {
+    var index = $(".tex-example").index($( '#' + id));
+    console.log('index=' + index);
     mf = mathField[index];
     // var out = mf.latex();
     out = mf.latex();
      myTree = new tree();
      myTree.leaf.content = mf.latex();
     parse(myTree);
-    document.getElementById('output').innerHTML = out + '<br>' + value(myTree);
+    var almostOne = value(myTree);
+    var dif = Math.abs(almostOne - 1);
+    if (dif < 0.1){
+      $( '#' + id).addClass( 'mod_ok' );
+    } else {
+      $( '#' + id).addClass('mod_wrong');
+    }
+    document.getElementById('output').innerHTML = out ;
     // parsetree_init();
     parsetree_counter.setCounter(0);
   };
@@ -82,7 +94,7 @@ include_once 'header.php';
 
 </script>
 
-<link href="/css/gf09.css" rel="stylesheet">
+<!-- <link href="/css/gf09.css" rel="stylesheet"> -->
 </head>
 
 <body>
@@ -94,7 +106,7 @@ include_once 'header.php';
         <!-- p id="version">version</p -->
         <p class="tex-example" id="unu683">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,97\textcolor{blue}{\frac{m}{s}}</p><br />
         <p class="tex-example" id="inv862">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
-        <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><img src="css/blitz.svg" alt="wrong" style="width:12px;height:25px;"><br />
+        <!-- <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><img src="css/blitz.svg" alt="wrong" style="width:12px;height:25px;"><br /> -->
         <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
         <p class="tex-example" id="con335">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}</p><br />
 
