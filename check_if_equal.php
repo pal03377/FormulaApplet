@@ -37,14 +37,20 @@ include_once 'header.php';
       });
       mathField.push(mf);
     });
-    $(".tex-example").append($('<img>',{id:'theImg'}));
+    // $(".tex-example").append($('<img>',{id:'theImg'}));
+    // $(".tex-example span.mq-textarea").append($("<div class='mod_ok'>bli</div>"));
+    // $(".tex-example span.mq-textarea").append($("<div class='test'></div>"));
+    var inserttext_wrong = '<img class="mod" src="css/blitz.svg" alt="wrong" styblitz le="width:12px;height:25px;"><br />';
+    ($(inserttext_wrong)).insertAfter($(".tex-example.mod_wrong"));
+    var inserttext_ok = '<img class="mod" src="css/haken.svg" alt="ok" style="width:25px;height:25px;"><br />';
+    ($(inserttext_ok)).insertAfter($(".tex-example.mod_ok"));
   });
 
-    $( '.tex-example').each(function(){
-      var selector = '#' + this.id+ ' .tex-example';
-      console.log(selector);
-     $( selector ).append($('<img>',{id:this.id+'-img-wrong', src:'css/blitz.svg', width:25, height:50}));
-    });
+    // $( '.tex-example').each(function(){
+    //   var selector = '#' + this.id+ ' .tex-example';
+    //   console.log(selector);
+    //  $( selector ).append($('<img>',{id:this.id+'-img-wrong', src:'css/blitz.svg', width:25, height:50}));
+    // });
     $(".tex-example").click(function () {
       // var index = $(".tex-example").index(this);
       var id = $(this).attr('id');
@@ -56,6 +62,8 @@ include_once 'header.php';
     // check all
     $( '#check' ).click( function(event){
       console.log('check button clicked');
+      $("img.mod").remove();
+
       $(".tex-example").each(function () {
         var index = $(".tex-example").index(this);
         mf = mathField[index];
@@ -85,7 +93,13 @@ include_once 'header.php';
     } else {
       $( '#' + id).addClass('mod_wrong');
     }
-    document.getElementById('output').innerHTML = out ;
+    $("img.mod").remove();
+    var inserttext_wrong = '<img class="mod" src="css/blitz.svg" alt="wrong" style="width:12px;height:25px;">';
+    ($(inserttext_wrong)).insertAfter($(".tex-example.mod_wrong"));
+    var inserttext_ok = '<img class="mod" src="css/haken.svg" alt="ok" style="width:25px;height:25px;">';
+    ($(inserttext_ok)).insertAfter($(".tex-example.mod_ok"));
+
+  document.getElementById('output').innerHTML = out ;
     // parsetree_init();
     parsetree_counter.setCounter(0);
   };
@@ -106,7 +120,7 @@ include_once 'header.php';
         <!-- p id="version">version</p -->
         <p class="tex-example" id="unu683">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,97\textcolor{blue}{\frac{m}{s}}</p><br />
         <p class="tex-example" id="inv862">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
-        <!-- <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><img src="css/blitz.svg" alt="wrong" style="width:12px;height:25px;"><br /> -->
+        <p class="tex-example" id="fal487">(7,2c - 3,4d)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
         <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
         <p class="tex-example" id="con335">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}</p><br />
 

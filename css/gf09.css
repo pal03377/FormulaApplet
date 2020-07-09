@@ -19,7 +19,7 @@
     background-color: salmon;
 }
 
-.tex-example.mod_wrong img#theImg {
+/* .tex-example.mod_wrong{
 	background: url(blitz.svg) no-repeat;
 	width: 25px;
 	height: 50px;
@@ -28,11 +28,17 @@
 	margin: 2px;
 }
 
-.tex-example.mod_ok img#theImg {
-	background: url(haken.svg) no-repeat;
+/* .tex-example.mod_ok img{ */
+/* img.test{
+	/* background: url(haken.svg) no-repeat; */
+	/* src: 'haken.svg';
+	min-width: 50px;
 	width: 50px;
+	min-height: 50px;
 	height: 50px;
 	zoom: 0.4;
 	padding: 1px;
 	margin: 2px;
-}
+} .tex-example.mod_ok { 
+	display: flex;
+} */
