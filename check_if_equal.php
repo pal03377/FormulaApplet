@@ -40,11 +40,14 @@ include_once 'header.php';
     // $(".tex-example").append($('<img>',{id:'theImg'}));
     // $(".tex-example span.mq-textarea").append($("<div class='mod_ok'>bli</div>"));
     // $(".tex-example span.mq-textarea").append($("<div class='test'></div>"));
-    var inserttext_wrong = '<img class="mod" src="css/blitz.svg" alt="wrong" styblitz le="width:12px;height:25px;"><br />';
-    ($(inserttext_wrong)).insertAfter($(".tex-example.mod_wrong"));
-    var inserttext_ok = '<img class="mod" src="css/haken.svg" alt="ok" style="width:25px;height:25px;"><br />';
-    ($(inserttext_ok)).insertAfter($(".tex-example.mod_ok"));
-  });
+    // var inserttext_wrong = '<img class="mod" src="css/blitz.svg" alt="wrong" styblitz le="width:12px;height:25px;"><br />';
+    // ($(inserttext_wrong)).insertAfter($(".tex-example.mod_wrong"));
+    // var inserttext_ok = '<img class="mod" src="css/haken.svg" alt="ok" style="width:25px;height:25px;"><br />';
+    // ($(inserttext_ok)).insertAfter($(".tex-example.mod_ok"));
+    $("img.mod").remove();
+    ($('<img class="mod">')).insertAfter($(".tex-example"));
+    // ($(".tex-example")).append($('<img class="mod">'));
+   });
 
     // $( '.tex-example').each(function(){
     //   var selector = '#' + this.id+ ' .tex-example';
@@ -93,11 +96,11 @@ include_once 'header.php';
     } else {
       $( '#' + id).addClass('mod_wrong');
     }
-    $("img.mod").remove();
-    var inserttext_wrong = '<img class="mod" src="css/blitz.svg" alt="wrong" style="width:12px;height:25px;">';
-    ($(inserttext_wrong)).insertAfter($(".tex-example.mod_wrong"));
-    var inserttext_ok = '<img class="mod" src="css/haken.svg" alt="ok" style="width:25px;height:25px;">';
-    ($(inserttext_ok)).insertAfter($(".tex-example.mod_ok"));
+      
+    // var inserttext_wrong = '<img class="mod" src="css/blitz.svg" alt="wrong" style="width:12px;height:25px;">';
+    // ($(inserttext_wrong)).insertAfter($(".tex-example.mod_wrong"));
+    // var inserttext_ok = '<img class="mod" src="css/haken.svg" alt="ok" style="width:25px;height:25px;">';
+    // ($(inserttext_ok)).insertAfter($(".tex-example.mod_ok"));
 
   document.getElementById('output').innerHTML = out ;
     // parsetree_init();
