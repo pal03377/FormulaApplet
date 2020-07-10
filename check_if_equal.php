@@ -27,36 +27,26 @@ include_once 'header.php';
     
     $(".tex-example").each(function () {
       var index = $(".tex-example").index(this);
-      // console.log(index);
+      var id = $(this).attr('id');
       mf = MQ.MathField(this, {
         handlers: {
           edit: function () {
-            editHandler(index);
+            console.log(index + ' ' + id);
+            // editHandler(index);
+            editHandler(id);
           }
         }
       });
       mathField.push(mf);
     });
-    // $(".tex-example").append($('<img>',{id:'theImg'}));
-    // $(".tex-example span.mq-textarea").append($("<div class='mod_ok'>bli</div>"));
-    // $(".tex-example span.mq-textarea").append($("<div class='test'></div>"));
-    // var inserttext_wrong = '<img class="mod" src="css/blitz.svg" alt="wrong" styblitz le="width:12px;height:25px;"><br />';
-    // ($(inserttext_wrong)).insertAfter($(".tex-example.mod_wrong"));
-    // var inserttext_ok = '<img class="mod" src="css/haken.svg" alt="ok" style="width:25px;height:25px;"><br />';
-    // ($(inserttext_ok)).insertAfter($(".tex-example.mod_ok"));
     $("img.mod").remove();
     ($('<img class="mod">')).insertAfter($(".tex-example"));
-    // ($(".tex-example")).append($('<img class="mod">'));
    });
 
-    // $( '.tex-example').each(function(){
-    //   var selector = '#' + this.id+ ' .tex-example';
-    //   console.log(selector);
-    //  $( selector ).append($('<img>',{id:this.id+'-img-wrong', src:'css/blitz.svg', width:25, height:50}));
-    // });
-    $(".tex-example").click(function () {
+      $(".tex-example").click(function () {
       // var index = $(".tex-example").index(this);
       var id = $(this).attr('id');
+      console.log('handler '+id);
       editHandler(id);
       $(".tex-example").removeClass('selected');
       $(this).addClass('selected');
@@ -66,23 +56,18 @@ include_once 'header.php';
     $( '#check' ).click( function(event){
       console.log('check button clicked');
       $("img.mod").remove();
+      ($('<img class="mod">')).insertAfter($(".tex-example"));
 
       $(".tex-example").each(function () {
-        var index = $(".tex-example").index(this);
-        mf = mathField[index];
-        myTree = new tree();
-        // var temp = deleteSpaceAndRemoveBackslash(mf.latex());
-        var temp = mf.latex();
-        myTree.leaf.content = temp;
-        parse(myTree);
-        // var tex_2 = deleteSpaceAndRemoveBackslash(tree2TEX(myTree));
-        console.log(value(myTree));
-         });
+        var id = $(this).attr('id');
+        console.log('id=' + id);
+        editHandler(id);
+        });
     });
 
     function editHandler(id) {
     var index = $(".tex-example").index($( '#' + id));
-    console.log('index=' + index);
+    console.log('id->' + id + ' index=' + index);
     mf = mathField[index];
     // var out = mf.latex();
     out = mf.latex();
@@ -92,18 +77,12 @@ include_once 'header.php';
     var almostOne = value(myTree);
     var dif = Math.abs(almostOne - 1);
     if (dif < 0.1){
-      $( '#' + id).addClass( 'mod_ok' );
+      $( '#' + id).removeClass('mod_wrong').addClass( 'mod_ok' );
     } else {
-      $( '#' + id).addClass('mod_wrong');
+      $( '#' + id).removeClass('mod_ok').addClass('mod_wrong');
     }
       
-    // var inserttext_wrong = '<img class="mod" src="css/blitz.svg" alt="wrong" style="width:12px;height:25px;">';
-    // ($(inserttext_wrong)).insertAfter($(".tex-example.mod_wrong"));
-    // var inserttext_ok = '<img class="mod" src="css/haken.svg" alt="ok" style="width:25px;height:25px;">';
-    // ($(inserttext_ok)).insertAfter($(".tex-example.mod_ok"));
-
-  document.getElementById('output').innerHTML = out ;
-    // parsetree_init();
+    document.getElementById('output').innerHTML = out ;
     parsetree_counter.setCounter(0);
   };
 
