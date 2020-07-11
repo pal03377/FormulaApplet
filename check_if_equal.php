@@ -106,5 +106,7 @@ include_once 'header.php';
         <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
         <p class="tex-example" id="con335">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}</p><br />
 
+<hr>
+<p>This page uses MathQuill 0.10.1 <a href="https://github.com/mathquill/mathquill">https://github.com/mathquill/mathquill</a> (Mozilla Public License, v. 2.0)</p>
 
 <?php include_once 'footer.php';?>

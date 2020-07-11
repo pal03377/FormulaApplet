@@ -18,22 +18,14 @@
     <p><a href='other.php'>Other solutions</a> KAS, Algebrite, MathQuill</p>
     
 	<hr>
-    <p>This page uses </p>
-  <table>
+    <p>This page uses MathQuill 0.10.1 <a href="https://github.com/mathquill/mathquill">https://github.com/mathquill/mathquill</a> (Mozilla Public License, v. 2.0)</p>
+  <!-- <table>
     <tr>
       <th scope="col">Library</th>
       <th scope="col">Version</th>
       <th scope="col">Source</th>
       <th scope="col">License</th>
     </tr>
-    <!--
-    <tr>
-      <td>require.js</td>
-      <td>2.3.6</td>
-      <td><a href="https://requirejs.org/docs/start.html">https://requirejs.org/docs/start.html</a></td>
-      <td>jQuery Foundation</td>
-    </tr>
-    -->
     <tr>
       <td>JQuery</td>
       <td>3.4.1</td>
@@ -65,5 +57,5 @@
       <td><a href="https://github.com/Khan/KAS">https://github.com/Khan/KAS</a></td>
       <td>MIT License</td>
     </tr>
-  </table>
+  </table> -->
   <?php include_once( 'footer.php' ); ?>
