@@ -848,7 +848,8 @@ function unit2value(unitname) {
         "s": 9.066344172904e-3,
         "mol": 3.904471947388e-4,
         "Celsius": 7.2209518210337e-3,
-        "Kelvin": 8.573310992341e2
+        "Kelvin": 8.573310992341e2,
+        "one": 1
     }
     valueOf["min"] = 60 * valueOf["s"];
     valueOf["h"] = 60 * valueOf["min"];
@@ -865,6 +866,7 @@ function unit2value(unitname) {
     valueOf["Liter"] = 0.001 * valueOf["m"] * valueOf["m"] * valueOf["m"];
     valueOf["Ar"] = 100 * valueOf["m"] * valueOf["m"];
     valueOf["°C"] = valueOf["Celsius"];
+    valueOf["°"] = valueOf["one"] * Math.PI / 180;
     valueOf["K"] = valueOf["Kelvin"];
     valueOf["dag"] = 10 * valueOf["g"];
     // console.log(valueOf);
@@ -1239,7 +1241,7 @@ function val(node, tree) {
         var dummy = val(child_1, tree);
         var dummy = val(child_2, tree);
     }
-    // console.log(node.type + ' (' + num_of_childs + ') ' + node.content + ' val=' + node.value);
+    console.log(node.type + ' (' + num_of_childs + ') ' + node.content + ' val=' + node.value);
     return node.value;
 }
 
@@ -1326,6 +1328,10 @@ function fillWithRandomValues(tree) {
                                 // console.log(node.value + '->' +
                                     // node.content + ' ' + node.type);
                             }
+                            if (node.content == '\pi') {
+                                node.value = Math.PI;
+                                console.log('PI');
+                            }
                         }
                     })
                 }
@@ -1334,13 +1340,3 @@ function fillWithRandomValues(tree) {
     }
     return hasValue;
 }
-
-// function concat(tree1, tree2){
-//     var shift = tree1.nodelist.length;
-//     tree2.withEachNode(function(node){
-//         var children = node.children;
-//         for(var i=0; i<children.length; i++){
-//             node.children[i] += shift;
-//         }
-//     })
-// }
