@@ -10,6 +10,7 @@
     <h1><?php echo $title; ?></h1>
     <p><a href='tex_parser.php'>TEX Parser</a></p>
     <p><a href='check_if_equal.php'>Check if equal</a></p>
+    <p><a href='editable_in_static_MQ.php'>editable_in_static_MQ.php</a></p>
     <p><a href='mathquill2tex2parser.php'>MathQuill <-> TEX -> Parser</a></p>
     <p><a href='mathquill2tex2tree.php'>MathQuill <-> TEX -> Tree</a> and tree2TEX check</p>
     <p><a href='check_unit_decomposition.php'>Check Unit Decomposition</a></p>
