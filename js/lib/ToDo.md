@@ -1,16 +1,17 @@
 # *ToDo* #
 * Einheiten etc.
     * <s>physikalische Einheiten</s>
-    * Grad, Minuten, Sekunden
+    * <s>Grad</s>, Minuten, Sekunden
     * Gemischte Zahlen
     * abs(x), |x|
+    exp(x) = e^x
 * Objektorientierte Programmierung
     * Vereinheitlichung des Slice-Teils
     * Test und Debugging
     * TypeScript
-    * <s>Vereinheitlichen der do-while-Schleifen (loop <-> stop)</s>
+    * https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
 * Auf Gleichheit testen
-    * <s>Gleichheitszeichen</s>
+    * Paraneter 'solution'
 * Legacy: Applet-Parameter decodieren
 * try-catch
 * definite integral obsolete?

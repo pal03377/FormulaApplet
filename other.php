@@ -63,5 +63,11 @@
       <td><a href="https://github.com/Khan/KAS">https://github.com/Khan/KAS</a></td>
       <td>MIT License</td>
     </tr>
+    <tr>
+      <td>Create ZIP files by Viral Patel 2012</td>
+      <td>http://jszip.stuartk.co.uk/ 2009, dead link</td>
+      <td><a href="https://www.viralpatel.net/create-zip-file-javascript/">https://www.viralpatel.net/create-zip-file-javascript/</a></td>
+      <td>GPLv3 and the MIT licences</td>
+    </tr>
   </table>
   <?php include_once( 'footer.php' ); ?>
