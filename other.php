@@ -64,9 +64,9 @@
       <td>MIT License</td>
     </tr>
     <tr>
-      <td>Create ZIP files by Viral Patel 2012</td>
-      <td>http://jszip.stuartk.co.uk/ 2009, dead link</td>
-      <td><a href="https://www.viralpatel.net/create-zip-file-javascript/">https://www.viralpatel.net/create-zip-file-javascript/</a></td>
+      <td>Create ZIP files (by Stuart Knightley)</td>
+      <td>3.5.0</td>
+      <td><a href="https://github.com/Stuk/jszip">https://github.com/Stuk/jszip</a></td>
       <td>GPLv3 and the MIT licences</td>
     </tr>
   </table>

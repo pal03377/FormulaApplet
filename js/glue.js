@@ -34,6 +34,12 @@ paths.kas = {
 	css: false,
 	next: 'end'
 };
+paths.zip = {
+	path: libPath + 'decode_encode/jszip/dist/jszip.js',
+	fallback: libPath + 'decode_encode/jszip/dist/jszip.min.js',
+	css: false,
+	next: 'end'
+};
 
 // $liblist is set in *.php file as a php variable
 // header.php converts it to a javascript variable
