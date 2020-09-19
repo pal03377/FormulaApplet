@@ -5,6 +5,7 @@ include_once 'header.php';
 
 <body>
 <h1><?php echo $title; ?></h1>
+<p><a href='https://stuk.github.io/jszip/'>JSZip Doc</a></p>
 
 <script>
   waitfor_libLoader_and_if_ready_then_do( function() {
@@ -15,8 +16,15 @@ include_once 'header.php';
     console.log( 'init' );
     var zip = new JSZip();
     zip.file("Hello.txt", "Hello World\n");
-    zip.generateAsync({type:"blob"}).then(function(content) { 
+    zip.generateAsync({type:"base64"}).then(function(content) { 
       console.log(content);
+    var zip = new JSZip();
+    zip.loadAsync(content, {base64: true}).then(function(data){
+      console.log(zip.name);
+      zip.file("Hello.txt").async("string").then(function (data) {
+        console.log(data);
+});
+    });
    });
   }
 </script>
