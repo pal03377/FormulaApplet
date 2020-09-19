@@ -11,5 +11,7 @@
 			"path": "D:\\Users\\privat\\Documents\\Schule\\_Programmieren\\javascript\\rev_nearness"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"php.validate.executablePath": "D:\\Users\\privat\\Documents\\xampp_gf09\\php\\php.exe"
+	}
 }

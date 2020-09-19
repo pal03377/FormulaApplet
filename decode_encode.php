@@ -14,19 +14,37 @@ include_once 'header.php';
 
   function init(){
     console.log( 'init' );
+
+   function base64_zip_encode(content, encode_success){
     var zip = new JSZip();
-    zip.file("Hello.txt", "Hello World\n");
-    zip.generateAsync({type:"base64"}).then(function(content) { 
-      console.log(content);
-    var zip = new JSZip();
-    zip.loadAsync(content, {base64: true}).then(function(data){
-      console.log(zip.name);
-      zip.file("Hello.txt").async("string").then(function (data) {
-        console.log(data);
-});
+    zip.file("content.txt", content);
+    zip.generateAsync({type:"base64"}).then( function(zipcontent){
+      encode_success(zipcontent);
     });
-   });
   }
+
+  function encode_success(zipcontent){
+    console.log(zipcontent);
+    base64_zip_decode(zipcontent, decode_success);
+  }
+
+  function decode_success(text){
+    console.log(text);
+  }
+
+  function base64_zip_decode( code, decode_success){
+    var zip = new JSZip();
+    zip.loadAsync(code, {base64: true}).then(function(data){
+      zip.file("content.txt").async("string").then(function (data) {
+        decode_success(data);
+        // console.log(data);
+     });
+    });
+  }
+
+
+    base64_zip_encode('der große Test', encode_success );
+}
 </script>
 
- <?php include_once 'footer.php'; ?>
+ <?php include_once 'footer.php';?>
