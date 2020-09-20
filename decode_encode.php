@@ -12,7 +12,7 @@ include_once 'header.php';
       waitfor_mathquill_and_if_ready_then_do( init );
   })
 
-  function init(){
+   function init(){
     console.log( 'init' );
 
    function base64_zip_encode(content, encode_success){
@@ -42,9 +42,35 @@ include_once 'header.php';
     });
   }
 
+  function test(string){
+    console.log(string);
+    base64_zip_encode(string, function(code){
+      console.log('code=' + code);
+      base64_zip_decode(code, function(data){
+        if( string == data){
+          data += ' OK';
+        } else {
+          data += ' ERROR';
+        }
+        console.log(data);
+        // console.log( ' ');
+      });
+    });
+  }
 
-    base64_zip_encode('der große Test', encode_success );
+  test('der große Test');
+  test('@µß?§$€');
+  test('ÄÖÜäöüß\/');
+  test('Sonderzeichen.´`\'#*');
+  test('\u3176\u316d\u2702\u274b\u274c');
+ 
 }
+
+
+    // base64_zip_encode('der große Test', encode_success );
+
+
+
 </script>
 
  <?php include_once 'footer.php';?>
