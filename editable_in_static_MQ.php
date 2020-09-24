@@ -48,17 +48,53 @@ code span {
 // <!-- http://docs.mathquill.com/en/latest/Api_Methods/#mqmathfieldhtml_element-config -->
 var MQ = MathQuill.getInterface(2);
   var fillInTheBlank = MQ.StaticMath(document.getElementById('fill-in-the-blank'));
-  var first = fillInTheBlank.innerFields[0];
+  var temp = fillInTheBlank.innerFields[0];
   var span= $('.mq-editable-field')[0];
-  first = MQ.MathField(span, {handlers:{
-    edit: function(){
+  var first = MQ.MathField(span, {
+    // handlers:{
+    //   edit: function(){
+    //     console.log('edithandler');
+    //     // console.log( first.latex() );
+    //   },  
+    //   enter: function(){
+    //     console.log('enter');
+    //     // console.log( first.latex() );
+    //   }  
+    // }
+  });
+  first.config(
+    {
+    handlers:{
+      edit: function(){
         console.log( first.latex() );
+      },  
+      enter: function(){
+        console.log('enter');
+      }  
     }
-  }});
+  }
+  );
   // .latex() // => 'x'
   fillInTheBlank.innerFields[1].latex() // => 'y'
+  console.log('page prepared');
+
+  var answerSpan = document.getElementById('answer');
+  var answerMathField = MQ.MathField(answerSpan, {
+    handlers: {
+      edit: function() {
+        var enteredMath = answerMathField.latex(); // Get entered math in LaTeX format
+        console.log(enteredMath);
+      }
+    }
+  });
 };
+
+
 </script>
+
+<hr>
+<!-- http://docs.mathquill.com/en/latest/Getting_Started/#editable-math-fields -->
+<p><span id="answer">x=</span></p>
 
 <hr>
 <?php include_once 'uses_mathquill.php';?>

@@ -17,6 +17,7 @@
     <p><a href='check_unit_decomposition.php'>Check Unit Decomposition</a></p>
     <p><a href='mathquill2tex2parser_no_feedback.php'>MathQuill -> TEX (without feedback) -> Parser </a></p>
     <p><a href='decode_encode.php'>Test JSZip (see console)</a></p>
+    <p><a href='sample_task.php'>Sample task</a> for later use in MediaWiki</p>
     <!-- <p><a href='background_pic.php'>background pictures </a> for 'wrong' and 'ok'</p> -->
     <p><a href='other.php'>Other solutions</a> KAS, Algebrite, MathQuill</p>
     
