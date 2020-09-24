@@ -63,6 +63,7 @@ include_once 'header.php';
   test('ÄÖÜäöüß\/');
   test('Sonderzeichen.´`\'#*');
   test('\u3176\u316d\u2702\u274b\u274c');
+  test('2hr');
  
 }
 
