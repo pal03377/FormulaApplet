@@ -35,8 +35,8 @@ paths.kas = {
 	next: 'end'
 };
 paths.zip = {
-	path: libPath + 'decode_encode/jszip/dist/jszip.js',
-	fallback: libPath + 'decode_encode/jszip/dist/jszip.min.js',
+	path: libPath + 'jszip/dist/jszip.js',
+	fallback: libPath + 'jszip/dist/jszip.min.js',
 	css: false,
 	next: 'end'
 };
