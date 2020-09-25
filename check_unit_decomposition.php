@@ -14,7 +14,7 @@ include_once 'header.php';
  <textarea id="latex" style="width:80%;vertical-align:top">3,5\textcolor{blue}{\frac{km}{min}} </textarea><br />
  <button id="unit" class='button'>Insert Unit</button>
  <hr>
-  <textarea id="tree2TEX" style="width:80%;vertical-align:top" class="tex-example">tex2</textarea>
+  <textarea id="tree2TEX" style="width:80%;vertical-align:top" class="formula_applet">tex2</textarea>
   <canvas id="treecanvas" width="1200" height="600" style="
 border: 1px solid #000000;
 position: fixed;
@@ -93,7 +93,7 @@ function tree_output(){
   var link = document.createElement("link");
   link.type = "text/css";
   link.rel = "stylesheet";
-  link.href = "/js/lib/tex-example.css";
+  link.href = "/js/lib/formula_applet.css";
   document.getElementsByTagName("head")[0].appendChild(link);
 
  }

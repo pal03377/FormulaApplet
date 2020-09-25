@@ -2,19 +2,19 @@
     background-color: gray;
     color: red;
 }
-.tex-example{
+.formula_applet{
     border: darkblue solid thin;
     background-color: lightblue;
 }
-.tex-example.selected{
+.formula_applet.selected{
     border: red solid medium;
     background-color: lightpink;
 }
-.tex-example.isEqual{
+.formula_applet.isEqual{
     border: green solid medium;
     background-color: lightgreen;
 }
-.tex-example.isNotEqual{
+.formula_applet.isNotEqual{
     border: red solid medium;
     background-color: salmon;
 }
@@ -23,7 +23,7 @@
 	display: none;
 } */
 
-.tex-example.mod_wrong + img.mod{
+.formula_applet.mod_wrong + img.mod{
 	background-image: url("blitz.svg");
 	background-repeat: no-repeat;
 	width: 25px;
@@ -33,7 +33,7 @@
 	margin: 2px;
 }
 
-.tex-example.mod_ok + img.mod{
+.formula_applet.mod_ok + img.mod{
 	background-image: url("haken.svg");
 	background-repeat: no-repeat;
 	width: 50px;

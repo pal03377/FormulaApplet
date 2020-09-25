@@ -14,8 +14,8 @@ include_once 'header.php';
   var myTree = new tree();
 
   $(document).ready(function () {
-    $(".tex-example").each(function () {
-      var index = $(".tex-example").index(this);
+    $(".formula_applet").each(function () {
+      var index = $(".formula_applet").index(this);
       // console.log(index);
       mf = MQ.MathField(this, {
         handlers: {
@@ -26,10 +26,10 @@ include_once 'header.php';
       });
       mathField.push(mf);
     });
-    $(".tex-example").click(function () {
-      var index = $(".tex-example").index(this);
+    $(".formula_applet").click(function () {
+      var index = $(".formula_applet").index(this);
       editHandler(index);
-      $(".tex-example").removeClass('selected');
+      $(".formula_applet").removeClass('selected');
       $(this).addClass('selected');
     });
     // button = $("#cont");
@@ -68,8 +68,8 @@ include_once 'header.php';
     }
     $( '#check' ).click( function(event){
       console.log('check button clicked');
-      $(".tex-example").each(function () {
-        var index = $(".tex-example").index(this);
+      $(".formula_applet").each(function () {
+        var index = $(".formula_applet").index(this);
         mf = mathField[index];
         var tex_1 = mf.latex();
         tex_1 = deleteSpaceAndRemoveBackslash(tex_1);
@@ -142,29 +142,29 @@ waitfor_mathquill_and_if_ready_then_do(function () {
         <p id="output">output</p>
         <p><button id="check">Check all</button></p>
         <!-- p id="version">version</p -->
-        <p class="tex-example">3,5\textcolor{blue}{\frac{km}{min}}+0,045\textcolor{blue}{\frac{cm^3}{s^2}}</p><br />
-        <p class="tex-example">5,6^3ab^5(p+q)rs^e \cdot 2vw^{\left(n:2\right)}\ \cdot\ \Gamma^\alpha</p><br />
-        <p class="tex-example">5,7y_n+rs_{n+2}-z_{\max}^8</p><br />
-        <p class="tex-example">5,7y^n+rs^{n+2}-z_{\max}^{t-8}</p><br />
-        <p class="tex-example">\sqrt{2}</p><br />
-        <p class="tex-example">\sin x+5\cosh\left(x\right)+\tan xy+\sin^2\beta-\sin^{2+n}3\alpha</p><br />
-        <p class="tex-example">\lim_{x\to\infty}\frac{4x}{7-5x^2}</p><br />
-        <p class="tex-example">\ln x+5\exp\left(x\right)+\log xy+\lg\beta-\log_{2+n}3\alpha+log_749</p><br />
-        <p class="tex-example">3,4+5\sqrt{a^2+b^2}-(y+5)\sqrt{x+4}</p><br />
-        <p class="tex-example">\sqrt[3]2</p><br />
-        <p class="tex-example">\sqrt[7]{x+3y}</p><br />
-        <p class="tex-example">\left(2a+5b\right)-7c+11d-12\left(6x+3y\right)+\left(21x-33y\right)</p><br />
-        <p class="tex-example">2^{\frac{3}{2}}+\frac{3+x}{4+x}</p><br />
-        <p class="tex-example">\int_a^b\sin\left(x\right)dx</p><br />
-        <p class="tex-example">\int\left(x^3-\frac{7}{5}x\right)dx</p><br />
-        <p class="tex-example">\int_{1,5}^{4,8}\frac{y}{y+2}dy</p><br />
-        <p class="tex-example">3a + 5\int_{a+1}^{b+2}z^7dz</p><br />
-        <p class="tex-example">\int_{a-7}^b\frac{dt}{4+t^2}</p><br />
-        <p class="tex-example">d-e</p><br />
-        <p class="tex-example">7^{\frac{3}{2}}</p><br />
-        <p class="tex-example">\left(\frac{7-y^2}{11+y^3}\right)^{n_i+1,5}</p><br />
-        <p class="tex-example">15+\left[3,5 \cdot ab+\left(2a-3b\right)\left(3a+5b\right)\right]</p><br />
-        <p class="tex-example">78x_{\min}-\left\{99 \cdot x_{\max}+\left(\frac{x_{\alpha}}{x_{\beta}+x_{\gamma}}\right)\right\}</p><br />
+        <p class="formula_applet">3,5\textcolor{blue}{\frac{km}{min}}+0,045\textcolor{blue}{\frac{cm^3}{s^2}}</p><br />
+        <p class="formula_applet">5,6^3ab^5(p+q)rs^e \cdot 2vw^{\left(n:2\right)}\ \cdot\ \Gamma^\alpha</p><br />
+        <p class="formula_applet">5,7y_n+rs_{n+2}-z_{\max}^8</p><br />
+        <p class="formula_applet">5,7y^n+rs^{n+2}-z_{\max}^{t-8}</p><br />
+        <p class="formula_applet">\sqrt{2}</p><br />
+        <p class="formula_applet">\sin x+5\cosh\left(x\right)+\tan xy+\sin^2\beta-\sin^{2+n}3\alpha</p><br />
+        <p class="formula_applet">\lim_{x\to\infty}\frac{4x}{7-5x^2}</p><br />
+        <p class="formula_applet">\ln x+5\exp\left(x\right)+\log xy+\lg\beta-\log_{2+n}3\alpha+log_749</p><br />
+        <p class="formula_applet">3,4+5\sqrt{a^2+b^2}-(y+5)\sqrt{x+4}</p><br />
+        <p class="formula_applet">\sqrt[3]2</p><br />
+        <p class="formula_applet">\sqrt[7]{x+3y}</p><br />
+        <p class="formula_applet">\left(2a+5b\right)-7c+11d-12\left(6x+3y\right)+\left(21x-33y\right)</p><br />
+        <p class="formula_applet">2^{\frac{3}{2}}+\frac{3+x}{4+x}</p><br />
+        <p class="formula_applet">\int_a^b\sin\left(x\right)dx</p><br />
+        <p class="formula_applet">\int\left(x^3-\frac{7}{5}x\right)dx</p><br />
+        <p class="formula_applet">\int_{1,5}^{4,8}\frac{y}{y+2}dy</p><br />
+        <p class="formula_applet">3a + 5\int_{a+1}^{b+2}z^7dz</p><br />
+        <p class="formula_applet">\int_{a-7}^b\frac{dt}{4+t^2}</p><br />
+        <p class="formula_applet">d-e</p><br />
+        <p class="formula_applet">7^{\frac{3}{2}}</p><br />
+        <p class="formula_applet">\left(\frac{7-y^2}{11+y^3}\right)^{n_i+1,5}</p><br />
+        <p class="formula_applet">15+\left[3,5 \cdot ab+\left(2a-3b\right)\left(3a+5b\right)\right]</p><br />
+        <p class="formula_applet">78x_{\min}-\left\{99 \cdot x_{\max}+\left(\frac{x_{\alpha}}{x_{\beta}+x_{\gamma}}\right)\right\}</p><br />
         <hr />
 <canvas id="treecanvas" width="1200" height="600" style="
 border: 1px solid #000000;

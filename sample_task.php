@@ -80,8 +80,8 @@ include_once 'header.php';
 
   $(document).ready(function () {
 
-    // $(".tex-example").each(function () {
-    //   var index = $(".tex-example").index(this);
+    // $(".formula_applet").each(function () {
+    //   var index = $(".formula_applet").index(this);
     //   var id = $(this).attr('id');
     //   mf = MQ.MathField(this, {
     //     handlers: {
@@ -95,15 +95,15 @@ include_once 'header.php';
     //   mathField.push(mf);
     // });
      $("img.mod").remove();
-     ($('<img class="mod">')).insertAfter($(".tex-example"));
+     ($('<img class="mod">')).insertAfter($(".formula_applet"));
   //  });
 
-  //     $(".tex-example").click(function () {
-  //     // var index = $(".tex-example").index(this);
+  //     $(".formula_applet").click(function () {
+  //     // var index = $(".formula_applet").index(this);
   //     var id = $(this).attr('id');
   //     console.log('handler '+id);
   //     editHandler(id);
-  //     $(".tex-example").removeClass('selected');
+  //     $(".formula_applet").removeClass('selected');
   //     $(this).addClass('selected');
   //   });
 
@@ -111,9 +111,9 @@ include_once 'header.php';
   //   $( '#check' ).click( function(event){
   //     console.log('check button clicked');
   //     $("img.mod").remove();
-  //     ($('<img class="mod">')).insertAfter($(".tex-example"));
+  //     ($('<img class="mod">')).insertAfter($(".formula_applet"));
 
-  //     $(".tex-example").each(function () {
+  //     $(".formula_applet").each(function () {
   //       var id = $(this).attr('id');
   //       console.log('id=' + id);
   //       editHandler(id);
@@ -121,7 +121,7 @@ include_once 'header.php';
   //   });
 
   //   function editHandler(id) {
-  //   var index = $(".tex-example").index($( '#' + id));
+  //   var index = $(".formula_applet").index($( '#' + id));
   //   console.log('id->' + id + ' index=' + index);
   //   mf = mathField[index];
   //   // var out = mf.latex();
@@ -144,7 +144,7 @@ include_once 'header.php';
         <p id="output">output</p>
         <p><button id="check">Check all</button></p>
         <!-- p id="version">version</p -->
-        <p class="tex-example" id="light-house">s=\sqrt{ h^2 + \MathQuillMathField{?} }</p><br />
+        <p class="formula_applet" id="light-house">s=\sqrt{ h^2 + \MathQuillMathField{?} }</p><br />
 <hr>
 <?php include_once 'uses_mathquill.php';?>
 

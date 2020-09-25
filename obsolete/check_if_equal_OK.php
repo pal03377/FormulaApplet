@@ -13,8 +13,8 @@ include_once 'header.php';
     var myTree = new tree();
 
   $(document).ready(function () {
-    $(".tex-example").each(function () {
-      var index = $(".tex-example").index(this);
+    $(".formula_applet").each(function () {
+      var index = $(".formula_applet").index(this);
       // console.log(index);
       mf = MQ.MathField(this, {
         handlers: {
@@ -25,15 +25,15 @@ include_once 'header.php';
       });
       mathField.push(mf);
     });
-    $( '.tex-example').each(function(){
+    $( '.formula_applet').each(function(){
       console.log(this.id);
       var selector = '#' + this.id+ ' .mq-textarea';
       $( selector ).append($('<img>',{id:this.id+'-img-wrong',src:'css/blitz.svg', width:25, height:50}));
     });
-    $(".tex-example").click(function () {
-      var index = $(".tex-example").index(this);
+    $(".formula_applet").click(function () {
+      var index = $(".formula_applet").index(this);
       editHandler(index);
-      $(".tex-example").removeClass('selected');
+      $(".formula_applet").removeClass('selected');
       $(this).addClass('selected');
     });
       $( '#treecanvas' ).click( function(event){
@@ -45,8 +45,8 @@ include_once 'header.php';
 
     $( '#check' ).click( function(event){
       console.log('check button clicked');
-      $(".tex-example").each(function () {
-        var index = $(".tex-example").index(this);
+      $(".formula_applet").each(function () {
+        var index = $(".formula_applet").index(this);
         mf = mathField[index];
         var tex_1 = deleteSpaceAndRemoveBackslash(mf.latex());
         myTree = new tree();
@@ -80,7 +80,7 @@ waitfor_mathquill_and_if_ready_then_do(function () {
   var link = document.createElement("link");
   link.type = "text/css";
   link.rel = "stylesheet";
-  link.href = "/js/lib/tex-example.css";
+  link.href = "/js/lib/formula_applet.css";
   document.getElementsByTagName("head")[0].appendChild(link);
 
 </script>
@@ -95,11 +95,11 @@ waitfor_mathquill_and_if_ready_then_do(function () {
         <p id="output">output</p>
         <p><button id="check">Check all</button></p>
         <!-- p id="version">version</p -->
-        <p class="tex-example" id="unu683">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,97\textcolor{blue}{\frac{m}{s}}</p><br />
-        <p class="tex-example" id="inv862">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
-        <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><img src="css/blitz.svg" alt="wrong" style="width:52px;height:52px;"><br />
-        <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
-        <p class="tex-example" id="con335">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}</p><br />
+        <p class="formula_applet" id="unu683">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,97\textcolor{blue}{\frac{m}{s}}</p><br />
+        <p class="formula_applet" id="inv862">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
+        <p class="formula_applet" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><img src="css/blitz.svg" alt="wrong" style="width:52px;height:52px;"><br />
+        <p class="formula_applet" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
+        <p class="formula_applet" id="con335">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}</p><br />
 
 
 <?php include_once 'footer.php';?>

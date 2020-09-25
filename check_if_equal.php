@@ -25,8 +25,8 @@ include_once 'header.php';
 
     $(document).ready(function () {
     
-    $(".tex-example").each(function () {
-      var index = $(".tex-example").index(this);
+    $(".formula_applet").each(function () {
+      var index = $(".formula_applet").index(this);
       var id = $(this).attr('id');
       mf = MQ.MathField(this, {
         handlers: {
@@ -40,15 +40,15 @@ include_once 'header.php';
       mathField.push(mf);
     });
     $("img.mod").remove();
-    ($('<img class="mod">')).insertAfter($(".tex-example"));
+    ($('<img class="mod">')).insertAfter($(".formula_applet"));
    });
 
-      $(".tex-example").click(function () {
-      // var index = $(".tex-example").index(this);
+      $(".formula_applet").click(function () {
+      // var index = $(".formula_applet").index(this);
       var id = $(this).attr('id');
       console.log('handler '+id);
       editHandler(id);
-      $(".tex-example").removeClass('selected');
+      $(".formula_applet").removeClass('selected');
       $(this).addClass('selected');
     });
 
@@ -56,9 +56,9 @@ include_once 'header.php';
     $( '#check' ).click( function(event){
       console.log('check button clicked');
       $("img.mod").remove();
-      ($('<img class="mod">')).insertAfter($(".tex-example"));
+      ($('<img class="mod">')).insertAfter($(".formula_applet"));
 
-      $(".tex-example").each(function () {
+      $(".formula_applet").each(function () {
         var id = $(this).attr('id');
         console.log('id=' + id);
         editHandler(id);
@@ -66,7 +66,7 @@ include_once 'header.php';
     });
 
     function editHandler(id) {
-    var index = $(".tex-example").index($( '#' + id));
+    var index = $(".formula_applet").index($( '#' + id));
     console.log('id->' + id + ' index=' + index);
     mf = mathField[index];
     // var out = mf.latex();
@@ -100,12 +100,12 @@ include_once 'header.php';
         <p id="output">output</p>
         <p><button id="check">Check all</button></p>
         <!-- p id="version">version</p -->
-        <p class="tex-example" id="unu683">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,97\textcolor{blue}{\frac{m}{s}}</p><br />
-        <p class="tex-example" id="inv862">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
-        <p class="tex-example" id="utr575">\sin\left(\frac{\pi}{2}\right)=\ \sin\left(90\textcolor{blue}{°}\right)</p><br />
-        <p class="tex-example" id="fal487">(7,2c - 3,4d)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
-        <p class="tex-example" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
-        <p class="tex-example" id="con335">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}</p><br />
+        <p class="formula_applet" id="unu683">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,97\textcolor{blue}{\frac{m}{s}}</p><br />
+        <p class="formula_applet" id="inv862">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
+        <p class="formula_applet" id="utr575">\sin\left(\frac{\pi}{2}\right)=\ \sin\left(90\textcolor{blue}{°}\right)</p><br />
+        <p class="formula_applet" id="fal487">(7,2c - 3,4d)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
+        <p class="formula_applet" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
+        <p class="formula_applet" id="con335">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}</p><br />
 
 <hr>
 <?php include_once 'uses_mathquill.php';?>

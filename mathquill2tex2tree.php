@@ -12,7 +12,7 @@ include_once 'header.php';
  <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3,5 \textcolor{blue}{\frac{km}{h}} </textarea><br />
  <button id="unit" class='button'>Insert Unit</button>
  <hr>
-  <textarea id="tree2TEX" style="width:80%;vertical-align:top" class="tex-example">tex2</textarea>
+  <textarea id="tree2TEX" style="width:80%;vertical-align:top" class="formula_applet">tex2</textarea>
   <canvas id="treecanvas" width="600" height="300" style="
 border: 1px solid #000000;
 position: fixed;
