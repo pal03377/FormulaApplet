@@ -9,6 +9,7 @@ include_once 'header.php';
   waitfor_mathquill_and_if_ready_then_do(function () {
     prepare_page();
   });
+  mathField = [];
 
   function base64_zip_decode( code, decode_success){
     var zip = new JSZip();
@@ -21,38 +22,48 @@ include_once 'header.php';
   }
 
   function prepare_page() {
-
+  console.log('**** prepare_page');
     // <!-- http://docs.mathquill.com/en/latest/Api_Methods/#mqmathfieldhtml_element-config -->
-  var MQ = MathQuill.getInterface(2);
-  var lighthouse = MQ.StaticMath(document.getElementById('light-house'));
-  // var first = lighthouse.innerFields[0];
-  var span= $('.mq-editable-field')[0];
-  var first = MQ.MathField(span, {
-  // handlers:{
+  // var lighthouse = MQ.StaticMath(document.getElementById('light-house'));
+  $(".formula_applet").each(function () {
+  });
+
+  // var zip = document.getElementById('light-house').getAttribute('data-zip');
+  // console.log('zip=' + zip);
+  // var solution = '';
+  // base64_zip_decode(zip, function(data){
+  //      console.log('solution=' + data);
+  //      solution = data;
+  // });
+// var first = lighthouse.innerFields[0];
+  // var span= $('.mq-editable-field')[0];
+  // console.log(span);
+  // var first = MQ.MathField(span, {
+  // // handlers:{
+  // //     edit: function(){
+  // //       console.log( first.latex() );
+  // //   }
+  // // }
+  // });
+  // first.config(
+  //   {
+  //   handlers:{
   //     edit: function(){
   //       console.log( first.latex() );
+  //     },
+  //     enter: function(){
+  //       console.log('enter');
+  //       check_if_equal(first.latex(), solution);
+  //     }
   //   }
-  // }
-  });
-  first.config(
-    {
-    handlers:{
-      edit: function(){
-        console.log( first.latex() );
-      },
-      enter: function(){
-        console.log('enter');
-        check_if_equal(first.latex(), solution);
-      }
-    }
-  }
-  );
-  var solution_zip='UEsDBAoAAAAAAGeNOFFTGYHLAwAAAAMAAAALAAAAY29udGVudC50eHQyaHJQSwECFAAKAAAAAABnjThRUxmBywMAAAADAAAACwAAAAAAAAAAAAAAAAAAAAAAY29udGVudC50eHRQSwUGAAAAAAEAAQA5AAAALAAAAAAA';
-  var solution = '';
-  base64_zip_decode(solution_zip, function(data){
-       console.log('solution=' + data);
-       solution = data;
-  });
+  //  }
+  // );
+  // var solution_zip='UEsDBAoAAAAAAGeNOFFTGYHLAwAAAAMAAAALAAAAY29udGVudC50eHQyaHJQSwECFAAKAAAAAABnjThRUxmBywMAAAADAAAACwAAAAAAAAAAAAAAAAAAAAAAY29udGVudC50eHRQSwUGAAAAAAEAAQA5AAAALAAAAAAA';
+  // var solution = '';
+  // base64_zip_decode(solution_zip, function(data){
+  //      console.log('solution=' + data);
+  //      solution = data;
+  // });
 
   function check_if_equal(a, b){
     console.log(a + ' ?=? ' + b);
@@ -77,26 +88,43 @@ include_once 'header.php';
   link.rel = "stylesheet";
   link.href = "/css/gf09.css";
   document.getElementsByTagName("head")[0].appendChild(link);
+  
+  // concerns all formula_applets:
+  $("img.mod").remove();
+  ($('<img class="mod">')).insertAfter($(".formula_applet"));
 
   $(document).ready(function () {
+    console.log('**** document ready');
+    var MQ = MathQuill.getInterface(2);
+  
+    $(".formula_applet").each(function () {
+      MQ.StaticMath(this);
+      var index = $(".formula_applet").index(this); //0, 1, 2, 3,...
+      var id = $(this).attr('id'); // name of formula_applet
+      var hasSolution = false;
+      if( $(this).attr('data-zip') !== undefined) {hasSolution = true};
+      console.log(index + ' -> ' + id + ' hasSolution=' + hasSolution ) ;
+      var mfSource = $(this).find('.mq-editable-field')[0];
+      console.log(mfSource);
+      mf = MQ.MathField(mfSource, {});
+      mf.config(
+        {
+          handlers:{
+            edit: function(){
+              console.log( 'edit' );
+              editHandler(id);
+            },
+            enter: function(){
+              console.log( 'enter' );
+              editHandler(id);
+              // check_if_equal(first.latex(), solution);
+            }
+          }
+        }
+      );
+      mathField.push(mf);
+    });
 
-    // $(".formula_applet").each(function () {
-    //   var index = $(".formula_applet").index(this);
-    //   var id = $(this).attr('id');
-    //   mf = MQ.MathField(this, {
-    //     handlers: {
-    //       edit: function () {
-    //         console.log(index + ' ' + id);
-    //         // editHandler(index);
-    //         editHandler(id);
-    //       }
-    //     }
-    //   });
-    //   mathField.push(mf);
-    // });
-     $("img.mod").remove();
-     ($('<img class="mod">')).insertAfter($(".formula_applet"));
-  //  });
 
   //     $(".formula_applet").click(function () {
   //     // var index = $(".formula_applet").index(this);
@@ -120,14 +148,13 @@ include_once 'header.php';
   //       });
   //   });
 
-  //   function editHandler(id) {
-  //   var index = $(".formula_applet").index($( '#' + id));
-  //   console.log('id->' + id + ' index=' + index);
-  //   mf = mathField[index];
-  //   // var out = mf.latex();
-  //   out = mf.latex();
-  //   parsetree_counter.setCounter(0);
-  // };
+    function editHandler(id) {
+    var index = $(".formula_applet").index($( '#' + id));
+    console.log('id->' + id + ' index=' + index);
+    mf = mathField[index];
+    out = mf.latex();
+    parsetree_counter.setCounter(0);
+  };
 
   });
 }
@@ -144,7 +171,8 @@ include_once 'header.php';
         <p id="output">output</p>
         <p><button id="check">Check all</button></p>
         <!-- p id="version">version</p -->
-        <p class="formula_applet" id="light-house">s=\sqrt{ h^2 + \MathQuillMathField{?} }</p><br />
+        <p class="formula_applet" id="light-house" data-zip='UEsDBAoAAAAAAGeNOFFTGYHLAwAAAAMAAAALAAAAY29udGVudC50eHQyaHJQSwECFAAKAAAAAABnjThRUxmBywMAAAADAAAACwAAAAAAAAAAAAAAAAAAAAAAY29udGVudC50eHRQSwUGAAAAAAEAAQA5AAAALAAAAAAA'>s=\sqrt{ h^2 + \MathQuillMathField{} }</p><br />
+        <p class="formula_applet" id="binom_01">(2u + 7v)^2 = \MathQuillMathField{}</p><br />
 <hr>
 <?php include_once 'uses_mathquill.php';?>
 
