@@ -538,7 +538,7 @@ function remove_operators(tree, kind_of_operators) {
                 var rest = create_node('leaf', rightpart, tree);
                 if (rest.content == "") {
                     rest.content = "0";
-                    rest.type = "invisible zero";
+                    rest.type = "invisible_zero";
                 }
                 var siblings = tree.nodelist[node.parent].children;
                 var position = siblings.indexOf(node.id);
@@ -556,7 +556,7 @@ function remove_operators(tree, kind_of_operators) {
                 node.content = leftpart;
                 if (node.content == "") {
                     node.content = "0";
-                    node.type = "invisible zero";
+                    node.type = "invisible_zero";
                 }
                 node.parent = operator.id;
                 rest.parent = operator.id;
