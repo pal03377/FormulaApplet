@@ -9,8 +9,8 @@ include_once 'header.php';
   waitfor_mathquill_and_if_ready_then_do(function () {
     prepare_page();
   });
-  mathField = [];
-  solution_list=[];
+  var mathField = [];
+  var solution_list=[];
 
   function base64_zip_decode( code, decode_success){
     var zip = new JSZip();
@@ -25,12 +25,8 @@ include_once 'header.php';
   function prepare_page() {
   console.log('**** prepare_page');
     // <!-- http://docs.mathquill.com/en/latest/Api_Methods/#mqmathfieldhtml_element-config -->
-  // var lighthouse = MQ.StaticMath(document.getElementById('light-house'));
- 
-     $(".formula_applet").click(function () {
-      // var id = $(this).attr('id');
-      // console.log('handler '+id);
-      // editHandler(id);
+  
+    $(".formula_applet").click(function () {
       $(".formula_applet").removeClass('selected');
       $(this).addClass('selected');
     });
@@ -84,15 +80,15 @@ include_once 'header.php';
       if( $(this).attr('data-zip') !== undefined) {
       hasSolution = true;
       var zip = $(this).attr('data-zip');
-        console.log('zip=' + zip);
+        // console.log('zip=' + zip);
         base64_zip_decode(zip, function(code){
-            console.log('solution=' + code);
+            // console.log('solution=' + code);
             solution_list[index] = code;
         });
       };
-      console.log(index + ' -> ' + id + ' hasSolution=' + hasSolution ) ;
+      console.log(index + ': ' + id + ' hasSolution=' + hasSolution ) ;
       var mfSource = $(this).find('.mq-editable-field')[0];
-      console.log(mfSource);
+      // console.log(mfSource);
       mf = MQ.MathField(mfSource, {});
       mf.config(
         {
@@ -102,20 +98,13 @@ include_once 'header.php';
             },
             enter: function(){
               editHandler(id, hasSolution, 'enter');
-              // check_if_equal(first.latex(), solution);
             }
           }
         }
       );
       mathField.push(mf);
-      console.log(mathField.length);
+      // console.log(mathField.length);
     });
-
-  //   // check all
-  //   $( '#check' ).click( function(event){
-  //     console.log('check button clicked');
-  //     $("img.mod").remove();
-  //     ($('<img class="mod">')).insertAfter($(".formula_applet"));
 
     function editHandler(id, hasSolution, entermode) {
       var fa = $('#' + id)[0];
@@ -127,14 +116,16 @@ include_once 'header.php';
       console.log(id + ' index=' + index + ' hasSolution=' + hasSolution + ' mode=' + entermode);
       // console.log(mf.latex() + ' ' + mf_container.latex() + ' ' + solution);
 
-      if (hasSolution){
-        out = mf.latex() + ' ' + solution;
-        check_if_equal(id, mf.latex(), solution);
-      } else {
-        out = mf_container.latex();
-        check_if_equality(id, mf_container.latex());
+      if (entermode == 'enter'){
+        if (hasSolution){
+          out = mf.latex() + ' ' + solution;
+          check_if_equal(id, mf.latex(), solution);
+        } else {
+          out = mf_container.latex();
+          check_if_equality(id, mf_container.latex());
+        }
+        document.getElementById('output').innerHTML = out;
       }
-      document.getElementById('output').innerHTML = out;
     };
 
   });
@@ -150,10 +141,12 @@ include_once 'header.php';
 <h2>for later use in MediaWiki</h2>
 
         <p id="output">output</p>
-        <p><button id="check">Check all</button></p>
+        <!-- <p><button id="check">Check all</button></p> -->
         <!-- p id="version">version</p -->
         <p class="formula_applet" id="light-house" data-zip='UEsDBAoAAAAAAGeNOFFTGYHLAwAAAAMAAAALAAAAY29udGVudC50eHQyaHJQSwECFAAKAAAAAABnjThRUxmBywMAAAADAAAACwAAAAAAAAAAAAAAAAAAAAAAY29udGVudC50eHRQSwUGAAAAAAEAAQA5AAAALAAAAAAA'>s=\sqrt{ h^2 + \MathQuillMathField{} }</p><br />
         <p class="formula_applet" id="binom_01">(2u + 7v)^2 = \MathQuillMathField{}</p><br />
+        <p class="formula_applet" id="binom_02" data-zip='UEsDBAoAAAAAABpEO1HIazOjBQAAAAUAAAALAAAAY29udGVudC50eHQ0OXZeMlBLAQIUAAoAAAAAABpEO1HIazOjBQAAAAUAAAALAAAAAAAAAAAAAAAAAAAAAABjb250ZW50LnR4dFBLBQYAAAAAAQABADkAAAAuAAAAAAA='>(2u + 7v)^2 = 4u^2 + 28uv + \MathQuillMathField{}</p><br />
+        <p class="formula_applet" id="fraction">\frac{13t^2 - 5t}{t} = \MathQuillMathField{}</p><br />
 <hr>
 <?php include_once 'uses_mathquill.php';?>
 
