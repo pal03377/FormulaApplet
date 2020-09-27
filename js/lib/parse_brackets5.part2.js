@@ -1241,7 +1241,7 @@ function val(node, tree) {
         var dummy = val(child_1, tree);
         var dummy = val(child_2, tree);
     }
-    console.log(node.type + ' (' + num_of_childs + ') ' + node.content + ' val=' + node.value);
+    // console.log(node.type + ' (' + num_of_childs + ') ' + node.content + ' val=' + node.value);
     return node.value;
 }
 

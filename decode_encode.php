@@ -64,13 +64,9 @@ include_once 'header.php';
   test('Sonderzeichen.´`\'#*');
   test('\u3176\u316d\u2702\u274b\u274c');
   test('2hr');
+  test('49v^2');
  
 }
-
-
-    // base64_zip_encode('der große Test', encode_success );
-
-
 
 </script>
 
