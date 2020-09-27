@@ -620,12 +620,13 @@ function parse_greek(tree) {
 
 function parse_numbers(tree) {
     tree.withEachLeaf(function (node) {
-        var content = node.content;
-        // console.log('number leaf ' + content);
+        var content = node.content.trim();
+        console.log('number leaf ' + content);
         // var regex = '\\d+((\\.|\\,)\\d+)?';
         var regex = '(\\d+(\\.|\\,))?\\d+';
         // backslash must be masked: \\
         var pos = content.search(regex);
+        console.log('pos=' + pos);
         if (pos == 0) {
             var match = content.match(regex);
             var num = content.substr(0, match[0].length);
@@ -744,12 +745,12 @@ function parse_factors(tree) {
         if (!node.isInUnit(tree)) {
             // no unit
             var content = node.content.trim();
-            // console.log('factor leaf ' + content);
+            console.log('factor leaf ' + content);
             if (content == "") {
                 content = "?";
             }
             if (content.length == 1) {
-                // console.log('nothing to do');
+                console.log('nothing to do');
             } else {
                 // abc -> a*b*c
                 var content_with_times = content[0];
@@ -757,7 +758,7 @@ function parse_factors(tree) {
                     content_with_times += '*' + content[k];
                 }
                 node.content = content_with_times;
-                // console.log('time-ified:' + content_with_times);
+                console.log('time-ified:' + content_with_times);
             }
         } else {
             // unit
@@ -1199,10 +1200,18 @@ function val(node, tree) {
         // console.log(child_0);
         var ch0 = val(child_0, tree);
         var ch1 = val(child_1, tree);
-        // console.log(ch0 + ' # ' + ch1);
+        console.log(node.type + ' ' + ch0 + ' # ' + ch1);
         if (node.type == '*') {
             // console.log(ch0 + '*' + ch1);
             node.value = Number(ch0) * Number(ch1);
+        }
+        if (node.type == 'timesdivided') {
+            if (node.content=='\\cdot'){
+                node.value = Number(ch0) * Number(ch1);
+            }
+            if (node.content==':'){
+                node.value = Number(ch0) / Number(ch1);
+            }
         }
         if (node.type == 'nthroot') {
             // console.log(ch1 + ' ^ 1/' + ch0);
@@ -1241,7 +1250,7 @@ function val(node, tree) {
         var dummy = val(child_1, tree);
         var dummy = val(child_2, tree);
     }
-    // console.log(node.type + ' (' + num_of_childs + ') ' + node.content + ' val=' + node.value);
+    console.log(node.type + ' (' + num_of_childs + ') ' + node.content + ' val=' + node.value);
     return node.value;
 }
 

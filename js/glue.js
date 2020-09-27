@@ -5,7 +5,7 @@ if (typeof jsPath !== 'undefined') { //wiki
 console.log( 'libPath=' + libPath );
 
 if (typeof liblist === 'undefined'){ //wiki
-   liblist = ['mathquill', 'mathquillcss', 'kas' ];
+   liblist = ['mathquill', 'mathquillcss', 'zip', 'prepare_page' ];
 }
 
 // TODO fallback for jquery (maybe in header.php)
@@ -37,6 +37,12 @@ paths.kas = {
 paths.zip = {
 	path: libPath + 'jszip/dist/jszip.js',
 	fallback: libPath + 'jszip/dist/jszip.min.js',
+	css: false,
+	next: 'end'
+};
+paths.prepare_page = {
+	path: libPath + 'prepare_page.js',
+	fallback: libPath + 'prepare_page.js',
 	css: false,
 	next: 'end'
 };
