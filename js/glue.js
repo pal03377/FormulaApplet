@@ -1,8 +1,10 @@
-var libPath = 'js/lib/'; //no wiki
-if (typeof jsPath !== 'undefined') { //wiki
-    libPath = jsPath + '/lib/';
+if (gf09_path == 'NO WIKI'){
+	gf09_path = '/gf09/';
 }
+var libPath = gf09_path + 'js/lib/';
 console.log( 'libPath=' + libPath );
+var cssPath = gf09_path + 'css/';
+console.log( 'cssPath=' + cssPath );
 
 if (typeof liblist === 'undefined'){ //wiki
    liblist = ['mathquill', 'mathquillcss', 'zip', 'prepare_page' ];
@@ -41,6 +43,12 @@ paths.zip = {
 	next: 'end'
 };
 paths.prepare_page = {
+	path: libPath + 'prepare_page.js',
+	fallback: libPath + 'prepare_page.js',
+	css: false,
+	next: 'end'
+};
+paths.gf09css = {
 	path: libPath + 'prepare_page.js',
 	fallback: libPath + 'prepare_page.js',
 	css: false,

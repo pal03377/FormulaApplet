@@ -24,4 +24,4 @@ include_once 'header.php';
 <hr>
 <?php include_once 'uses_mathquill.php';?>
 
-<?php include_once 'footer.php';?>
+<?php include_once 'footer.php';?>prepare_page()
