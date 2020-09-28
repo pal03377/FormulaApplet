@@ -4,8 +4,7 @@ $liblist = "['mathquill', 'mathquillcss']";
 include_once 'header.php';
 ?>
 
-<script src="/js/lib/parse_brackets5.part1.js"></script>
-<script src="/js/lib/parse_brackets5.part2.js"></script>
+<script src="./js/lib/tex_parser.js"></script>
 
 <body>
 <!--

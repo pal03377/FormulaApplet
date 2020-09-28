@@ -1,0 +1,1 @@
+var jsPath = '/wiki/extensions/FormulaApplet/js'

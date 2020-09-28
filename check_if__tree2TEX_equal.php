@@ -4,8 +4,7 @@ include_once 'header.php';
 ?>
 <!-- check if tree2TEX(parsed tree) is same than given TEX string -->
 
-<script src="/js/lib/parse_brackets5.part1.js"></script>
-<script src="/js/lib/parse_brackets5.part2.js"></script>
+<script src="./js/lib/tex_parser.js"></script>
 <link href="/css/gf09.css" rel="stylesheet">
 
 <script>
