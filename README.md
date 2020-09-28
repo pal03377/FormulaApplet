@@ -14,3 +14,11 @@
 * load JavaScript libraries (using glue.js) and CSS
 * render wiki applet to HTML5/MathQuill
 * prepare page, e.g. install edit handler for MathQuill
+## Unify XAMPP
+* Move the data of xampp_gf09 into xampp_gf09_wiki/htdocs/gf09
+* Not copy the data of xampp_gf09 but using a symlink: mklink /D gf09 E:\gut\gf09. 
+* See D:\Users\privat\Documents\xampp_gf09_wiki\htdocs\make-gf09-link.txt
+* xampp_gf09 is moved to D:\Users\privat\Schrott
+* For the wiki's javascript: use D:\Users\privat\Documents\xampp_gf09_wiki\htdocs\wiki\extensions\FormulaApplet\js linked to E:\gut\gf09\js
+* Changes at E:\gut\gf09 are now shown at xampp without need to copy
+* Disadvantage: the *.php files of gf09 asr no longer in the root dir of the browser, but at localhost/gf09/. Some fiddling will be necessary.

@@ -15,3 +15,4 @@
 * Legacy: Applet-Parameter decodieren
 * try-catch
 * definite integral obsolete?
+* gf09.css: use glue to load

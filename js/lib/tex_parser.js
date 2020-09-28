@@ -1333,7 +1333,7 @@ function parse_factors(tree) {
                 content = "?";
             }
             if (content.length == 1) {
-                console.log('nothing to do');
+                // console.log('nothing to do');
             } else {
                 // abc -> a*b*c
                 var content_with_times = content[0];

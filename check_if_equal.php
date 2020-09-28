@@ -19,7 +19,7 @@ include_once 'header.php';
     var link = document.createElement("link");
     link.type = "text/css";
     link.rel = "stylesheet";
-    link.href = "/css/gf09.css";
+    link.href = "./css/gf09.css";
     document.getElementsByTagName("head")[0].appendChild(link);
 
     $(document).ready(function () {

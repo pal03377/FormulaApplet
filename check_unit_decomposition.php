@@ -5,7 +5,7 @@ include_once 'header.php';
 ?>
 
 <script src="./js/lib/tex_parser.js"></script>
-<link href="/css/gf09.css" rel="stylesheet">
+<link href="./css/gf09.css" rel="stylesheet">
 
 <body>
   <h1><?php echo $title; ?></h1>
@@ -89,11 +89,11 @@ function tree_output(){
         $(tree2tex).removeClass('isEqual').addClass('isNotEqual');
     }
 
-  var link = document.createElement("link");
-  link.type = "text/css";
-  link.rel = "stylesheet";
-  link.href = "/js/lib/formula_applet.css";
-  document.getElementsByTagName("head")[0].appendChild(link);
+  // var link = document.createElement("link");
+  // link.type = "text/css";
+  // link.rel = "stylesheet";
+  // link.href = "./js/lib/formula_applet.css";
+  // document.getElementsByTagName("head")[0].appendChild(link);
 
  }
 
