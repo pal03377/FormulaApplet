@@ -6,9 +6,11 @@ console.log( 'libPath=' + libPath );
 var cssPath = gf09_path + 'css/';
 console.log( 'cssPath=' + cssPath );
 
+console.log(liblist);
 if (typeof liblist === 'undefined'){ //wiki
-   liblist = ['mathquill', 'mathquillcss', 'zip', 'prepare_page' ];
+   var liblist = ['mathquill', 'prepare_page', 'tex_parser', 'zip',  'mathquillcss', 'gf09css'];
 }
+console.log(liblist);
 
 // TODO fallback for jquery (maybe in header.php)
 var paths = {};
@@ -42,6 +44,12 @@ paths.zip = {
 	css: false,
 	next: 'end'
 };
+paths.tex_parser = {
+	path: libPath + 'tex_parser.js',
+	fallback: libPath + 'tex_parser.js',
+	css: false,
+	next: 'end'
+};
 paths.prepare_page = {
 	path: libPath + 'prepare_page.js',
 	fallback: libPath + 'prepare_page.js',
@@ -49,9 +57,9 @@ paths.prepare_page = {
 	next: 'end'
 };
 paths.gf09css = {
-	path: libPath + 'prepare_page.js',
-	fallback: libPath + 'prepare_page.js',
-	css: false,
+	path: cssPath + 'gf09.css',
+	fallback: cssPath + 'gf09.css',
+	css: true,
 	next: 'end'
 };
 
@@ -59,7 +67,10 @@ paths.gf09css = {
 // header.php converts it to a javascript variable
 for (var i = 0; i < liblist.length - 1; i++) {
 	paths[liblist[i]].next = liblist[i + 1];
+	console.log(i + ' ' + liblist[i] + ' next: ' + liblist[i + 1]);
 }
+i = liblist.length;
+console.log(i + ' ' + liblist[i] + ' next: ' + liblist[i + 1]);
 
 var libLoaderReady = false;
 
@@ -135,6 +146,9 @@ function appendStyleSheet(url, errorFunc, nexttask) {
 function getScriptOrFallback(task) {
 	console.log('Start loading: ' + task);
 	if (task === 'end') {
+		waitfor_mathquill_and_if_ready_then_do(function () { 
+			prepare_page(); 
+		});
 		return;
 	} else {
 		var scriptUrl = paths[task].path;
@@ -142,6 +156,7 @@ function getScriptOrFallback(task) {
 		var nexttask = paths[task].next;
 		var isCSS = paths[task].css
 		if (isCSS) {
+			console.log('######### CSS loading ############ ' + scriptUrl);
 			appendStyleSheet(scriptUrl, function () {
 				console.log('Error loading ' + scriptUrl + ' - Try fallback.');
 				// fallback
