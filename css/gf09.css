@@ -19,10 +19,6 @@
     background-color: salmon;
 }
 
-/* img.mod{
-	display: none;
-} */
-
 .formula_applet.mod_wrong + img.mod{
 	background-image: url("blitz.svg");
 	background-repeat: no-repeat;

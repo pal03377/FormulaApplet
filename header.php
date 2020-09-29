@@ -6,7 +6,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="./js/lib/jquery-3.4.1.min.js"></script>
 <script> 
-    var gf09_path = 'NO WIKI';
+    var gf09_path = 'NO WIKI'; //signal for glue.js
     var liblist=<?php echo $liblist; ?>; 
 </script>
 <script src="./js/glue.js"></script>  

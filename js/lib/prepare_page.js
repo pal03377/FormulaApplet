@@ -46,11 +46,12 @@
     }
  }
 
-  var link = document.createElement("link");
-  link.type = "text/css";
-  link.rel = "stylesheet";
-  link.href = "./css/gf09.css";
-  document.getElementsByTagName("head")[0].appendChild(link);
+  // obsolete because glue.js is used to load css
+  // var link = document.createElement("link");
+  // link.type = "text/css";
+  // link.rel = "stylesheet";
+  // link.href = "./css/gf09.css";
+  // document.getElementsByTagName("head")[0].appendChild(link);
   
   // concerns all formula_applets:
   $("img.mod").remove();
