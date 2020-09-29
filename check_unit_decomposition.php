@@ -1,11 +1,11 @@
 <?php
 $title = 'Check Unit Decomposition';
-$liblist = "['mathquill', 'mathquillcss']";
+$liblist = "['tex_parser', 'mathquill', 'mathquillcss', 'gf09css', 'stop']";
 include_once 'header.php';
 ?>
 
-<script src="./js/lib/tex_parser.js"></script>
-<link href="./css/gf09.css" rel="stylesheet">
+<!-- <script src="./js/lib/tex_parser.js"></script> -->
+<!-- <link href="./css/gf09.css" rel="stylesheet"> -->
 
 <body>
   <h1><?php echo $title; ?></h1>

@@ -1,9 +1,9 @@
 <?php $title = 'Check if equal';
-$liblist = "[ 'mathquill', 'mathquillcss' ]";
+$liblist = "[ 'mathquill', 'tex_parser', 'mathquillcss' ]";
 include_once 'header.php';
 ?>
 
-<script src="./js/lib/tex_parser.js"></script>
+<!-- <script src="./js/lib/tex_parser.js"></script> -->
 <script>
   waitfor_mathquill_and_if_ready_then_do(function () {
     prepare_page();

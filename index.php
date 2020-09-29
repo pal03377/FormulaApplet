@@ -1,6 +1,6 @@
 <?php 
   $title='Test Page - Formula Applet (gf09) ';
-  $liblist = "['end' ]";
+  $liblist = "['stop' ]";
 ?>
 <?php include_once( 'header.php' ); ?>
 <link href="css/table.css" rel="stylesheet">

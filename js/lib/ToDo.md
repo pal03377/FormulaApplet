@@ -16,3 +16,7 @@
 * try-catch
 * definite integral obsolete?
 * gf09.css: use glue to load
+
+## MediaWiki updaten
+* braucht neuere PHP-Version
+* https://faq.1blu.de/content/480/981/de/wie-kann-ich-meine-php-version-aendern-.html

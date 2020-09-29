@@ -145,11 +145,13 @@ function appendStyleSheet(url, errorFunc, nexttask) {
 // load javaScript or CSS
 function getScriptOrFallback(task) {
 	console.log('Start loading: ' + task);
-	if (task === 'end') {
-		waitfor_mathquill_and_if_ready_then_do(function () { 
-			prepare_page(); 
-		});
+	if (task === 'stop') {
 		return;
+	} else if (task === 'end') {
+			waitfor_mathquill_and_if_ready_then_do(function () { 
+				prepare_page(); 
+			});
+			return;
 	} else {
 		var scriptUrl = paths[task].path;
 		var fallbackUrl = paths[task].fallback;

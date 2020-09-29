@@ -1,5 +1,5 @@
 <?php $title = 'Sample Task';
-$liblist = "[ 'zip', 'prepare_page', 'mathquill', 'mathquillcss', 'gf09css' ]";
+$liblist = "[ 'zip', 'prepare_page', 'mathquill', 'tex_parser', 'mathquillcss', 'gf09css' ]";
 include_once 'header.php';
 ?>
 
@@ -24,4 +24,4 @@ include_once 'header.php';
 <hr>
 <?php include_once 'uses_mathquill.php';?>
 
-<?php include_once 'footer.php';?>prepare_page()
+<?php include_once 'footer.php';?>

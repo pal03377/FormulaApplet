@@ -1,6 +1,6 @@
 <?php
   $title='Test Page - Tex2KAS';
-  $liblist = "['mathquill', 'mathquillcss', 'kas' ]";
+  $liblist = "['mathquill', 'mathquillcss', 'kas', 'stop']";
   include_once( 'header.php' );
 ?>
 

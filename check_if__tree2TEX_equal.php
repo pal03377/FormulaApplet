@@ -1,11 +1,11 @@
 <?php $title = 'Check if equal';
-$liblist = "[ 'mathquill', 'mathquillcss' ]";
+$liblist = "[ 'mathquill', 'tex_parser', 'mathquillcss', 'gf09css' ]";
 include_once 'header.php';
 ?>
 <!-- check if tree2TEX(parsed tree) is same than given TEX string -->
 
-<script src="./js/lib/tex_parser.js"></script>
-<link href="/css/gf09.css" rel="stylesheet">
+<!-- <script src="./js/lib/tex_parser.js"></script> -->
+<!-- <link href="/css/gf09.css" rel="stylesheet"> -->
 
 <script>
   function prepare_page() {

@@ -1,5 +1,5 @@
 <?php $title='Test Page - Algebrite (gf09) ';
-  $liblist = "['algebrite' ]";
+  $liblist = "['algebrite', 'stop' ]";
   include_once( 'header.php' );
 ?>
 <?php include_once( 'header.php' ); ?>

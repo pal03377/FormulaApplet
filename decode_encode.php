@@ -1,5 +1,5 @@
 <?php $title = 'Decode - Encode (gf09)';
-$liblist = "['zip', 'mathquill', 'mathquillcss' ]";
+$liblist = "['zip', 'mathquill', 'mathquillcss', 'stop']";
 include_once 'header.php';
 ?>
 
@@ -12,7 +12,7 @@ include_once 'header.php';
       waitfor_mathquill_and_if_ready_then_do( init );
   })
 
-   function init(){
+ function init(){
     console.log( 'init' );
 
    function base64_zip_encode(content, encode_success){

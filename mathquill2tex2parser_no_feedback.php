@@ -1,10 +1,10 @@
 <?php
 $title = 'Test Page - MathQuill2Tex2Parser (no feedback)';
-$liblist = "['mathquill', 'mathquillcss']";
+$liblist = "['tex_parser', 'mathquill', 'mathquillcss', 'stop']";
 include_once 'header.php';
 ?>
 
-<script src="./js/lib/tex_parser.js"></script>
+<!-- <script src="./js/lib/tex_parser.js"></script> -->
 
 <body>
 <!--
