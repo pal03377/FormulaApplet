@@ -6,11 +6,11 @@ console.log( 'libPath=' + libPath );
 var cssPath = gf09_path + 'css/';
 console.log( 'cssPath=' + cssPath );
 
-console.log(liblist);
+// console.log(liblist);
 if (typeof liblist === 'undefined'){ //wiki
    var liblist = ['mathquill', 'prepare_page', 'tex_parser', 'zip',  'mathquillcss', 'gf09css'];
 }
-console.log(liblist);
+// console.log(liblist);
 
 // TODO fallback for jquery (maybe in header.php)
 var paths = {};
@@ -69,7 +69,7 @@ for (var i = 0; i < liblist.length - 1; i++) {
 	paths[liblist[i]].next = liblist[i + 1];
 	console.log(i + ' ' + liblist[i] + ' next: ' + liblist[i + 1]);
 }
-i = liblist.length;
+i = liblist.length - 1;
 console.log(i + ' ' + liblist[i] + ' next: ' + liblist[i + 1]);
 
 var libLoaderReady = false;
