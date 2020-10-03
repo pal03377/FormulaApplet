@@ -113,7 +113,7 @@
           out = mf_container.latex();
           check_if_equality(id, mf_container.latex());
         }
-        document.getElementById('output').innerHTML = out;
+        // document.getElementById('output').innerHTML = out;
       }
     };
 
