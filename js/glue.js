@@ -73,13 +73,17 @@ i = liblist.length - 1;
 console.log(i + ' ' + liblist[i] + ' next: ' + liblist[i + 1]);
 
 var libLoaderReady = false;
-
+var isAndroid = false;
 waitfor_jquery_and_if_ready_then_do(function () {
 	console.log('jQuery version = ' + $.fn.jquery);
-	console.log('navigator.platform=' + navigator.platform);
+	// console.log('navigator.platform=' + navigator.platform);
 	// Start loading. Recursive!
 	getScriptOrFallback(liblist[0]); // start chain
 });
+
+function isAndr(){
+	return (navigator.userAgent.toUpperCase().indexOf('ANDROID') !== -1);
+}
 
 // ***** waiter functions *****************************************
 // https://stackoverflow.com/questions/7486309/how-to-make-script-execution-wait-until-jquery-is-loaded
