@@ -21,4 +21,4 @@
 * xampp_gf09 is moved to D:\Users\privat\Schrott
 * For the wiki's javascript: use D:\Users\privat\Documents\xampp_gf09_wiki\htdocs\wiki\extensions\FormulaApplet\js linked to E:\gut\gf09\js
 * Changes at E:\gut\gf09 are now shown at xampp without need to copy
-* Disadvantage: the *.php files of gf09 asr no longer in the root dir of the browser, but at localhost/gf09/. Some fiddling will be necessary.
+* Disadvantage: the *.php files of gf09 are no longer in the root dir of the browser, but at localhost/gf09/. Some fiddling will be necessary.

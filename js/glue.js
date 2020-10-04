@@ -76,6 +76,7 @@ var libLoaderReady = false;
 
 waitfor_jquery_and_if_ready_then_do(function () {
 	console.log('jQuery version = ' + $.fn.jquery);
+	console.log('navigator.platform=' + navigator.platform);
 	// Start loading. Recursive!
 	getScriptOrFallback(liblist[0]); // start chain
 });
