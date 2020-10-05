@@ -18,8 +18,13 @@
     // <!-- http://docs.mathquill.com/en/latest/Api_Methods/#mqmathfieldhtml_element-config -->
 
     $(".formula_applet").click(function () {
-      $(".formula_applet").removeClass('selected');
+      // $(".formula_applet").removeClass('selected');
       $(this).addClass('selected');
+      console.log('selected by click');
+    });
+    $(".formula_applet").focusout(function () {
+      $(this).removeClass('selected');
+      console.log('deselected by focusout');
     });
 
 
@@ -63,6 +68,7 @@
 
     $(document).ready(function () {
       console.log('**** document ready');
+
       var MQ = MathQuill.getInterface(2);
 
       $(".formula_applet").each(function () {
@@ -81,6 +87,9 @@
         };
         console.log(index + ': ' + id + ' hasSolution=' + hasSolution);
         var mfSource = $(this).find('.mq-editable-field')[0];
+        // mfSource.click(function(){
+        //   console.log('click on editablefield');
+        // });
         // console.log(mfSource);
         mf = MQ.MathField(mfSource, {});
         mf.config({
@@ -93,6 +102,22 @@
             }
           }
         });
+        $(this).on('click', function(){
+          console.log("second click");
+          // mf.typedText('~');
+          var eventObj = document.createEvent("Events");
+          eventObj.initEvent("keydown", true, true);
+          eventObj.which = 13; 
+          eventObj.keyCode = 13;
+          mf.dispatchEvent(eventObj);
+          console.log('keycode=13');
+          // mf.select();
+          // mf.clearSelection();
+
+          // mf.keystroke('Backspace');
+          mf.keystroke('Enter');
+      });
+        // $(this).removeClass('selected');
         mathField.push(mf);
         // console.log(mathField.length);
       });
