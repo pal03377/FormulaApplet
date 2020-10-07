@@ -93,33 +93,58 @@ function prepare_page() {
           }
         }
       });
-      var receiver = $(this).find('.mq-editable-field').find('textfield');
-      receiver.keydown(function (e) {
-        console.log('keydownevent=' + e.keyCode + ' ' + e.which);
-        console.log(e);
-      });
-      receiver.keypress(function (e) {
-        console.log('keypressevent=' + e.keyCode + ' ' + e.which);
-        console.log(e);
-      });
-      console.log(receiver);
+      // var receiver = $(this).find('.mq-editable-field').find('textfield');
+      // receiver.keydown(function (e) {
+      //   console.log('keydownevent=' + e.keyCode + ' ' + e.which);
+      //   console.log(e);
+      // });
+      // receiver.keypress(function (e) {
+      //   console.log('keypressevent=' + e.keyCode + ' ' + e.which);
+      //   console.log(e);
+      // });
+      // console.log(receiver);
       mathField.push(mf);
       // console.log(mathField.length);
+    });
 
 
-      var receiver2 = $('#test_text');
-      $(receiver2).keydown(function (e) {
-        console.log('keydownevent=' + e.keyCode + ' ' + e.which);
-        console.log(e);
-      });
-     console.log(receiver2);
-     var receiver3 = $('#test_form');
-     $(receiver3).keydown(function (e) {
-       console.log('keydownevent=' + e.keyCode + ' ' + e.which);
-       console.log(e);
-     });
-    console.log(receiver3);
-   });
+
+    // var receiver2 = $('#test_text');
+    // $(receiver2).keydown(function (e) {
+    //   console.log('keydownevent=' + e.keyCode + ' ' + e.which);
+    //   console.log(e);
+    //   // https://stackoverflow.com/questions/36753548/keycode-on-android-is-always-229#42552368
+    //   console.log('original...=' + e.originalEvent.data.charCodeAt(0));
+    // });
+
+    // console.log(receiver2);
+    // var receiver3 = $('#test_form');
+    // $(receiver3).keydown(function (e) {
+    //   console.log('keydownevent=' + e.keyCode + ' ' + e.which);
+    //   console.log(e);
+    // });
+    // console.log(receiver3);
+
+    // // https://duckduckgo.com/?q=android+keycode+229&ia=web
+    // $('div, input').on('keyup', function (e) {
+    //   $('#keycode').text('keyup=' + e.keyCode + ' textInput=' + e.originalEvent.data + '.');
+    // });
+
+    // $('div').on('textInput', function (e) {
+    //   $('#textInput').text('textInput=' + e.originalEvent.data + '.');
+    // });
+
+    console.log('add keylisteners to document');
+    document.addEventListener("keyup", function (e) {
+      if (e.keyCode == 229) { killEvent(e); return; }
+      console.log('keyupevent=' + e.keyCode + ' ' + e.which);
+      console.log(e.target.tagName);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.keyCode == 229) { killEvent(e); return; }
+      console.log('keydownevent=' + e.keyCode + ' ' + e.which);
+      console.log(e.target.tagName);
+    });
 
     function editHandler(id, hasSolution, entermode) {
       var fa = $('#' + id)[0];

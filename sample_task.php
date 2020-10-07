@@ -24,6 +24,22 @@ include_once 'header.php';
         <form id='test_form' action="">
              <input type="text" id="test_text" name="test_text" size=1></input>
         </form>
+        <!-- https://duckduckgo.com/?q=android+keycode+229&ia=web -->
+        <style>
+        div {
+            width: 300px;
+            height: 100px;
+            border: 1px solid blue;
+        }
+        </style>
+        <div contenteditable="true">
+        
+        </div>
+
+        <input>
+        <br>
+        <span id="keycode"></span><br>
+        <span id="textInput"></span>
 <hr>
 <?php include_once 'uses_mathquill.php';?>
 
