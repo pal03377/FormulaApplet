@@ -34,7 +34,4 @@
 * Explizites "addKeyListener"
 * Transparentes Textinput-Feld drüberlegen
 * Ein-Pixel-Textinput-Feld daneben (links oben)
-
-
-
-
+* Virtuelle Tastatur aus Library
