@@ -20,6 +20,15 @@
             "script": "//",
             "path": "js/lib/Algebrite/",
             "problemMatcher": []
+        },
+        {
+            "type": "typescript",
+            "tsconfig": "TypescriptTest/tsconfig.json",
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "group": "build",
+            "label": "tsc: Erstellen – TypescriptTest/tsconfig.json"
         }
     ]
 }
