@@ -93,8 +93,8 @@
             }
           }
         });
-        $(mfSource).keydown(function(e){
-          console.log('keydownevent=' + e.keyCode + ' ' +e.which);
+        $(mfSource).keydown(function (e) {
+          console.log('keydownevent=' + e.keyCode + ' ' + e.which);
           console.log(e);
         });
         mathField.push(mf);
