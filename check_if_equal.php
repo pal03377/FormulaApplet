@@ -99,6 +99,7 @@ include_once 'header.php';
         <p id="output">output</p>
         <p><button id="check">Check all</button></p>
         <!-- p id="version">version</p -->
+        <p class="formula_applet" id="frs993">7\frac{5}{8}a^2=7,625a^2</p><br />
         <p class="formula_applet" id="unu683">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,97\textcolor{blue}{\frac{m}{s}}</p><br />
         <p class="formula_applet" id="inv862">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
         <p class="formula_applet" id="utr575">\sin\left(\frac{\pi}{2}\right)=\ \sin\left(90\textcolor{blue}{°}\right)</p><br />

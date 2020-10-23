@@ -739,7 +739,7 @@ function parse(tree) {
     while (!end_parse) {
         var temp = parsetree_by_index(tree);
         var message = temp[0];
-        console.log(parsetree_counter.getCounter() + ' parse: ' + message);
+        // console.log(parsetree_counter.getCounter() + ' parse: ' + message);
         end_parse = temp[1];
         //paint_tree(tree, canvas, message);
     }
@@ -1240,20 +1240,31 @@ function parse_mixed_numbers(tree) {
                 var child_1 = tree.nodelist[node.children[1]];
                 if (child_1.type == 'frac') {
                     var nom_bracket = tree.nodelist[child_1.children[0]];
-                    if(nom_bracket.type == 'bracket-{') {
+                    if (nom_bracket.type == 'bracket-{') {
                         var nom = tree.nodelist[nom_bracket.children[0]];
                     }
                     var denom_bracket = tree.nodelist[child_1.children[1]];
-                    if(denom_bracket.type == 'bracket-{') {
+                    if (denom_bracket.type == 'bracket-{') {
                         var denom = tree.nodelist[denom_bracket.children[0]];
                     }
-                    if (nom.type == 'number' && denom.type == 'number'){
+                    //TODO try/catch
+                    if (nom.type == 'number' && denom.type == 'number') {
                         isMixedNumber = true;
-                        console.log(child_0.content + ' ' + nom.content + ' ' + denom.content);
+                        mixed_num = create_node('mixed_number', '', tree);
+                        // leaf node has one child less and is parent of mixed_num
+                        node.content = node.content.substr(1);
+                        node.children.shift();
+                        node.children[0] = mixed_num.id;
+                        mixed_num.parent = node.id;
+                        // children of mixed_num are old child_0 and child_1 of node
+                        mixed_num.children.push(child_0.id);
+                        child_0.parent = mixed_num.id;
+                        mixed_num.children.push(child_1.id);
+                        child_1.parent = mixed_num.id;
                     }
                 }
             }
-        console.log(content + ' is mixedNumber: ' + isMixedNumber);
+            console.log(content + ' is mixedNumber: ' + isMixedNumber);
         }
     })
 }
@@ -1848,6 +1859,9 @@ function val(node, tree) {
             // console.log('fu power ' + fu);
             var base = trigonometry(fu, ch1);
             node.value = Math.pow(base, ch0)
+        }
+        if (node.type == 'mixed_number') {
+            node.value = Number(ch0) + Number(ch1);
         }
         if (node.type == 'plusminus') {
             if (node.content == '+') {
