@@ -673,40 +673,44 @@ function parsetree_by_index(tree) {
             parse_numbers(tree);
             break;
         case 16:
-            message = 'delete single § nodes'
+            message = 'delete single § nodes';
             var list_of_free = delete_single_nodes(tree);
             break;
         case 17:
+            message = 'parse mixed numbers ';
+            parse_mixed_numbers(tree);
+            break;
+        case 18:
             message = 'unify subscript (part 2) '
             unify_sub_or_power(tree, false);
             break;
-        case 18:
+        case 19:
             message = 'parse subscript'
             parse_sub_power(tree, false);
             break;
-        case 19:
+        case 20:
             message = 'unify power (part 2) '
             unify_sub_or_power(tree, true);
             break;
-        case 20:
+        case 21:
             message = 'parse power'
             parse_sub_power(tree, true);
             break;
-        case 21:
+        case 22:
             message = 'delete single § nodes'
             var list_of_free = delete_single_nodes(tree);
             break;
-        case 22:
+        case 23:
             message = 'parse unit'
             parse_unit(tree);
             //check_children(tree);
             break;
-        case 23:
+        case 24:
             message = 'parse factors';
             parse_factors(tree);
             //check_children(tree);
             break;
-        case 24:
+        case 25:
             message = 'delete single § nodes';
             var list_of_free = delete_single_nodes(tree);
             break;
@@ -1220,6 +1224,36 @@ function parse_numbers(tree) {
             number.value = num;
             number.parent = node.id;
             node.children.splice(0, 0, number.id)
+        }
+    })
+}
+
+function parse_mixed_numbers(tree) {
+    tree.withEachLeaf(function (node) {
+        var content = node.content.trim();
+        var isMixedNumber = false;
+        // console.log(content);
+        if (content.startsWith('§§')) {
+            var child_0 = tree.nodelist[node.children[0]];
+            // console.log(child_0.content + ' ' + child_0.type);
+            if (child_0.type == 'number') {
+                var child_1 = tree.nodelist[node.children[1]];
+                if (child_1.type == 'frac') {
+                    var nom_bracket = tree.nodelist[child_1.children[0]];
+                    if(nom_bracket.type == 'bracket-{') {
+                        var nom = tree.nodelist[nom_bracket.children[0]];
+                    }
+                    var denom_bracket = tree.nodelist[child_1.children[1]];
+                    if(denom_bracket.type == 'bracket-{') {
+                        var denom = tree.nodelist[denom_bracket.children[0]];
+                    }
+                    if (nom.type == 'number' && denom.type == 'number'){
+                        isMixedNumber = true;
+                        console.log(child_0.content + ' ' + nom.content + ' ' + denom.content);
+                    }
+                }
+            }
+        console.log(content + ' is mixedNumber: ' + isMixedNumber);
         }
     })
 }
@@ -1794,10 +1828,10 @@ function val(node, tree) {
             node.value = Number(ch0) * Number(ch1);
         }
         if (node.type == 'timesdivided') {
-            if (node.content=='\\cdot'){
+            if (node.content == '\\cdot') {
                 node.value = Number(ch0) * Number(ch1);
             }
-            if (node.content==':'){
+            if (node.content == ':') {
                 node.value = Number(ch0) / Number(ch1);
             }
         }
@@ -1923,7 +1957,7 @@ function fillWithRandomValues(tree) {
                             if (node.content == content) {
                                 node.value = value;
                                 // console.log(node.value + '->' +
-                                    // node.content + ' ' + node.type);
+                                // node.content + ' ' + node.type);
                             }
                             if (node.content == '\pi') {
                                 node.value = Math.PI;
