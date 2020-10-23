@@ -599,7 +599,7 @@ function parsetree_by_index(tree) {
     // counter++;
     parsetree_counter.inc();
     var end_parse = false;
-    // console.log('switch to ' + counter)
+    // console.log('switch to ' + parsetree_counter.getCounter());
     // console.log(tree);
     var message = '';
     switch (parsetree_counter.getCounter()) {
@@ -713,7 +713,8 @@ function parsetree_by_index(tree) {
         default:
             message = 'end of parse';
             end_parse = true;
-    }
+    };
+    // console.log('back from ' + parsetree_counter.getCounter());
 
     // console.log(' ');
     // for (var i = 0; i < tree.nodelist.length; i++) {
@@ -728,12 +729,13 @@ function parsetree_by_index(tree) {
 }
 
 function parse(tree) {
+    console.log('Start parsing...');
     var end_parse = false;
     parsetree_counter.setCounter(0);
     while (!end_parse) {
         var temp = parsetree_by_index(tree);
         var message = temp[0];
-        // console.log('parse: ' + message);
+        console.log(parsetree_counter.getCounter() + ' parse: ' + message);
         end_parse = temp[1];
         //paint_tree(tree, canvas, message);
     }

@@ -168,7 +168,7 @@ function getScriptOrFallback(task) {
 				console.log('Error loading ' + scriptUrl + ' - Try fallback.');
 				// fallback
 				appendStyleSheet(fallbackUrl, function () {
-					console.log('Error loading ' + css_lib_2 + ' No fallback - Give up.');
+					console.log('Error loading ' + fallbackUrl + ' No fallback - Give up.');
 				});
 			}, nexttask);
 		} else {

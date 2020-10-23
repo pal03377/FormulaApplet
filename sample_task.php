@@ -6,7 +6,8 @@ include_once 'header.php';
 <!-- <script src="./js/lib/tex_parser.js"></script> -->
 <script>
   waitfor_mathquill_and_if_ready_then_do(function () {
-    prepare_page();
+    // call of prepare_page() in prepare_page.js, see liblist
+    prepare_page(); 
   });
 </script>
 </head>

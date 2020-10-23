@@ -4,7 +4,9 @@ include_once 'header.php';
 ?>
 
 <script>
+  // glue.js calls prepare_page(). prepare_page.js is not used, missing in liblist
   function prepare_page() {
+  console.log('$$$ Here is prepare_page from tex_parser.php $$$');
   var MQ = MathQuill.getInterface(2);
   var mathField = new Array();
   var out = '';
@@ -36,22 +38,22 @@ include_once 'header.php';
     if (single_step){
       $( '#treecanvas' ).click( function(event){
         var temp = parsetree_by_index(myTree);
-          var message = temp[0];
-          end_parse = temp[1];
-          paint_tree(myTree, canvas, message);
-          // console.log('***' + message);
-          //  for(var i=0; i <7; i++){
-          //   console.log('node ' + i + ': ' + myTree.nodelist[i].type + ' ' + myTree.nodelist[i].content);
-          // }
-          if(end_parse){
-              var hasValue = fillWithRandomValues(myTree);
-              paint_tree(myTree, canvas, 'filWithRandomValues');
-            if (hasValue){
-                var dummy = val(myTree.root, myTree);
-            } else {
-                console.log('tree not evaluable');
-            }
+        var message = temp[0];
+        end_parse = temp[1];
+        paint_tree(myTree, canvas, message);
+        console.log(parsetree_counter.getCounter() + ' *** ' + message);
+        //  for(var i=0; i <7; i++){
+        //   console.log('node ' + i + ': ' + myTree.nodelist[i].type + ' ' + myTree.nodelist[i].content);
+        // }
+        if(end_parse){
+            var hasValue = fillWithRandomValues(myTree);
+            paint_tree(myTree, canvas, 'filWithRandomValues');
+          if (hasValue){
+              var dummy = val(myTree.root, myTree);
+          } else {
+              console.log('tree not evaluable');
           }
+        }
       });
     } else {
       // one step
@@ -119,9 +121,11 @@ include_once 'header.php';
   }
 }
 
-waitfor_mathquill_and_if_ready_then_do(function () {
-  prepare_page();
-});
+// This is done by glue.js!
+// waitfor_mathquill_and_if_ready_then_do(function () {
+//   console.log('call prepare_page from tex_parser.php');
+//   prepare_page();
+// });
 
   // Parse from LaTeX ...
   // const latexInput = '\\frac{1}{\\sqrt{2}}\\cdot x=10';
