@@ -8,6 +8,7 @@
 
 <body>
     <h1><?php echo $title; ?></h1>
+    <p><a href='vkbd_test.php'>Test - Virtual Keyboard</a> (VKBD)</p>
     <p><a href='tex_parser.php'>TEX Parser</a></p>
     <p><a href='check_if_equal.php'>Check if equal</a></p>
     <p><a href='editable_in_static_MQ.php'>editable_in_static_MQ.php</a></p>

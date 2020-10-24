@@ -50,6 +50,12 @@ paths.tex_parser = {
 	css: false,
 	next: 'end'
 };
+paths.vkbd = {
+	path: libPath + 'vkbd.js',
+	fallback: libPath + 'vkbd.js',
+	css: false,
+	next: 'end'
+}; 
 paths.prepare_page = {
 	path: libPath + 'prepare_page.js',
 	fallback: libPath + 'prepare_page.js',
@@ -158,12 +164,14 @@ function getScriptOrFallback(task) {
 			});
 			return;
 	} else {
+		// console.log(task);
+		// console.log(paths[task]);
 		var scriptUrl = paths[task].path;
 		var fallbackUrl = paths[task].fallback;
 		var nexttask = paths[task].next;
 		var isCSS = paths[task].css
 		if (isCSS) {
-			console.log('######### CSS loading ############ ' + scriptUrl);
+			console.log('CSS loading ' + scriptUrl);
 			appendStyleSheet(scriptUrl, function () {
 				console.log('Error loading ' + scriptUrl + ' - Try fallback.');
 				// fallback
