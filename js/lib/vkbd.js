@@ -12,39 +12,37 @@ function key() {
 //     keylist.append(k);
 // }
 
-var smallgap = ['smallgap', '', ''];
-
 var keys_mixed = [
-    // row 1
+    // row 0
     [
         ['x'],
         ['y'],
         ['z'],
-        ['pi', '&pi;', '\\pi'], smallgap,
+        ['pi', '&pi;', '\\pi'], ['smallgap-0', '', ''],
         ['7'],
         ['8'],
         ['9'],
         ['times', '&times;', '\\cdot'],
         ['divided', '&divide;', '/']
     ],
-    // row 2
+    // row 1
     [
         ['a'],
         ['b'],
         ['c'],
-        ['nth_root', 'svg', '\\nthroot'], smallgap,
+        ['nth_root', 'svg', '\\nthroot'], ['smallgap-1', '', ''],
         ['4'],
         ['5'],
         ['6'],
         ['plus', '+', '+'],
         ['minus', '-', '-']
     ],
-    // row 3
+    // row 2
     [
         ['a'],
         ['b'],
         ['c'],
-        ['nth_root', 'svg', '\\nthroot'], smallgap,
+        ['nth_root', 'svg', '\\nthroot'], ['smallgap-2', '', ''],
         ['1'],
         ['2'],
         ['3'],
@@ -54,9 +52,11 @@ var keys_mixed = [
 ]
 
 function create_vkbd(key_array) {
-    for (var rows = 0; rows < key_array.length - 1; rows++) {
+    var result='<table>\r\n';
+    for (var rows = 0; rows < key_array.length; rows++) {
         var row = key_array[rows];
-        for (var keyindex = 0; keyindex < row.length - 1; keyindex++) {
+        result += '<tr>\r\n';
+        for (var keyindex = 0; keyindex < row.length; keyindex++) {
             var key = row[keyindex];
             if (typeof key[1] == 'undefined') {
                 key[1] = key[0];
@@ -64,10 +64,19 @@ function create_vkbd(key_array) {
             if (typeof key[2] == 'undefined') {
                 key[2] = key[0];
             }
-            console.log('vkbd-' + key[0] + ' ' + key[1] + ' cmd-' + key[2]);
+            var cl = 'vkbd'; 
+            if(key[0].startsWith('smallgap')){
+                cl += ' smallgap';
+            }
+            result += '<td class="' + cl + '" id="vkbd-' + key[0] + '" cmd="';
+            result += key[2] + '">' + key[1] + '</td>\r\n';
+            // console.log('vkbd-' + key[0] + ' ' + key[1] + ' cmd-' + key[2]);
         }
+        result += '</tr>\r\n';
         // console.log(row);
     }
+    result += '</table>\r\n';
+    return result;
 }
 
-var vkbd_keys_mixed = create_vkbd(keys_mixed);
+var vkbdLoaded = true;

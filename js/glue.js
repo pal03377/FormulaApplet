@@ -68,6 +68,12 @@ paths.gf09css = {
 	css: true,
 	next: 'end'
 };
+paths.vkbdcss = {
+	path: cssPath + 'vkbd.css',
+	fallback: cssPath + 'vkbd.css',
+	css: true,
+	next: 'end'
+};
 
 // $liblist is set in *.php file as a php variable
 // header.php converts it to a javascript variable
