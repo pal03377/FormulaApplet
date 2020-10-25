@@ -27,10 +27,11 @@ waitfor_vkbd(function(){
     $(".vkbd").click(function (ev) {
         clickEvent(ev);
     });
+    dragElement(document.getElementById("vkbd_"));
 });
 
 function clickEvent(ev){
-    console.log(ev);
+    // console.log(ev);
     var cmd = $( ev.target).attr('cmd');
     console.log(cmd);
 }
