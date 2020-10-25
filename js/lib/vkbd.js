@@ -31,9 +31,9 @@ var keys_mixed = [
     // row 1
     [
         ['a'],
-        ['nth_root', '|\u2b1a|', '\\nthroot'],
-        ['nth_root', 'log<sub><small>\u2b1a</small></sub>', '\\nthroot'],
-        ['nth_root', '\u2b1a<sub><small>\u2b1a</small></sub>', '\\nthroot'],
+        ['abst', '|\u2b1a|', '\\nthroot'],
+        ['log_base', 'log<sub><small>\u2b1a</small></sub>'],
+        ['subscript', '\u2b1a<sub><small>\u2b1a</small></sub>'],
         ['smallgap-1', '', ''],
         ['4'],
         ['5'],
@@ -43,41 +43,42 @@ var keys_mixed = [
     ],
     // row 2
     [
-        ['d', 'e<sup><small>\u2b1a</small></sup>'],
-        ['return2', '\u2b1a<sup>\u2b1a</sup>', 'return2'],
-        ['return2', '\u2b1a<sup><small>2</small></sup>', 'return2'],
+        ['exp', 'e<sup><small>\u2b1a</small></sup>'],
+        ['power', '\u2b1a<sup>\u2b1a</sup>'],
+        ['square', '\u2b1a<sup><small>2</small></sup>'],
         // ['nth_root', '\u221a', '\\nthroot'],
-        ['nth_root', '<sup id="sup_root">\u2b1a</sup>' + squareroot, 'cmd-squareroot'],
+        ['nth_root', '<sup id="sup_root">\u2b1a</sup>' + squareroot],
         ['smallgap-2', '', ''],
         ['1'],
         ['2'],
         ['3'],
-        ['equal', '=', '='],
-        ['backspace', '\u232B', 'cmd-backspace']
-    ],
+        ['backspace', '\u232B'],
+     ],
     // row 3
     [
-        ['e', '10<sup><small>\u2b1a</small></sup>'],
-        ['return', '<span style="width: 200%">\u21b5</span>', 'return'],
-        ['return2', '\u23ce', 'return2'],
-        ['nth_root', squareroot, 'cmd-squareroot'],
+        ['power_of_ten', '10<sup><small>\u2b1a</small></sup>'],
+        ['enter', '<span style="width: 200%">\u21b5</span>', 'enter'],
+        ['enter2', '\u23ce', 'enter2'],
+        ['squareroot', squareroot],
         ['smallgap-2', '', ''],
         ['0'],
         ['.'],
         [','],
-        ['equal', '=', '='],
-        ['backspace', '⇐', 'cmd-backspace']
+        ['equal2', '=', '='],
+        ['backspace', '⇐', 'backspace']
     ],
 ]
 
 function create_vkbd(key_array) {
     var result = '<div id="vkbd_"><table>\r\n';
     result += '<caption id="vkbd_header">Move</caption>\r\n';
-    for (var rows = 0; rows < key_array.length; rows++) {
-        var row = key_array[rows];
-        result += '<tr>\r\n';
-        for (var keyindex = 0; keyindex < row.length; keyindex++) {
-            var key = row[keyindex];
+    for (var row_number = 0; row_number < key_array.length; row_number++) {
+        var keylist = key_array[row_number];
+        result += '<tr class="vkbd-row' + row_number + '">\r\n';
+        // console.log( '<tr class="vkbd-row' + row_number + '">\r\n' );
+        // result += '<tr>\r\n';
+        for (var keyindex = 0; keyindex < keylist.length; keyindex++) {
+            var key = keylist[keyindex];
             if (typeof key[1] == 'undefined') {
                 key[1] = key[0];
             }
@@ -116,7 +117,7 @@ function dragElement(elmnt) {
 
     function dragMouseDown(e) {
         e = e || window.event;
-        console.log(e);
+        // console.log(e);
         e.preventDefault();
         // get the mouse cursor position at startup:
         if (e.type == 'touchstart') {
@@ -124,7 +125,7 @@ function dragElement(elmnt) {
         }
         posX_old = e.clientX;
         posY_old = e.clientY;
-        console.log(posX_old + ' ' + posY_old);
+        // console.log(posX_old + ' ' + posY_old);
         document.onmouseup = closeDragElement;
         document.ontouchend = closeDragElement;
         // call a function whenever the cursor moves:
@@ -145,7 +146,7 @@ function dragElement(elmnt) {
         deltaY = e.clientY - posY_old;
         posX_old = e.clientX;
         posY_old = e.clientY;
-        console.log(deltaX + ' ' + deltaY);
+        // console.log(deltaX + ' ' + deltaY);
         // set the element's new position:
         elmnt.style.left = (elmnt.offsetLeft + deltaX) + "px";
         elmnt.style.top = (elmnt.offsetTop + deltaY) + "px";

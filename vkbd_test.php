@@ -27,18 +27,30 @@ waitfor_vkbd(function(){
     $(".vkbd").click(function (ev) {
         clickEvent(ev);
     });
+    // also children and grandchildren and...
+    $(".vkbd").find().click(function (ev) {
+        clickEvent(ev);
+    });
     dragElement(document.getElementById("vkbd_"));
 });
 
 function clickEvent(ev){
     // console.log(ev);
     var cmd = $( ev.target).attr('cmd');
-    console.log(cmd);
+    // console.log(ev.target);
+    // console.log(cmd);
+   if (typeof cmd == 'undefined'){
+    //    console.log('*** undefined');
+    //    console.log($(ev.target).parents());
+       temp = $(ev.target).parents().filter('.vkbd');
+       cmd = $(temp).attr('cmd');
+    }
+    console.log('improved ' + cmd);
 }
 
 function get_vkbd(){
     var vkbd_keys_mixed = create_vkbd(keys_mixed);
-    console.log(vkbd_keys_mixed);
+    // console.log(vkbd_keys_mixed);
     $('#output').html(vkbd_keys_mixed);
 }
 
