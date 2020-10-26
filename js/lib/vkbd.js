@@ -31,7 +31,7 @@ var keys_mixed = [
     // row 1
     [
         ['a'],
-        ['abst', '|\u2b1a|', '\\nthroot'],
+        ['abs', '|\u2b1a|'],
         ['log_base', 'log<sub><small>\u2b1a</small></sub>'],
         ['subscript', '\u2b1a<sub><small>\u2b1a</small></sub>'],
         ['smallgap-1', '', ''],
@@ -66,12 +66,75 @@ var keys_mixed = [
         [','],
         ['equal2', '=', '='],
         ['backspace', '⇐', 'backspace']
-    ],
+    ]
 ]
 
-function create_vkbd(key_array) {
-    var result = '<div id="vkbd_"><table>\r\n';
+var keys_abc = [
+    // row 0
+    [
+        ['q'],
+        ['w'],
+        ['e'],
+        ['r'],
+        ['t'],
+        ['z'],
+        ['u'],
+        ['i'],
+        ['o'],
+        ['p'],
+        ['ue', '&uuml;'],
+    ],
+    // row 1
+    [
+        ['a'],
+        ['s'],
+        ['d'],
+        ['f'],
+        ['g'],
+        ['h'],
+        ['j'],
+        ['k'],
+        ['l'],
+        ['oe', '&ouml;'],
+        ['ae', '&ouml;'],
+    ],
+    // row 2
+    [
+        // https://www.w3schools.com/charsets/ref_utf_arrows.asp
+        ['shift', '⇑'],
+        ['y'],
+        ['x'],
+        ['c'],
+        ['v'],
+        ['b'],
+        ['n'],
+        ['smallgap-0', '', ''],
+        ['smallgap-1', '', ''],
+        ['backspace', '\u232B'],
+     ],
+    // row 3
+    [
+        ['smallgap-2', '', ''],
+        ['smallgap-3', '', ''],
+        ['point', '.'],
+        ['space', ' '],
+        ['left', '←'],
+        ['right', '→'],
+        ['enter', '<span style="width: 200%">\u21b5</span>', 'enter'],
+     ]
+]
+
+function get_vkbd(){
+    var result = '<div id="vkbd"><table>\r\n';
     result += '<caption id="vkbd_header">Move</caption>\r\n';
+    result += create_vkbd(keys_abc);
+    result += create_vkbd(keys_mixed);
+    result += '</table></div>\r\n';
+    return result;
+}
+
+function create_vkbd(key_array) {
+    var result = '';
     for (var row_number = 0; row_number < key_array.length; row_number++) {
         var keylist = key_array[row_number];
         result += '<tr class="vkbd-row' + row_number + '">\r\n';
@@ -85,7 +148,7 @@ function create_vkbd(key_array) {
             if (typeof key[2] == 'undefined') {
                 key[2] = key[0];
             }
-            var cl = 'vkbd';
+            var cl = 'vkbd_button';
             if (key[0].startsWith('smallgap')) {
                 cl += ' smallgap';
             }
@@ -96,7 +159,6 @@ function create_vkbd(key_array) {
         result += '</tr>\r\n';
         // console.log(row);
     }
-    result += '</table></div>\r\n';
     return result;
 }
 

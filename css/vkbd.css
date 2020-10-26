@@ -1,4 +1,4 @@
-.vkbd{
+.vkbd_button{
 	background-color:darkkhaki;
 	width: 60px;
 	height: 40px;
@@ -11,10 +11,10 @@
 	border: 1px solid peru;
 	border-radius: 10px;
 }
-.vkbd:active{
+.vkbd_button:active{
 	background-color: blue;
 }
-.vkbd.smallgap{
+.vkbd_button.smallgap{
 	width: 10px;
 	background-color: transparent;
 	border: 0px;
@@ -28,9 +28,13 @@
 div#output tbody{
 	margin: 15px;
 }
-#vkbd_{
+#vkbd{
 	position: absolute;
 	z-index: 9;
+}
+.vkbd-row2 .vkbd{
+	position: relative;
+	left: 20px;
 }
 #vkbd_header{
 	height: 20px;
