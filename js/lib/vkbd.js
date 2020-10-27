@@ -53,7 +53,7 @@ var keys_mixed = [
         ['2'],
         ['3'],
         ['backspace', '\u232B'],
-     ],
+    ],
     // row 3
     [
         ['power_of_ten', '10<sup><small>\u2b1a</small></sup>'],
@@ -111,7 +111,7 @@ var keys_abc = [
         ['smallgap-0', '', ''],
         ['smallgap-1', '', ''],
         ['backspace', '\u232B'],
-     ],
+    ],
     // row 3
     [
         ['smallgap-2', '', ''],
@@ -121,20 +121,27 @@ var keys_abc = [
         ['left', '←'],
         ['right', '→'],
         ['enter', '<span style="width: 200%">\u21b5</span>', 'enter'],
-     ]
+    ]
 ]
 
-function get_vkbd(){
-    var result = '<div id="vkbd"><table>\r\n';
-    result += '<caption id="vkbd_header">Move</caption>\r\n';
-    result += create_vkbd(keys_abc);
-    result += create_vkbd(keys_mixed);
-    result += '</table></div>\r\n';
+function get_vkbd() {
+    var result = '<div id="vkbd">\r\n';
+    result += '  <div id="vkbd_header">Move</div>\r\n';
+    result += '  <div class="vkbd_tab"\r\n>';
+    result += '      <button class="tablinks" id="button-table_mixed" onclick="tabClick(event, \'table_mixed\')">123&radic;+-&nbsp;&nbsp;&nbsp;</button>\r\n';
+    result += '      <button class="tablinks" id="button-table_abc" onclick="tabClick(event, \'table_abc\')">abc</button>\r\n';
+    result += '      <button class="tablinks" id="button-table_greek" onclick="tabClick(event, \'kommt_noch\')">&alpha;&beta;&gamma;</button>\r\n';
+    result += '  </div>\r\n';
+
+    result += create_table(keys_abc, 'table_abc');
+    result += create_table(keys_mixed, 'table_mixed');
+    result += '</div>\r\n';
     return result;
 }
 
-function create_vkbd(key_array) {
-    var result = '';
+function create_table(key_array, table_id) {
+    var result = '<table id="' + table_id + '">\r\n';
+    result += '<tbody>\r\n';
     for (var row_number = 0; row_number < key_array.length; row_number++) {
         var keylist = key_array[row_number];
         result += '<tr class="vkbd-row' + row_number + '">\r\n';
@@ -159,6 +166,8 @@ function create_vkbd(key_array) {
         result += '</tr>\r\n';
         // console.log(row);
     }
+    result += '</tbody>\r\n';
+    result += '</table>\r\n';
     return result;
 }
 
@@ -221,6 +230,7 @@ function dragElement(elmnt) {
         document.ontouchend = null;
         document.ontouchmove = null;
     }
+
 }
 
 var vkbdLoaded = true;

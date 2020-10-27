@@ -23,7 +23,8 @@ function waitfor_vkbd(vkbd_ready) {
 
 waitfor_vkbd(function(){
     console.log('Here is vkbd_test.php');
-    $('#output').html(fetch_vkbd());
+    // get_vkbd() is defined in vkbd.js
+    $('#output').html(get_vkbd());
     $(".vkbd_button").click(function (ev) {
         clickEvent(ev);
     });
@@ -46,8 +47,14 @@ function clickEvent(ev){
     console.log(cmd);
 }
 
-function fetch_vkbd(){
-    return get_vkbd();
+function tabClick(ev, table_id){
+    // console.log(ev);
+    console.log(table_id);
+    $( '#vkbd table' ).css( "display", "none");
+    $( '#vkbd table#' + table_id ).css( "display", "table");
+    $( '.vkbd_tab button' ).removeClass( "selected");
+    $( '.vkbd_tab button#button-' + table_id ).addClass( "selected");
+    
 }
 
 </script>

@@ -1,5 +1,20 @@
-.vkbd_button{
-	background-color:darkkhaki;
+div#vkbd{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#vkbd table{
+	display: none;
+}
+
+#vkbd table#table_mixed{
+	display: table;
+}
+
+.vkbd_button {
+	background-color: darkkhaki;
 	width: 60px;
 	height: 40px;
 	margin: 10px;
@@ -11,39 +26,91 @@
 	border: 1px solid peru;
 	border-radius: 10px;
 }
-.vkbd_button:active{
+
+.vkbd_button:active {
 	background-color: blue;
 }
-.vkbd_button.smallgap{
+
+.vkbd_button.smallgap {
 	width: 10px;
 	background-color: transparent;
 	border: 0px;
 }
-#vkbd-backspace{
+
+#vkbd-backspace {
 	background-color: firebrick;
 }
-#vkbd-backspace:active{
-	background-color:greenyellow;
+
+#vkbd-backspace:active {
+	background-color: greenyellow;
 }
-div#output tbody{
+
+div#output tbody {
 	margin: 15px;
 }
-#vkbd{
+
+#vkbd {
 	position: absolute;
 	z-index: 9;
 }
-.vkbd-row2 .vkbd{
+
+.vkbd-row2 .vkbd {
 	position: relative;
 	left: 20px;
 }
-#vkbd_header{
+
+#vkbd_header {
 	height: 20px;
 	background-color: darkolivegreen;
 	cursor: move;
 	z-index: 10;
 	padding: 10px;
 }
-#sup_root{
+
+/* Style the tab */
+.vkbd_tab {
+	overflow: hidden;
+	border: none;
+	background-color: transparent;
+}
+
+/* Style the buttons inside the tab */
+.vkbd_tab button {
+	background-color: #afa;
+	float: left;
+	left: 20px;
+	border: none;
+	border: 1px solid #ccc;
+	outline: none;
+	cursor: pointer;
+	padding: 6px 16px;
+	transition: 0.3s;
+	font-size: 20px;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+}
+
+/* Change background color of buttons on hover */
+.vkbd_tab button:hover {
+	background-color: #8f8;
+	color: blue;
+}
+
+/* Create an active/current tablink class */
+.vkbd_tab button.active {
+	background-color: #c5c5e0;
+	color: red;
+}
+
+/* Style the tab content */
+.tabcontent {
+	display: none;
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-top: none;
+}
+
+#sup_root {
 	position: relative;
 	top: -0.5em;
 	right: -0.5em;
