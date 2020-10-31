@@ -1,6 +1,6 @@
 if (typeof gf09_path == 'undefined'){
 	var gf09_path = '/gf09/';
-	var server = ocument.location.hostname;
+	var server = document.location.hostname;
 	if(server.startsWith('test.grossmann.info')){ gf09_path = '/'; }
 }
 var libPath = gf09_path + 'js/lib/';
