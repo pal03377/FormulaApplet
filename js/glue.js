@@ -1,14 +1,15 @@
-console.log(document.location.hostname);
+if (typeof gf09_path == 'undefined'){
+	var gf09_path = '/gf09/';
+	var server = ocument.location.hostname;
+	if(server.startsWith('test.grossmann.info')){ gf09_path = '/'; }
+}
 var libPath = gf09_path + 'js/lib/';
-console.log( 'libPath=' + libPath );
 var cssPath = gf09_path + 'css/';
-console.log( 'cssPath=' + cssPath );
+console.log( 'libPath=' + libPath + '  cssPath=' + cssPath );
 
-// console.log(liblist);
 if (typeof liblist === 'undefined'){ //wiki
    var liblist = ['mathquill', 'prepare_page', 'tex_parser', 'zip',  'mathquillcss', 'gf09css'];
 }
-// console.log(liblist);
 
 // TODO fallback for jquery (maybe in header.php)
 var paths = {};
