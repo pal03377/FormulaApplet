@@ -1,9 +1,4 @@
-if (gf09_path == 'NO WIKI'){
-	gf09_path = '/gf09/';
-}
-if (gf09_path == 'NO GF09'){
-	gf09_path = '/';
-}
+console.log(document.location.hostname);
 var libPath = gf09_path + 'js/lib/';
 console.log( 'libPath=' + libPath );
 var cssPath = gf09_path + 'css/';
