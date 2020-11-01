@@ -1,6 +1,6 @@
 <?php
   $title='Test Page - Tex2KAS';
-  $liblist = "['mathquill', 'mathquillcss', 'kas', 'stop']";
+  $liblist = "['mathquill', 'mathquillcss', 'kas']";
   include_once( 'header.php' );
 ?>
 
@@ -14,26 +14,7 @@
   <hr>
   
   <script>
-  function waitfor_KAS_and_if_ready_then_do(KAS_ready) {
-    // console.log( 'window.jQuery =' + window.jQuery);
-    if (typeof KAS !== 'undefined') {
-      console.log('KAS is available');
-      KAS_ready();
-    } else {
-      console.log('Waiting for KAS...');
-      setTimeout(function () {
-        waitfor_KAS_and_if_ready_then_do(KAS_ready)
-      }, 50);
-    }
-  }
-
-  waitfor_libLoader_and_if_ready_then_do( function() {
-     waitfor_mathquill_and_if_ready_then_do( function(){
-        waitfor_KAS_and_if_ready_then_do( function(){ init();  });
-      });
-    });
-  
-  function init(){
+    function init(){
     console.log( 'init' );
 
 
@@ -75,6 +56,27 @@
       console.log('Error: ' +  errDesc );
     }
   }
+
+  function waitfor_KAS_and_if_ready_then_do(KAS_ready) {
+    // console.log( 'window.jQuery =' + window.jQuery);
+    if (typeof KAS !== 'undefined') {
+      console.log('KAS is available');
+      KAS_ready();
+    } else {
+      console.log('Waiting for KAS...');
+      setTimeout(function () {
+        waitfor_KAS_and_if_ready_then_do(KAS_ready)
+      }, 50);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed');
+    waitfor_mathquill_and_if_ready_then_do( function(){
+        waitfor_KAS_and_if_ready_then_do( function(){ init();  });
+      });
+   });
+
  </script>
 
  <?php include_once( 'footer.php' ); ?>

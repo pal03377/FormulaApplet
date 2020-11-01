@@ -27,42 +27,9 @@ include_once 'header.php';
 
   </style>
 <script>
-  function waitfor_KAS_and_if_ready_then_do(KAS_ready) {
-    // console.log( 'window.jQuery =' + window.jQuery);
-    if (typeof KAS !== 'undefined') {
-      console.log('KAS is available');
-      KAS_ready();
-    } else {
-      console.log('Waiting for KAS...');
-      setTimeout(function () {
-        waitfor_KAS_and_if_ready_then_do(KAS_ready)
-      }, 50);
-    }
-  }
-
-  var libLoaderReady = false;
-  function waitfor_libLoader_and_if_ready_then_do(ll_ready) {
-	if (libLoaderReady == true) {
-		console.log('libLoader ready.');
-		ll_ready();
-	} else {
-		console.log('waiting for libLoader...');
-		setTimeout(function () {
-			waitfor_libLoader_and_if_ready_then_do(ll_ready)
-		}, 50);
-	}
-}
-
-
-  waitfor_libLoader_and_if_ready_then_do( function() {
-     waitfor_mathquill_and_if_ready_then_do( function(){
-        waitfor_KAS_and_if_ready_then_do( function(){ init();  });
-      });
-    });
 
   function init(){
     console.log( 'init' );
-
 
     var eMathLeft = $('#editable-math-left')[0]; latexLeft = $('#latex-left');
     var eMathRight = $('#editable-math-right')[0]; latexRight = $('#latex-right');
@@ -149,9 +116,24 @@ include_once 'header.php';
 
   }
 
+  function waitfor_KAS_and_if_ready_then_do(KAS_ready) {
+    // console.log( 'window.jQuery =' + window.jQuery);
+    if (typeof KAS !== 'undefined') {
+      console.log('KAS is available');
+      KAS_ready();
+    } else {
+      console.log('Waiting for KAS...');
+      setTimeout(function () {
+        waitfor_KAS_and_if_ready_then_do(KAS_ready)
+      }, 50);
+    }
+  }
+
 window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
-    libLoaderReady = true;
+    waitfor_mathquill_and_if_ready_then_do( function(){
+        waitfor_KAS_and_if_ready_then_do( function(){ init();  });
+    });
 });
 
 </script>

@@ -16,12 +16,7 @@
   <hr>
   
   <script>
-  // TODO: put these waiting functions into glue.js
-  
-  waitfor_libLoader_and_if_ready_then_do( function() {
-      waitfor_mathquill_and_if_ready_then_do( init );
-  }) 
- 
+   
   function init(){
     console.log( 'init' );
     var eMath = $('#editable-math')[0]; latexSource = $('#latex'), htmlSource = $('#html-source'), MathText = $('#math-text');
@@ -97,6 +92,10 @@ function printTree(html) {
   }
   return tree.join('').slice(1);
 }
+window.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed');
+    waitfor_mathquill_and_if_ready_then_do( init );
+ });
 </script>
 
  <?php include_once( 'footer.php' ); ?>

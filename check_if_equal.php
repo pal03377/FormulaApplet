@@ -6,10 +6,10 @@ include_once 'header.php';
 <!-- <script src="./js/lib/tex_parser.js"></script> -->
 <script>
   waitfor_mathquill_and_if_ready_then_do(function () {
-    prepare_my_page();
+    init();
   });
 
-  function prepare_my_page() {
+  function init() {
     var MQ = MathQuill.getInterface(2);
     var mathField = new Array();
     var out = '';
