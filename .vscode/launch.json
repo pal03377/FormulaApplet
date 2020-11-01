@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome from XAMPP",
-            "url": "http://localhost/index.php",
+            "url": "http://localhost:8080/gf09/sample_task.php",
             "webRoot": "${workspaceFolder}",
         },
         {
