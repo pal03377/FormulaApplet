@@ -17,12 +17,14 @@ if (typeof liblist === 'undefined') { //default for wiki
 }
 
 function task(source) {
+    this.name = 'unknown';
     this.source = source;
     this.fallback = null;
     this.css = source.endsWith('.css');
+    this.state = 'unused';
 }
 
-var jQuery_url = "https://ajay.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
+var jQuery_url = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
 var jQuery_fallback = libPath + "jquery-3.4.1.min.js";
 var tasks = [];
 tasks['mathquillcss'] = new task('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css');
@@ -42,6 +44,9 @@ tasks['hammer'].fallback = new task('https://hammerjs.github.io/dist/hammer.js')
 tasks['gf09css'] = new task(cssPath + 'gf09.css');
 tasks['vkbdcss'] = new task(cssPath + 'vkbd.css');
 console.log(tasks);
+liblist.forEach(function(taskname){
+    tasks[taskname].name = taskname;
+})
 
 // Load jQuery (without using jQuery)
 
@@ -65,6 +70,7 @@ var try_counter = 0;
 var try_counter_limit = 50;
 
 function waitfor_jquery(cont) {
+    //TODO replace by use of script.onerror
     // console.log( 'window.jQuery =' + window.jQuery);
     if (window.jQuery) {
         console.log('jQuery version = ' + $.fn.jquery);
@@ -88,14 +94,117 @@ function second_try() {
     loadScript(jQuery_fallback, waitfor_jquery(jQueryLoaded));
 }
 
-// start loading of jQuery if necessary
+// start loading of jQuery (if necessary)
 if (window.jQuery) {
     // jQuery is already there.
     console.log('jQuery version (Wiki) = ' + $.fn.jquery);
 } else {
+    // Start to load jQuery and wait until loaded
     loadScript(jQuery_url, waitfor_jquery(jQueryLoaded));
+}
+
+// ***************************** load CSS *********************************** 
+// https://stackoverflow.com/questions/17666785/check-external-stylesheet-has-loaded-for-fallback
+// https://www.phpied.com/when-is-a-stylesheet-really-loaded/
+function appendStyleSheet(task, errorFunc, successFunc, fallback) {
+    var link = document.createElement("link");
+    link.rel = "stylesheet";
+    if (fallback){
+        link.href = task.fallback;
+    } else {
+        link.href = task.source;
+    }
+    link.onerror = errorFunc;
+    // https://www.w3schools.com/tags/ev_onload.asp
+    link.onload = function () {
+        console.log(url + ' successfully loaded.');
+        successFunc(task);
+    };
+    document.getElementsByTagName("head")[0].appendChild(link);
+    console.log(url + ' appended to "head", but not yet loaded.');
+}
+
+function appendStyleSheetOrFallback(task, errorFunc, successFunc) {
+    // prepare for fallback
+    var firstError = function () {
+        if (task.fallback == null) {
+            errorFunc(task);
+        } else {
+            // second try: fallback = true
+            appendStyleSheet(task, errorFunc, successFunc, true);
+        }
+    }
+    // first try: fallback = false
+    appendStyleSheet(task, firstError, successFunc, false);
+}
+
+function appendScript(task, errorFunc, successFunc, fallback) {
+    if (fallback){
+        var url = task.fallback;
+    } else {
+        var url = task.source;
+    }
+   $.getScript(url)
+        .done(function (script, textStatus) {
+            console.log(url + ' successfully loaded.');
+            successFunc(task);
+        })
+        .fail(function (jqxhr, settings, exception) {
+            errorFunc(task);
+        });
+}
+
+function appendScriptOrFallback(task, errorFunc, successFunc) {
+    // prepare for fallback
+    var firstError = function () {
+        if (task.fallback == null) {
+            errorFunc(task);
+        } else {
+            // second try: fallback = true
+            appendScript(task, errorFunc, successFunc, true);
+        }
+    }
+    // first try: fallback = false
+    appendScript(task, firstError, successFunc, false);
+}
+
+function appendScriptOrStyleSheet(task, errorFunc, successFunc) {
+    if (task.css == true) {
+        appendStyleSheetOrFallback(task, errorFunc, successFunc);
+    } else {
+        appendScriptOrFallback(task, errorFunc, successFunc);
+    }
+}
+
+function state(){
+    liblist.forEach(function(taskname){
+        var t = tasks[taskname];
+        console.log(taskname + ': ' + t.state+ ' ' + t.name);
+    }); 
+}
+
+function errorFunc(task){
+    console.log('Error in ' + task.name);
+    console.log(task);
+}
+
+function successFunc(task){
+    console.log('Success in ' + task.name);
+    console.log(task);
 }
 
 function jQueryLoaded() {
     console.log('jQuery loaded. Continue...');
+    liblist.forEach(function(taskname){
+        tasks[taskname].state = 'wait for load';
+    }); 
+    state();
+    liblist.forEach(function(taskname){
+        tasks[taskname].state = 'wait for load';
+    }); 
+    liblist.forEach(function(taskname){
+        tasks[taskname].state = 'pending';
+        var t = tasks[taskname];
+        appendScriptOrStyleSheet(t, errorFunc(t), successFunc(t)); 
+    }); 
 }
