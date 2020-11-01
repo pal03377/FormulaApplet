@@ -14,7 +14,7 @@
   }
 
   function prepare_page() {
-    console.log('* prepare_page');
+    console.log('call prepare_page');
     console.log('isAndroid=' + isAndr());
     // <!-- http://docs.mathquill.com/en/latest/Api_Methods/#mqmathfieldhtml_element-config -->
 
@@ -63,7 +63,7 @@
     ($('<img class="mod">')).insertAfter($(".formula_applet"));
 
     $(document).ready(function () {
-      console.log('* document ready');
+      console.log('call document ready');
       var MQ = MathQuill.getInterface(2);
 
       $(".formula_applet").each(function () {

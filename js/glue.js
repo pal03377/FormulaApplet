@@ -95,7 +95,7 @@ function waitfor_jquery(cont) {
 function second_try_for_jquery() {
     console.log('Try to load jQuery fallback');
     try_counter = 0;
-    loadScript(jQuery_fallback, waitfor_jquery(jQueryLoaded));
+    loadScript(jQuery_fallback, waitfor_jquery(load_libs));
 }
 
 
@@ -103,9 +103,10 @@ function second_try_for_jquery() {
 if (window.jQuery) {
     // jQuery is already there.
     console.log('jQuery version (Wiki) = ' + $.fn.jquery);
+    load_libs();
 } else {
     // Start to load jQuery and wait until loaded
-    loadScript(jQuery_url, waitfor_jquery(jQueryLoaded));
+    loadScript(jQuery_url, waitfor_jquery(load_libs));
 }
 // Done with jQuery.
 
@@ -235,9 +236,9 @@ function waitfor_num_of_libs_then_do(cont) {
 
 var number_of_loaded_libs = 0;
 
-function jQueryLoaded() {
+function load_libs() {
     // console.log('jQuery loaded. Continue...');
-    console.log(liblist);
+    console.log(JSON.stringify(liblist));
     liblist.forEach(function (taskname) {
         tasks[taskname].state = 'wait for load';
     });

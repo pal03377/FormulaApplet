@@ -38,8 +38,8 @@
 
 ## glue2
 * Umbenennen glue.js -> glue_old.js und glue2.js -> glue.js OK
-* Test im Wiki
+* Test im Wiki OK
 * Test online mit/ohne Wiki
-* prepare_page *.js und innerhalb *.php unterscheiden!
-* Sind Waiter-Funktionen nötig?
+* prepare_page *.js und innerhalb *.php unterscheiden! OK
+* Sind Waiter-Funktionen nötig? OK
 * Fehlermeldungen testen
