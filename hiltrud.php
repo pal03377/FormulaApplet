@@ -1,6 +1,6 @@
 <?php
 $title = 'Demos f&uuml;r Hiltrud';
-$liblist = "['stop' ]";
+$liblist = "[ 'gf09css' ]";
 ?>
 <?php include_once 'header.php';?>
 <link href="css/table.css" rel="stylesheet">

@@ -7,6 +7,6 @@
 <script>
     var liblist=<?php echo $liblist; ?>;
 </script>
-<script src="./js/glue2.js"></script>
+<script src="./js/glue.js"></script>
 <meta charset="utf-8">
 </head>

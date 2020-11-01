@@ -41,10 +41,10 @@ code span {
 <span id="fill-in-the-blank">\sqrt{ \MathQuillMathField{x}^2 + \MathQuillMathField{y}^2 }</span>
 <script>
  waitfor_mathquill_and_if_ready_then_do(function () {
-    prepare_page();
+    prepare_my_page();
   });
 
-  function prepare_page(){
+  function prepare_my_page(){
 // <!-- http://docs.mathquill.com/en/latest/Api_Methods/#mqmathfieldhtml_element-config -->
 var MQ = MathQuill.getInterface(2);
   var fillInTheBlank = MQ.StaticMath(document.getElementById('fill-in-the-blank'));
@@ -88,7 +88,6 @@ var MQ = MathQuill.getInterface(2);
     }
   });
 };
-
 
 </script>
 

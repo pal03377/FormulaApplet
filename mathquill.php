@@ -9,10 +9,6 @@ include_once 'header.php';
  <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3,5 \textcolor{blue}{\frac{km}{h}} </textarea>
 
 <script>
-  waitfor_libLoader_and_if_ready_then_do( function() {
-      waitfor_mathquill_and_if_ready_then_do( init );
-  })
-
   function init(){
     console.log( 'init' );
     var eMath = $('#editable-math')[0]; latexSource = $('#latex');
@@ -36,6 +32,12 @@ include_once 'header.php';
 
   mf.latex(latexSource.val());
  }
+
+ window.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed');
+    waitfor_mathquill_and_if_ready_then_do( init );
+ });
+
 </script>
 
  <?php include_once 'footer.php'; ?>

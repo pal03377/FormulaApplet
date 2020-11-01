@@ -1,5 +1,6 @@
   var mathField = [];
   var solution_list = [];
+  var prepare_page_exists = true;
 
   function base64_zip_decode(code, decode_success) {
     var zip = new JSZip();

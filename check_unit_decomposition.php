@@ -1,6 +1,6 @@
 <?php
 $title = 'Check Unit Decomposition';
-$liblist = "['tex_parser', 'mathquill', 'mathquillcss', 'gf09css', 'stop']";
+$liblist = "['tex_parser', 'mathquill', 'mathquillcss', 'gf09css']";
 include_once 'header.php';
 ?>
 
@@ -25,9 +25,7 @@ background-color: #ffffdf !important;">
 
   <script>
 
-  waitfor_libLoader_and_if_ready_then_do( function() {
-      waitfor_mathquill_and_if_ready_then_do( init );
-  })
+  waitfor_mathquill_and_if_ready_then_do( init );
 
   function init(){
     console.log( 'init' );

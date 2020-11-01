@@ -35,3 +35,11 @@
 * Transparentes Textinput-Feld drüberlegen
 * Ein-Pixel-Textinput-Feld daneben (links oben)
 * Virtuelle Tastatur aus Library
+
+## glue2
+* Umbenennen glue.js -> glue_old.js und glue2.js -> glue.js OK
+* Test im Wiki
+* Test online mit/ohne Wiki
+* prepare_page *.js und innerhalb *.php unterscheiden!
+* Sind Waiter-Funktionen nötig?
+* Fehlermeldungen testen

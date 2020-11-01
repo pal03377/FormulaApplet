@@ -1,17 +1,18 @@
 <?php $title = 'Decode - Encode (gf09)';
-$liblist = "['zip', 'mathquill', 'mathquillcss', 'stop']";
+$liblist = "['zip']";
 include_once 'header.php';
 ?>
 
 <body>
 <h1><?php echo $title; ?></h1>
+<h2>See console!</h2>
 <p><a href='https://stuk.github.io/jszip/'>JSZip Doc</a></p>
 
 <script>
-  waitfor_libLoader_and_if_ready_then_do( function() {
-      waitfor_mathquill_and_if_ready_then_do( init );
-  })
-
+  function prepare_pg(){
+    init();
+  }
+  
  function init(){
     console.log( 'init' );
 

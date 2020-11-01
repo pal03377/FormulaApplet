@@ -15,7 +15,7 @@ include_once 'header.php';
   <hr>
 
   <style>
-  textarea#output-compare.equal { 
+  textarea#output-compare.equal {
     background-color: #00ff0033;
   }
   textarea#output-compare.notequal {
@@ -39,6 +39,20 @@ include_once 'header.php';
       }, 50);
     }
   }
+
+  var libLoaderReady = false;
+  function waitfor_libLoader_and_if_ready_then_do(ll_ready) {
+	if (libLoaderReady == true) {
+		console.log('libLoader ready.');
+		ll_ready();
+	} else {
+		console.log('waiting for libLoader...');
+		setTimeout(function () {
+			waitfor_libLoader_and_if_ready_then_do(ll_ready)
+		}, 50);
+	}
+}
+
 
   waitfor_libLoader_and_if_ready_then_do( function() {
      waitfor_mathquill_and_if_ready_then_do( function(){
@@ -134,6 +148,12 @@ include_once 'header.php';
     }
 
   }
- </script>
 
- <?php include_once 'footer.php'; ?>
+window.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed');
+    libLoaderReady = true;
+});
+
+</script>
+
+ <?php include_once 'footer.php';?>
