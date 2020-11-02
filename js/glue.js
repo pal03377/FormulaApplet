@@ -1,4 +1,5 @@
-// This filename is used in D:\Users\privat\Documents\xampp_gf09_wiki\htdocs\wiki\extensions\FormulaApplet\extension.json
+// This is glue.js 
+// This filename is referred to in D:\Users\privat\Documents\xampp_gf09_wiki\htdocs\wiki\extensions\FormulaApplet\extension.json
 // and in D:\Users\privat\Laufwerk_E\gut\gf09\header.php
 
 if (typeof gf09_path == 'undefined') {
@@ -12,9 +13,7 @@ var libPath = gf09_path + 'js/lib/';
 var cssPath = gf09_path + 'css/';
 console.log('libPath=' + libPath + '  cssPath=' + cssPath);
 
-function isAndr() {
-    return (navigator.userAgent.toUpperCase().indexOf('ANDROID') !== -1);
-}
+// var gluetest = 'Here is glue!';
 
 if (typeof liblist === 'undefined') { //default for wiki
     var liblist = ['mathquill', 'prepare_page', 'tex_parser', 'zip', 'mathquillcss', 'gf09css'];

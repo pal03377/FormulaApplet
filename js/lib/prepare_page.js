@@ -1,6 +1,10 @@
+  // This is prepare_page.js
+
   var mathField = [];
   var solution_list = [];
   var prepare_page_exists = true;
+
+  // console.log('gluetest says: ' + gluetest);
 
   function base64_zip_decode(code, decode_success) {
     var zip = new JSZip();
@@ -11,6 +15,10 @@
         decode_success(data);
       });
     });
+  }
+
+  function isAndr() {
+    return (navigator.userAgent.toUpperCase().indexOf('ANDROID') !== -1);
   }
 
   function prepare_page() {
