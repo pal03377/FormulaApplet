@@ -1,6 +1,6 @@
 <?php $title = 'Test Page - hammer (gf09)';
 // stop: do not wait for mathquill and do not prepare_page
-$liblist = "['vkbd', 'vkbdcss', 'hammer', 'stop' ]";
+$liblist = "['vkbd', 'vkbdcss', 'hammer']";
 include_once 'header.php';
 ?>
 
@@ -34,10 +34,14 @@ waitfor_vkbd(function(){
     });
     dragElement(document.getElementById("vkbd"));
     var myElement = document.getElementById('vkbd');
+    // https://hammerjs.github.io/getting-started/
     var mc = new Hammer(myElement);
     mc.on("panleft panright tap press", function(ev) {
-    console.log(ev.type +" gesture detected.");
-});
+        document.getElementById('output').innerHTML =
+        ev.type +" gesture detected.";
+    });
+    mc.get('pinch').set({ enable: true });
+    mc.get('rotate').set({ enable: true });
 });
 
 function clickEvent(ev){
@@ -59,11 +63,12 @@ function tabClick(ev, table_id){
     $( '#vkbd table#' + table_id ).css( "display", "table");
     $( '.vkbd_tab button' ).removeClass( "selected");
     $( '.vkbd_tab button#button-' + table_id ).addClass( "selected");
-    
+
 }
 
 </script>
 
-<div id='output'></div>
+<hr />
+<div><p id='output'>Version Drei</p></div>
 
 <?php include_once 'footer.php';?>

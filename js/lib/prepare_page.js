@@ -17,6 +17,9 @@
     });
   }
 
+  // function isAndr() cannot be moved to glue.js because
+  // glue.js is executed but not stored at test.mathebuch-online.de/wiki
+  
   function isAndr() {
     return (navigator.userAgent.toUpperCase().indexOf('ANDROID') !== -1);
   }

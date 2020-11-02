@@ -1,6 +1,5 @@
 <?php $title = 'Test Page - VKBD (gf09)';
-// stop: do not wait for mathquill and do not prepare_page
-$liblist = "['vkbd', 'vkbdcss', 'stop' ]";
+$liblist = "['vkbd', 'vkbdcss']";
 include_once 'header.php';
 ?>
 
