@@ -171,66 +171,144 @@ function create_table(key_array, table_id) {
     return result;
 }
 
-function dragElement(elmnt) {
-    var deltaX = 0,
-        deltaY = 0,
-        posX_old = 0,
-        posY_old = 0;
-    if (document.getElementById(elmnt.id + "header")) {
-        /* if present, the header is where you move the DIV from:*/
-        document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-        document.getElementById(elmnt.id + "header").ontouchstart = dragMouseDown;
-    } else {
-        /* otherwise, move the DIV from anywhere inside the DIV:*/
-        elmnt.onmousedown = dragMouseDown;
-        elmnt.ontouchstart = dragMouseDown;
-    }
+// dragElement is replaced by hammer.js pan
+// function dragElement(elmnt) {
+//     var deltaX = 0,
+//         deltaY = 0,
+//         posX_old = 0,
+//         posY_old = 0;
+//     if (document.getElementById(elmnt.id + "header")) {
+//         /* if present, the header is where you move the DIV from:*/
+//         document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+//         document.getElementById(elmnt.id + "header").ontouchstart = dragMouseDown;
+//     } else {
+//         /* otherwise, move the DIV from anywhere inside the DIV:*/
+//         elmnt.onmousedown = dragMouseDown;
+//         elmnt.ontouchstart = dragMouseDown;
+//     }
 
-    function dragMouseDown(e) {
-        e = e || window.event;
-        // console.log(e);
-        e.preventDefault();
-        // get the mouse cursor position at startup:
-        if (e.type == 'touchstart') {
-            e = e.touches[0];
+//     function dragMouseDown(e) {
+//         e = e || window.event;
+//         // console.log(e);
+//         e.preventDefault();
+//         // get the mouse cursor position at startup:
+//         if (e.type == 'touchstart') {
+//             e = e.touches[0];
+//         }
+//         posX_old = e.clientX;
+//         posY_old = e.clientY;
+//         // console.log(posX_old + ' ' + posY_old);
+//         document.onmouseup = closeDragElement;
+//         document.ontouchend = closeDragElement;
+//         // call a function whenever the cursor moves:
+//         document.onmousemove = elementDrag;
+//         document.ontouchmove = elementDrag;
+//     }
+
+//     function elementDrag(e) {
+//         e = e || window.event;
+//         if (e.type == 'touchmove') {
+//             e = e.touches[0];
+//         } else {
+//             e.preventDefault();
+//         }
+
+//         // calculate the new cursor position:
+//         deltaX = e.clientX - posX_old;
+//         deltaY = e.clientY - posY_old;
+//         posX_old = e.clientX;
+//         posY_old = e.clientY;
+//         // console.log(deltaX + ' ' + deltaY);
+//         // set the element's new position:
+//         elmnt.style.left = (elmnt.offsetLeft + deltaX) + "px";
+//         elmnt.style.top = (elmnt.offsetTop + deltaY) + "px";
+//     }
+
+//     function closeDragElement() {
+//         /* stop moving when mouse button is released:*/
+//         document.onmouseup = null;
+//         document.onmousemove = null;
+//         document.ontouchend = null;
+//         document.ontouchmove = null;
+//     }
+
+// }
+
+function vkbd_bind_events() {
+    console.log('Here is vkbd.js');
+    $(".vkbd_button").click(function (ev) {
+        var cmd = clickEvent(ev);
+        keyboardEvent(cmd);
+    });
+    // also children and grandchildren and...
+    $(".vkbd_button").find().click(function (ev) {
+        var cmd = clickEvent(ev);
+        keyboardEvent(cmd);
+    });
+    // dragElement(document.getElementById("vkbd"));
+    var vkbdElement = document.getElementById('vkbd');
+    // https://hammerjs.github.io/getting-started/
+    var mc = new Hammer(vkbdElement);
+
+    var left_temp = 1;
+    var top_temp = 1;
+    var left_start = 1;
+    var top_start = 1;
+    mc.on("panstart panmove", function (ev) {
+        if (ev.type == 'panstart') {
+            left_start = vkbdElement.offsetLeft;
+            top_start = vkbdElement.offsetTop;
+            left_temp = left_start;
+            top_temp = top_start;
         }
-        posX_old = e.clientX;
-        posY_old = e.clientY;
-        // console.log(posX_old + ' ' + posY_old);
-        document.onmouseup = closeDragElement;
-        document.ontouchend = closeDragElement;
-        // call a function whenever the cursor moves:
-        document.onmousemove = elementDrag;
-        document.ontouchmove = elementDrag;
-    }
-
-    function elementDrag(e) {
-        e = e || window.event;
-        if (e.type == 'touchmove') {
-            e = e.touches[0];
-        } else {
-            e.preventDefault();
+        if (ev.type == 'panmove') {
+            left_temp = left_start + ev.deltaX;
+            top_temp = top_start + ev.deltaY;
+            vkbdElement.style.left = left_temp + 'px';
+            vkbdElement.style.top = top_temp + 'px';
         }
+    });
+    var scale_temp = 1;
+    var scale_start = 1;
+    mc.get('pinch').set({
+        enable: true
+    });
+    mc.on('pinch pinchstart', function (ev) {
+        if (ev.type == 'pinchstart') {
+            // start with scale_temp of the last pinch
+            scale_start = scale_temp;
+        }
+        if (ev.type == 'pinch') {
+            scale_temp = scale_start * ev.scale;
+            var scalecommand = "translate(-50%, -50%) scale(" + scale_temp + ")";
+            console.log(scalecommand);
+            $("#vkbd").css("transform", scalecommand);
+        }
+    });
 
-        // calculate the new cursor position:
-        deltaX = e.clientX - posX_old;
-        deltaY = e.clientY - posY_old;
-        posX_old = e.clientX;
-        posY_old = e.clientY;
-        // console.log(deltaX + ' ' + deltaY);
-        // set the element's new position:
-        elmnt.style.left = (elmnt.offsetLeft + deltaX) + "px";
-        elmnt.style.top = (elmnt.offsetTop + deltaY) + "px";
+
+    function clickEvent(ev) {
+        var cmd = $(ev.target).attr('cmd');
+        if (typeof cmd == 'undefined') {
+            var temp = $(ev.target).parents().filter('.vkbd_button');
+            cmd = $(temp).attr('cmd');
+        }
+        return cmd;
+        console.log(cmd);
+        // $('#output').text(cmd);
     }
 
-    function closeDragElement() {
-        /* stop moving when mouse button is released:*/
-        document.onmouseup = null;
-        document.onmousemove = null;
-        document.ontouchend = null;
-        document.ontouchmove = null;
-    }
 
+}
+
+// tabs for the different keyboards
+function tabClick(ev, table_id) {
+    // console.log(ev);
+    console.log(table_id);
+    $('#vkbd table').css("display", "none");
+    $('#vkbd table#' + table_id).css("display", "table");
+    $('.vkbd_tab button').removeClass("selected");
+    $('.vkbd_tab button#button-' + table_id).addClass("selected");
 }
 
 var vkbdLoaded = true;

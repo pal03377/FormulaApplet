@@ -1,6 +1,6 @@
+<!-- load vkbd after hammer -->
 <?php $title = 'Test Page - hammer (gf09)';
-// stop: do not wait for mathquill and do not prepare_page
-$liblist = "['hammer', 'vkbd', 'vkbdcss']";
+$liblist = "['hammer', 'vkbd', 'vkbdcss', 'gf09css']";
 include_once 'header.php';
 ?>
 
@@ -8,6 +8,7 @@ include_once 'header.php';
 <h1><?php echo $title; ?></h1>
 
 <script>
+
 function waitfor_vkbd(vkbd_ready) {
 	// console.log( typeof MathQuill );
 	if ((typeof vkbdLoaded) === "undefined") {
@@ -21,100 +22,17 @@ function waitfor_vkbd(vkbd_ready) {
 	}
 }
 
-waitfor_vkbd(function(){
-    console.log('Here is vkbd_test.php');
+// first hammer, then vkbd, then init
+waitfor_hammer( waitfor_vkbd( init ));
+
+function init(){
     // get_vkbd() is defined in vkbd.js
-   $('#keyboard').html(get_vkbd());
-   $(".vkbd_button").click(function (ev) {
-        clickEvent(ev);
-    });
-    // also children and grandchildren and...
-    $(".vkbd_button").find().click(function (ev) {
-        clickEvent(ev);
-    });
-    // dragElement(document.getElementById("vkbd"));
-    var vkbdElement = document.getElementById('vkbd');
-    // https://hammerjs.github.io/getting-started/
-    var mc = new Hammer(vkbdElement);
-    // mc.on("pan panleft panright tap press", function(ev) {
-    var left_temp = 1;
-    var top_temp = 1;
-    var left_start = 1;
-    var top_start = 1;
-
-    mc.on("panstart panmove", function(ev) {
-        if (ev.type == 'panstart'){
-            // left_start = $(vkbdElement).css('left');
-            // left_start = left_start.substr(0, left_start.length - 2)
-            left_start = vkbdElement.offsetLeft;
-            // top_start = $(vkbdElement).css('top');
-            // top_start = top_start.substr(0, top_start.length - 2)
-            top_start = vkbdElement.offsetTop;
-            left_temp = left_start;
-            top_temp = top_start;
-            console.log('Starting at ' + left_temp + ' ' + top_temp);
-        }
-        if (ev.type == 'panmove'){
-            left_temp = left_start + ev.deltaX;
-            top_temp = top_start + ev.deltaY;
-            console.log('Moving to ' + left_temp + ' ' + top_temp);
-            vkbdElement.style.left = left_temp + 'px';
-            vkbdElement.style.top = top_temp + 'px';
-        }
-        // document.getElementById('output').innerHTML =
-        // ev.type +" gesture detected.";
-        // console.log(ev.type);
-        console.log(ev.deltaX + ' ' + ev.deltaY);
-    });
-    // var width_old = $("#vkbd").css("width");
-    var scale_temp = 1;
-    var scale_start = 1;
-    // console.log('width_old=' + width_old);
-    mc.get('pinch').set({ enable: true });
-    mc.on('pinch pinchstart', function(ev) {
-        console.log(ev.type + ' ' + ev.scale);
-        if (ev.type == 'pinchstart') {
-            // start with scale_temp of the last pinch
-        scale_start = scale_temp;
-        //     width_old = $("#vkbd").css("width");
-        //     // remove px
-        //     width_old = width_old.substr(0, width_old.length - 2);
-        }
-        if (ev.type == 'pinch') {
-            // var width_new = width_old * ev.scale;
-            // width_new = width_new + 'px';
-            scale_temp = scale_start * ev.scale;
-            var scalecommand = "translate(-50%, -50%) scale("+ scale_temp +")";
-            console.log(scalecommand);
-            $("#vkbd").css("transform", scalecommand);
-        }
-        // document.getElementById('output').innerHTML =
-        // ev.type + ' ' + ev.scale;
-        //  $("#vkbd").css("zoom", ev.scale);
-    });
-    // mc.get('rotate').set({ enable: true });
-});
-
-function clickEvent(ev){
-    // console.log(ev);
-    var cmd = $( ev.target).attr('cmd');
-    if (typeof cmd == 'undefined'){
-    //    console.log('*** undefined');
-    //    console.log($(ev.target).parents());
-       var temp = $(ev.target).parents().filter('.vkbd_button');
-       cmd = $(temp).attr('cmd');
-    }
-    console.log(cmd);
+    $('#keyboard').html(get_vkbd());
+    vkbd_bind_events();
 }
 
-function tabClick(ev, table_id){
-    // console.log(ev);
-    console.log(table_id);
-    $( '#vkbd table' ).css( "display", "none");
-    $( '#vkbd table#' + table_id ).css( "display", "table");
-    $( '.vkbd_tab button' ).removeClass( "selected");
-    $( '.vkbd_tab button#button-' + table_id ).addClass( "selected");
-
+function keyboardEvent(cmd){
+     $('#output').html(cmd);
 }
 
 </script>

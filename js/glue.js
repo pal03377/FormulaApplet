@@ -123,7 +123,7 @@ function errorFunc(task) {
 
 function OK_Func(task) {
     number_of_loaded_libs++;
-    console.log(number_of_loaded_libs + ': ' + task.name );
+    console.log(number_of_loaded_libs + ': ' + task.name);
     task.state = 'OK';
     // state();
     // console.log(task);
@@ -219,7 +219,8 @@ function state() {
         // console.log(taskname + ': ' + t.state+ ' ' + t.name);
         console.log(taskname + ': ' + t.state);
     });
-    console.log('***');
+    // console.log('Hammer=' + (typeof Hammer));
+    // console.log('***');
 }
 
 function waitfor_num_of_libs_then_do(cont) {
@@ -251,21 +252,33 @@ function load_libs() {
 }
 
 function prepare_pg() {
-    if(typeof prepare_page_exists !== 'undefined'){
+    if (typeof prepare_page_exists !== 'undefined') {
         prepare_page();
     }
 }
 
-// used by many *.php files
-function waitfor_mathquill_and_if_ready_then_do(mq_ready) {
-	// console.log( typeof MathQuill );
-	if ((typeof MathQuill) === "undefined") {
-		console.log('waiting for MathQuill...');
+function waitfor_hammer(hammer_ready) {
+	if ((typeof Hammer) === "undefined") {
+		console.log('waiting for Hammer...');
 		setTimeout(function () {
-			waitfor_mathquill_and_if_ready_then_do(mq_ready)
+			waitfor_hammer(hammer_ready)
 		}, 50);
 	} else {
-		console.log('MathQuill ready......');
-		mq_ready();
+		console.log('Hammer ready......');
+		hammer_ready;
 	}
+}
+
+// used by many *.php files
+function waitfor_mathquill_and_if_ready_then_do(mq_ready) {
+    // console.log( typeof MathQuill );
+    if ((typeof MathQuill) === "undefined") {
+        console.log('waiting for MathQuill...');
+        setTimeout(function () {
+            waitfor_mathquill_and_if_ready_then_do(mq_ready)
+        }, 50);
+    } else {
+        console.log('MathQuill ready......');
+        mq_ready();
+    }
 }
