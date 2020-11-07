@@ -30,16 +30,24 @@
   in LocalSettings.php
 
 ## Android Bug: Virtuelle Tastatur geht nicht :-(
-* Initialisieren mit Space-Delete?
-* Explizites "addKeyListener"
-* Transparentes Textinput-Feld drüberlegen
-* Ein-Pixel-Textinput-Feld daneben (links oben)
-* Virtuelle Tastatur aus Library
+* Initialisieren mit Space-Delete? FAIL
+* Explizites "addKeyListener" FAIL
+* Transparentes Textinput-Feld drüberlegen FAIL
+* Ein-Pixel-Textinput-Feld daneben (links oben) FAIL
+* Virtuelle Tastatur aus Library FAIL - lieber selber machen
 
 ## glue2
 * Umbenennen glue.js -> glue_old.js und glue2.js -> glue.js OK
 * Test im Wiki OK
-* Test online mit/ohne Wiki
+* Test online mit/ohne Wiki OK
 * prepare_page *.js und innerhalb *.php unterscheiden! OK
 * Sind Waiter-Funktionen nötig? OK
 * Fehlermeldungen testen
+
+## DiesUndDas
+* Waiter-Funktionen vereinheitlichen
+* other.php, uses_mathquill.php aktualisieren
+* Koppelung VKBD - MathQuill
+* VKBD auch im Wiki
+* on error, TypeScript
+* MediaWiki-WYSIWYG-Editor

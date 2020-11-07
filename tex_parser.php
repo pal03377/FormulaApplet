@@ -121,11 +121,11 @@ include_once 'header.php';
   }
 }
 
-// This is done by glue.js!
-// waitfor_mathquill_and_if_ready_then_do(function () {
-//   console.log('call prepare_page from tex_parser.php');
-//   prepare_page();
-// });
+// This is not done by glue.js!
+waitfor_mathquill_and_if_ready_then_do(function () {
+  console.log('call prepare_page from tex_parser.php');
+  prepare_page();
+});
 
   // Parse from LaTeX ...
   // const latexInput = '\\frac{1}{\\sqrt{2}}\\cdot x=10';
