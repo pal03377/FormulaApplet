@@ -17,9 +17,9 @@ $liblist = "[ 'gf09css' ]";
     <p><a href='http://mathquill.com/'>MathQuill</a> Bug auf Android Smartphones</p>
     <p><a href='http://test.grossmann.info/sample_task.php'>Aufgaben-Beispiele</a> ohne Wiki, ohne Virtual Keyboard</p>
     <p><a href='https://test.mathebuch-online.de/wiki/index.php?title=Test'>Aufgaben-Beispiel</a> im Wiki, ohne Virtual Keyboard</p>
-    <p><a href='https://www.w3schools.com/howto/howto_js_draggable.asp'>Beispiel f&uuml;r draggable</a> Bug auf Android Smartphones</p>
-    <p><a href='http://test.grossmann.info/draggable.html'>Beispiel f&uuml;r draggable</a> Bug behoben</p>
-    <p><a href='http://test.grossmann.info/vkbd_test.php'>VKBD</a> Virtuelle Tastatur (in Entwicklung)</p>
+    <!-- <p><a href='https://www.w3schools.com/howto/howto_js_draggable.asp'>Beispiel f&uuml;r draggable</a> Bug auf Android Smartphones</p> -->
+    <!-- <p><a href='http://test.grossmann.info/draggable.html'>Beispiel f&uuml;r draggable</a> Bug behoben</p> -->
+    <p><a href='http://test.grossmann.info/hammer_test.php'>VKBD</a> Virtuelle Tastatur (in Entwicklung)</p>
 
 
   <hr>

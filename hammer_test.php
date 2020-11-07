@@ -23,7 +23,12 @@ function waitfor_vkbd(vkbd_ready) {
 }
 
 // first hammer, then vkbd, then init
-waitfor_hammer( waitfor_vkbd( init ));
+waitfor_hammer( wfvi() );
+
+function wfvi(){
+	console.log('wfvi');
+	waitfor_vkbd( init );
+}
 
 function init(){
     // get_vkbd() is defined in vkbd.js
