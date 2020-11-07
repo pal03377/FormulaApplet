@@ -36,10 +36,36 @@ waitfor_vkbd(function(){
     var vkbdElement = document.getElementById('vkbd');
     // https://hammerjs.github.io/getting-started/
     var mc = new Hammer(vkbdElement);
-    // mc.on("panleft panright tap press", function(ev) {
-    //     document.getElementById('output').innerHTML =
-    //     ev.type +" gesture detected.";
-    // });
+    // mc.on("pan panleft panright tap press", function(ev) {
+    var left_temp = 1;
+    var top_temp = 1;
+    var left_start = 1;
+    var top_start = 1;
+
+    mc.on("panstart panmove", function(ev) {
+        if (ev.type == 'panstart'){
+            // left_start = $(vkbdElement).css('left');
+            // left_start = left_start.substr(0, left_start.length - 2)
+            left_start = vkbdElement.offsetLeft;
+            // top_start = $(vkbdElement).css('top');
+            // top_start = top_start.substr(0, top_start.length - 2)
+            top_start = vkbdElement.offsetTop;
+            left_temp = left_start;
+            top_temp = top_start;
+            console.log('Starting at ' + left_temp + ' ' + top_temp);
+        }
+        if (ev.type == 'panmove'){
+            left_temp = left_start + ev.deltaX;
+            top_temp = top_start + ev.deltaY;
+            console.log('Moving to ' + left_temp + ' ' + top_temp);
+            vkbdElement.style.left = left_temp + 'px';
+            vkbdElement.style.top = top_temp + 'px';
+        }
+        // document.getElementById('output').innerHTML =
+        // ev.type +" gesture detected.";
+        // console.log(ev.type);
+        console.log(ev.deltaX + ' ' + ev.deltaY);
+    });
     // var width_old = $("#vkbd").css("width");
     var scale_temp = 1;
     var scale_start = 1;
