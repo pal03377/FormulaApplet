@@ -20,10 +20,12 @@ function waitfor_vkbd(vkbd_ready) {
 	}
 }
 
-waitfor_vkbd(function(){
+waitfor_vkbd( vkbd_init );
+
+function vkbd_init(){
     console.log('Here is vkbd_test.php');
     // get_vkbd() is defined in vkbd.js
-    $('#output').html(get_vkbd());
+    $('#keyboard').html(get_vkbd());
     $(".vkbd_button").click(function (ev) {
         clickEvent(ev);
     });
@@ -31,8 +33,13 @@ waitfor_vkbd(function(){
     $(".vkbd_button").find().click(function (ev) {
         clickEvent(ev);
     });
+    // if(navigator.userAgent.toUpperCase().indexOf('ANDROID') !== -1){
+    //     $(".vkbd_button").find().addEventListener("touchstart", function (ev) {
+    //         clickEvent(ev);
+    //     });
+    // }
     dragElement(document.getElementById("vkbd"));
-});
+};
 
 function clickEvent(ev){
     // console.log(ev);
@@ -43,7 +50,13 @@ function clickEvent(ev){
        var temp = $(ev.target).parents().filter('.vkbd_button');
        cmd = $(temp).attr('cmd');
     }
-    console.log(cmd);
+    // console.log(cmd);
+    executeKeyboardCommand(cmd);
+}
+
+function executeKeyboardCommand(cmd){
+    // console.log(cmd);
+    document.getElementById("output").innerHTML = cmd;
 }
 
 function tabClick(ev, table_id){
@@ -53,11 +66,11 @@ function tabClick(ev, table_id){
     $( '#vkbd table#' + table_id ).css( "display", "table");
     $( '.vkbd_tab button' ).removeClass( "selected");
     $( '.vkbd_tab button#button-' + table_id ).addClass( "selected");
-    
 }
 
 </script>
 
-<div id='output'></div>
+<div id='output'><p>output</p></div>
+<div id='keyboard'></div>
 
 <?php include_once 'footer.php';?>

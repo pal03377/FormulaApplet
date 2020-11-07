@@ -54,7 +54,7 @@ div#output tbody {
 	z-index: 9;
 }
 
-.vkbd-row2 .vkbd {
+#table_abc .vkbd-row2 .vkbd_button {
 	position: relative;
 	left: 20px;
 }

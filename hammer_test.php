@@ -1,6 +1,6 @@
 <?php $title = 'Test Page - hammer (gf09)';
 // stop: do not wait for mathquill and do not prepare_page
-$liblist = "['vkbd', 'vkbdcss', 'hammer']";
+$liblist = "['hammer', 'vkbd', 'vkbdcss']";
 include_once 'header.php';
 ?>
 
@@ -24,24 +24,49 @@ function waitfor_vkbd(vkbd_ready) {
 waitfor_vkbd(function(){
     console.log('Here is vkbd_test.php');
     // get_vkbd() is defined in vkbd.js
-    $('#output').html(get_vkbd());
-    $(".vkbd_button").click(function (ev) {
+   $('#keyboard').html(get_vkbd());
+   $(".vkbd_button").click(function (ev) {
         clickEvent(ev);
     });
     // also children and grandchildren and...
     $(".vkbd_button").find().click(function (ev) {
         clickEvent(ev);
     });
-    dragElement(document.getElementById("vkbd"));
-    var myElement = document.getElementById('vkbd');
+    // dragElement(document.getElementById("vkbd"));
+    var vkbdElement = document.getElementById('vkbd');
     // https://hammerjs.github.io/getting-started/
-    var mc = new Hammer(myElement);
-    mc.on("panleft panright tap press", function(ev) {
-        document.getElementById('output').innerHTML =
-        ev.type +" gesture detected.";
-    });
+    var mc = new Hammer(vkbdElement);
+    // mc.on("panleft panright tap press", function(ev) {
+    //     document.getElementById('output').innerHTML =
+    //     ev.type +" gesture detected.";
+    // });
+    // var width_old = $("#vkbd").css("width");
+    var scale_temp = 1;
+    var scale_start = 1;
+    // console.log('width_old=' + width_old);
     mc.get('pinch').set({ enable: true });
-    mc.get('rotate').set({ enable: true });
+    mc.on('pinch pinchstart', function(ev) {
+        console.log(ev.type + ' ' + ev.scale);
+        if (ev.type == 'pinchstart') {
+            // start with scale_temp of the last pinch
+        scale_start = scale_temp;
+        //     width_old = $("#vkbd").css("width");
+        //     // remove px
+        //     width_old = width_old.substr(0, width_old.length - 2);
+        }
+        if (ev.type == 'pinch') {
+            // var width_new = width_old * ev.scale;
+            // width_new = width_new + 'px';
+            scale_temp = scale_start * ev.scale;
+            var scalecommand = "translate(-50%, -50%) scale("+ scale_temp +")";
+            console.log(scalecommand);
+            $("#vkbd").css("transform", scalecommand);
+        }
+        // document.getElementById('output').innerHTML =
+        // ev.type + ' ' + ev.scale;
+        //  $("#vkbd").css("zoom", ev.scale);
+    });
+    // mc.get('rotate').set({ enable: true });
 });
 
 function clickEvent(ev){
@@ -69,6 +94,7 @@ function tabClick(ev, table_id){
 </script>
 
 <hr />
-<div><p id='output'>Version Drei</p></div>
+<div id='output'><p>output</p></div>
+<div id='keyboard'></div>
 
 <?php include_once 'footer.php';?>
