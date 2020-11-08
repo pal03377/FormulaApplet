@@ -3,6 +3,7 @@
   var mathField = [];
   var solution_list = [];
   var prepare_page_exists = true;
+  var precision = 0.000001;
 
   // console.log('gluetest says: ' + gluetest);
 
@@ -42,7 +43,8 @@
       parse(myTree);
       var almostOne = value(myTree);
       var dif = Math.abs(almostOne - 1);
-      if (dif < 0.1) {
+      console.log('dif=' + dif);
+      if (dif < precision) {
         $('#' + id).removeClass('mod_wrong').addClass('mod_ok');
       } else {
         $('#' + id).removeClass('mod_ok').addClass('mod_wrong');
@@ -55,7 +57,8 @@
       parse(myTree);
       var almostOne = value(myTree);
       var dif = Math.abs(almostOne - 1);
-      if (dif < 0.1) {
+      console.log('dif=' + dif);
+      if (dif < precision) {
         $('#' + id).removeClass('mod_wrong').addClass('mod_ok');
       } else {
         $('#' + id).removeClass('mod_ok').addClass('mod_wrong');

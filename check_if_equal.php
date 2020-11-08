@@ -75,7 +75,7 @@ include_once 'header.php';
     parse(myTree);
     var almostOne = value(myTree);
     var dif = Math.abs(almostOne - 1);
-    if (dif < 0.1){
+    if (dif < 0.001){
       $( '#' + id).removeClass('mod_wrong').addClass( 'mod_ok' );
     } else {
       $( '#' + id).removeClass('mod_ok').addClass('mod_wrong');
