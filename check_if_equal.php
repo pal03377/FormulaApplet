@@ -108,6 +108,6 @@ include_once 'header.php';
         <p class="formula_applet" id="con335">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}</p><br />
 
 <hr>
-<?php include_once 'uses_mathquill.php';?>
+<?php include_once 'uses.php';?>
 
 <?php include_once 'footer.php';?>

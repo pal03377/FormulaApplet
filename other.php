@@ -16,23 +16,14 @@
     <p><a href='kas_compare.php'>KAS Compare</a></p>
     <p><a href='index.php'> gf09 test and demos</a></p>
     <hr>
-    <p>This page uses </p>
-  <table>
+    <table>
     <tr>
       <th scope="col">Library</th>
       <th scope="col">Version</th>
       <th scope="col">Source</th>
       <th scope="col">License</th>
     </tr>
-    <!--
-    <tr>
-      <td>require.js</td>
-      <td>2.3.6</td>
-      <td><a href="https://requirejs.org/docs/start.html">https://requirejs.org/docs/start.html</a></td>
-      <td>jQuery Foundation</td>
-    </tr>
-    -->
-    <tr>
+      <tr>
       <td>JQuery</td>
       <td>3.4.1</td>
       <td><a href="https://code.jquery.com">https://code.jquery.com</a></td>

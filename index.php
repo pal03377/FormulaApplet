@@ -15,6 +15,5 @@
     <!-- <p><a href='background_pic.php'>background pictures </a> for 'wrong' and 'ok'</p> -->
     
   <hr>
-  <p><a href='https://github.com/gro58/gf09'>gf09 at GitHub</a></p>
-  <?php include_once 'uses_mathquill.php';?>
+  <?php include_once 'uses.php';?>
   <?php include_once( 'footer.php' ); ?>

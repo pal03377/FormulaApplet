@@ -1,12 +1,15 @@
   table {width: 50%;}
   th {
-	background-color: #666; 
-	color: #fff;
+	  background-color: #666; 
+	  color: #fff;
   }
   tr {
-	background-color: #fffbf0;
-	color: #000;
+	  background-color: #fffbf0;
+    color: #000;
   }
   tr:nth-child(odd) {
-	background-color: #e4ebf2 ;
+	  background-color: #e4ebf2 ;
+  }
+  td {
+    padding: 10px;
   }

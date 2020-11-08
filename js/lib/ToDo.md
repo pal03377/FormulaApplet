@@ -46,7 +46,8 @@
 
 ## DiesUndDas
 * Waiter-Funktionen vereinheitlichen
-* other.php, uses_mathquill.php aktualisieren
+* other.php, uses.php aktualisieren OK
+* VKBD ergänzen (CAPS, Greek)
 * Koppelung VKBD - MathQuill
 * VKBD auch im Wiki
 * on error, TypeScript

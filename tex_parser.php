@@ -178,5 +178,5 @@ transform: scale(1.05);
 background-color: #ffffdf !important;">
 </canvas>
 
-<?php include_once 'uses_mathquill.php';?>
+<?php include_once 'uses.php';?>
 <?php include_once 'footer.php';?>

@@ -3,6 +3,8 @@ div#vkbd{
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	background-color: #c0c0c050;
+	border-radius: 10px;
 }
 
 #vkbd table{
@@ -16,7 +18,8 @@ div#vkbd{
 .vkbd_button {
 	background-color: darkkhaki;
 	width: 60px;
-	height: 40px;
+	min-width: 50px;
+	height: 50px;
 	margin: 10px;
 	padding: 3px 7px;
 	font-family: Arial, Helvetica, sans-serif;
@@ -25,6 +28,7 @@ div#vkbd{
 	vertical-align: middle;
 	border: 1px solid peru;
 	border-radius: 10px;
+	cursor: pointer;
 }
 
 .vkbd_button:active {
@@ -35,6 +39,8 @@ div#vkbd{
 	width: 10px;
 	background-color: transparent;
 	border: 0px;
+	min-width: 10px;
+	cursor: move;
 }
 
 #vkbd-backspace {
@@ -52,6 +58,7 @@ div#output tbody {
 #vkbd {
 	position: absolute;
 	z-index: 9;
+	cursor: move;
 }
 
 #table_abc .vkbd-row2 .vkbd_button {
@@ -65,6 +72,7 @@ div#output tbody {
 	cursor: move;
 	z-index: 10;
 	padding: 10px;
+	display: none;
 }
 
 /* Style the tab */
