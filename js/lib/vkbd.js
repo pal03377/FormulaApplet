@@ -5,6 +5,8 @@ function key() {
 }
 
 var squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
+var nth_root = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
+var enter = '<span style="font-size: 150%; color:green">\u23ce</span>';
 
 var keys_mixed = [
     // row 0
@@ -26,9 +28,6 @@ var keys_mixed = [
         ['y'],
         ['z'],
         ['e'],
-        // ['abs', '|\u2b1a|'],
-        // ['log_base', 'log<sub><small>\u2b1a</small></sub>'],
-        // ['subscript', '\u2b1a<sub><small>\u2b1a</small></sub>'],
         ['smallgap-1', '', ''],
         ['4'],
         ['5'],
@@ -38,11 +37,12 @@ var keys_mixed = [
     ],
     // row 2
     [
-        ['power_of_ten', '10<sup><small>\u2b1a</small></sup>'],
+        ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>'],
         // ['exp', 'e<sup><small>\u2b1a</small></sup>'],
         ['lg', 'lg'],
         ['power', '\u2b1a<sup>\u2b1a</sup>'],
-        ['nth_root', '<sup id="sup_root">\u2b1a</sup>' + squareroot],
+        // ['nth_root', '<sup id="sup_root">\u2b1a</sup>' + squareroot],
+        ['nth_root', nth_root],
         // ['nth_root', '\u221a', '\\nthroot'],
         ['smallgap-2', '', ''],
         ['1'],
@@ -57,18 +57,67 @@ var keys_mixed = [
     [
         ['bracket-left', '('],
         ['bracket-right', ')'],
-        ['square', '\u2b1a<sup><small>2</small></sup>'],
+        ['square', '\u2b1a<sup style="font-size: 85%">2</sup>'],
         ['squareroot', squareroot],
         ['smallgap-3', '', ''],
         ['0'],
         // ['.'],
         ['comma', ','],
-        ['left', '←'],
-        ['right', '→'],
+        // ['left', '←'],
+        // ['right', '→'],
+        ['left', '<span style="font-size: 130%">\u25c5</span>'],
+        ['right', '<span style="font-size: 130%">\u25bb</span>'],
         // ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
-        ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', 'enter'],
+        ['enter', enter, 'enter'],
         // ['equal2', '=', '='],
     ]
+]
+
+var keys_function = [
+    // row 0
+    [
+        ['sin', '<span style="font-size: 85%">sin</span>'],
+        ['cos', '<span style="font-size: 85%">cos</span>'],
+        ['tan', '<span style="font-size: 85%">tan</span>'],
+        ['smallgap-0', '', ''],
+        ['degree', '°'],
+        ['minute', '\''],
+        ['second', '\'\''],
+        ['pi', '&pi;', '\\pi']
+    ],
+    // row 1
+    [
+        ['arcsin', '<span style="font-size: 85%">sin<sup>-1</sup></span>'],
+        ['arccos', '<span style="font-size: 85%">cos<sup>-1</sup></span>'],
+        ['arctan', '<span style="font-size: 85%">tan<sup>-1</sup></span>'],
+        ['smallgap-1', '', ''],
+        ['abs', '\u2502\u2b1a\u2502'],
+        ['subscript', '\u2b1a<sub style="font-size: 85%">\u2b1a</sub>'],
+        ['nth_root', nth_root],
+        ['infinity', '&infin;'],
+    ],
+    // row 2
+    [
+        ['ln'],
+        ['lg'],
+        ['log_base', 'log<sub style="font-size: 85%">\u2b1a</sub>'],
+        ['smallgap-2', '', ''],
+        ['bracket-left', '('],
+        ['bracket-right', ')'],
+        ['up', '↑'],
+        ['backspace', '\u232B'],
+    ],
+    // row 3
+    [
+        ['exp', 'e<sup style="font-size: 85%">\u2b1a</sup>'],
+        ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>'],
+        ['power', '\u2b1a<sup>\u2b1a</sup>'],
+        ['smallgap-3', '', ''],
+        ['squareroot', squareroot],
+        ['left', '<span style="font-size: 130%">\u25c5</span>'],
+        ['right', '<span style="font-size: 130%">\u25bb</span>'],
+        ['enter', enter, 'enter'],
+    ],
 ]
 
 var keys_abc = [
@@ -130,8 +179,71 @@ var keys_abc = [
         ['up', '↑'],
         ['left', '←'],
         ['right', '→'],
-        ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', 'enter'],
-   ]
+        ['enter', enter, 'enter'],
+    ]
+]
+
+var keys_ABC = [
+    // row 0
+    [
+        ['1'],
+        ['2'],
+        ['3'],
+        ['4'],
+        ['5'],
+        ['6'],
+        ['7'],
+        ['8'],
+        ['9'],
+        ['0'],
+        ['szlig', '&szlig;'],
+    ],
+    // row 1
+    [
+        ['Q'],
+        ['W'],
+        ['E'],
+        ['R'],
+        ['T'],
+        ['Z'],
+        ['U'],
+        ['I'],
+        ['O'],
+        ['P'],
+        ['UE', '&Uuml;'],
+    ],
+    // row 1
+    [
+        ['A'],
+        ['S'],
+        ['D'],
+        ['F'],
+        ['G'],
+        ['H'],
+        ['J'],
+        ['K'],
+        ['L'],
+        ['OE', '&Ouml;'],
+        ['AE', '&Auml;'],
+        ['backspace', '\u232B'],
+    ],
+    // row 2
+    [
+        // https://www.w3schools.com/charsets/ref_utf_arrows.asp
+        ['shift', '⇑'],
+        ['Y'],
+        ['X'],
+        ['C'],
+        ['V'],
+        ['B'],
+        ['N'],
+        ['M'],
+        ['comma', ','],
+        ['up', '↑'],
+        ['left', '←'],
+        ['right', '→'],
+        ['enter', enter, 'enter'],
+    ]
 ]
 
 function get_vkbd() {
@@ -139,12 +251,16 @@ function get_vkbd() {
     result += '  <div id="vkbd_header">Move</div>\r\n';
     result += '  <div class="vkbd_tab"\r\n>';
     result += '      <button class="tablinks" id="button-table_mixed" onclick="tabClick(event, \'table_mixed\')">123&radic;+-&nbsp;&nbsp;&nbsp;</button>\r\n';
+    result += '      <button class="tablinks" id="button-table_function" onclick="tabClick(event, \'table_function\')">&nbsp;f(x)&nbsp;</button>\r\n';
     result += '      <button class="tablinks" id="button-table_abc" onclick="tabClick(event, \'table_abc\')">abc</button>\r\n';
+    result += '      <button class="tablinks" id="button-table_ABC" onclick="tabClick(event, \'table_abc_caps\')">ABC</button>\r\n';
     result += '      <button class="tablinks" id="button-table_greek" onclick="tabClick(event, \'kommt_noch\')">&alpha;&beta;&gamma;</button>\r\n';
     result += '  </div>\r\n';
 
     result += create_table(keys_abc, 'table_abc');
+    result += create_table(keys_ABC, 'table_abc_caps');
     result += create_table(keys_mixed, 'table_mixed');
+    result += create_table(keys_function, 'table_function');
     result += '</div>\r\n';
     return result;
 }
@@ -165,11 +281,11 @@ function create_table(key_array, table_id) {
             if (typeof key[2] == 'undefined') {
                 key[2] = key[0];
             }
-            var cl = 'vkbd_button';
+            var cl = 'vkbd_button vkbd-' + key[0];
             if (key[0].startsWith('smallgap')) {
                 cl += ' smallgap';
             }
-            result += '<td class="' + cl + '" id="vkbd-' + key[0] + '" cmd="';
+            result += '<td class="' + cl + '" cmd="';
             result += key[2] + '">' + key[1] + '</td>\r\n';
             // console.log('vkbd-' + key[0] + ' ' + key[1] + ' cmd-' + key[2]);
         }

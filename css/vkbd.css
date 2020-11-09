@@ -44,15 +44,15 @@ div#vkbd{
 	cursor: move;
 }
 
-#vkbd-shift {
+.vkbd-shift {
 	color:navy;
 }
 
-#vkbd-backspace {
+.vkbd-backspace {
 	background-color: firebrick;
 }
 
-#vkbd-backspace:active {
+.vkbd-backspace:active {
 	background-color: greenyellow;
 }
 
@@ -71,6 +71,14 @@ div#output tbody {
 	left: 20px;
 }
 #table_abc .vkbd-row2 .vkbd_button {
+	position: relative;
+	left: 40px;
+}
+#table_abc_caps .vkbd-row1 .vkbd_button {
+	position: relative;
+	left: 20px;
+}
+#table_abc_caps .vkbd-row2 .vkbd_button {
 	position: relative;
 	left: 40px;
 }
@@ -130,8 +138,8 @@ div#output tbody {
 	border-top: none;
 }
 
-#sup_root {
+/* #sup_root {
 	position: relative;
 	top: -0.5em;
 	right: -0.5em;
-}
+} */
