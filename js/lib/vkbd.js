@@ -4,22 +4,14 @@ function key() {
     this.mathquill = '';
 }
 
-// function create_key(keylist, id, html5, mathquill) {
-//     var k = new key();
-//     k.id = id;
-//     k.html5 = html5;
-//     k.mathquill = mathquill;
-//     keylist.append(k);
-// }
-
 var squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
 
 var keys_mixed = [
     // row 0
     [
-        ['x'],
-        ['y'],
-        ['z'],
+        ['a'],
+        ['b'],
+        ['c'],
         ['pi', '&pi;', '\\pi'],
         ['smallgap-0', '', ''],
         ['7'],
@@ -30,10 +22,13 @@ var keys_mixed = [
     ],
     // row 1
     [
-        ['a'],
-        ['abs', '|\u2b1a|'],
-        ['log_base', 'log<sub><small>\u2b1a</small></sub>'],
-        ['subscript', '\u2b1a<sub><small>\u2b1a</small></sub>'],
+        ['x'],
+        ['y'],
+        ['z'],
+        ['e'],
+        // ['abs', '|\u2b1a|'],
+        // ['log_base', 'log<sub><small>\u2b1a</small></sub>'],
+        // ['subscript', '\u2b1a<sub><small>\u2b1a</small></sub>'],
         ['smallgap-1', '', ''],
         ['4'],
         ['5'],
@@ -43,34 +38,55 @@ var keys_mixed = [
     ],
     // row 2
     [
-        ['exp', 'e<sup><small>\u2b1a</small></sup>'],
+        ['power_of_ten', '10<sup><small>\u2b1a</small></sup>'],
+        // ['exp', 'e<sup><small>\u2b1a</small></sup>'],
+        ['lg', 'lg'],
         ['power', '\u2b1a<sup>\u2b1a</sup>'],
-        ['square', '\u2b1a<sup><small>2</small></sup>'],
-        // ['nth_root', '\u221a', '\\nthroot'],
         ['nth_root', '<sup id="sup_root">\u2b1a</sup>' + squareroot],
+        // ['nth_root', '\u221a', '\\nthroot'],
         ['smallgap-2', '', ''],
         ['1'],
         ['2'],
         ['3'],
+        ['up', '↑'],
+        // ['up', '\uffea'],
         ['backspace', '\u232B'],
+        // ['backspace', '⇐', 'backspace']
     ],
     // row 3
     [
-        ['power_of_ten', '10<sup><small>\u2b1a</small></sup>'],
-        ['enter', '<span style="width: 200%">\u21b5</span>', 'enter'],
-        ['enter2', '\u23ce', 'enter2'],
+        ['bracket-left', '('],
+        ['bracket-right', ')'],
+        ['square', '\u2b1a<sup><small>2</small></sup>'],
         ['squareroot', squareroot],
-        ['smallgap-2', '', ''],
+        ['smallgap-3', '', ''],
         ['0'],
-        ['.'],
-        [','],
-        ['equal2', '=', '='],
-        ['backspace', '⇐', 'backspace']
+        // ['.'],
+        ['comma', ','],
+        ['left', '←'],
+        ['right', '→'],
+        // ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
+        ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', 'enter'],
+        // ['equal2', '=', '='],
     ]
 ]
 
 var keys_abc = [
     // row 0
+    [
+        ['1'],
+        ['2'],
+        ['3'],
+        ['4'],
+        ['5'],
+        ['6'],
+        ['7'],
+        ['8'],
+        ['9'],
+        ['0'],
+        ['szlig', '&szlig;'],
+    ],
+    // row 1
     [
         ['q'],
         ['w'],
@@ -96,7 +112,8 @@ var keys_abc = [
         ['k'],
         ['l'],
         ['oe', '&ouml;'],
-        ['ae', '&ouml;'],
+        ['ae', '&auml;'],
+        ['backspace', '\u232B'],
     ],
     // row 2
     [
@@ -108,20 +125,13 @@ var keys_abc = [
         ['v'],
         ['b'],
         ['n'],
-        ['smallgap-0', '', ''],
-        ['smallgap-1', '', ''],
-        ['backspace', '\u232B'],
-    ],
-    // row 3
-    [
-        ['smallgap-2', '', ''],
-        ['smallgap-3', '', ''],
-        ['point', '.'],
-        ['space', ' '],
+        ['m'],
+        ['comma', ','],
+        ['up', '↑'],
         ['left', '←'],
         ['right', '→'],
-        ['enter', '<span style="width: 200%">\u21b5</span>', 'enter'],
-    ]
+        ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', 'enter'],
+   ]
 ]
 
 function get_vkbd() {
@@ -170,69 +180,6 @@ function create_table(key_array, table_id) {
     result += '</table>\r\n';
     return result;
 }
-
-// dragElement is replaced by hammer.js pan
-// function dragElement(elmnt) {
-//     var deltaX = 0,
-//         deltaY = 0,
-//         posX_old = 0,
-//         posY_old = 0;
-//     if (document.getElementById(elmnt.id + "header")) {
-//         /* if present, the header is where you move the DIV from:*/
-//         document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-//         document.getElementById(elmnt.id + "header").ontouchstart = dragMouseDown;
-//     } else {
-//         /* otherwise, move the DIV from anywhere inside the DIV:*/
-//         elmnt.onmousedown = dragMouseDown;
-//         elmnt.ontouchstart = dragMouseDown;
-//     }
-
-//     function dragMouseDown(e) {
-//         e = e || window.event;
-//         // console.log(e);
-//         e.preventDefault();
-//         // get the mouse cursor position at startup:
-//         if (e.type == 'touchstart') {
-//             e = e.touches[0];
-//         }
-//         posX_old = e.clientX;
-//         posY_old = e.clientY;
-//         // console.log(posX_old + ' ' + posY_old);
-//         document.onmouseup = closeDragElement;
-//         document.ontouchend = closeDragElement;
-//         // call a function whenever the cursor moves:
-//         document.onmousemove = elementDrag;
-//         document.ontouchmove = elementDrag;
-//     }
-
-//     function elementDrag(e) {
-//         e = e || window.event;
-//         if (e.type == 'touchmove') {
-//             e = e.touches[0];
-//         } else {
-//             e.preventDefault();
-//         }
-
-//         // calculate the new cursor position:
-//         deltaX = e.clientX - posX_old;
-//         deltaY = e.clientY - posY_old;
-//         posX_old = e.clientX;
-//         posY_old = e.clientY;
-//         // console.log(deltaX + ' ' + deltaY);
-//         // set the element's new position:
-//         elmnt.style.left = (elmnt.offsetLeft + deltaX) + "px";
-//         elmnt.style.top = (elmnt.offsetTop + deltaY) + "px";
-//     }
-
-//     function closeDragElement() {
-//         /* stop moving when mouse button is released:*/
-//         document.onmouseup = null;
-//         document.onmousemove = null;
-//         document.ontouchend = null;
-//         document.ontouchmove = null;
-//     }
-
-// }
 
 function vkbd_bind_events() {
     console.log('Here is vkbd.js');

@@ -258,7 +258,7 @@ function prepare_pg() {
 }
 
 function waitfor_hammer(hammer_ready) {
-	if ((typeof Hammer) === "undefined") {
+	if ((typeof Hammer) == "undefined") {
 		console.log('waiting for Hammer...');
 		setTimeout(function () {
 			waitfor_hammer(hammer_ready)

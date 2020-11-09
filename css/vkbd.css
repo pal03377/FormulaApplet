@@ -9,6 +9,7 @@ div#vkbd{
 
 #vkbd table{
 	display: none;
+	/* width: calc(100% +120px); */
 }
 
 #vkbd table#table_mixed{
@@ -43,6 +44,10 @@ div#vkbd{
 	cursor: move;
 }
 
+#vkbd-shift {
+	color:navy;
+}
+
 #vkbd-backspace {
 	background-color: firebrick;
 }
@@ -61,10 +66,17 @@ div#output tbody {
 	cursor: move;
 }
 
-#table_abc .vkbd-row2 .vkbd_button {
+#table_abc .vkbd-row1 .vkbd_button {
 	position: relative;
 	left: 20px;
 }
+#table_abc .vkbd-row2 .vkbd_button {
+	position: relative;
+	left: 40px;
+}
+/* #vkbd table#table_abc{
+	padding-right: 20px;
+} */
 
 #vkbd_header {
 	height: 20px;
