@@ -6,6 +6,9 @@ function key() {
 
 var squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
 var nth_root = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
+var left = '<span style="font-size: 130%">\u25c5</span>';
+var right = '<span style="font-size: 130%">\u25bb</span>';
+// ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
 var enter = '<span style="font-size: 150%; color:green">\u23ce</span>';
 
 var keys_mixed = [
@@ -114,9 +117,9 @@ var keys_function = [
         ['power', '\u2b1a<sup>\u2b1a</sup>'],
         ['smallgap-3', '', ''],
         ['squareroot', squareroot],
-        ['left', '<span style="font-size: 130%">\u25c5</span>'],
-        ['right', '<span style="font-size: 130%">\u25bb</span>'],
-        ['enter', enter, 'enter'],
+        ['left', left],
+        ['right', right],
+        ['enter', enter],
     ],
 ]
 
@@ -177,9 +180,9 @@ var keys_abc = [
         ['m'],
         ['comma', ','],
         ['up', '↑'],
-        ['left', '←'],
-        ['right', '→'],
-        ['enter', enter, 'enter'],
+        ['left', left],
+        ['right', right],
+        ['enter', enter],
     ]
 ]
 
@@ -240,9 +243,122 @@ var keys_ABC = [
         ['M'],
         ['comma', ','],
         ['up', '↑'],
-        ['left', '←'],
-        ['right', '→'],
-        ['enter', enter, 'enter'],
+        // ['left', '←'],
+        // ['right', '→'],
+        ['left', left],
+        ['right', right],
+        ['enter', enter],
+    ]
+]
+
+var keys_greek = [
+    // row 0
+    [
+        ['1'],
+        ['2'],
+        ['3'],
+        ['4'],
+        ['5'],
+        ['6'],
+        ['7'],
+        ['8'],
+        ['9'],
+        ['0'],
+    ],
+    // row 1
+    [
+        ['varphi', '&varphi;'],
+        ['zeta', '&zeta;'],
+        ['epsilon', '&epsilon;'],
+        ['rho', '&rho;'],
+        ['tau', '&tau;'],
+        ['ypsilon', '&upsilon;'],
+        ['theta', '&theta;'],
+        ['iota', '&iota;'],
+        ['omikron', '&omicron;'],
+        ['pi', '&pi;']
+    ],
+    // row 1
+    [
+        ['alpha', '&alpha;'],
+        ['sigma', '&sigma;'],
+        ['delta', '&delta;'],
+        ['phi', '&phi;'],
+        ['gamma', '&gamma;'],
+        ['eta', '&eta;'],
+        ['xi', '&xi;'],
+        ['kappa', '&kappa;'],
+        ['lambda', '&lambda;'],
+        ['backspace', '\u232B'],
+    ],
+    // row 2
+    [
+        ['shift', '⇑'],
+        ['zeta', '&zeta;'],
+        ['chi', '&chi;'],
+        ['psi', '&psi;'],
+        ['omega', '&omega;'],
+        ['beta', '&beta;'],
+        ['ny', '&nu;'],
+        ['my', '&mu;'],
+        ['left', left],
+        ['right', right],
+        ['enter', enter],
+    ]
+]
+var keys_greek_caps = [
+    // row 0
+    [
+        ['1'],
+        ['2'],
+        ['3'],
+        ['4'],
+        ['5'],
+        ['6'],
+        ['7'],
+        ['8'],
+        ['9'],
+        ['0'],
+    ],
+    // row 1
+    [
+        ['Phi', '&Phi;'],
+        ['Zeta', '&Zeta;'],
+        ['Epsilon', '&Epsilon;'],
+        ['Rho', '&Rho;'],
+        ['Tau', '&Tau;'],
+        ['Ypsilon', '&Upsilon;'],
+        ['Theta', '&Theta;'],
+        ['Iota', '&Iota;'],
+        ['Omikron', '&Omicron;'],
+        ['Pi', '&Pi;']
+    ],
+    // row 1
+    [
+        ['Alpha', '&Alpha;'],
+        ['Sigma', '&Sigma;'],
+        ['Delta', '&Delta;'],
+        ['Phi', '&Phi;'],
+        ['Gamma', '&Gamma;'],
+        ['Eta', '&Eta;'],
+        ['Xi', '&Xi;'],
+        ['Kappa', '&Kappa;'],
+        ['Lambda', '&Lambda;'],
+        ['backspace', '\u232B'],
+    ],
+    // row 2
+    [
+        ['shift', '⇑'],
+        ['Zeta', '&Zeta;'],
+        ['Chi', '&Chi;'],
+        ['Psi', '&Psi;'],
+        ['Omega', '&Omega;'],
+        ['Beta', '&Beta;'],
+        ['Ny', '&Nu;'],
+        ['My', '&Mu;'],
+        ['left', left],
+        ['right', right],
+        ['enter', enter],
     ]
 ]
 
@@ -254,13 +370,16 @@ function get_vkbd() {
     result += '      <button class="tablinks" id="button-table_function" onclick="tabClick(event, \'table_function\')">&nbsp;f(x)&nbsp;</button>\r\n';
     result += '      <button class="tablinks" id="button-table_abc" onclick="tabClick(event, \'table_abc\')">abc</button>\r\n';
     result += '      <button class="tablinks" id="button-table_ABC" onclick="tabClick(event, \'table_abc_caps\')">ABC</button>\r\n';
-    result += '      <button class="tablinks" id="button-table_greek" onclick="tabClick(event, \'kommt_noch\')">&alpha;&beta;&gamma;</button>\r\n';
+    result += '      <button class="tablinks" id="button-table_greek" onclick="tabClick(event, \'table_greek\')">&alpha;&beta;&gamma;</button>\r\n';
+    result += '      <button class="tablinks" id="button-table_GREEK" onclick="tabClick(event, \'table_greek_caps\')">&Alpha;&Beta;&Gamma;</button>\r\n';
     result += '  </div>\r\n';
 
     result += create_table(keys_abc, 'table_abc');
     result += create_table(keys_ABC, 'table_abc_caps');
     result += create_table(keys_mixed, 'table_mixed');
     result += create_table(keys_function, 'table_function');
+    result += create_table(keys_greek, 'table_greek');
+    result += create_table(keys_greek_caps, 'table_greek_caps');
     result += '</div>\r\n';
     return result;
 }

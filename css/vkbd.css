@@ -82,6 +82,22 @@ div#output tbody {
 	position: relative;
 	left: 40px;
 }
+#table_greek .vkbd-row1 .vkbd_button {
+	position: relative;
+	left: 20px;
+}
+#table_greek .vkbd-row2 .vkbd_button {
+	position: relative;
+	left: 40px;
+}
+#table_greek_caps .vkbd-row1 .vkbd_button {
+	position: relative;
+	left: 20px;
+}
+#table_greek_caps .vkbd-row2 .vkbd_button {
+	position: relative;
+	left: 40px;
+}
 /* #vkbd table#table_abc{
 	padding-right: 20px;
 } */
