@@ -7,9 +7,13 @@ function key() {
 var squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
 var nth_root = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
 var left = '<span style="font-size: 130%">\u25c5</span>';
+var left3 = ['left', left, '#Left'];
 var right = '<span style="font-size: 130%">\u25bb</span>';
+var right3 = ['right', right, '#Right'];
 // ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
 var enter = '<span style="font-size: 150%; color:green">\u23ce</span>';
+var enter3 = ['enter', enter, '#Enter'];
+var backspace3 = ['backspace', '\u232B', '#Backspace'];
 
 var keys = [];
 keys['mixed'] = [
@@ -54,7 +58,7 @@ keys['mixed'] = [
         ['3'],
         ['up', '↑'],
         // ['up', '\uffea'],
-        ['backspace', '\u232B'],
+        backspace3,
         // ['backspace', '⇐', 'backspace']
     ],
     // row 3
@@ -69,10 +73,10 @@ keys['mixed'] = [
         ['comma', ','],
         // ['left', '←'],
         // ['right', '→'],
-        ['left', '<span style="font-size: 130%">\u25c5</span>'],
-        ['right', '<span style="font-size: 130%">\u25bb</span>'],
+        left3,
+        right3,
         // ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
-        ['enter', enter, 'enter'],
+        enter3,
         // ['equal2', '=', '='],
     ]
 ]
@@ -109,7 +113,7 @@ keys['function'] = [
         ['bracket-left', '('],
         ['bracket-right', ')'],
         ['up', '↑'],
-        ['backspace', '\u232B'],
+        backspace3,
     ],
     // row 3
     [
@@ -118,9 +122,9 @@ keys['function'] = [
         ['power', '\u2b1a<sup>\u2b1a</sup>'],
         ['smallgap-3', '', ''],
         ['squareroot', squareroot],
-        ['left', left],
-        ['right', right],
-        ['enter', enter],
+        left3,
+        right3,
+        enter3,
     ],
 ]
 
@@ -166,7 +170,7 @@ keys['abc'] = [
         ['l'],
         ['oe', '&ouml;'],
         ['ae', '&auml;'],
-        ['backspace', '\u232B'],
+        backspace3,
     ],
     // row 2
     [
@@ -181,9 +185,9 @@ keys['abc'] = [
         ['m'],
         ['comma', ','],
         ['up', '↑'],
-        ['left', left],
-        ['right', right],
-        ['enter', enter],
+        left3,
+        right3,
+        enter3,
     ]
 ]
 
@@ -229,7 +233,7 @@ keys['abc_caps'] = [
         ['L'],
         ['OE', '&Ouml;'],
         ['AE', '&Auml;'],
-        ['backspace', '\u232B'],
+        backspace3,
     ],
     // row 2
     [
@@ -246,9 +250,9 @@ keys['abc_caps'] = [
         ['up', '↑'],
         // ['left', '←'],
         // ['right', '→'],
-        ['left', left],
-        ['right', right],
-        ['enter', enter],
+        left3,
+        right3,
+        enter3,
     ]
 ]
 
@@ -290,7 +294,7 @@ keys['greek'] = [
         ['xi', '&xi;'],
         ['kappa', '&kappa;'],
         ['lambda', '&lambda;'],
-        ['backspace', '\u232B'],
+        backspace3,
     ],
     // row 2
     [
@@ -302,9 +306,9 @@ keys['greek'] = [
         ['beta', '&beta;'],
         ['ny', '&nu;'],
         ['my', '&mu;'],
-        ['left', left],
-        ['right', right],
-        ['enter', enter],
+        left3,
+        right3,
+        enter3
     ]
 ]
 keys['greek_caps'] = [
@@ -345,7 +349,7 @@ keys['greek_caps'] = [
         ['Xi', '&Xi;'],
         ['Kappa', '&Kappa;'],
         ['Lambda', '&Lambda;'],
-        ['backspace', '\u232B'],
+        backspace3,
     ],
     // row 2
     [
@@ -357,9 +361,9 @@ keys['greek_caps'] = [
         ['Beta', '&Beta;'],
         ['Ny', '&Nu;'],
         ['My', '&Mu;'],
-        ['left', left],
-        ['right', right],
-        ['enter', enter],
+        left3,
+        right3,
+        enter3
     ]
 ]
 

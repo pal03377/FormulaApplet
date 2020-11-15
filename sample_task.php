@@ -42,8 +42,8 @@ function init(){
 }
 
 function keyboardEvent(cmd){
-	activeMathfield.typedText(cmd);
-     $('#output').html(cmd);
+	bridge(cmd);
+  $('#output').html(cmd);
 }
 
 </script>
