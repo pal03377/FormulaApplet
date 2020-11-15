@@ -6,7 +6,7 @@
   var precision = 0.000001;
   var activeMathfieldIndex = '';
   var MQ = '';
- 
+
   // console.log('gluetest says: ' + gluetest);
 
   function base64_zip_decode(code, decode_success) {
@@ -29,29 +29,17 @@
 
   function bridge(cmd) {
     var mf = mathField[activeMathfieldIndex];
-    console.log(mf);
-    if (cmd.startsWith('#')) {
-      cmd = cmd.substring(1);
-      if (cmd == 'Enter') {
-        var fa = $(".formula_applet")[activeMathfieldIndex];
-        var mf_container = MQ.StaticMath(fa);
-        // console.log(fa);
-        var solution = solution_list[activeMathfieldIndex];
-        var hasSolution = (typeof solution !== 'undefined');
-        console.log(' index=' + activeMathfieldIndex + ' hasSolution=' + hasSolution + ' mode=enter(bridge)');
-        // console.log(mf.latex() + ' ' + mf_container.latex() + ' ' + solution);
-        if (hasSolution) {
-          out = mf.latex() + ' ' + solution;
-          check_if_equal(id, mf.latex(), solution);
+    if (typeof mf !== 'undefined') {
+      if (cmd.startsWith('#')) {
+        cmd = cmd.substring(1);
+        if (cmd == 'Enter') {
+          editHandler(activeMathfieldIndex, 'enter');
         } else {
-          out = mf_container.latex();
-          check_if_equality(id, mf_container.latex());
+          mf.keystroke(cmd);
         }
-        // document.getElementById('output').innerHTML = out;
+      } else {
+        mf.typedText(cmd);
       }
-      mf.keystroke(cmd);
-    } else {
-      mf.typedText(cmd);
     }
   }
 
@@ -83,6 +71,31 @@
       $('#' + id).removeClass('mod_ok').addClass('mod_wrong');
     }
   }
+
+  function editHandler(index, entermode) {
+    var fa = $(".formula_applet")[index];
+    // var index = $(".formula_applet").index($('#' + id));
+    var mf = mathField[index];
+    var mf_container = MQ.StaticMath(fa);
+    // console.log(fa);
+    var solution = solution_list[index];
+    var hasSolution = (typeof solution !== 'undefined');
+    var id = $(fa).attr('id'); // name of formula_applet
+
+    console.log(id + ' index=' + index + ' hasSolution=' + hasSolution + ' mode=' + entermode);
+    // console.log(mf.latex() + ' ' + mf_container.latex() + ' ' + solution);
+
+    if (entermode == 'enter') {
+      if (hasSolution) {
+        out = mf.latex() + ' ' + solution;
+        check_if_equal(id, mf.latex(), solution);
+      } else {
+        out = mf_container.latex();
+        check_if_equality(id, mf_container.latex());
+      }
+      // document.getElementById('output').innerHTML = out;
+    }
+  };
 
   function prepare_page() {
     console.log('call prepare_page');
@@ -126,10 +139,10 @@
         mf.config({
           handlers: {
             edit: function () {
-              editHandler(id, hasSolution, 'edit');
+              editHandler(index, 'edit');
             },
             enter: function () {
-              editHandler(id, hasSolution, 'enter');
+              editHandler(index, 'enter');
             }
           }
         });
@@ -140,27 +153,6 @@
         mathField.push(mf);
       });
 
-      function editHandler(id, hasSolution, entermode) {
-        var fa = $('#' + id)[0];
-        var index = $(".formula_applet").index($('#' + id));
-        var mf = mathField[index];
-        var mf_container = MQ.StaticMath(fa);
-        // console.log(fa);
-        var solution = solution_list[index];
-        console.log(id + ' index=' + index + ' hasSolution=' + hasSolution + ' mode=' + entermode);
-        // console.log(mf.latex() + ' ' + mf_container.latex() + ' ' + solution);
-
-        if (entermode == 'enter') {
-          if (hasSolution) {
-            out = mf.latex() + ' ' + solution;
-            check_if_equal(id, mf.latex(), solution);
-          } else {
-            out = mf_container.latex();
-            check_if_equality(id, mf_container.latex());
-          }
-          // document.getElementById('output').innerHTML = out;
-        }
-      };
 
     });
   }
