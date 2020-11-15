@@ -255,17 +255,21 @@ function prepare_pg() {
     if (typeof prepare_page_exists !== 'undefined') {
         prepare_page();
     }
+    // console.log('typeof init= ' + typeof init);
+    if (typeof init !== 'undefined'){
+        init();
+    }
 }
 
 function waitfor_hammer(hammer_ready) {
-	if ((typeof Hammer) == "undefined") {
+	if ((typeof Hammer) === "undefined") {
 		console.log('waiting for Hammer...');
 		setTimeout(function () {
 			waitfor_hammer(hammer_ready)
 		}, 50);
 	} else {
 		console.log('Hammer ready......');
-		hammer_ready;
+		hammer_ready();
 	}
 }
 

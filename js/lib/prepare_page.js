@@ -4,7 +4,8 @@
   var solution_list = [];
   var prepare_page_exists = true;
   var precision = 0.000001;
-
+  var activeMathfield = '';
+     
   // console.log('gluetest says: ' + gluetest);
 
   function base64_zip_decode(code, decode_success) {
@@ -33,7 +34,15 @@
     $(".formula_applet").click(function () {
       $(".formula_applet").removeClass('selected');
       $(this).addClass('selected');
+      var id = $(this).attr('id');
+      var index = $(".formula_applet").index($('#' + id));
+      activeMathfield = mathField[index];
+      console.log(activeMathfield);
     });
+
+    // function bridge(cmd){
+    //   activeMathfield.typedText(cmd);
+    // }
 
 
     function check_if_equal(id, a, b) {

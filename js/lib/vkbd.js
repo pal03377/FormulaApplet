@@ -11,7 +11,8 @@ var right = '<span style="font-size: 130%">\u25bb</span>';
 // ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
 var enter = '<span style="font-size: 150%; color:green">\u23ce</span>';
 
-var keys_mixed = [
+var keys = [];
+keys['mixed'] = [
     // row 0
     [
         ['a'],
@@ -76,7 +77,7 @@ var keys_mixed = [
     ]
 ]
 
-var keys_function = [
+keys['function'] = [
     // row 0
     [
         ['sin', '<span style="font-size: 85%">sin</span>'],
@@ -123,7 +124,7 @@ var keys_function = [
     ],
 ]
 
-var keys_abc = [
+keys['abc'] = [
     // row 0
     [
         ['1'],
@@ -186,7 +187,7 @@ var keys_abc = [
     ]
 ]
 
-var keys_ABC = [
+keys['abc_caps'] = [
     // row 0
     [
         ['1'],
@@ -251,7 +252,7 @@ var keys_ABC = [
     ]
 ]
 
-var keys_greek = [
+keys['greek'] = [
     // row 0
     [
         ['1'],
@@ -306,7 +307,7 @@ var keys_greek = [
         ['enter', enter],
     ]
 ]
-var keys_greek_caps = [
+keys['greek_caps'] = [
     // row 0
     [
         ['1'],
@@ -365,30 +366,33 @@ var keys_greek_caps = [
 function get_vkbd() {
     var result = '<div id="vkbd">\r\n';
     result += '  <div id="vkbd_header">Move</div>\r\n';
+    // create tabs
     result += '  <div class="vkbd_tab"\r\n>';
-    result += '      <button class="tablinks" id="button-table_mixed" onclick="tabClick(event, \'table_mixed\')">123&radic;+-&nbsp;&nbsp;&nbsp;</button>\r\n';
-    result += '      <button class="tablinks" id="button-table_function" onclick="tabClick(event, \'table_function\')">&nbsp;f(x)&nbsp;</button>\r\n';
-    result += '      <button class="tablinks" id="button-table_abc" onclick="tabClick(event, \'table_abc\')">abc</button>\r\n';
-    result += '      <button class="tablinks" id="button-table_ABC" onclick="tabClick(event, \'table_abc_caps\')">ABC</button>\r\n';
-    result += '      <button class="tablinks" id="button-table_greek" onclick="tabClick(event, \'table_greek\')">&alpha;&beta;&gamma;</button>\r\n';
-    result += '      <button class="tablinks" id="button-table_GREEK" onclick="tabClick(event, \'table_greek_caps\')">&Alpha;&Beta;&Gamma;</button>\r\n';
+    result += '      <button class="tablinks" id="button-table_mixed" onclick="tabClick(event, \'mixed\')">123&radic;+-&nbsp;&nbsp;&nbsp;</button>\r\n';
+    result += '      <button class="tablinks" id="button-table_function" onclick="tabClick(event, \'function\')">&nbsp;f(x)&nbsp;</button>\r\n';
+    result += '      <button class="tablinks" id="button-table_abc" onclick="tabClick(event, \'abc\')">abc</button>\r\n';
+    // result += '      <button class="tablinks" id="button-table_abc_caps" onclick="tabClick(event, \'abc_caps\')">ABC</button>\r\n';
+    result += '      <button class="tablinks" id="button-table_greek" onclick="tabClick(event, \'greek\')">\u03b1\u03b2\u03b3</button>\r\n';
+    // result += '      <button class="tablinks" id="button-table_greek_caps" onclick="tabClick(event, \'greek_caps\')">&Alpha;&Beta;&Gamma;</button>\r\n';
+    // https://en.wikipedia.org/wiki/X_mark
+    result += '      <button class="tablinks" id="button-table_off" onclick="tabClick(event, \'off\')">&nbsp;\u2716&nbsp;\u274C</button>\r\n';
     result += '  </div>\r\n';
 
-    result += create_table(keys_abc, 'table_abc');
-    result += create_table(keys_ABC, 'table_abc_caps');
-    result += create_table(keys_mixed, 'table_mixed');
-    result += create_table(keys_function, 'table_function');
-    result += create_table(keys_greek, 'table_greek');
-    result += create_table(keys_greek_caps, 'table_greek_caps');
+    result += create_table('abc');
+    result += create_table('abc_caps');
+    result += create_table('mixed');
+    result += create_table('function');
+    result += create_table('greek');
+    result += create_table('greek_caps');
     result += '</div>\r\n';
     return result;
 }
 
-function create_table(key_array, table_id) {
-    var result = '<table id="' + table_id + '">\r\n';
+function create_table(table_id) {
+    var result = '<table id="table_' + table_id + '">\r\n';
     result += '<tbody>\r\n';
-    for (var row_number = 0; row_number < key_array.length; row_number++) {
-        var keylist = key_array[row_number];
+    for (var row_number = 0; row_number < keys[table_id].length; row_number++) {
+        var keylist = keys[table_id][row_number];
         result += '<tr class="vkbd-row' + row_number + '">\r\n';
         // console.log( '<tr class="vkbd-row' + row_number + '">\r\n' );
         // result += '<tr>\r\n';
@@ -420,12 +424,12 @@ function vkbd_bind_events() {
     console.log('Here is vkbd.js');
     $(".vkbd_button").click(function (ev) {
         var cmd = clickEvent(ev);
-        keyboardEvent(cmd);
+        keyboardEvent_0(cmd);
     });
     // also children and grandchildren and...
     $(".vkbd_button").find().click(function (ev) {
         var cmd = clickEvent(ev);
-        keyboardEvent(cmd);
+        keyboardEvent_0(cmd);
     });
     // dragElement(document.getElementById("vkbd"));
     var vkbdElement = document.getElementById('vkbd');
@@ -468,7 +472,6 @@ function vkbd_bind_events() {
         }
     });
 
-
     function clickEvent(ev) {
         var cmd = $(ev.target).attr('cmd');
         if (typeof cmd == 'undefined') {
@@ -479,18 +482,127 @@ function vkbd_bind_events() {
         console.log(cmd);
         // $('#output').text(cmd);
     }
-
-
 }
 
-// tabs for the different keyboards
-function tabClick(ev, table_id) {
-    // console.log(ev);
-    console.log(table_id);
-    $('#vkbd table').css("display", "none");
-    $('#vkbd table#' + table_id).css("display", "table");
+function keyboardEvent_0(cmd) {
+    if (cmd.toLowerCase() == 'shift') {
+        switch (activeKeyboard) {
+            case 'abc':
+                activeKeyboard = 'abc_caps';
+                break;
+            case 'abc_caps':
+                activeKeyboard = 'abc_capslock';
+                break;
+            case 'abc_capslock':
+                activeKeyboard = 'abc';
+                break;
+            default:
+                // activeKeyboard = 'abc';
+        }
+        switch (activeKeyboard) {
+            case 'greek':
+                activeKeyboard = 'greek_caps';
+                break;
+            case 'greek_caps':
+                activeKeyboard = 'greek_capslock';
+                break;
+            case 'greek_capslock':
+                activeKeyboard = 'greek';
+                break;
+            default:
+                // activeKeyboard = 'abc';
+                // no change of keyboard
+
+        }
+    } else {
+        // will be overwritten in *.php files
+        keyboardEvent(cmd);
+        // switch back
+        if (activeKeyboard == 'abc_caps') {
+            activeKeyboard = 'abc';
+        }
+        if (activeKeyboard == 'greek_caps') {
+            activeKeyboard = 'greek';
+        }
+    }
+    keyboardActivate(activeKeyboard);
+}
+
+var activeKeyboard = 'dummy';
+
+function keyboardActivate(keyboard_id) {
+    // console.log(keyboard_id);
     $('.vkbd_tab button').removeClass("selected");
-    $('.vkbd_tab button#button-' + table_id).addClass("selected");
+    switch (keyboard_id) {
+        case 'abc':
+        case 'abc_caps':
+        case 'abc_capslock':
+            $('.vkbd_tab button#button-table_abc').addClass("selected");
+            var buttontext = 'abc'
+            if (keyboard_id == 'abc_caps') {
+                buttontext = 'ABC';
+            }
+            if (keyboard_id == 'abc_capslock') {
+                buttontext = '[ABC]';
+            }
+            $('.vkbd_tab button#button-table_abc').text(buttontext);
+            break;
+        case 'greek':
+        case 'greek_caps':
+        case 'greek_capslock':
+            $('.vkbd_tab button#button-table_greek').addClass("selected");
+            var buttontext = '\u03b1\u03b2\u03b3'
+            if (keyboard_id == 'greek_caps') {
+                buttontext = '\u0391\u0392\u0393';
+            }
+            if (keyboard_id == 'greek_capslock') {
+                buttontext = '[\u0391\u0392\u0393]';
+            }
+            $('.vkbd_tab button#button-table_greek').text(buttontext);
+            break;
+        case 'off':
+            $('#keyboard').css("display", "none");
+            break;
+        default:
+            $('.vkbd_tab button#button-table_' + keyboard_id).addClass("selected");
+    }
+    $('#vkbd table').css("display", "none");
+    var temp = keyboard_id;
+    if (keyboard_id == 'abc_capslock') {
+        temp = 'abc_caps';
+    }
+    if (keyboard_id== 'greek_capslock') {
+        temp = 'greek_caps';
+    }
+    $('#vkbd table#table_' + temp).css("display", "table");
+    activeKeyboard = keyboard_id;
+ }
+
+// tabs for the different keyboards
+function tabClick(ev, keyboard_id) {
+    switch (keyboard_id) {
+        case 'abc':
+            // toggle abc and abc_caps
+            if (activeKeyboard == 'abc') {
+                activeKeyboard = 'abc_caps'
+            } else {
+                activeKeyboard = 'abc'
+            }
+            break;
+        case 'greek':
+            // toggle greek and greek_caps
+            if (activeKeyboard == 'greek') {
+                activeKeyboard = 'greek_caps'
+            } else {
+                activeKeyboard = 'greek'
+            }
+            break;
+        default:
+            activeKeyboard = keyboard_id;
+    }
+    $('#vkbd table').css("display", "none");
+    $('#vkbd table#table_' + activeKeyboard).css("display", "table");
+    keyboardActivate(activeKeyboard);
 }
 
 var vkbdLoaded = true;

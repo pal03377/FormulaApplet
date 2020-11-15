@@ -33,7 +33,8 @@ function wfvi(){
 function init(){
     // get_vkbd() is defined in vkbd.js
     $('#keyboard').html(get_vkbd());
-    vkbd_bind_events();
+	vkbd_bind_events();
+	keyboardActivate('mixed');
 }
 
 function keyboardEvent(cmd){
