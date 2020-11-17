@@ -3,6 +3,7 @@
   var mathField = [];
   var timeoutIdList = [];
   var solution_list = [];
+  var tapList;
   var prepare_page_exists = true;
   var precision = 0.000001;
   var activeMathfieldIndex = '';
@@ -106,7 +107,7 @@
       $(this).addClass('selected');
       var id = $(this).attr('id');
       activeMathfieldIndex = $(".formula_applet").index($('#' + id));
-      console.log(activeMathfieldIndex);
+      // console.log(activeMathfieldIndex);
     });
 
     // $(".formula_applet").dblclick(function () {
@@ -119,7 +120,7 @@
     ($('<img class="mod">')).insertAfter($(".formula_applet"));
 
     $(document).ready(function () {
-      console.log('call document ready');
+      console.log('document.ready()');
 
       $(".formula_applet").each(function () {
         MQ.StaticMath(this);
@@ -137,6 +138,15 @@
         };
         console.log(index + ': ' + id + ' hasSolution=' + hasSolution);
         var mfSource = $(this).find('.mq-editable-field')[0];
+        tapList = new Hammer(mfSource);
+        tapList.on("doubletap", function (ev) {
+          // console.log(index + ' ' + ev.type);
+          vkbd_show();
+        });
+        tapList.on("press", function (ev) {
+          // console.log(index + ' ' + ev.type);
+          vkbd_show();
+        });
         mf = MQ.MathField(mfSource, {});
         mf.config({
           handlers: {
@@ -153,20 +163,17 @@
         //   console.log(e);
         // });
         mathField.push(mf);
-        // timeoutIdList[index] = 815;
-        $(mfSource).on('mousedown', function () {
-          console.log('mousedown');
-          timeoutIdList[index] = setTimeout(myFunction, 1000);
-        }).on('mouseup mouseleave', function () {
-          clearTimeout(timeoutIdList[index]);
-        });
-        $(mfSource).on('dblclick', function() {
-          console.log('dblclick');
-        });
+         // https://stackoverflow.com/questions/4080497/how-can-i-listen-for-a-click-and-hold-in-jquery#4080508
+        // $(this).on('mousedown', function () {
+        //   console.log('mousedown');
+        //   timeoutIdList[index] = setTimeout(vkbd_show, 1000);
+        // }).on('mouseup mouseleave', function () {
+        //   clearTimeout(timeoutIdList[index]);
+        // });
+        // $(this).on('dblclick', function () {
+        //   console.log('dblclick');
+        //   vkbd_show();
+        // });
       });
     });
-  }
-
-  function myFunction(){
-    vkbd_show();
   }
