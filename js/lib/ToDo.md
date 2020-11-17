@@ -47,8 +47,15 @@
 ## DiesUndDas
 * Waiter-Funktionen vereinheitlichen
 * other.php, uses.php aktualisieren OK
-* VKBD ergänzen (CAPS, Greek)
-* Koppelung VKBD - MathQuill
+* VKBD ergänzen (CAPS, Greek) OK
+* Koppelung VKBD - MathQuill OK
 * VKBD auch im Wiki
 * on error, TypeScript
+* Problem-Editor, Integral, Limes
 * MediaWiki-WYSIWYG-Editor
+* Karl Kirst, Maria Eirich, Mandy Schütze
+* MediaWiki-Extensions aktualisieren
+** GeoGebra: Nur Zbigniew
+** FormelApplet durch FormulaApplet ersetzen
+* GitHub von privat auf öffentlich
+

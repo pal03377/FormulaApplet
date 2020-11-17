@@ -1,6 +1,7 @@
   // This is prepare_page.js
 
   var mathField = [];
+  var timeoutIdList = [];
   var solution_list = [];
   var prepare_page_exists = true;
   var precision = 0.000001;
@@ -72,7 +73,7 @@
     }
   }
 
-  function editHandler(index, entermode) {
+  function editHandler(index) {
     var fa = $(".formula_applet")[index];
     // var index = $(".formula_applet").index($('#' + id));
     var mf = mathField[index];
@@ -82,19 +83,15 @@
     var hasSolution = (typeof solution !== 'undefined');
     var id = $(fa).attr('id'); // name of formula_applet
 
-    console.log(id + ' index=' + index + ' hasSolution=' + hasSolution + ' mode=' + entermode);
-    // console.log(mf.latex() + ' ' + mf_container.latex() + ' ' + solution);
-
-    if (entermode == 'enter') {
-      if (hasSolution) {
-        out = mf.latex() + ' ' + solution;
-        check_if_equal(id, mf.latex(), solution);
-      } else {
-        out = mf_container.latex();
-        check_if_equality(id, mf_container.latex());
-      }
-      // document.getElementById('output').innerHTML = out;
+    // console.log(id + ' index=' + index + ' hasSolution=' + hasSolution + ' mode=' + entermode);
+    if (hasSolution) {
+      out = mf.latex() + ' ' + solution;
+      check_if_equal(id, mf.latex(), solution);
+    } else {
+      out = mf_container.latex();
+      check_if_equality(id, mf_container.latex());
     }
+    // document.getElementById('output').innerHTML = out;
   };
 
   function prepare_page() {
@@ -111,6 +108,11 @@
       activeMathfieldIndex = $(".formula_applet").index($('#' + id));
       console.log(activeMathfieldIndex);
     });
+
+    // $(".formula_applet").dblclick(function () {
+    // // $("span.mq-editable-field span.mq-root-block").dblclick(function () {
+    //   console.log('dblclick ' + activeMathfieldIndex);
+    // });
 
     // concerns all formula_applets:
     $("img.mod").remove();
@@ -139,10 +141,10 @@
         mf.config({
           handlers: {
             edit: function () {
-              editHandler(index, 'edit');
+              // console.log('edit ' + index);
             },
             enter: function () {
-              editHandler(index, 'enter');
+              editHandler(index);
             }
           }
         });
@@ -151,8 +153,20 @@
         //   console.log(e);
         // });
         mathField.push(mf);
+        // timeoutIdList[index] = 815;
+        $(mfSource).on('mousedown', function () {
+          console.log('mousedown');
+          timeoutIdList[index] = setTimeout(myFunction, 1000);
+        }).on('mouseup mouseleave', function () {
+          clearTimeout(timeoutIdList[index]);
+        });
+        $(mfSource).on('dblclick', function() {
+          console.log('dblclick');
+        });
       });
-
-
     });
+  }
+
+  function myFunction(){
+    vkbd_show();
   }

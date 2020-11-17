@@ -56,7 +56,7 @@ keys['mixed'] = [
         ['1'],
         ['2'],
         ['3'],
-        ['up', '↑'],
+        ['up', '↑', '#Up'],
         // ['up', '\uffea'],
         backspace3,
         // ['backspace', '⇐', 'backspace']
@@ -66,7 +66,7 @@ keys['mixed'] = [
         ['bracket-left', '('],
         ['bracket-right', ')'],
         ['square', '\u2b1a<sup style="font-size: 85%">2</sup>'],
-        ['squareroot', squareroot],
+        ['squareroot', squareroot, '\\sqrt'],
         ['smallgap-3', '', ''],
         ['0'],
         // ['.'],
@@ -463,6 +463,7 @@ function vkbd_bind_events() {
     mc.get('pinch').set({
         enable: true
     });
+    
     mc.on('pinch pinchstart', function (ev) {
         if (ev.type == 'pinchstart') {
             // start with scale_temp of the last pinch
@@ -565,7 +566,7 @@ function keyboardActivate(keyboard_id) {
             $('.vkbd_tab button#button-table_greek').text(buttontext);
             break;
         case 'off':
-            $('#keyboard').css("display", "none");
+            vkbd_hide();
             break;
         default:
             $('.vkbd_tab button#button-table_' + keyboard_id).addClass("selected");
@@ -607,6 +608,30 @@ function tabClick(ev, keyboard_id) {
     $('#vkbd table').css("display", "none");
     $('#vkbd table#table_' + activeKeyboard).css("display", "table");
     keyboardActivate(activeKeyboard);
+}
+
+function vkbd_init(){
+    var kb = $('#keyboard')[0];
+    console.log('kb=' + kb);
+    if (typeof kb == 'undefined'){
+        kb = document.createElement('div');
+        kb.id = 'keyboard';
+        document.body.appendChild(kb);
+    }
+    $('#keyboard').html(get_vkbd());
+	vkbd_bind_events();
+	keyboardActivate('mixed');
+}
+
+function vkbd_hide(){
+    $('#vkbd').css("display", "none");
+}
+
+function vkbd_show(){
+    $('#vkbd').css("display", "table");
+    $('#vkbd table').css("display", "none");
+    keyboardActivate('mixed');
+    $('#vkbd table#table_' + activeKeyboard).css("display", "table");
 }
 
 var vkbdLoaded = true;

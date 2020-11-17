@@ -46,6 +46,7 @@ tasks['hammer'] = new task(libPath + 'hammer.js');
 tasks['hammer'].fallback = 'https://hammerjs.github.io/dist/hammer.js';
 tasks['gf09css'] = new task(cssPath + 'gf09.css');
 tasks['vkbdcss'] = new task(cssPath + 'vkbd.css');
+tasks['tap4'] = new task(libPath + 'tap4.js');
 // console.log(tasks);
 liblist.forEach(function (taskname) {
     tasks[taskname].name = taskname;
