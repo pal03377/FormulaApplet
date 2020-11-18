@@ -7,10 +7,8 @@
   var prepare_page_exists = true;
   var precision = 0.000001;
   var activeMathfieldIndex = '';
-  var MQ = '';
-
-  // console.log('gluetest says: ' + gluetest);
-
+  var MQ = MathQuill.getInterface(2);
+  
   function base64_zip_decode(code, decode_success) {
     var zip = new JSZip();
     zip.loadAsync(code, {
@@ -29,12 +27,22 @@
     return (navigator.userAgent.toUpperCase().indexOf('ANDROID') !== -1);
   }
 
-  
+
   function keyboardEvent(cmd) { // was bridge(cmd)
     var mf = mathField[activeMathfieldIndex];
+    var fa = $('.formula_applet')[activeMathfieldIndex];
+    var mfSource = $(fa).find('.mq-editable-field')[0];
+
     if (typeof mf !== 'undefined') {
       console.log(cmd);
+      var endsWithSpace = false;
+      if ((cmd.substr(cmd.length - 1)) == ' ') {
+        endsWithSpace = true;
+        // remove space from end of cmd
+        cmd = cmd.substring(0, cmd.length - 1);
+      }
       if (cmd.startsWith('#')) {
+        // remove # from start of cmd
         cmd = cmd.substring(1);
         if (cmd == 'Enter') {
           editHandler(activeMathfieldIndex, 'enter');
@@ -42,7 +50,15 @@
           mf.keystroke(cmd);
         }
       } else {
+        // no #
         mf.typedText(cmd);
+        // $(mfSource).click();
+        // mf.typedText(' ');
+        // mfSource.focus();
+      }
+      if (endsWithSpace) {
+        mf.typedText(' ');
+        mf.keystroke('Backspace');
       }
     }
   }
@@ -100,7 +116,6 @@
   function prepare_page() {
     console.log('call prepare_page');
     console.log('isAndroid=' + isAndr());
-    MQ = MathQuill.getInterface(2);
     vkbd_init();
 
     // <!-- http://docs.mathquill.com/en/latest/Api_Methods/#mqmathfieldhtml_element-config -->
@@ -134,9 +149,9 @@
           hasSolution = true;
           var zip = $(this).attr('data-zip');
           // console.log('zip=' + zip);
-          base64_zip_decode(zip, function (code) {
+          base64_zip_decode(zip, function (decoded) {
             // console.log('solution=' + code);
-            solution_list[index] = code;
+            solution_list[index] = decoded;
           });
         };
         console.log(index + ': ' + id + ' hasSolution=' + hasSolution);
@@ -154,6 +169,7 @@
         mf.config({
           handlers: {
             edit: function () {
+              mfSource.focus();
               // console.log('edit ' + index);
             },
             enter: function () {
@@ -166,7 +182,7 @@
         //   console.log(e);
         // });
         mathField.push(mf);
-         // https://stackoverflow.com/questions/4080497/how-can-i-listen-for-a-click-and-hold-in-jquery#4080508
+        // https://stackoverflow.com/questions/4080497/how-can-i-listen-for-a-click-and-hold-in-jquery#4080508
         // $(this).on('mousedown', function () {
         //   console.log('mousedown');
         //   timeoutIdList[index] = setTimeout(vkbd_show, 1000);

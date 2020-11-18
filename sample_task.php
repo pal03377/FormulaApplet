@@ -5,34 +5,6 @@ include_once 'header.php';
 
 <script>
 
-// function waitfor_vkbd(vkbd_ready) {
-// 	// console.log( typeof MathQuill );
-// 	if ((typeof vkbdLoaded) === "undefined") {
-// 		console.log('waiting for VKBD...');
-// 		setTimeout(function () {
-// 			waitfor_vkbd(vkbd_ready)
-// 		}, 50);
-// 	} else {
-// 		console.log('**** VKBD ready......');
-// 		vkbd_ready;
-// 	}
-// }
-
-// // first hammer, then vkbd, then init
-// console.log('Bli');
-// waitfor_hammer( wf_vkbd() );
-// console.log('Bla');
-
-// function wf_vkbd(){
-// 	console.log('wf_vkbd');
-// 	waitfor_vkbd( wf_mq() );
-// }
-
-// function wf_mq(){
-// 	console.log('wf_mq');
-// 	waitfor_mathquill_and_if_ready_then_do( init() );
-// }
-
 function init(){
   console.log('init...');
   // vkbd_init();

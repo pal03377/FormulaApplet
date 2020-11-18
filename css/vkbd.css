@@ -123,7 +123,6 @@ div#output tbody {
 	background-color: #d0d0d0;
 	float: left;
 	left: 20px;
-	border: none;
 	border: 1px solid #c0c040;
 	outline: none;
 	cursor: pointer;
@@ -137,7 +136,16 @@ div#output tbody {
 /* Change background color of buttons on hover */
 .vkbd_tab button:hover {
 	background-color: #80f080;
-	color: blue;
+	color: rgba(0, 0, 255)
+}
+
+button#button-table_off {
+	float: right;
+	font-size: 20px;
+	color: orangered;
+	background-color: transparent;
+	border: none;
+	/* margin-right: 5px; */
 }
 
 .tablinks.selected {

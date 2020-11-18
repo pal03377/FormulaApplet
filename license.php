@@ -14,32 +14,36 @@ include_once 'header.php';
     <tr>
         <th scope="col">Library</th>
         <th scope="col">Version</th>
+        <th scope="col">Doc</th>
         <th scope="col">Source</th>
         <th scope="col">License</th>
     </tr>
     <tr>
-        <td>JQuery</td>
+        <td>jQuery</td>
         <td>3.4.1</td>
+        <td><a href="https://api.jquery.com">https://api.jquery.com</a></td>
         <td><a href="https://code.jquery.com">https://code.jquery.com</a></td>
         <td>MIT License</td>
     </tr>
     <tr>
         <td>MathQuill</td>
         <td>0.10.1</td>
+        <td><a href="http://docs.mathquill.com/en/latest/">http://docs.mathquill.com/en/latest/</a></td>
         <td><a href="https://github.com/mathquill/mathquill">https://github.com/mathquill/mathquill</a></td>
         <td>Mozilla Public License, v. 2.0</td>
     </tr>
     <tr>
         <td>Create ZIP files (by Stuart Knightley)</td>
         <td>3.5.0</td>
-        <td><a href="https://github.com/Stuk/jszip">https://github.com/Stuk/jszip</a><br />
-        <a href="https://stuk.github.io/jszip/">https://stuk.github.io/jszip/</a></td>
+        <td><a href="https://stuk.github.io/jszip/">https://stuk.github.io/jszip/</a></td>
+        <td><a href="https://github.com/Stuk/jszip">https://github.com/Stuk/jszip</a></td>
         <td>GPLv3 and the MIT licenses</td>
     </tr>
     <tr>
         <td>Hammer. Add touch gestures to your web app.</td>
         <td>2.0.8</td>
-        <td><a href="https://hammerjs.github.io/">https://hammerjs.github.io/</a></td>
+        <td><a href="https://hammerjs.github.io/getting-started/">https://hammerjs.github.io/getting-started/</a></td>
+        <td><a href="https://github.com/hammerjs/hammer.js">https://github.com/hammerjs/hammer.js</a></td>
         <td>MIT license</td>
     </tr>
 </table>

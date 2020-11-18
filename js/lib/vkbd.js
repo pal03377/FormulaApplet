@@ -16,15 +16,16 @@ var keys = [];
 keys['mixed'] = [
     // row 0
     [
+        // [name, UTF-8, command] #command -> mathfield.keystroke(command)
         ['a'],
         ['b'],
         ['c'],
-        ['pi', '&pi;', '\\pi'],
+        ['pi', '&pi;', '\\pi '],
         ['smallgap-0', '', ''],
         ['7'],
         ['8'],
         ['9'],
-        ['times', '&times;', '\\cdot'],
+        ['times', '&times;', '\\cdot '],
         ['divided', '&divide;', '/']
     ],
     // row 1
@@ -63,7 +64,8 @@ keys['mixed'] = [
         ['bracket-left', '('],
         ['bracket-right', ')'],
         ['square', '\u2b1a<sup style="font-size: 85%">2</sup>'],
-        ['squareroot', squareroot, '\\sqrt'],
+        // notice the space at end of string
+        ['squareroot', squareroot, '\\sqrt '],
         ['smallgap-3', '', ''],
         ['0'],
         // ['.'],
@@ -88,7 +90,7 @@ keys['function'] = [
         ['degree', '°'],
         ['minute', '\''],
         ['second', '\'\''],
-        ['pi', '&pi;', '\\pi']
+        ['pi', '&pi;', '\\pi ']
     ],
     // row 1
     [
@@ -274,10 +276,10 @@ keys['greek'] = [
         ['epsilon', '&epsilon;'],
         ['rho', '&rho;'],
         ['tau', '&tau;'],
-        ['ypsilon', '&upsilon;'],
+        ['ypsilon', '&upsilon;', '\\upsilon '],
         ['theta', '&theta;'],
         ['iota', '&iota;'],
-        ['omikron', '&omicron;'],
+        ['omikron', '&omicron;', '\\omicron '],
         ['pi', '&pi;']
     ],
     // row 1
@@ -301,8 +303,8 @@ keys['greek'] = [
         ['psi', '&psi;'],
         ['omega', '&omega;'],
         ['beta', '&beta;'],
-        ['ny', '&nu;'],
-        ['my', '&mu;'],
+        ['ny', '&nu;', '\\nu '],
+        ['my', '&mu;', '\\mu '],
         left,
         right,
         enter
@@ -329,7 +331,7 @@ keys['greek_caps'] = [
         ['Epsilon', '&Epsilon;'],
         ['Rho', '&Rho;'],
         ['Tau', '&Tau;'],
-        ['Ypsilon', '&Upsilon;'],
+        ['Upsilon', '&Upsilon;'],
         ['Theta', '&Theta;'],
         ['Iota', '&Iota;'],
         ['Omikron', '&Omicron;'],
@@ -376,7 +378,9 @@ function get_vkbd() {
     result += '      <button class="tablinks" id="button-table_greek" onclick="tabClick(event, \'greek\')">\u03b1\u03b2\u03b3</button>\r\n';
     // result += '      <button class="tablinks" id="button-table_greek_caps" onclick="tabClick(event, \'greek_caps\')">&Alpha;&Beta;&Gamma;</button>\r\n';
     // https://en.wikipedia.org/wiki/X_mark
-    result += '      <button class="tablinks" id="button-table_off" onclick="tabClick(event, \'off\')">&nbsp;\u2716&nbsp;\u274C</button>\r\n';
+    // result += '      <button class="tablinks" id="button-table_off" onclick="tabClick(event, \'off\')">&nbsp;\u2716&nbsp;\u274C</button>\r\n';
+    // result += '      <button class="tablinks" id="button-table_off" onclick="tabClick(event, \'off\')">&nbsp;\u274C&nbsp;</button>\r\n';
+    result += '      <button class="tablinks" id="button-table_off" onclick="tabClick(event, \'off\')">&nbsp;\u2716</button>\r\n'; // alternative \u2715
     result += '  </div>\r\n';
 
     result += create_table('abc');
@@ -403,7 +407,17 @@ function create_table(table_id) {
                 key[1] = key[0];
             }
             if (typeof key[2] == 'undefined') {
-                key[2] = key[0];
+                if (table_id == 'greek' || table_id == 'greek_caps') {
+                    const ignore = '0_1_2_3_4_5_6_7_8_9_shift_';
+                    if (ignore.indexOf(key[0] + '_') < 0) {
+                        key[2] = '\\' + key[0] + ' ';
+                        // console.log('done ' + key[2] + '*');
+                    } else {
+                        key[2] = key[0];
+                    }
+                } else {
+                    key[2] = key[0];
+                }
             }
             var cl = 'vkbd_button vkbd-' + key[0];
             if (key[0].startsWith('smallgap')) {
@@ -460,7 +474,7 @@ function vkbd_bind_events() {
     mc.get('pinch').set({
         enable: true
     });
-    
+
     mc.on('pinch pinchstart', function (ev) {
         if (ev.type == 'pinchstart') {
             // start with scale_temp of the last pinch
@@ -573,12 +587,12 @@ function keyboardActivate(keyboard_id) {
     if (keyboard_id == 'abc_capslock') {
         temp = 'abc_caps';
     }
-    if (keyboard_id== 'greek_capslock') {
+    if (keyboard_id == 'greek_capslock') {
         temp = 'greek_caps';
     }
     $('#vkbd table#table_' + temp).css("display", "table");
     activeKeyboard = keyboard_id;
- }
+}
 
 // tabs for the different keyboards
 function tabClick(ev, keyboard_id) {
@@ -607,24 +621,24 @@ function tabClick(ev, keyboard_id) {
     keyboardActivate(activeKeyboard);
 }
 
-function vkbd_init(){
+function vkbd_init() {
     var kb = $('#keyboard')[0];
-    console.log('kb=' + kb);
-    if (typeof kb == 'undefined'){
+    // console.log('kb=' + kb);
+    if (typeof kb == 'undefined') {
         kb = document.createElement('div');
         kb.id = 'keyboard';
         document.body.appendChild(kb);
     }
     $('#keyboard').html(get_vkbd());
-	vkbd_bind_events();
-	keyboardActivate('mixed');
+    vkbd_bind_events();
+    keyboardActivate('mixed');
 }
 
-function vkbd_hide(){
+function vkbd_hide() {
     $('#vkbd').css("display", "none");
 }
 
-function vkbd_show(){
+function vkbd_show() {
     $('#vkbd').css("display", "table");
     $('#vkbd table').css("display", "none");
     keyboardActivate('mixed');
