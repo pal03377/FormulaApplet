@@ -35,13 +35,13 @@ include_once 'header.php';
 
 function init(){
   console.log('init...');
-  vkbd_init();
+  // vkbd_init();
 }
 
-function keyboardEvent(cmd){
-	bridge(cmd);
-  $('#output').html(cmd);
-}
+// function keyboardEvent(cmd){
+// 	bridge(cmd);
+//   $('#output').html(cmd);
+// }
 
 </script>
 

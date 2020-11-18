@@ -15,8 +15,9 @@ console.log('libPath=' + libPath + '  cssPath=' + cssPath);
 
 // var gluetest = 'Here is glue!';
 
-if (typeof liblist === 'undefined') { //default for wiki
-    var liblist = ['mathquill', 'prepare_page', 'tex_parser', 'zip', 'mathquillcss', 'gf09css'];
+if (typeof liblist === 'undefined') { 
+    // default for wiki
+    var liblist = ['mathquill', 'prepare_page', 'tex_parser', 'zip', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss', 'hammer'];
 }
 
 function task(source) {

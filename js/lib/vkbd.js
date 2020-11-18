@@ -6,14 +6,11 @@ function key() {
 
 var squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
 var nth_root = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
-var left = '<span style="font-size: 130%">\u25c5</span>';
-var left3 = ['left', left, '#Left'];
-var right = '<span style="font-size: 130%">\u25bb</span>';
-var right3 = ['right', right, '#Right'];
+var left = ['left', '<span style="font-size: 130%">\u25c5</span>', '#Left'];
+var right = ['right', '<span style="font-size: 130%">\u25bb</span>', '#Right'];
 // ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
-var enter = '<span style="font-size: 150%; color:green">\u23ce</span>';
-var enter3 = ['enter', enter, '#Enter'];
-var backspace3 = ['backspace', '\u232B', '#Backspace'];
+var enter = ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', '#Enter'];
+var backspace = ['backspace', '\u232B', '#Backspace'];
 
 var keys = [];
 keys['mixed'] = [
@@ -56,9 +53,9 @@ keys['mixed'] = [
         ['1'],
         ['2'],
         ['3'],
-        ['up', '↑', '#Up'],
+        ['up', '↑', '^'],
         // ['up', '\uffea'],
-        backspace3,
+        backspace,
         // ['backspace', '⇐', 'backspace']
     ],
     // row 3
@@ -73,10 +70,10 @@ keys['mixed'] = [
         ['comma', ','],
         // ['left', '←'],
         // ['right', '→'],
-        left3,
-        right3,
+        left,
+        right,
         // ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
-        enter3,
+        enter,
         // ['equal2', '=', '='],
     ]
 ]
@@ -113,7 +110,7 @@ keys['function'] = [
         ['bracket-left', '('],
         ['bracket-right', ')'],
         ['up', '↑'],
-        backspace3,
+        backspace,
     ],
     // row 3
     [
@@ -122,9 +119,9 @@ keys['function'] = [
         ['power', '\u2b1a<sup>\u2b1a</sup>'],
         ['smallgap-3', '', ''],
         ['squareroot', squareroot],
-        left3,
-        right3,
-        enter3,
+        left,
+        right,
+        enter,
     ],
 ]
 
@@ -170,7 +167,7 @@ keys['abc'] = [
         ['l'],
         ['oe', '&ouml;'],
         ['ae', '&auml;'],
-        backspace3,
+        backspace,
     ],
     // row 2
     [
@@ -185,9 +182,9 @@ keys['abc'] = [
         ['m'],
         ['comma', ','],
         ['up', '↑'],
-        left3,
-        right3,
-        enter3,
+        left,
+        right,
+        enter,
     ]
 ]
 
@@ -233,7 +230,7 @@ keys['abc_caps'] = [
         ['L'],
         ['OE', '&Ouml;'],
         ['AE', '&Auml;'],
-        backspace3,
+        backspace,
     ],
     // row 2
     [
@@ -250,9 +247,9 @@ keys['abc_caps'] = [
         ['up', '↑'],
         // ['left', '←'],
         // ['right', '→'],
-        left3,
-        right3,
-        enter3,
+        left,
+        right,
+        enter,
     ]
 ]
 
@@ -294,7 +291,7 @@ keys['greek'] = [
         ['xi', '&xi;'],
         ['kappa', '&kappa;'],
         ['lambda', '&lambda;'],
-        backspace3,
+        backspace,
     ],
     // row 2
     [
@@ -306,9 +303,9 @@ keys['greek'] = [
         ['beta', '&beta;'],
         ['ny', '&nu;'],
         ['my', '&mu;'],
-        left3,
-        right3,
-        enter3
+        left,
+        right,
+        enter
     ]
 ]
 keys['greek_caps'] = [
@@ -349,7 +346,7 @@ keys['greek_caps'] = [
         ['Xi', '&Xi;'],
         ['Kappa', '&Kappa;'],
         ['Lambda', '&Lambda;'],
-        backspace3,
+        backspace,
     ],
     // row 2
     [
@@ -361,9 +358,9 @@ keys['greek_caps'] = [
         ['Beta', '&Beta;'],
         ['Ny', '&Nu;'],
         ['My', '&Mu;'],
-        left3,
-        right3,
-        enter3
+        left,
+        right,
+        enter
     ]
 ]
 
@@ -521,7 +518,7 @@ function keyboardEvent_0(cmd) {
         }
     } else {
         // will be overwritten in *.php files
-        keyboardEvent(cmd);
+        keyboardEvent(cmd); //defined in prepare_page
         // switch back
         if (activeKeyboard == 'abc_caps') {
             activeKeyboard = 'abc';

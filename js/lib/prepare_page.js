@@ -29,9 +29,11 @@
     return (navigator.userAgent.toUpperCase().indexOf('ANDROID') !== -1);
   }
 
-  function bridge(cmd) {
+  
+  function keyboardEvent(cmd) { // was bridge(cmd)
     var mf = mathField[activeMathfieldIndex];
     if (typeof mf !== 'undefined') {
+      console.log(cmd);
       if (cmd.startsWith('#')) {
         cmd = cmd.substring(1);
         if (cmd == 'Enter') {
@@ -99,6 +101,7 @@
     console.log('call prepare_page');
     console.log('isAndroid=' + isAndr());
     MQ = MathQuill.getInterface(2);
+    vkbd_init();
 
     // <!-- http://docs.mathquill.com/en/latest/Api_Methods/#mqmathfieldhtml_element-config -->
 
@@ -140,11 +143,11 @@
         var mfSource = $(this).find('.mq-editable-field')[0];
         tapList = new Hammer(mfSource);
         tapList.on("doubletap", function (ev) {
-          // console.log(index + ' ' + ev.type);
+          console.log(index + ' ' + ev.type);
           vkbd_show();
         });
         tapList.on("press", function (ev) {
-          // console.log(index + ' ' + ev.type);
+          console.log(index + ' ' + ev.type);
           vkbd_show();
         });
         mf = MQ.MathField(mfSource, {});
