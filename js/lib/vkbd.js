@@ -1,9 +1,3 @@
-function key() {
-    this.id = '';
-    this.html5 = '';
-    this.mathquill = '';
-}
-
 var squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
 var nth_root = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
 var left = ['left', '<span style="font-size: 130%">\u25c5</span>', '#Left'];
