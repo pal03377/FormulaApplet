@@ -2,7 +2,6 @@
 
   var mathField = [];
   var timeoutIdList = [];
-  var solution_list = [];
   var tapList;
   var prepare_page_exists = true;
   var precision = 0.000001;
@@ -51,6 +50,7 @@
 
 
   function keyboardEvent(cmd) { // was bridge(cmd)
+    console.log('prepare_page activeMathfieldIndex=' + activeMathfieldIndex);
     var FApp = FAList[activeMathfieldIndex];
     var mf = FApp.mathField;
     // var fa = FApp.formula_applet;
@@ -158,7 +158,7 @@
         $(this).addClass('selected');
         var id = $(this).attr('id');
         activeMathfieldIndex = $(".formula_applet").index($('#' + id));
-        console.log(activeMathfieldIndex);
+        // console.log(activeMathfieldIndex);
       });
       if ($(this).attr('data-zip') !== undefined) {
         FApp.hasSolution = true;
