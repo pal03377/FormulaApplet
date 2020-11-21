@@ -29,7 +29,17 @@ function init(){
 <p class="formula_applet" id="binom_01">(2u + 7v)^2 = \MathQuillMathField{}</p><br />
 <p class="formula_applet" id="binom_02" data-zip='UEsDBAoAAAAAABpEO1HIazOjBQAAAAUAAAALAAAAY29udGVudC50eHQ0OXZeMlBLAQIUAAoAAAAAABpEO1HIazOjBQAAAAUAAAALAAAAAAAAAAAAAAAAAAAAAABjb250ZW50LnR4dFBLBQYAAAAAAQABADkAAAAuAAAAAAA='>(2u + 7v)^2 = 4u^2 + 28uv + \MathQuillMathField{}</p><br />
 <p class="formula_applet" id="fraction">\frac{13t^2 - 5t}{t} = \MathQuillMathField{}</p><br />
+<p class="formula_applet" id="BliBlaBlu" data-zip="UEsDBAoAAAAAAGqhdFFQFi1AAwAAAAMAAAALAAAAY29udGVudC50eHQyMXhQSwECFAAKAAAAAABqoXRRUBYtQAMAAAADAAAACwAAAAAAAAAAAAAAAAAAAAAAY29udGVudC50eHRQSwUGAAAAAAEAAQA5AAAALAAAAAAA">17x+4x=\MathQuillMathField{}</p>
 <hr>
+<p><button type="button" id='erase-input'>Erase input field</button></p>
+<p class="formula_applet" id="editor"><span id="math-field">17 + 4 = \class{inputfield}{21}</span></p>
+<hr />
+<div><p id='output-code-0'>Code 0</p></div>
+<div><p id='output-code-1'>Code 1</p></div>
+<div><p id='output-code-2'>Code 2</p></div>
+<div><p id='output-code-3'>Code 3</p></div>
+<hr>
+
 <?php include_once 'uses.php';?>
 
 <?php include_once 'footer.php';?>

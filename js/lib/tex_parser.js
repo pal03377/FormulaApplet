@@ -380,7 +380,7 @@ function find_corresponding_right_bracket(content, bra) {
     } else {
         var rightbra = [')', ']', '}', '\\right)', '\\right]', '\\right\\}'][pos];
     }
-    //    console.log('rightbra=' + rightbra);
+    // console.log('rightbra=' + rightbra);
     var stop = false;
     var mass = [];
     for (var i = 0; i < content.length; i++) {
