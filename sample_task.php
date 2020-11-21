@@ -7,7 +7,15 @@ include_once 'header.php';
 
 function init(){
   console.log('init...');
-  // vkbd_init();
+  $('#erase-input').click(function(){
+    var temp = editor_edithandler(editor_mf.latex());
+    console.log(temp);
+    var erased = temp[0] + temp[1] +temp[2];
+    //quick and dirty
+    if(erased !=='???'){
+      editor_mf.latex(erased);
+    }
+  });
 }
 
 // function keyboardEvent(cmd){

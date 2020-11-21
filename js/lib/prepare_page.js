@@ -130,6 +130,7 @@ function storeSolution(sol, ind) {
 }
 
 var editor_mf = '';
+
 function mathQuillify() {
   MQ = MathQuill.getInterface(2);
   vkbd_init();
@@ -141,20 +142,28 @@ function mathQuillify() {
     var isEditor = (FApp.id.toLowerCase() == 'editor');
     // console.log('isEditor=' + isEditor);
     FApp.formula_applet = this;
+    $(this).click(function () {
+      $(".formula_applet").removeClass('selected');
+      $(this).addClass('selected');
+      // var id = $(this).attr('id');
+      // activeMathfieldIndex = $(".formula_applet").index($('#' + id));
+      activeMathfieldIndex = FApp.index;
+      // console.log(activeMathfieldIndex);
+    });
     FAList[index] = FApp;
 
     if (isEditor) {
       // *** editor ***
       var eraseclass = '';
 
-      console.log('init_editor');
-      $('#erase-input').click(function () {
-        editor_edithandler();
-        //quick and dirty
-        if (eraseclass !== '???') {
-          editor_mf.latex(eraseclass);
-        }
-      });
+      console.log('init editor');
+      // $('#erase-input').click(function () {
+      //   var temp = editor_edithandler(editor_mf.latex());
+      //   //quick and dirty
+      //   if (eraseclass !== '???') {
+      //     editor_mf.latex(eraseclass);
+      //   }
+      // });
       // make whole math-field span editable
       var mathFieldSpan = document.getElementById('math-field');
       MQ = MathQuill.getInterface(2);
@@ -162,29 +171,21 @@ function mathQuillify() {
         spaceBehavesLikeTab: true, // configurable
         handlers: {
           edit: function () { // useful event handlers
-            editor_edithandler();
+            editor_edithandler(editor_mf.latex());
           }
         }
       });
       FApp.mathField = editor_mf;
-      console.log(editor_mf);
+      // console.log(editor_mf);
 
       var mqEditableField = $('#editor').find('.mq-editable-field')[0];
-      console.log(mqEditableField);
-  
+      // console.log(mqEditableField);
+
       // show output-codes before first edit
-      editor_edithandler();
+      editor_edithandler(editor_mf.latex());
     } else {
       // *** no editor ***
       MQ.StaticMath(this);
-      $(this).click(function () {
-        $(".formula_applet").removeClass('selected');
-        $(this).addClass('selected');
-        // var id = $(this).attr('id');
-        // activeMathfieldIndex = $(".formula_applet").index($('#' + id));
-        activeMathfieldIndex = FApp.index;
-        // console.log(activeMathfieldIndex);
-      });
       if ($(this).attr('data-zip') !== undefined) {
         FApp.hasSolution = true;
         var zip = $(this).attr('data-zip');
@@ -224,18 +225,15 @@ function mathQuillify() {
   });
 }
 
-function editor_edithandler() {
-  var output = editor_mf.latex();
-  // console.log(output);
-  // $('#output-code').val(output); syntax for textarea
-  $('#output-code-0').text(output);
+function editor_edithandler(latex) {
+  $('#output-code-0').text(latex);
   var part1 = '?';
   var part2 = '?';
   var part3 = '?';
-  var pos = output.indexOf('class{');
+  var pos = latex.indexOf('class{');
   if (pos > -1) {
-    part1 = output.substring(0, pos);
-    var rest = output.substring(pos + 5);
+    part1 = latex.substring(0, pos);
+    var rest = latex.substring(pos + 5);
     var temp = find_corresponding_right_bracket(rest, '{');
     if (temp[0] !== 0 || temp[1] !== 1 || temp[3] !== 1) {
       console.log('Something went wront at problemeditor.js');
@@ -243,29 +241,31 @@ function editor_edithandler() {
     part2 = rest.substring(1, temp[2]);
     part3 = rest.substring(temp[2] + 1);
   }
-  $('#output-code-1').text(part2);
-  eraseclass = part1 + part2 + part3;
-  // $('#output-code-3').text(part3);
-  var zip = new JSZip();
-  zip.file("content.txt", part2);
-  zip.generateAsync({
-    type: "base64"
-  }).then(function (zipcontent) {
-    var result = '<p class="formula_applet" id="BliBlaBlu" data-zip="';
-    result += zipcontent;
-    result += '">';
-    result += part1;
-    result += '\\MathQuillMathField{}';
-    result += part3;
-    result += '</p>';
-    $('#output-code-2').text(result);
-    var wikiresult = '<f_app id=BliBlaBlu data-zip="';
-    wikiresult += zipcontent;
-    wikiresult += '">';
-    wikiresult += part1;
-    wikiresult += '{{result}}';
-    wikiresult += part3;
-    wikiresult += '</f_app>';
-    $('#output-code-3').text(wikiresult);
-  });
+  return [part1, part2, part3];
 }
+
+// $('#output-code-1').text(part2);
+// eraseclass = part1 + part2 + part3;
+// // $('#output-code-3').text(part3);
+// var zip = new JSZip();
+// zip.file("content.txt", part2);
+// zip.generateAsync({
+//   type: "base64"
+// }).then(function (zipcontent) {
+//   var result = '<p class="formula_applet" id="BliBlaBlu" data-zip="';
+//   result += zipcontent;
+//   result += '">';
+//   result += part1;
+//   result += '\\MathQuillMathField{}';
+//   result += part3;
+//   result += '</p>';
+//   $('#output-code-2').text(result);
+//   var wikiresult = '<f_app id=BliBlaBlu data-zip="';
+//   wikiresult += zipcontent;
+//   wikiresult += '">';
+//   wikiresult += part1;
+//   wikiresult += '{{result}}';
+//   wikiresult += part3;
+//   wikiresult += '</f_app>';
+//   $('#output-code-3').text(wikiresult);
+// });
