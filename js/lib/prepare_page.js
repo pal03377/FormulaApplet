@@ -5,6 +5,7 @@ var precision = 0.000001;
 var activeMathfieldIndex = '';
 var MQ = '';
 var FAList = [];
+var new_fa_id = 'x8rT3dkkS';
 class FA {
   constructor() {
     this.index = '';
@@ -22,6 +23,10 @@ function prepare_page() {
   // waits for MathQuill to load
   $("img.mod").remove();
   ($('<img class="mod">')).insertAfter($(".formula_applet"));
+  // $( '#editor').on('mouseover', function(ev){
+  //   // console.log('mouseover');
+  //   console.log(document.activeElement);
+  // });
   $(document).ready(function () {
     mathQuillify();
   })
@@ -154,24 +159,17 @@ function mathQuillify() {
 
     if (isEditor) {
       // *** editor ***
-      var eraseclass = '';
+      // var eraseclass = '';
 
       console.log('init editor');
-      // $('#erase-input').click(function () {
-      //   var temp = editor_edithandler(editor_mf.latex());
-      //   //quick and dirty
-      //   if (eraseclass !== '???') {
-      //     editor_mf.latex(eraseclass);
-      //   }
-      // });
-      // make whole math-field span editable
+      // make whole mathFieldSpan editable
       var mathFieldSpan = document.getElementById('math-field');
       MQ = MathQuill.getInterface(2);
       editor_mf = MQ.MathField(mathFieldSpan, {
         spaceBehavesLikeTab: true, // configurable
         handlers: {
           edit: function () { // useful event handlers
-            editor_edithandler(editor_mf.latex());
+            show_editor_results(editor_edithandler(editor_mf.latex()));
           }
         }
       });
@@ -182,7 +180,7 @@ function mathQuillify() {
       // console.log(mqEditableField);
 
       // show output-codes before first edit
-      editor_edithandler(editor_mf.latex());
+      show_editor_results(editor_edithandler(editor_mf.latex()));
     } else {
       // *** no editor ***
       MQ.StaticMath(this);
@@ -244,28 +242,31 @@ function editor_edithandler(latex) {
   return [part1, part2, part3];
 }
 
-// $('#output-code-1').text(part2);
-// eraseclass = part1 + part2 + part3;
-// // $('#output-code-3').text(part3);
-// var zip = new JSZip();
-// zip.file("content.txt", part2);
-// zip.generateAsync({
-//   type: "base64"
-// }).then(function (zipcontent) {
-//   var result = '<p class="formula_applet" id="BliBlaBlu" data-zip="';
-//   result += zipcontent;
-//   result += '">';
-//   result += part1;
-//   result += '\\MathQuillMathField{}';
-//   result += part3;
-//   result += '</p>';
-//   $('#output-code-2').text(result);
-//   var wikiresult = '<f_app id=BliBlaBlu data-zip="';
-//   wikiresult += zipcontent;
-//   wikiresult += '">';
-//   wikiresult += part1;
-//   wikiresult += '{{result}}';
-//   wikiresult += part3;
-//   wikiresult += '</f_app>';
-//   $('#output-code-3').text(wikiresult);
-// });
+function show_editor_results(parts) {
+  console.log(parts);
+  var zip = new JSZip();
+  zip.file("content.txt", parts[2]);
+  zip.generateAsync({
+    type: "base64"
+  }).then(function (zipcontent) {
+    // TODO inputfield for id of result
+    var result = '<p class="formula_applet" id="' + new_fa_id + '" data-zip="';
+    result += zipcontent;
+    result += '">';
+    result += parts[1];
+    result += '\\MathQuillMathField{}';
+    result += parts[3];
+    result += '</p>';
+    var wikiresult = '<f_app id=' + new_fa_id + ' data-zip="';
+    wikiresult += zipcontent;
+    wikiresult += '">';
+    wikiresult += parts[1];
+    wikiresult += '{{result}}';
+    wikiresult += parts[3];
+    wikiresult += '</f_app>';
+
+    $('#output-code-1').text(parts[2]);
+    $('#output-code-2').text(result);
+    $('#output-code-3').text(wikiresult);
+  });
+}

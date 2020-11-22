@@ -61,3 +61,11 @@ div#output{
 #editor.formula_applet {
 	display: inline-block;
 }
+
+#develop {
+	background-color: green;
+}
+
+#develop:hover {
+	background-color: midnightblue;
+}
