@@ -239,13 +239,19 @@ function editor_edithandler(latex) {
     part2 = rest.substring(1, temp[2]);
     part3 = rest.substring(temp[2] + 1);
   }
+  console.log([part1, part2, part3]);
   return [part1, part2, part3];
+}
+
+function erase_class( latex){
+  var temp = editor_edithandler(latex);
+  return temp[0] + temp[1] +temp[2];
 }
 
 function show_editor_results(parts) {
   console.log(parts);
   var zip = new JSZip();
-  zip.file("content.txt", parts[2]);
+  zip.file("content.txt", parts[1]);
   zip.generateAsync({
     type: "base64"
   }).then(function (zipcontent) {
@@ -253,19 +259,19 @@ function show_editor_results(parts) {
     var result = '<p class="formula_applet" id="' + new_fa_id + '" data-zip="';
     result += zipcontent;
     result += '">';
-    result += parts[1];
+    result += parts[0];
     result += '\\MathQuillMathField{}';
-    result += parts[3];
+    result += parts[2];
     result += '</p>';
     var wikiresult = '<f_app id=' + new_fa_id + ' data-zip="';
     wikiresult += zipcontent;
     wikiresult += '">';
-    wikiresult += parts[1];
+    wikiresult += parts[0];
     wikiresult += '{{result}}';
-    wikiresult += parts[3];
+    wikiresult += parts[2];
     wikiresult += '</f_app>';
 
-    $('#output-code-1').text(parts[2]);
+    $('#output-code-1').text(parts[1]);
     $('#output-code-2').text(result);
     $('#output-code-3').text(wikiresult);
   });
