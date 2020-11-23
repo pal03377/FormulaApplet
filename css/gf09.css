@@ -69,3 +69,26 @@ div#output{
 #develop:hover {
 	background-color: midnightblue;
 }
+
+#mode_select input[type="radio"] {
+    /* display:none; */
+}
+#mode_select input[type="radio"] + label {
+    color:#000;
+    font-family:Arial, sans-serif;
+    font-size:18px;
+}
+#mode_select input[type="radio"] + label span {
+	content: \u9678;
+    display:inline-block;
+    width:19px;
+    height:19px;
+    /* margin:-1px 4px 0 0; */
+    vertical-align:middle;
+    /* background:url(http://webdesigntutsplus.s3.amazonaws.com/tuts/391_checkboxes/check_radio_sheet.png) -38px top no-repeat; */
+    cursor:pointer;
+}
+#mode_select input[type="radio"]:checked + label span {
+	content: \u9673;
+    /* background:url(http://webdesigntutsplus.s3.amazonaws.com/tuts/391_checkboxes/check_radio_sheet.png) -57px top no-repeat; */
+}

@@ -239,7 +239,7 @@ function editor_edithandler(latex) {
     part2 = rest.substring(1, temp[2]);
     part3 = rest.substring(temp[2] + 1);
   }
-  console.log([part1, part2, part3]);
+  // console.log([part1, part2, part3]);
   return [part1, part2, part3];
 }
 
@@ -249,7 +249,7 @@ function erase_class( latex){
 }
 
 function show_editor_results(parts) {
-  console.log(parts);
+  // console.log(parts);
   var zip = new JSZip();
   zip.file("content.txt", parts[1]);
   zip.generateAsync({

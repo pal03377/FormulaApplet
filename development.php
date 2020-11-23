@@ -8,6 +8,7 @@
 
 <body>
     <h1><?php echo $title; ?></h1>
+    <p><a href='problem_editor.php'>Problem Editor</a> for later use in MediaWiki</p>
     <p><a href='sample_task.php'>Sample task</a> for later use in MediaWiki</p>
     <p><a href='hammer_test.php'>VKBD - Virtual Keyboard</a> - uses library 'Hammer'</p>
     <p><a href='tex_parser.php'>TEX Parser</a></p>
