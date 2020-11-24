@@ -162,6 +162,7 @@ function mathQuillify() {
       // var eraseclass = '';
 
       console.log('init editor');
+      prepend();
       // make whole mathFieldSpan editable
       var mathFieldSpan = document.getElementById('math-field');
       MQ = MathQuill.getInterface(2);
@@ -181,6 +182,32 @@ function mathQuillify() {
 
       // show output-codes before first edit
       show_editor_results(editor_edithandler(editor_mf.latex()));
+      set_input_event();
+      $('#random-id').click(function (ev) {
+        console.log('random-id');
+        var r_id = makeid(8);
+        console.log(r_id);
+        document.getElementById('fa_name').value = r_id;
+        new_fa_id = r_id;
+        show_editor_results(editor_edithandler(editor_mf.latex()));
+      });
+
+      $('#fa_name').on('input', function (ev) {
+        var fa_name = ev.target.value;
+        console.log('fa_name=' + fa_name);
+        // avoid XSS
+        fa_name = fa_name.replace(/</g, '');
+        fa_name = fa_name.replace(/>/g, '');
+        fa_name = fa_name.replace(/"/g, '');
+        fa_name = fa_name.replace(/'/g, '');
+        fa_name = fa_name.replace(/&/g, '');
+        fa_name = fa_name.replace(/ /g, '_');
+        console.log(fa_name);
+        if (fa_name !== '') {
+          new_fa_id = fa_name;
+          show_editor_results(editor_edithandler(editor_mf.latex()));
+        }
+      });
     } else {
       // *** no editor ***
       MQ.StaticMath(this);
@@ -221,6 +248,54 @@ function mathQuillify() {
       vkbd_show();
     });
   });
+  // prepend();
+}
+
+function set_input_event() {
+  $('#set-input').on('mousedown', function (ev) {
+    ev.preventDefault();
+
+    var ori = editor_mf.latex();
+    console.log(ori);
+    // erase class{inputfield}
+    var erased_1 = erase_class(ori);
+    console.log(erased_1);
+    var replacement = 'µ';
+    if (ori.indexOf(replacement) == -1) {
+      // replacement has to be done before erase of class{...
+      editor_mf.typedText(replacement);
+      var erased_2 = erase_class(editor_mf.latex());
+      console.log(erased_2);
+      var part1 = '?';
+      var part2 = '?';
+      var part3 = '?';
+      var pos = erased_2.indexOf(replacement);
+      part1 = erased_2.substring(0, pos);
+      part3 = erased_2.substring(pos + replacement.length);
+      console.log(part1 + '|' + part3);
+      // Delete part1 from beginning of erased_1
+      // and delete part3 from end of erased_1
+      var check = erased_1.substr(0, part1.length);
+      if (check !== part1) {
+        console.log('Something went wrong with replacement of input field');
+      }
+      erased_1 = erased_1.substring(part1.length);
+      console.log(erased_1);
+      check = erased_1.substring(erased_1.length - part3.length);
+      if (check !== part3) {
+        console.log('Something went wrong with replacement of input field');
+      }
+      part2 = erased_1.substring(0, erased_1.length - part3.length);
+      console.log(part2);
+      var new_latex = part1 + '\\class{inputfield}{' + part2 + '}' + part3;
+      console.log(new_latex);
+      editor_mf.latex(new_latex);
+      //   $('#editor').innerHTML = 'BliBlaBlu';
+    }
+    // setTimeout(function(){
+    //     console.log('Bim');
+    //  }, 2000);
+  });
 }
 
 function editor_edithandler(latex) {
@@ -243,9 +318,9 @@ function editor_edithandler(latex) {
   return [part1, part2, part3];
 }
 
-function erase_class( latex){
+function erase_class(latex) {
   var temp = editor_edithandler(latex);
-  return temp[0] + temp[1] +temp[2];
+  return temp[0] + temp[1] + temp[2];
 }
 
 function show_editor_results(parts) {
@@ -275,4 +350,36 @@ function show_editor_results(parts) {
     $('#output-code-2').text(result);
     $('#output-code-3').text(wikiresult);
   });
+}
+
+function prepend() {
+  var before = $('div#ed_before');
+  console.log('before.length=' + before.length);
+  if (before.length == 0) {
+    var ed = $('.formula_applet#editor');
+    ed.before('<p id="mode_select">');
+    $('p#mode_select').append('  <h3><span class="mw-headline" id="Mode">Mode</span></h3>');
+    $('p#mode_select').append('  <input type="radio" id="auto" name="select_mode" checked />');
+    $('p#mode_select').append('  <label for="auto"><span></span>Automatic (left side of equation will be compared to right side)</label>');
+    $('p#mode_select').append('  <br/>');
+    $('p#mode_select').append('  <input type="radio" id="manu" name="select_mode" />');
+    $('p#mode_select').append('  <label for="manu"><span></span>Manual (input will be compared with given solution)</label>');
+    ed.before('<p id="input_id">');
+    $('p#input_id').append('  <label for="fa_name">Id of Formula Applet (4 to 20 characters)</label>');
+    $('p#input_id').append('  <input type="text" id="fa_name" name="fa_bla_name" required minlength="4" maxlength="20" size="10">');
+    $('p#input_id').append('  <button type="button" id="random-id">Random</button>');
+    ed.before('<p><button type="button" id="set-input">Set input field</button></p>');
+    ed.after('<p id="output-code-3"></p>');
+  }
+}
+
+function makeid(length) {
+  var result = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_+-!%_+-!%_+-!%';
+  var numOfChars = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * numOfChars));
+
+  }
+  return result;
 }

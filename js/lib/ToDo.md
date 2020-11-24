@@ -17,7 +17,7 @@
 * definite integral obsolete?
 * gf09.css: use glue to load
 
-## MediaWiki updaten
+## MediaWiki updaten (LOG)
 * braucht neuere PHP-Version
 * https://faq.1blu.de/content/480/981/de/wie-kann-ich-meine-php-version-aendern-.html
 * Neuere Wiki-Version 1.35.10 bei 1blu installieren:
@@ -34,7 +34,7 @@
 * Explizites "addKeyListener" FAIL
 * Transparentes Textinput-Feld drüberlegen FAIL
 * Ein-Pixel-Textinput-Feld daneben (links oben) FAIL
-* Virtuelle Tastatur aus Library FAIL - lieber selber machen
+* Virtuelle Tastatur aus Library FAIL - lieber selber machen OK
 
 ## glue2
 * Umbenennen glue.js -> glue_old.js und glue2.js -> glue.js OK
@@ -49,13 +49,13 @@
 * other.php, uses.php aktualisieren OK
 * VKBD ergänzen (CAPS, Greek) OK
 * Koppelung VKBD - MathQuill OK
-* VKBD auch im Wiki
+* VKBD auch im Wiki OK
 * on error, TypeScript
-* Problem-Editor, Integral, Limes
+* Problem-Editor OK, Integral, Limes
 * MediaWiki-WYSIWYG-Editor
-* Karl Kirst, Maria Eirich, Mandy Schütze
+* Karl Kirst, Maria Eirich OK, Mandy Schütze OK
 * MediaWiki-Extensions aktualisieren
-** GeoGebra: Nur Zbigniew
-** FormelApplet durch FormulaApplet ersetzen
+** GeoGebra: Nur Zbynek OK
+** FormelApplet durch FormulaApplet ersetzen OK
 * GitHub von privat auf öffentlich
 

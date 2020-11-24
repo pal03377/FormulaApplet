@@ -626,6 +626,7 @@ function vkbd_init() {
     $('#keyboard').html(get_vkbd());
     vkbd_bind_events();
     keyboardActivate('mixed');
+    vkbd_hide();
 }
 
 function vkbd_hide() {

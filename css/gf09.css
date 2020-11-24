@@ -92,3 +92,6 @@ div#output{
 	content: \u9673;
     /* background:url(http://webdesigntutsplus.s3.amazonaws.com/tuts/391_checkboxes/check_radio_sheet.png) -57px top no-repeat; */
 }
+#input_id input#fa_name {
+	margin: 1em;
+}
