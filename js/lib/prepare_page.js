@@ -181,7 +181,7 @@ function mathQuillify() {
       // console.log(mqEditableField);
 
       // show output-codes before first edit
-      show_editor_results(editor_edithandler(editor_mf.latex()));
+      // show_editor_results(editor_edithandler(editor_mf.latex()));
       set_input_event();
       $('#random-id').click(function (ev) {
         console.log('random-id');
