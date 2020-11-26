@@ -32,17 +32,6 @@ function prepare_page() {
   })
 }
 
-function base64_zip_decode(code, decode_success) {
-  var zip = new JSZip();
-  zip.loadAsync(code, {
-    base64: true
-  }).then(function (data) {
-    zip.file("content.txt").async("string").then(function (data) {
-      decode_success(data);
-    });
-  });
-}
-
 // function isAndr() cannot be moved to glue.js because
 // glue.js is executed but not stored at test.mathebuch-online.de/wiki
 

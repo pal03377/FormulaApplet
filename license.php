@@ -33,13 +33,6 @@ include_once 'header.php';
         <td>Mozilla Public License, v. 2.0</td>
     </tr>
     <tr>
-        <td>Create ZIP files (by Stuart Knightley)</td>
-        <td>3.5.0</td>
-        <td><a href="https://stuk.github.io/jszip/">https://stuk.github.io/jszip/</a></td>
-        <td><a href="https://github.com/Stuk/jszip">https://github.com/Stuk/jszip</a></td>
-        <td>GPLv3 and the MIT licenses</td>
-    </tr>
-    <tr>
         <td>Hammer. Add touch gestures to your web app.</td>
         <td>2.0.8</td>
         <td><a href="https://hammerjs.github.io/getting-started/">https://hammerjs.github.io/getting-started/</a></td>
