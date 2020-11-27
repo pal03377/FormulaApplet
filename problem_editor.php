@@ -1,5 +1,5 @@
 <?php $title = 'Problem Editor';
-$liblist = "[ 'hammer', 'zip', 'prepare_page', 'mathquill', 'tex_parser', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss']";
+$liblist = "[ 'hammer', 'decode', 'prepare_page', 'mathquill', 'tex_parser', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss']";
 include_once 'header.php';
 ?>
 
@@ -33,11 +33,11 @@ function init(){
 <p><button type="button" id='erase-input'>Set input field</button></p> -->
 <p class="formula_applet" id="editor"><span id="math-field">17 + 4 = \class{inputfield}{21}</span></p>
 <hr />
-<div><p id='output-code-0'>Code 0</p></div>
+<!-- <div><p id='output-code-0'>Code 0</p></div>
 <div><p id='output-code-1'>Code 1</p></div>
 <div><p id='output-code-2'>Code 2</p></div>
 <div><p id='output-code-3'>Code 3</p></div>
-<hr>
+<hr> -->
 
 <?php include_once 'uses.php';?>
 

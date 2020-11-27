@@ -17,7 +17,7 @@ console.log('libPath=' + libPath + '  cssPath=' + cssPath);
 
 if (typeof liblist === 'undefined') { 
     // default for wiki
-    var liblist = ['mathquill', 'prepare_page', 'tex_parser', 'zip', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss', 'hammer'];
+    var liblist = ['mathquill', 'prepare_page', 'tex_parser', 'decode', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss', 'hammer'];
 }
 
 function task(source) {
@@ -40,6 +40,7 @@ tasks['algebrite'].fallback = libPath + 'Algebrite/dist/algebrite.bundle-for-bro
 tasks['kas'] = new task(libPath + 'KAS/KAS_loader.js');
 tasks['tex_parser'] = new task(libPath + 'tex_parser.js');
 tasks['vkbd'] = new task(libPath + 'vkbd.js');
+tasks['decode'] = new task(libPath + 'decode.js');
 tasks['prepare_page'] = new task(libPath + 'prepare_page.js');
 tasks['hammer'] = new task(libPath + 'hammer.js');
 tasks['hammer'].fallback = 'https://hammerjs.github.io/dist/hammer.js';

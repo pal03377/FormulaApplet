@@ -1,67 +1,51 @@
 <?php $title = 'Decode - Encode (gf09)';
-$liblist = "[]";
+$liblist = "['decode']";
 include_once 'header.php';
 ?>
 
 <body>
 <h1><?php echo $title; ?></h1>
 <h2>See console!</h2>
-
+<!-- <p>Paste the following lines into the file <em>decode.js</em></p>
+<textarea id='permutations' rows=22 cols=213></textarea> -->
 <script>
-  function prepare_pg(){
-    init();
+
+function test(text){
+    var encoded = encode(text);
+    var decoded = decode(encoded);
+    if( text == decoded){
+      decoded += ' OK';
+    } else {
+      decoded += ' ERROR';
+    }
+    console.log(encoded + '->' + decoded);
   }
 
- function init(){
+  function init(){
+    // create_permutations();
+    test('ganzVielGeheim');
+    test('g=a+n/kNurrBliBlablu');
+    test('Leerzeichen Ist Nicht Im Zeichensatz BliBlaBlu');
+    test('Auch / und \' und \\ werden codiert, ohne abzustürzen');
+    test('Ebenso \r und \n - #erstaunlich!');
+    test('der große Test');
+    test('@µß?§$€');
+    test('ÄÖÜäöüß\/');
+    test('Sonderzeichen.´`\'#*');
+    test('\u3176\u2702\u274b\u274c\u316d');
+    test('2hr');
+    test('49v^2');
+    test('Besonders lange Strings sind interessant zu codieren, wenn sie Sonderzeichen wie @ und µ und \\ oder " und \" enthalten.');
+    test('Ab>cD?');
+
+
+}
+
+ function init_old(){
     console.log( 'init' );
 
-  // https://attacomsian.com/blog/javascript-base64-encode-decode
-  // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
-  // https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
-    function encodeUnicode(str) {
-    // first we use encodeURIComponent to get percent-encoded UTF-8,
-    // then we convert the percent encodings into raw bytes which
-    // can be fed into btoa.
-    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-        function toSolidBytes(match, p1) {
-            return String.fromCharCode('0x' + p1);
-    }));
-  }
-
-  function decodeUnicode(str) {
-    // Going backwards: from bytestream, to percent-encoding, to original string.
-    return decodeURIComponent(atob(str).split('').map(function (c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-  }
-
-  function test(string){
-    var permutations = init_alpha_permutation();
-    console.log(string);
-    code = encodeUnicode(string);
-    console.log('code1=' + code);
-    code = decode_encode_permutation(code, permutations[0]);
-    console.log('code2=' + code);
-    code = decode_encode_permutation(code, permutations[1]);
-    data = decodeUnicode(code);
-    if( string == data){
-      data += ' OK';
-    } else {
-      data += ' ERROR';
-    }
-    console.log(data);
-  }
-
-  function init_permutation(n){
-    var p = [];
-    var q = [];
-    for(var i = 0; i<n; i++){
-      p[i] = i;
-      q[i] = i;
-    }
-    return [p, q];
-  }
-
+ 
+  
   function init_alpha_permutation(){
     // var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
@@ -98,11 +82,6 @@ include_once 'header.php';
       q_alpha[char] = h[char].toString();
     }
     return [p_alpha, q_alpha];
-    // for(var i = 0; i< n; i++){
-    //   var char = characters[i];
-    //   console.log(char + '->' + q_alpha[p_alpha[char]])
-    // }
-
 }
 
   function decode_encode_permutation(text, perm){
@@ -114,50 +93,7 @@ include_once 'header.php';
     return result;
   }
 
-  function swap(p , q, i ,j){
-    var h = p[i];
-    p[i] = p[j];
-    p[j] = h;
-    var ii= p[i];
-    var jj = p[j];
-    h = q[ii];
-    q[ii] = q[jj];
-    q[jj] = h;
-  }
-
-  function random_swap(p, q, n){
-    var i = Math.floor(Math.random() * n);  
-    var j = Math.floor(Math.random() * n);
-    swap(p, q, i, j);  
-  }
-
-  test('der große Test');
-  test('@µß?§$€');
-  test('ÄÖÜäöüß\/');
-  test('Sonderzeichen.´`\'#*');
-  test('\u3176\u316d\u2702\u274b\u274c');
-  test('2hr');
-  test('49v^2');
-  test('Besonders lange Strings sind interessant zu codieren, wenn sie Sonderzeichen wie @ und µ und \\ oder " und \" enthalten.');
-  test('Ab>cD?');
-
-  // var test = 'test ';
-  // for(var i = 0; i< n; i++){
-  //   var x = q[p[i]];
-  //   test += x;
-  //   test += ' ';
-  // }
-  // console.log(test);
-  
-  // var text = 'Kann keine Umlaute aber 3967 enhalten';
-  // console.log(text);
-  // var perm = init_alpha_permutation();
-  // var code = decode_encode_permutation(text, perm[0]);
-  // console.log(code);
-  // var data = decode_encode_permutation(code, perm[1]);
-  // console.log(data);
-
- }
+}
 
 
 

@@ -194,15 +194,16 @@ function mathQuillify() {
         console.log(fa_name);
         if (fa_name !== '') {
           new_fa_id = fa_name;
-          show_editor_results(editor_edithandler(editor_mf.latex()));
         }
       });
+      $('#random-id').click();
+      show_editor_results(editor_edithandler(editor_mf.latex()));
     } else {
       // *** no editor ***
       MQ.StaticMath(this);
-      if ($(this).attr('data-zip') !== undefined) {
+      if ($(this).attr('data-b64') !== undefined) {
         FApp.hasSolution = true;
-        var zip = $(this).attr('data-zip');
+        var zip = $(this).attr('data-b64');
         // base64_zip_decode(zip, function (decoded) {
         //   // storeSolution(decoded, index);
         // });
@@ -313,37 +314,35 @@ function erase_class(latex) {
 }
 
 function show_editor_results(parts) {
-  // console.log(parts);
-  var zip = new JSZip();
-  zip.file("content.txt", parts[1]);
-  zip.generateAsync({
-    type: "base64"
-  }).then(function (zipcontent) {
-    // TODO inputfield for id of result
-    var result = '<p class="formula_applet" id="' + new_fa_id + '" data-zip="';
-    result += zipcontent;
-    result += '">';
-    result += parts[0];
-    result += '\\MathQuillMathField{}';
-    result += parts[2];
-    result += '</p>';
-    var wikiresult = '<f_app id=' + new_fa_id + ' data-zip="';
-    wikiresult += zipcontent;
-    wikiresult += '">';
-    wikiresult += parts[0];
-    wikiresult += '{{result}}';
-    wikiresult += parts[2];
-    wikiresult += '</f_app>';
+  // parts[1] -> zipcontent
+  var solution = encode(parts[1]);
+  var result = '<p class="formula_applet" id="' + new_fa_id + '" data-b64="';
+  result += solution;
+  result += '">';
+  result += parts[0];
+  result += '\\MathQuillMathField{}';
+  result += parts[2];
+  result += '</p>';
+  var wikiresult = '<f_app id=' + new_fa_id + ' data-b64="';
+  wikiresult += solution;
+  wikiresult += '">';
+  wikiresult += parts[0];
+  wikiresult += '{{result}}';
+  wikiresult += parts[2];
+  wikiresult += '</f_app>';
 
-    $('#output-code-1').text(parts[1]);
-    $('#output-code-2').text(result);
-    $('#output-code-3').text(wikiresult);
-  });
+  $('#output-code-1').text(parts[1]);
+  $('#output-code-2').text(result);
+  $('#output-code-3').text(wikiresult);
+  var out = $('textarea#wiki-text');
+  if (out.length > 0) {
+    out.text(wikiresult);
+  }
 }
 
 function prepend() {
   var before = $('div#ed_before');
-  console.log('before.length=' + before.length);
+  // console.log('before.length=' + before.length);
   if (before.length == 0) {
     var ed = $('.formula_applet#editor');
     ed.before('<p id="mode_select">');
@@ -358,7 +357,8 @@ function prepend() {
     $('p#input_id').append('  <input type="text" id="fa_name" name="fa_bla_name" required minlength="4" maxlength="20" size="10">');
     $('p#input_id').append('  <button type="button" id="random-id">Random</button>');
     ed.before('<p><button type="button" id="set-input">Set input field</button></p>');
-    ed.after('<p id="output-code-3"></p>');
+    // ed.after('<p id="output-code-3"></p>');
+    ed.after('<hr /><textarea id="wiki-text" rows=4 cols=150></textarea>');
   }
 }
 
