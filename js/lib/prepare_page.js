@@ -204,6 +204,7 @@ function mathQuillify() {
       if ($(this).attr('data-b64') !== undefined) {
         FApp.hasSolution = true;
         var zip = $(this).attr('data-b64');
+        storeSolution(decode(zip), index);
         // base64_zip_decode(zip, function (decoded) {
         //   // storeSolution(decoded, index);
         // });
@@ -246,7 +247,7 @@ function set_input_event() {
     ev.preventDefault();
 
     var ori = editor_mf.latex();
-    console.log(ori);
+    console.log('ori=' + ori);
     // erase class{inputfield}
     var erased_1 = erase_class(ori);
     console.log(erased_1);
@@ -303,6 +304,10 @@ function editor_edithandler(latex) {
     }
     part2 = rest.substring(1, temp[2]);
     part3 = rest.substring(temp[2] + 1);
+  } else {
+    part1 = '';
+    part2 = latex;
+    part3 = '';
   }
   // console.log([part1, part2, part3]);
   return [part1, part2, part3];
