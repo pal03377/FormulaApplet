@@ -134,7 +134,7 @@ function mathQuillify() {
     FApp.index = index;
     FApp.id = $(this).attr('id') // name of formula_applet
     var isEditor = (FApp.id.toLowerCase() == 'editor');
-    // console.log('isEditor=' + isEditor);
+    console.log('isEditor=' + isEditor);
     FApp.formula_applet = this;
     $(this).click(function () {
       $(".formula_applet").removeClass('selected');
@@ -199,6 +199,7 @@ function mathQuillify() {
       $('#random-id').click();
       show_editor_results(editor_edithandler(editor_mf.latex()));
     } else {
+      //******************
       // *** no editor ***
       MQ.StaticMath(this);
       if ($(this).attr('data-b64') !== undefined) {
@@ -225,7 +226,7 @@ function mathQuillify() {
         }
       });
       FApp.mathField = mf;
-      // console.log(index);
+      console.log(index);
       // console.log(FApp);
     }
     FApp.mqEditableField = mqEditableField;
