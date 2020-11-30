@@ -30,6 +30,15 @@ function prepare_page() {
   $(document).ready(function () {
     mathQuillify();
   })
+  // loadMessages(['january', 'february', 'march', 'formelapplet-missing-parameter']).then(
+  //   function dostuff() {
+  //     console.log(mw.msg('january'));
+  //     console.log(mw.msg('march'));
+  //     console.log(mw.msg('formelapplet-missing-parameter'));
+  //   }
+  // );
+
+  // testcreateReplacement();
 }
 
 // function isAndr() cannot be moved to glue.js because
@@ -39,8 +48,7 @@ function isAndr() {
   return (navigator.userAgent.toUpperCase().indexOf('ANDROID') !== -1);
 }
 
-
-function keyboardEvent(cmd) { // was bridge(cmd)
+function keyboardEvent(cmd) {
   console.log('prepare_page activeMathfieldIndex=' + activeMathfieldIndex);
   var FApp = FAList[activeMathfieldIndex];
   var mf = FApp.mathField;
@@ -118,10 +126,10 @@ function editHandler(index) {
   // document.getElementById('output').innerHTML = out;
 };
 
-function storeSolution(sol, ind) {
-  console.log(ind + ' solution: ' + sol);
-  FAList[ind].solution = sol;
-}
+// function storeSolution(sol, ind) {
+//   console.log(ind + ' solution: ' + sol);
+//   FAList[ind].solution = sol;
+// }
 
 var editor_mf = '';
 
@@ -172,7 +180,11 @@ function mathQuillify() {
       // show output-codes before first edit
       // show_editor_results(editor_edithandler(editor_mf.latex()));
       set_input_event();
-      $('#random-id').click(function (ev) {
+      set_unit_event();
+
+      // $('#random-id').click(function (ev) {
+      $('#random-id').on('mousedown', function (ev) {
+        ev.preventDefault();
         console.log('random-id');
         var r_id = makeid(8);
         console.log(r_id);
@@ -196,8 +208,7 @@ function mathQuillify() {
           new_fa_id = fa_name;
         }
       });
-      $('#random-id').click();
-      show_editor_results(editor_edithandler(editor_mf.latex()));
+      $('#random-id').mousedown();
     } else {
       //******************
       // *** no editor ***
@@ -205,7 +216,9 @@ function mathQuillify() {
       if ($(this).attr('data-b64') !== undefined) {
         FApp.hasSolution = true;
         var zip = $(this).attr('data-b64');
-        storeSolution(decode(zip), index);
+        // storeSolution(decode(zip), index);
+        FAList[index].solution = decode(zip);
+
         // base64_zip_decode(zip, function (decoded) {
         //   // storeSolution(decoded, index);
         // });
@@ -243,50 +256,93 @@ function mathQuillify() {
   // prepend();
 }
 
+function get_selection(mf, eraseClass){ 
+  // typeOf mf = mathField
+  var ori = mf.latex();
+  console.log('ori=' + ori);
+  // erase class{inputfield}
+  var erased = ori;
+  if (eraseClass){
+    erased = erase_class(ori);
+  }
+  console.log(erased);
+  var replacement = createReplacement(ori);
+  if (ori.indexOf(replacement) == -1) {
+    // replacement has to be done before erase of class{...
+    // Do replacement!
+    mf.typedText(replacement);
+    // erase class{inputfield}
+    var replaced_and_erased = mf.latex();
+    if(eraseClass){
+      replaced_and_erased = erase_class(replaced_and_erased);
+    }
+    // console.log(replaced_and_erased);
+    var pre_selected = '?';
+    var selected = '?';
+    var post_selected = '?';
+    var pos = replaced_and_erased.indexOf(replacement);
+    pre_selected = replaced_and_erased.substring(0, pos);
+    // selected = replacement
+    post_selected = replaced_and_erased.substring(pos + replacement.length);
+    // Delete pre_selected from beginning of erased
+    // and delete post_selected from end of erased
+    var check = erased.substr(0, pre_selected.length);
+    if (check !== pre_selected) {
+      console.log('Something went wrong with replacement of input field');
+    }
+    erased = erased.substring(pre_selected.length);
+    check = erased.substring(erased.length - post_selected.length);
+    if (check !== post_selected) {
+      console.log('Something went wrong with replacement of input field');
+    }
+    selected = erased.substring(0, erased.length - post_selected.length);
+    console.log('selected=' + selected);
+    console.log('selected.length=' + selected.length);
+    return [pre_selected, selected, post_selected, ori];
+    //   $('#editor').innerHTML = 'BliBlaBlu';
+  }
+
+}
+
 function set_input_event() {
   $('#set-input').on('mousedown', function (ev) {
     ev.preventDefault();
-
-    var ori = editor_mf.latex();
-    console.log('ori=' + ori);
-    // erase class{inputfield}
-    var erased_1 = erase_class(ori);
-    console.log(erased_1);
-    var replacement = 'µ';
-    if (ori.indexOf(replacement) == -1) {
-      // replacement has to be done before erase of class{...
-      editor_mf.typedText(replacement);
-      var erased_2 = erase_class(editor_mf.latex());
-      console.log(erased_2);
-      var part1 = '?';
-      var part2 = '?';
-      var part3 = '?';
-      var pos = erased_2.indexOf(replacement);
-      part1 = erased_2.substring(0, pos);
-      part3 = erased_2.substring(pos + replacement.length);
-      console.log(part1 + '|' + part3);
-      // Delete part1 from beginning of erased_1
-      // and delete part3 from end of erased_1
-      var check = erased_1.substr(0, part1.length);
-      if (check !== part1) {
-        console.log('Something went wrong with replacement of input field');
-      }
-      erased_1 = erased_1.substring(part1.length);
-      console.log(erased_1);
-      check = erased_1.substring(erased_1.length - part3.length);
-      if (check !== part3) {
-        console.log('Something went wrong with replacement of input field');
-      }
-      part2 = erased_1.substring(0, erased_1.length - part3.length);
-      console.log(part2);
-      var new_latex = part1 + '\\class{inputfield}{' + part2 + '}' + part3;
+    var temp = get_selection(editor_mf ,true);
+    var pre_selected = temp[0];
+    var selected = temp[1];
+    var post_selected = temp[2];
+    var ori = temp[3];
+    if (selected.length > 0) {
+      var new_latex = pre_selected + '\\class{inputfield}{' + selected + '}' + post_selected;
       console.log(new_latex);
       editor_mf.latex(new_latex);
-      //   $('#editor').innerHTML = 'BliBlaBlu';
+    } else {
+      ori = ori.replace('class{', '\\class{inputfield}{');
+      console.log(ori);
+      editor_mf.latex(ori);
     }
-    // setTimeout(function(){
-    //     console.log('Bim');
-    //  }, 2000);
+  });
+}
+
+function set_unit_event() {
+  $('#set-unit').on('mousedown', function (ev) {
+    ev.preventDefault();
+    // erase class inputfield = false
+    var temp = get_selection(editor_mf, false);
+    var pre_selected = temp[0];
+    var selected = temp[1];
+    var post_selected = temp[2];
+    var ori = temp[3];
+    if (selected.length > 0) {
+      var new_latex = pre_selected + '\\textcolor{blue}{' + selected + '}' + post_selected;
+      new_latex =  new_latex.replace('class{', '\\class{inputfield}{');
+      console.log(new_latex);
+      editor_mf.latex(new_latex);
+    } else {
+      ori = ori.replace('class{', '\\class{inputfield}{');
+      console.log(ori);
+      editor_mf.latex(ori);
+    }
   });
 }
 
@@ -320,7 +376,7 @@ function erase_class(latex) {
 }
 
 function show_editor_results(parts) {
-  // parts[1] -> zipcontent
+  // parts[1] -> solution(encoded)
   var solution = encode(parts[1]);
   var result = '<p class="formula_applet" id="' + new_fa_id + '" data-b64="';
   result += solution;
@@ -361,10 +417,11 @@ function prepend() {
     ed.before('<p id="input_id">');
     $('p#input_id').append('  <label for="fa_name">Id of Formula Applet (4 to 20 characters)</label>');
     $('p#input_id').append('  <input type="text" id="fa_name" name="fa_bla_name" required minlength="4" maxlength="20" size="10">');
-    $('p#input_id').append('  <button type="button" id="random-id">Random</button>');
-    ed.before('<p><button type="button" id="set-input">Set input field</button></p>');
+    $('p#input_id').append('  <button type="button" class="problemeditor" id="random-id">Random ID</button>');
     // ed.after('<p id="output-code-3"></p>');
     ed.after('<hr /><textarea id="wiki-text" rows=4 cols=150></textarea>');
+    ed.after('<button type="button" class="problemeditor" id="set-unit">Unit</button>');
+    ed.after('<button type="button" class="problemeditor" id="set-input">Set input field</button>');
   }
 }
 
@@ -377,4 +434,46 @@ function makeid(length) {
 
   }
   return result;
+}
+
+/** @return instance of jQuery.Promise */
+function loadMessages(messages) {
+  return new mw.Api().get({
+    action: 'query',
+    meta: 'allmessages',
+    ammessages: messages.join('|'),
+    amlang: mw.config.get('wgUserLanguage')
+  }).then(function (data) {
+    $.each(data.query.allmessages, function (i, message) {
+      if (message.missing !== '') {
+        mw.messages.set(message.name, message['*']);
+      }
+    });
+  });
+}
+
+function createReplacement(latexstring) {
+  const separators = '∀µ∉ö∋∐∔∝∤∮∱∸∺∽≀';
+  var i = 0;
+  sep = '';
+  do {
+    var sep = separators[i];
+    var found = (latexstring.indexOf(sep) > -1);
+    var cont = found;
+    i++;
+    if (i > separators.length) {
+      cont = false;
+      sep = 'no replacement char found';
+    }
+  } while (cont)
+  return sep;
+}
+
+function testcreateReplacement() {
+  console.log('replacement=' + createReplacement('test'));
+  console.log('replacement=' + createReplacement('leider∀µ∉ö∋∐∔∝∤∮∱∸∺∽≀verloren'));
+  console.log('replacement=' + createReplacement('b∀µ∉ö∋∐∝∤∮∱∸∺∽≀'));
+  console.log('replacement=' + createReplacement('∀µ∉ö∋∐∔∝∤∮∱∸m∽≀'));
+  console.log('replacement=' + createReplacement('∉∀µ ö∋∐∔∤∮∱∸∺∽≀knurr∝'));
+  console.log('replacement=' + createReplacement('∀aµ∉öb∋∐∔∝c∤d∱∸∺∽≀'));
 }
