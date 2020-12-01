@@ -111,3 +111,9 @@ button.problemeditor {
 	margin: 0;
 	margin-left: 20px;
 }
+
+span.mq-textcolor{
+	font-size: 22px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: red !important;
+}

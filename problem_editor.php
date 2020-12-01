@@ -1,5 +1,5 @@
 <?php $title = 'Problem Editor';
-$liblist = "[ 'hammer', 'decode', 'prepare_page', 'mathquill', 'tex_parser', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss']";
+$liblist = "[ 'hammer', 'decode', 'prepare_page', 'mathquill', 'tex_parser', 'mathquillcss', 'gf09css', 'translate', 'vkbd', 'vkbdcss']";
 include_once 'header.php';
 ?>
 

@@ -23,9 +23,12 @@ function initTranslation() {
   // console.log($('.language'));
   // onclick behavior
   $('input.language').on('change', function (ev) {
-    // console.log(ev);
+    console.log(ev);
     // obtain lang = (id of .language button)
     var lang = $(this).attr('id'); // obtain language id
+    if(lang == ''){
+      lang = 'de';
+    }
     console.log(lang);
 
     if (isWiki) {
@@ -41,13 +44,16 @@ function initTranslation() {
       replaceWithTranslations(lang);
     }
   });
-  $('input#de.language').click();
+  // next line has to be erased
+  replaceWithTranslations('de');
 }
 
 function replaceWithTranslations(lang) {
+  console.log('replaceWithTranslations()');
   // translate all translatable elements
   $('.tr').each(function () {
     // obtail key of .tr element
+    console.log(this);
     var key = $(this).attr('key');
     var translation = '';
     if (isWiki) {

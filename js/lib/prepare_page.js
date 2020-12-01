@@ -26,8 +26,8 @@ function prepare_page() {
   ($('<img class="mod">')).insertAfter($(".formula_applet"));
   $(document).ready(function () {
     mathQuillify();
+    initTranslation();
   })
-  initTranslation();
   // testcreateReplacement();
 }
 
@@ -346,6 +346,7 @@ function editor_edithandler(latex) {
     part1 = latex.substring(0, pos);
     var rest = latex.substring(pos + 5);
     var temp = find_corresponding_right_bracket(rest, '{');
+    // [left_pos, bra.length, right_pos, rightbra.length]
     if (temp[0] !== 0 || temp[1] !== 1 || temp[3] !== 1) {
       console.log('Something went wront at problemeditor.js');
     }
@@ -410,7 +411,7 @@ function prepend() {
     $('p#input_id').append('  <button type="button" class="problemeditor" id="random-id">Random ID</button>');
     // ed.after('<p id="output-code-3"></p>');
     ed.after('<hr /><textarea id="wiki-text" rows=4 cols=150></textarea>');
-    ed.after('<button type="button" class="problemeditor" id="set-unit">Unit</button>');
+    ed.after('<button type="button" class="problemeditor" id="set-unit">Unit</button>' + '<button type="button" class="problemeditor" id="erase-unit">Erase Unit</button>');
     ed.after('<button type="button" class="problemeditor" id="set-input">Set input field</button>');
     ed.after('<p><span class="tr" key="uses">dummy</span></p>');
   }
