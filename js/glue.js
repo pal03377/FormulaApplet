@@ -17,7 +17,7 @@ console.log('libPath=' + libPath + '  cssPath=' + cssPath);
 
 if (typeof liblist === 'undefined') { 
     // default for wiki
-    var liblist = ['mathquill', 'prepare_page', 'tex_parser', 'decode', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss', 'hammer'];
+    var liblist = ['mathquill', 'prepare_page', 'tex_parser', 'decode', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss', 'hammer', 'translate'];
 }
 
 function task(source) {

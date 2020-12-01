@@ -27,17 +27,7 @@ function prepare_page() {
   $(document).ready(function () {
     mathQuillify();
   })
-  if (isWiki) {
-    var messages = ['march', 'formelapplet-missing-parameter', 'Wikibasemediainfo-quantity-unit-button-text'];
-    // see translate.js
-    loadMessages(messages).then(
-      function dostuff() {
-        console.log(mw.msg('march'));
-        console.log(mw.msg('formelapplet-missing-parameter'));
-        console.log(mw.msg('Wikibasemediainfo-quantity-unit-button-text'));
-      }
-    );
-  }
+  initTranslation();
   // testcreateReplacement();
 }
 
@@ -422,6 +412,7 @@ function prepend() {
     ed.after('<hr /><textarea id="wiki-text" rows=4 cols=150></textarea>');
     ed.after('<button type="button" class="problemeditor" id="set-unit">Unit</button>');
     ed.after('<button type="button" class="problemeditor" id="set-input">Set input field</button>');
+    ed.after('<p><span class="tr" key="uses">dummy</span></p>');
   }
 }
 

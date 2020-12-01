@@ -33,6 +33,7 @@ function init(){
 <p class="formula_applet" id="BliBlaBlu" data-b64="N2gMy">17x+4x=\MathQuillMathField{}</p>
 <hr>
 
+<?php include_once 'version.php';?>
 <?php include_once 'uses.php';?>
 
 <?php include_once 'footer.php';?>
