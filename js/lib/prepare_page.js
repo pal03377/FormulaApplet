@@ -20,24 +20,24 @@ class FA {
 }
 
 function prepare_page() {
+  console.log('isWiki=' + isWiki);
   // waits for MathQuill to load
   $("img.mod").remove();
   ($('<img class="mod">')).insertAfter($(".formula_applet"));
-  // $( '#editor').on('mouseover', function(ev){
-  //   // console.log('mouseover');
-  //   console.log(document.activeElement);
-  // });
   $(document).ready(function () {
     mathQuillify();
   })
-  // loadMessages(['january', 'february', 'march', 'formelapplet-missing-parameter']).then(
-  //   function dostuff() {
-  //     console.log(mw.msg('january'));
-  //     console.log(mw.msg('march'));
-  //     console.log(mw.msg('formelapplet-missing-parameter'));
-  //   }
-  // );
-
+  if (isWiki) {
+    var messages = ['march', 'formelapplet-missing-parameter', 'Wikibasemediainfo-quantity-unit-button-text'];
+    // see translate.js
+    loadMessages(messages).then(
+      function dostuff() {
+        console.log(mw.msg('march'));
+        console.log(mw.msg('formelapplet-missing-parameter'));
+        console.log(mw.msg('Wikibasemediainfo-quantity-unit-button-text'));
+      }
+    );
+  }
   // testcreateReplacement();
 }
 
@@ -142,7 +142,7 @@ function mathQuillify() {
     FApp.index = index;
     FApp.id = $(this).attr('id') // name of formula_applet
     var isEditor = (FApp.id.toLowerCase() == 'editor');
-    console.log('isEditor=' + isEditor);
+    // console.log('isEditor=' + isEditor);
     FApp.formula_applet = this;
     $(this).click(function () {
       $(".formula_applet").removeClass('selected');
@@ -187,7 +187,7 @@ function mathQuillify() {
         ev.preventDefault();
         console.log('random-id');
         var r_id = makeid(8);
-        console.log(r_id);
+        // console.log(r_id);
         document.getElementById('fa_name').value = r_id;
         new_fa_id = r_id;
         show_editor_results(editor_edithandler(editor_mf.latex()));
@@ -239,7 +239,7 @@ function mathQuillify() {
         }
       });
       FApp.mathField = mf;
-      console.log(index);
+      // console.log(index);
       // console.log(FApp);
     }
     FApp.mqEditableField = mqEditableField;
@@ -256,13 +256,13 @@ function mathQuillify() {
   // prepend();
 }
 
-function get_selection(mf, eraseClass){ 
+function get_selection(mf, eraseClass) {
   // typeOf mf = mathField
   var ori = mf.latex();
   console.log('ori=' + ori);
   // erase class{inputfield}
   var erased = ori;
-  if (eraseClass){
+  if (eraseClass) {
     erased = erase_class(ori);
   }
   console.log(erased);
@@ -273,7 +273,7 @@ function get_selection(mf, eraseClass){
     mf.typedText(replacement);
     // erase class{inputfield}
     var replaced_and_erased = mf.latex();
-    if(eraseClass){
+    if (eraseClass) {
       replaced_and_erased = erase_class(replaced_and_erased);
     }
     // console.log(replaced_and_erased);
@@ -307,7 +307,7 @@ function get_selection(mf, eraseClass){
 function set_input_event() {
   $('#set-input').on('mousedown', function (ev) {
     ev.preventDefault();
-    var temp = get_selection(editor_mf ,true);
+    var temp = get_selection(editor_mf, true);
     var pre_selected = temp[0];
     var selected = temp[1];
     var post_selected = temp[2];
@@ -335,7 +335,7 @@ function set_unit_event() {
     var ori = temp[3];
     if (selected.length > 0) {
       var new_latex = pre_selected + '\\textcolor{blue}{' + selected + '}' + post_selected;
-      new_latex =  new_latex.replace('class{', '\\class{inputfield}{');
+      new_latex = new_latex.replace('class{', '\\class{inputfield}{');
       console.log(new_latex);
       editor_mf.latex(new_latex);
     } else {
@@ -434,22 +434,6 @@ function makeid(length) {
 
   }
   return result;
-}
-
-/** @return instance of jQuery.Promise */
-function loadMessages(messages) {
-  return new mw.Api().get({
-    action: 'query',
-    meta: 'allmessages',
-    ammessages: messages.join('|'),
-    amlang: mw.config.get('wgUserLanguage')
-  }).then(function (data) {
-    $.each(data.query.allmessages, function (i, message) {
-      if (message.missing !== '') {
-        mw.messages.set(message.name, message['*']);
-      }
-    });
-  });
 }
 
 function createReplacement(latexstring) {

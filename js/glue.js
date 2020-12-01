@@ -41,6 +41,7 @@ tasks['kas'] = new task(libPath + 'KAS/KAS_loader.js');
 tasks['tex_parser'] = new task(libPath + 'tex_parser.js');
 tasks['vkbd'] = new task(libPath + 'vkbd.js');
 tasks['decode'] = new task(libPath + 'decode.js');
+tasks['translate'] = new task(libPath + 'translate.js');
 tasks['prepare_page'] = new task(libPath + 'prepare_page.js');
 tasks['hammer'] = new task(libPath + 'hammer.js');
 tasks['hammer'].fallback = 'https://hammerjs.github.io/dist/hammer.js';
@@ -238,7 +239,6 @@ function waitfor_num_of_libs_then_do(cont) {
 var number_of_loaded_libs = 0;
 
 function load_libs() {
-    // console.log('jQuery loaded. Continue...');
     console.log(JSON.stringify(liblist));
     liblist.forEach(function (taskname) {
         tasks[taskname].state = 'wait for load';
@@ -256,7 +256,6 @@ function prepare_pg() {
     if (typeof prepare_page_exists !== 'undefined') {
         prepare_page();
     }
-    // console.log('typeof init= ' + typeof init);
     if (typeof init !== 'undefined'){
         init();
     }

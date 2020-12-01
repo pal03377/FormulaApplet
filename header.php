@@ -4,6 +4,7 @@
 <title><?php echo $title; ?></title>
 <script>
     var liblist=<?php echo $liblist; ?>;
+    var isWiki = false;
 </script>
 <script src="./js/glue.js"></script>
 <meta charset="utf-8">
