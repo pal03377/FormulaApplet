@@ -35,5 +35,4 @@ function init(){
 
 <?php include_once 'version.php';?>
 <?php include_once 'uses.php';?>
-
 <?php include_once 'footer.php';?>
