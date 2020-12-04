@@ -171,6 +171,7 @@ function mathQuillify() {
       // show_editor_results(editor_edithandler(editor_mf.latex()));
       set_input_event();
       set_unit_event();
+      erase_unit_event();
 
       // $('#random-id').click(function (ev) {
       $('#random-id').on('mousedown', function (ev) {
@@ -240,7 +241,7 @@ function mathQuillify() {
     });
     FApp.hammer.on("press", function (ev) {
       console.log(index + ' ' + ev.type);
-      vkbd_show();
+      // vkbd_show();
     });
   });
   // prepend();
@@ -336,32 +337,58 @@ function set_unit_event() {
   });
 }
 
+function erase_unit_event() {
+  console.log('init erase unit button');
+  $('#erase-unit').on('mousedown', function (ev) {
+    ev.preventDefault();
+    console.log('erase-unit');
+    var ori = editor_mf.latex();
+    var temp = separate_class(ori, '\\textcolor{blue}{');
+    // console.log(temp);
+    if(temp[1].length > 0){ 
+      var textcolor_erased= temp[0] + temp[1] + temp[2];
+    } else {
+      var textcolor_erased = ori;
+    }
+    textcolor_erased = textcolor_erased.replace('class{', '\\class{inputfield}{');
+    console.log(textcolor_erased);
+    editor_mf.latex(textcolor_erased);
+  });
+}
+
+function separate_class(latex, class_tag) {
+  var before_tag = '';
+  var tag = '';
+  var after_tag = '';
+  var pos = latex.indexOf(class_tag); //)
+  if (pos > -1) {
+    before_tag = latex.substring(0, pos);
+    var rest = latex.substring(pos + class_tag.length - 1);
+    // rest starts with {
+    var temp = find_corresponding_right_bracket(rest, '{');
+    // temp = [left_pos, bra.length, right_pos, rightbra.length]
+    if (temp[0] !== 0 || temp[1] !== 1 || temp[3] !== 1) {
+      console.log('Something went wront at separate_class()');
+    }
+    tag = rest.substring(1, temp[2]);
+    after_tag = rest.substring(temp[2] + 1);
+  } else {
+    before_tag = '';
+    tag = '';
+    after_tag = latex;
+  }
+  console.log([before_tag, tag, after_tag]);
+  return [before_tag, tag, after_tag];
+}
+
 function editor_edithandler(latex) {
   $('#output-code-0').text(latex);
-  var part1 = '?';
-  var part2 = '?';
-  var part3 = '?';
-  var pos = latex.indexOf('class{');
-  if (pos > -1) {
-    part1 = latex.substring(0, pos);
-    var rest = latex.substring(pos + 5);
-    var temp = find_corresponding_right_bracket(rest, '{');
-    // [left_pos, bra.length, right_pos, rightbra.length]
-    if (temp[0] !== 0 || temp[1] !== 1 || temp[3] !== 1) {
-      console.log('Something went wront at problemeditor.js');
-    }
-    part2 = rest.substring(1, temp[2]);
-    part3 = rest.substring(temp[2] + 1);
-  } else {
-    part1 = '';
-    part2 = latex;
-    part3 = '';
-  }
-  // console.log([part1, part2, part3]);
-  return [part1, part2, part3];
+  return separate_class(latex, 'class{');
 }
 
 function erase_class(latex) {
+  // latex = 'abc+class{def}+ghi';
+  // temp = ['abc+', 'def', '+ghi'];
   var temp = editor_edithandler(latex);
   return temp[0] + temp[1] + temp[2];
 }

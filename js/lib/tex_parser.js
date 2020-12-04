@@ -607,6 +607,9 @@ function parsetree_by_index(tree) {
             message = 'delete spaces and remove backslash at \min';
             // console.clear();
             tree.leaf.content = deleteSpaceAndRemoveBackslash(tree.leaf.content);
+            // console.log(tree.leaf.content)
+            tree.leaf.content = makeDegreeUnit(tree.leaf.content);
+            console.log(tree.leaf.content)
             break;
         case 2:
             message = 'parse brackets';
@@ -753,6 +756,152 @@ function deleteSpaceAndRemoveBackslash(text) {
     temp = temp.replace(/\\max/g, 'max');
     temp = temp.replace(/\\cdot/g, '\\cdot '); // no space -> one space, but one space -> two spaces
     temp = temp.replace(/\\cdot  /g, '\\cdot '); // two spaces -> one space
+    return temp;
+}
+
+function makeDegreeUnit(text) {
+    text = text.replace(/''/g, "↟");
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec
+    // https://regex101.com/ online regex tester
+    var regex = RegExp('((\\d+(\\.|\\,))?\\d+)([°\'↟]+)', 'g');
+    // regex matches .45° 3,89' 17.5↟
+    // console.log(regex);
+    let result;
+    let lastlastIndex = 0;
+    let separator = '∱';
+    let gaps = [separator];
+    let number = [separator];
+    let degree = [separator];
+
+    var stop = false;
+    do {
+        if ((result = regex.exec(text)) !== null) {
+            // console.log(result);
+            var gap = text.substring(lastlastIndex, result.index);
+            if (gap !== "") {
+                gaps.push(separator);
+                number.push(separator);
+                degree.push(separator);
+            }
+            gaps.push(gap);
+            number.push(result[1]);
+            degree.push(result[4]);
+            lastlastIndex = regex.lastIndex;
+        } else { // result == null
+            stop = true;
+        }
+    } while (stop == false);
+    // the end of string text
+    var gap = text.substring(lastlastIndex);
+    if (gap == '') {
+        gaps.push(separator);
+        number.push(separator);
+        degree.push(separator);
+    } else {
+        gaps.push(gap);
+        number.push('');
+        degree.push('');
+    }
+    var unitchain = degree.join('');
+    console.log(unitchain);
+
+     // console.log(gaps, number);
+
+    var regex2 = []
+    regex2[0] = RegExp("∱°'↟∱", 'g');
+    regex2[1] = RegExp("∱'↟∱", 'g');
+    regex2[2] = RegExp("∱°↟∱", 'g');
+    regex2[3] = RegExp("∱°'∱", 'g');
+    regex2[4] = RegExp("∱°∱", 'g');
+    regex2[5] = RegExp("∱'∱", 'g');
+    regex2[6] = RegExp("∱↟∱", 'g');
+
+    for (var reg = 0; reg < 7; reg++) {
+        regex = regex2[reg];
+        stop = false;
+        do {
+            if ((result = regex.exec(unitchain)) !== null) {
+                var index = result.index + 1;
+                switch (result[0].length) {
+                    case 5:
+                        // code block
+                        gaps[index] += '{';
+                        degree[index] += '+';
+                        degree[index + 1] += '+';
+                        degree[index + 2] += '}';
+                        // var test = gaps[index] + '{' + number[index] + degree[index] + '+';
+                        // test += gaps[index + 1] + number[index + 1] + degree[index + 1] + '+';
+                        // test += gaps[index + 2] + number[index + 2] + degree[index + 2] + '}';
+                        break;
+                    case 4:
+                        gaps[index] += '{';
+                        degree[index] += '+';
+                        degree[index + 1] += '}';
+                        // var test = gaps[index] + '{' + number[index] + degree[index] + '+';
+                        // test += gaps[index + 1] + number[index + 1] + degree[index + 1] + '}';
+                        break;
+                    case 3:
+                        // var test = gaps[index] + number[index] + degree[index];
+                        break;
+                    default:
+                        console.log('Error in tex_parser makeDegreeUnit');
+                }
+            } else { // result == null
+                stop = true;
+            }
+            // stop = true;
+        } while (stop == false);
+    }
+    console.log(text);
+
+   //test
+   var text2 = '';
+   for (var i = 0; i < degree.length; i++) {
+       gap = gaps[i];
+       if (gap !== separator) {
+           text2 += gap;
+           text2 += number[i];
+           text2 += degree[i];
+           // console.log(i, text2);
+       }
+   }
+   console.log(text2);
+
+    // console.log(pattern);
+
+    // regex = RegExp('[°\'↟]', 'g');
+    // while ((re33sult = regex.exec(text)) !== null) {
+    //     console.log(`Found ${result[0]}. Next starts at ${regex.lastIndex}.`);
+    //     var startpos = regex.lastIndex - result[0].length;
+    //     var startpos = result.index;
+    //     var oldpattern = pattern;
+    //     pattern = pattern.substr(0,startpos);
+    //     pattern += Array(result[0].length + 1).join("g");
+    //     pattern += oldpattern.substr(regex.lastIndex);
+    //     console.log(pattern);
+    // }
+    // console.log(text);
+    // console.log(pattern);
+
+    // var stop = false;
+    // do {
+    //     // var pos = text.search(/(\d+(\.∱\,))?\d+/g);
+    //     var match = regex.exec(text);
+    //     if (match !== null) {
+    //         console.log(match[0]);
+    //         console.log(regex.lastIndex);
+    //     } else {
+    //         stop = true;
+    //     }
+    // } while (stop == false);
+    // var match = text.match(/(\d+(\.∱\,))?\d+/g);
+    // for(var i = 0; i < match.length; i++){
+    //     console.log(match[i]);
+    // }
+    var unit = "\\textcolor{blue}{";
+    temp = text2.replace(/'/g, unit + "'}");
+    temp = temp.replace(/°/g, unit + "°}");
+    temp = temp.replace(/↟/g, unit + "''}");
     return temp;
 }
 
@@ -1498,6 +1647,8 @@ function unit2value(unitname) {
     valueOf["Ar"] = 100 * valueOf["m"] * valueOf["m"];
     valueOf["°C"] = valueOf["Celsius"];
     valueOf["°"] = valueOf["one"] * Math.PI / 180;
+    valueOf["''"] = valueOf["°"] / 3600;
+    valueOf["'"] = valueOf["°"] / 60;
     valueOf["K"] = valueOf["Kelvin"];
     valueOf["dag"] = 10 * valueOf["g"];
     // console.log(valueOf);

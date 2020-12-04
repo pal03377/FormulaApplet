@@ -84,6 +84,7 @@ keys['function'] = [
         ['degree', '°'],
         ['minute', '\''],
         ['second', '\'\''],
+        ['unit', 'Unit'],
         ['pi', '&pi;', '\\pi ']
     ],
     // row 1
@@ -95,6 +96,7 @@ keys['function'] = [
         ['abs', '\u2502\u2b1a\u2502'],
         ['subscript', '\u2b1a<sub style="font-size: 85%">\u2b1a</sub>'],
         ['nth_root', nth_root],
+        ['clear_unit', 'Clear<br>Unit'],
         ['infinity', '&infin;'],
     ],
     // row 2
@@ -105,7 +107,9 @@ keys['function'] = [
         ['smallgap-2', '', ''],
         ['bracket-left', '('],
         ['bracket-right', ')'],
-        ['up', '↑'],
+        // ['up', '↑'],
+        ['up', '&uarr;'],
+        ['down', '&darr;'],
         backspace,
     ],
     // row 3
@@ -115,6 +119,7 @@ keys['function'] = [
         ['power', '\u2b1a<sup>\u2b1a</sup>'],
         ['smallgap-3', '', ''],
         ['squareroot', squareroot],
+        ['pi', '&pi;', '\\pi '],
         left,
         right,
         enter,
@@ -265,7 +270,7 @@ keys['greek'] = [
     ],
     // row 1
     [
-        ['varphi', '&varphi;'],
+        ['varphi', '&phi;'],
         ['zeta', '&zeta;'],
         ['epsilon', '&epsilon;'],
         ['rho', '&rho;'],
@@ -281,7 +286,7 @@ keys['greek'] = [
         ['alpha', '&alpha;'],
         ['sigma', '&sigma;'],
         ['delta', '&delta;'],
-        ['phi', '&phi;'],
+        ['phi', '&varphi;'],
         ['gamma', '&gamma;'],
         ['eta', '&eta;'],
         ['xi', '&xi;'],

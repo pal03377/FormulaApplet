@@ -146,6 +146,7 @@ waitfor_mathquill_and_if_ready_then_do(function () {
         <!-- p id="version">version</p -->
         <p class="formula_applet">3 \frac{5}{13}a + 7\ \frac{5}{8}a^2-3\ \frac{x}{5}</p><br />
         <p class="formula_applet">3,5\textcolor{blue}{\frac{km}{min}}+0,045\textcolor{blue}{\frac{cm^3}{s^2}}</p><br />
+        <p class="formula_applet">7,5a + 3,5° 30' - 4n + 77° 12,5'' - 5' 36'' + 35,8x - 3°12'24'' + 18,2° +44' + 24.7'' - rest</p><br />
         <p class="formula_applet">5,6^3ab^5(p+q)rs^e \cdot 2vw^{\left(n:2\right)}\ \cdot\ \Gamma^\alpha</p><br />
         <p class="formula_applet">5,7y_n+rs_{n+2}-z_{\max}^8</p><br />
         <p class="formula_applet">5,7y^n+rs^{n+2}-z_{\max}^{t-8}</p><br />

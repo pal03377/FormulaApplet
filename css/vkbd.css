@@ -56,6 +56,14 @@ div#vkbd{
 	background-color: greenyellow;
 }
 
+.vkbd_button.vkbd-unit{
+	font-size: 120%;
+}
+
+.vkbd_button.vkbd-clear_unit{
+	font-size: 120%;
+}
+
 div#output tbody {
 	margin: 15px;
 }
