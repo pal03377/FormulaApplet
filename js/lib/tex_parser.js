@@ -609,7 +609,6 @@ function parsetree_by_index(tree) {
             tree.leaf.content = deleteSpaceAndRemoveBackslash(tree.leaf.content);
             // console.log(tree.leaf.content)
             tree.leaf.content = makeDegreeUnit(tree.leaf.content);
-            console.log(tree.leaf.content)
             break;
         case 2:
             message = 'parse brackets';
@@ -764,7 +763,7 @@ function makeDegreeUnit(text) {
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec
     // https://regex101.com/ online regex tester
     var regex = RegExp('((\\d+(\\.|\\,))?\\d+)([°\'↟]+)', 'g');
-    // regex matches .45° 3,89' 17.5↟
+    // regex matches for example .45° 3,89' 17.5↟
     // console.log(regex);
     let result;
     let lastlastIndex = 0;
@@ -791,32 +790,28 @@ function makeDegreeUnit(text) {
             stop = true;
         }
     } while (stop == false);
-    // the end of string text
+
+    // handle the end of text string
     var gap = text.substring(lastlastIndex);
-    if (gap == '') {
-        gaps.push(separator);
-        number.push(separator);
-        degree.push(separator);
-    } else {
-        gaps.push(gap);
-        number.push('');
-        degree.push('');
-    }
-    var unitchain = degree.join('');
+    gaps.push(gap);
+    number.push('');
+    degree.push('');
+
+    var unitchain = degree.join('') + separator;
     console.log(unitchain);
 
-     // console.log(gaps, number);
+    // console.log(gaps, number);
 
     var regex2 = []
-    regex2[0] = RegExp("∱°'↟∱", 'g');
-    regex2[1] = RegExp("∱'↟∱", 'g');
-    regex2[2] = RegExp("∱°↟∱", 'g');
-    regex2[3] = RegExp("∱°'∱", 'g');
-    regex2[4] = RegExp("∱°∱", 'g');
-    regex2[5] = RegExp("∱'∱", 'g');
-    regex2[6] = RegExp("∱↟∱", 'g');
+    regex2.push(RegExp("∱°'↟∱", 'g'));
+    regex2.push(RegExp("∱'↟∱", 'g'));
+    regex2.push(RegExp("∱°↟∱", 'g'));
+    regex2.push(RegExp("∱°'∱", 'g'));
+    regex2.push(RegExp("∱°∱", 'g'));
+    regex2.push(RegExp("∱'∱", 'g'));
+    regex2.push(RegExp("∱↟∱", 'g'));
 
-    for (var reg = 0; reg < 7; reg++) {
+    for (var reg = 0; reg < regex2.length; reg++) {
         regex = regex2[reg];
         stop = false;
         do {
@@ -849,59 +844,26 @@ function makeDegreeUnit(text) {
             } else { // result == null
                 stop = true;
             }
-            // stop = true;
         } while (stop == false);
     }
     console.log(text);
 
-   //test
-   var text2 = '';
-   for (var i = 0; i < degree.length; i++) {
-       gap = gaps[i];
-       if (gap !== separator) {
-           text2 += gap;
-           text2 += number[i];
-           text2 += degree[i];
-           // console.log(i, text2);
-       }
-   }
-   console.log(text2);
-
-    // console.log(pattern);
-
-    // regex = RegExp('[°\'↟]', 'g');
-    // while ((re33sult = regex.exec(text)) !== null) {
-    //     console.log(`Found ${result[0]}. Next starts at ${regex.lastIndex}.`);
-    //     var startpos = regex.lastIndex - result[0].length;
-    //     var startpos = result.index;
-    //     var oldpattern = pattern;
-    //     pattern = pattern.substr(0,startpos);
-    //     pattern += Array(result[0].length + 1).join("g");
-    //     pattern += oldpattern.substr(regex.lastIndex);
-    //     console.log(pattern);
-    // }
-    // console.log(text);
-    // console.log(pattern);
-
-    // var stop = false;
-    // do {
-    //     // var pos = text.search(/(\d+(\.∱\,))?\d+/g);
-    //     var match = regex.exec(text);
-    //     if (match !== null) {
-    //         console.log(match[0]);
-    //         console.log(regex.lastIndex);
-    //     } else {
-    //         stop = true;
-    //     }
-    // } while (stop == false);
-    // var match = text.match(/(\d+(\.∱\,))?\d+/g);
-    // for(var i = 0; i < match.length; i++){
-    //     console.log(match[i]);
-    // }
+    //test
+    var text_with_brackets_and_plus = '';
+    for (var i = 0; i < degree.length; i++) {
+        gap = gaps[i];
+        if (gap !== separator) {
+            text_with_brackets_and_plus += gap;
+            text_with_brackets_and_plus += number[i];
+            text_with_brackets_and_plus += degree[i];
+            // console.log(text_with_brackets_and_plus);
+        }
+    }
     var unit = "\\textcolor{blue}{";
-    temp = text2.replace(/'/g, unit + "'}");
+    temp = text_with_brackets_and_plus.replace(/'/g, unit + "'}");
     temp = temp.replace(/°/g, unit + "°}");
     temp = temp.replace(/↟/g, unit + "''}");
+    console.log(temp);
     return temp;
 }
 

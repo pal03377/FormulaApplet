@@ -17,10 +17,10 @@ function init(){
 <h2 class='tr' key='later'>for later use in MediaWiki</h2>
 <!-- <div id='keyboard'></div> -->
 <p id="mode_select">
-  <input type="radio" name="lang" class="problemeditor language" id="en" checked></input>
+  <input type="radio" name="lang" class="problemeditor language" id="en"></input>
   <label for="en"><span></span>Englisch </label>
   <br />
-  <input type="radio" name="lang" class="problemeditor language" id="de"></input>
+  <input type="radio" name="lang" class="problemeditor language" id="de" checked></input>
   <label for="de"><span></span>Deutsch </label>
 </P>
 <!-- <button type="button" class="problemeditor language" id="de">DE</button> -->
@@ -30,7 +30,8 @@ function init(){
 <p class="formula_applet" id="binom_01">(2u + 7v)^2 = \MathQuillMathField{}</p><br />
 <p class="formula_applet" id="binom_02">(2u + 7v)^2 = 4u^2 + 28uv + \MathQuillMathField{}</p><br />
 <p class="formula_applet" id="fraction">\frac{13t^2 - 5t}{t} = \MathQuillMathField{}</p><br />
-<p class="formula_applet" id="BliBlaBlu" data-b64="N2gMy">17x+4x=\MathQuillMathField{}</p>
+<p class="formula_applet" id="BliBlaBlu" data-b64="N2gMy">17x+4x=\MathQuillMathField{}</p><br />
+<p class="formula_applet" id="CheckIfEqual">\MathQuillMathField{} = 0</p>
 <hr>
 
 <?php include_once 'version.php';?>
