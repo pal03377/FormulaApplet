@@ -20,6 +20,10 @@ class FA {
 }
 
 function prepare_page() {
+  // dirty hack
+  if (typeof (isWiki) === 'undefined') {
+    isWiki = true;
+  }
   console.log('isWiki=' + isWiki);
   // waits for MathQuill to load
   $("img.mod").remove();
@@ -199,7 +203,12 @@ function mathQuillify() {
           new_fa_id = fa_name;
         }
       });
+
+      $('input[type="radio"]').on('click', function(ev){
+        console.log(ev.target.id);
+      });
       $('#random-id').mousedown();
+      $('input[type="radio"]#manu').click();
     } else {
       //******************
       // *** no editor ***
@@ -345,8 +354,8 @@ function erase_unit_event() {
     var ori = editor_mf.latex();
     var temp = separate_class(ori, '\\textcolor{blue}{');
     // console.log(temp);
-    if(temp[1].length > 0){ 
-      var textcolor_erased= temp[0] + temp[1] + temp[2];
+    if (temp[1].length > 0) {
+      var textcolor_erased = temp[0] + temp[1] + temp[2];
     } else {
       var textcolor_erased = ori;
     }
@@ -452,6 +461,7 @@ function makeid(length) {
     result += characters.charAt(Math.floor(Math.random() * numOfChars));
 
   }
+  result = '"' + result + '"';
   return result;
 }
 

@@ -59,7 +59,7 @@ function replaceWithTranslations(lang) {
     if (isWiki) {
       translation = mw.msg(key);
     }
-    if (translation == '') {
+    if (translation == '' || translation.startsWith('⧼')) {
       translation = tra[lang][key];
     }
     console.log(key + ' -> ' + translation);

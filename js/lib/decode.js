@@ -98,7 +98,7 @@ function encode_decode_char(enc_dec, num_of_perm, char) {
 function encode_decode_string(enc_dec, num_of_perm, str) {
     var result = '';
     var len = str.length;
-     for(var i = 0; i < len; i++){
+    for (var i = 0; i < len; i++) {
         result += encode_decode_char(enc_dec, num_of_perm, str[i]);
     }
     return result;
@@ -116,27 +116,35 @@ function encodeUnicode(str) {
     return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
         function toSolidBytes(match, p1) {
             return String.fromCharCode('0x' + p1);
-    }));
+        }));
 }
 
 function decodeUnicode(str) {
-// Going backwards: from bytestream, to percent-encoding, to original string.
+    // Going backwards: from bytestream, to percent-encoding, to original string.
     return decodeURIComponent(atob(str).split('').map(function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
 }
 
-function encode(text){
+var oldText;
+var oldN;
+
+function encode(text) {
+    console.log(oldText, text);
+    if (oldText == text) {
+        var n = oldN; // do not change n
+    } else {
+        var n = Math.floor(Math.random() * 10);
+    }
     var h = encodeUnicode(text);
-    var n = Math.floor(Math.random() * 10);
+    oldText = text;
+    oldN = n;
     return codes_0to9[n] + encode_decode_string(0, n, h);
 }
 
-function decode(text){
-    var n = codes_0to9.indexOf(text.substr(0,1));
+function decode(text) {
+    var n = codes_0to9.indexOf(text.substr(0, 1));
     var h = encode_decode_string(1, n, text.substr(1));
     var result = decodeUnicode(h);
     return result;
- }
-
-
+}
