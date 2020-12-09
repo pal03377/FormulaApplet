@@ -1,9 +1,10 @@
-/**
+/** tex_parser.js
+ * 
  * Contains old code from nodefactory.js (GRO)
  * Code for traversing: 
  * https://code.tutsplus.com/articles/data-structures-with-javascript-tree--cms-23393 **/
 
-//was: parse_brackets5.part1.js
+// old filename: parse_brackets5.part1.js
 
 // node-Konstruktor
 function node() {
@@ -1602,7 +1603,7 @@ function unit2value(unitname) {
     valueOf["J"] = valueOf["N"] * valueOf["m"];
     valueOf["W"] = valueOf["J"] / valueOf["s"];
     valueOf["V"] = valueOf["W"] * valueOf["A"];
-    valueOf["Ohm"] = valueOf["V"] / valueOf["A"];
+    valueOf["\Omega"] = valueOf["V"] / valueOf["A"];
     valueOf["Pa"] = valueOf["N"] / (valueOf["m"] * valueOf["m"]);
     valueOf["bar"] = 100000 * valueOf["Pa"];
     valueOf["Liter"] = 0.001 * valueOf["m"] * valueOf["m"] * valueOf["m"];
@@ -1988,7 +1989,12 @@ function val(node, tree) {
             node.value = Number(ch0) / Number(ch1);
         }
         if (node.type == 'equal') {
-            node.value = Number(ch0) / Number(ch1);
+            if (Number(ch1) !== 0) {
+                node.value = Number(ch0) / Number(ch1);
+            } else {
+                node.value = (Number(ch0) + Math.PI) / (Number(ch1) + Math.PI);
+            }
+
         }
     }
     if (num_of_childs > 2) {

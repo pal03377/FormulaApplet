@@ -6,6 +6,7 @@ var activeMathfieldIndex = '';
 var MQ = '';
 var FAList = [];
 var new_fa_id = 'x8rT3dkkS';
+var result_mode = '';
 class FA {
   constructor() {
     this.index = '';
@@ -62,7 +63,14 @@ function keyboardEvent(cmd) {
       cmd = cmd.substring(1);
       if (cmd == 'Enter') {
         editHandler(activeMathfieldIndex, 'enter');
-      } else {
+      }
+      else if(cmd == 'set_unit') {
+        set_unit();
+      }
+      else if(cmd == 'erase_unit') {
+        erase_unit();
+      }
+      else {
         mf.keystroke(cmd);
       }
     } else {
@@ -204,8 +212,18 @@ function mathQuillify() {
         }
       });
 
-      $('input[type="radio"]').on('click', function(ev){
-        console.log(ev.target.id);
+      $('input[type="radio"]').on('click', function (ev) {
+        result_mode = ev.target.id;
+        if (result_mode == 'auto') {
+          $('span.mq-class.inputfield').prop('contentEditable', 'false');
+
+        }
+        if (result_mode == 'manu') {
+          $('span.mq-class.inputfield').prop('contentEditable', 'true');
+
+        }
+        console.log(result_mode);
+        $('#set-input').mousedown();
       });
       $('#random-id').mousedown();
       $('input[type="radio"]#manu').click();
@@ -258,6 +276,7 @@ function mathQuillify() {
 
 function get_selection(mf, eraseClass) {
   // typeOf mf = mathField
+  console.log(mf);
   var ori = mf.latex();
   console.log('ori=' + ori);
   // erase class{inputfield}
@@ -307,62 +326,76 @@ function get_selection(mf, eraseClass) {
 function set_input_event() {
   $('#set-input').on('mousedown', function (ev) {
     ev.preventDefault();
-    var temp = get_selection(editor_mf, true);
-    var pre_selected = temp[0];
-    var selected = temp[1];
-    var post_selected = temp[2];
-    var ori = temp[3];
-    if (selected.length > 0) {
-      var new_latex = pre_selected + '\\class{inputfield}{' + selected + '}' + post_selected;
-      console.log(new_latex);
-      editor_mf.latex(new_latex);
-    } else {
-      ori = ori.replace('class{', '\\class{inputfield}{');
-      console.log(ori);
-      editor_mf.latex(ori);
-    }
+    set_input();
   });
+}
+
+function set_input() {
+  var temp = get_selection(editor_mf, true);
+  var pre_selected = temp[0];
+  var selected = temp[1];
+  var post_selected = temp[2];
+  var ori = temp[3];
+  if (selected.length > 0) {
+    var new_latex = pre_selected + '\\class{inputfield}{' + selected + '}' + post_selected;
+    console.log(new_latex);
+    editor_mf.latex(new_latex);
+  } else {
+    ori = ori.replace('class{', '\\class{inputfield}{');
+    console.log(ori);
+    editor_mf.latex(ori);
+  }
 }
 
 function set_unit_event() {
   $('#set-unit').on('mousedown', function (ev) {
     ev.preventDefault();
-    // erase class inputfield = false
-    var temp = get_selection(editor_mf, false);
-    var pre_selected = temp[0];
-    var selected = temp[1];
-    var post_selected = temp[2];
-    var ori = temp[3];
-    if (selected.length > 0) {
-      var new_latex = pre_selected + '\\textcolor{blue}{' + selected + '}' + post_selected;
-      new_latex = new_latex.replace('class{', '\\class{inputfield}{');
-      console.log(new_latex);
-      editor_mf.latex(new_latex);
-    } else {
-      ori = ori.replace('class{', '\\class{inputfield}{');
-      console.log(ori);
-      editor_mf.latex(ori);
-    }
+    set_unit();
   });
+}
+
+function set_unit() {
+  console.log('activeMathfieldIndex=' + activeMathfieldIndex);
+  var mf = FAList[activeMathfieldIndex].mathField;
+  // erase class inputfield = false
+  var temp = get_selection(mf, false);
+  var pre_selected = temp[0];
+  var selected = temp[1];
+  var post_selected = temp[2];
+  var ori = temp[3];
+  if (selected.length > 0) {
+    var new_latex = pre_selected + '\\textcolor{blue}{' + selected + '}' + post_selected;
+    new_latex = new_latex.replace('class{', '\\class{inputfield}{');
+    console.log(new_latex);
+    mf.latex(new_latex);
+  } else {
+    ori = ori.replace('class{', '\\class{inputfield}{');
+    console.log(ori);
+    mf.latex(ori);
+  }
 }
 
 function erase_unit_event() {
   console.log('init erase unit button');
   $('#erase-unit').on('mousedown', function (ev) {
     ev.preventDefault();
-    console.log('erase-unit');
-    var ori = editor_mf.latex();
-    var temp = separate_class(ori, '\\textcolor{blue}{');
-    // console.log(temp);
-    if (temp[1].length > 0) {
-      var textcolor_erased = temp[0] + temp[1] + temp[2];
-    } else {
-      var textcolor_erased = ori;
-    }
-    textcolor_erased = textcolor_erased.replace('class{', '\\class{inputfield}{');
-    console.log(textcolor_erased);
-    editor_mf.latex(textcolor_erased);
+    erase_unit();
   });
+}
+
+function erase_unit(){
+  console.log('erase-unit');
+  var ori = editor_mf.latex();
+  var temp = separate_class(ori, '\\textcolor{blue}{');
+  // console.log(temp);
+  if (temp[1].length > 0) {
+    var textcolor_erased = temp[0] + temp[1] + temp[2];
+  } else {
+    var textcolor_erased = ori;
+  }
+  textcolor_erased = textcolor_erased.replace('class{', '\\class{inputfield}{');
+  console.log(textcolor_erased);
+  editor_mf.latex(textcolor_erased);
 }
 
 function separate_class(latex, class_tag) {
@@ -403,29 +436,29 @@ function erase_class(latex) {
 }
 
 function show_editor_results(parts) {
-  // parts[1] -> solution(encoded)
-  var solution = encode(parts[1]);
-  var result = '<p class="formula_applet" id="' + new_fa_id + '" data-b64="';
-  result += solution;
-  result += '">';
-  result += parts[0];
+  var result = '<p class="formula_applet"';
+  var wikiresult = '<f_app';
+  console.log(new_fa_id);
+  var common_result = ' id="' + new_fa_id;
+  if (result_mode == 'manu') {
+    common_result += '" data-b64="' + encode(parts[1]);
+  }
+  common_result += '">';
+  common_result += parts[0];
+  result += common_result;
+  wikiresult += common_result;
   result += '\\MathQuillMathField{}';
-  result += parts[2];
-  result += '</p>';
-  var wikiresult = '<f_app id=' + new_fa_id + ' data-b64="';
-  wikiresult += solution;
-  wikiresult += '">';
-  wikiresult += parts[0];
   wikiresult += '{{result}}';
-  wikiresult += parts[2];
-  wikiresult += '</f_app>';
+  common_result = parts[2];
+  result += common_result + '</p>';
+  wikiresult += common_result + '</f_app>';
 
   $('#output-code-1').text(parts[1]);
   $('#output-code-2').text(result);
   $('#output-code-3').text(wikiresult);
   var out = $('textarea#wiki-text');
   if (out.length > 0) {
-    out.text(wikiresult);
+    out.text(wikiresult + String.fromCharCode(13, 10) + String.fromCharCode(13, 10) + result);
   }
 }
 
@@ -448,20 +481,21 @@ function prepend() {
     // ed.after('<p id="output-code-3"></p>');
     ed.after('<hr /><textarea id="wiki-text" rows=4 cols=150></textarea>');
     ed.after('<button type="button" class="problemeditor" id="set-unit">Unit</button>' + '<button type="button" class="problemeditor" id="erase-unit">Erase Unit</button>');
-    ed.after('<button type="button" class="problemeditor" id="set-input">Set input field</button>');
     ed.after('<p><span class="tr" key="uses">dummy</span></p>');
+    ed.after('<button type="button" class="problemeditor" id="set-input">Set input field</button>');
   }
 }
 
 function makeid(length) {
   var result = '';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_+-!%_+-!%_+-!%';
+  // var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_+-!%_+-!%_+-!%';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_+-!%';
   var numOfChars = characters.length;
   for (var i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * numOfChars));
 
   }
-  result = '"' + result + '"';
+  // result = '"' + result + '"';
   return result;
 }
 

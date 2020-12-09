@@ -84,7 +84,7 @@ keys['function'] = [
         ['degree', '°'],
         ['minute', '\''],
         ['second', '\'\''],
-        ['unit', 'Unit'],
+        ['set_unit', 'Unit', '#set_unit'],
         ['pi', '&pi;', '\\pi ']
     ],
     // row 1
@@ -96,7 +96,7 @@ keys['function'] = [
         ['abs', '\u2502\u2b1a\u2502'],
         ['subscript', '\u2b1a<sub style="font-size: 85%">\u2b1a</sub>'],
         ['nth_root', nth_root],
-        ['clear_unit', 'Clear<br>Unit'],
+        ['erase_unit', 'Clear<br>Unit', '#erase_unit'],
         ['infinity', '&infin;'],
     ],
     // row 2
@@ -436,12 +436,14 @@ function create_table(table_id) {
 
 function vkbd_bind_events() {
     console.log('Here is vkbd.js');
-    $(".vkbd_button").click(function (ev) {
+    $(".vkbd_button").mousedown(function (ev) {
+        ev.preventDefault();
         var cmd = clickEvent(ev);
         keyboardEvent_0(cmd);
     });
     // also children and grandchildren and...
-    $(".vkbd_button").find().click(function (ev) {
+    $(".vkbd_button").find().mousedown(function (ev) {
+        ev.preventDefault();
         var cmd = clickEvent(ev);
         keyboardEvent_0(cmd);
     });
@@ -488,14 +490,15 @@ function vkbd_bind_events() {
     });
 
     function clickEvent(ev) {
+        console.log(ev);
         var cmd = $(ev.target).attr('cmd');
         if (typeof cmd == 'undefined') {
             var temp = $(ev.target).parents().filter('.vkbd_button');
             cmd = $(temp).attr('cmd');
         }
-        return cmd;
         console.log(cmd);
         // $('#output').text(cmd);
+        return cmd;
     }
 }
 
