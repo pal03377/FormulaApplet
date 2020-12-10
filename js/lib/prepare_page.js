@@ -20,6 +20,7 @@ class FA {
   }
 }
 
+// prepare_page() is called by glue.js
 function prepare_page() {
   // dirty hack
   if (typeof (isWiki) === 'undefined') {
@@ -33,6 +34,22 @@ function prepare_page() {
     mathQuillify();
     initTranslation();
   })
+
+  $('body').on('keyup', function(ev) {
+    var key = ev.originalEvent.key;
+    // console.log(ev);
+    // console.log(kev.key, kev.metaKey, kev.ctrlKey);
+    if(key == 'Tab'){
+      var fa = $(ev.target).parents('.formula_applet');
+      var id = $(fa).attr('id');
+      console.log(id);
+      // for (var i = 0; i < FAList.length; i++){
+      //   var fapp = FAList[i];
+      //   fapp.formula_applet.click();
+      // }
+      fa.click();
+    }
+  });
   // testcreateReplacement();
 }
 
@@ -249,11 +266,14 @@ function mathQuillify() {
         handlers: {
           edit: function () {
             mqEditableField.focus();
-            // console.log('edit ' + index);
+            console.log('edit ' + index);
           },
           enter: function () {
             editHandler(index);
-          }
+          },
+          // select: function () {
+          //   console.log('select ' + index);
+          // }
         }
       });
       FApp.mathField = mf;
@@ -261,6 +281,9 @@ function mathQuillify() {
       // console.log(FApp);
     }
     FApp.mqEditableField = mqEditableField;
+    // $(mqEditableField).on('focus blur select', function(ev){  
+    //   console.log(ev.target);
+    // });
     FApp.hammer = new Hammer(mqEditableField);
     FApp.hammer.on("doubletap", function (ev) {
       console.log(index + ' ' + ev.type);

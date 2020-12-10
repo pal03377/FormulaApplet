@@ -19,17 +19,17 @@ tra['de'] = {
 
 // put this code into $(document).ready(function() {}
 function initTranslation() {
-  console.log('initTranslation()');
+  // console.log('initTranslation()');
   // console.log($('.language'));
   // onclick behavior
   $('input.language').on('change', function (ev) {
-    console.log(ev);
+    // console.log(ev);
     // obtain lang = (id of .language button)
     var lang = $(this).attr('id'); // obtain language id
     if(lang == ''){
       lang = 'de';
     }
-    console.log(lang);
+    // console.log(lang);
 
     if (isWiki) {
       var messages = ['march', 'formelapplet-missing-parameter', 'Wikibasemediainfo-quantity-unit-button-text'];
@@ -49,11 +49,11 @@ function initTranslation() {
 }
 
 function replaceWithTranslations(lang) {
-  console.log('replaceWithTranslations()');
+  // console.log('replaceWithTranslations()');
   // translate all translatable elements
   $('.tr').each(function () {
     // obtail key of .tr element
-    console.log(this);
+    // console.log(this);
     var key = $(this).attr('key');
     var translation = '';
     if (isWiki) {
@@ -62,7 +62,7 @@ function replaceWithTranslations(lang) {
     if (translation == '' || translation.startsWith('⧼')) {
       translation = tra[lang][key];
     }
-    console.log(key + ' -> ' + translation);
+    // console.log(key + ' -> ' + translation);
     $(this).text(translation);
   });
 }

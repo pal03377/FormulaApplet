@@ -31,7 +31,8 @@ function init(){
 <p class="formula_applet" id="binom_02">(2u + 7v)^2 = 4u^2 + 28uv + \MathQuillMathField{}</p><br />
 <p class="formula_applet" id="fraction">\frac{13t^2 - 5t}{t} = \MathQuillMathField{}</p><br />
 <p class="formula_applet" id="BliBlaBlu" data-b64="N2gMy">17x+4x=\MathQuillMathField{}</p><br />
-<p class="formula_applet" id="CheckIfEqual">\MathQuillMathField{} = 0</p>
+<p class="formula_applet" id="CheckIfEqual">\MathQuillMathField{} = 0</p><br />
+<p class="formula_applet" id="CheckIfTrue">\MathQuillMathField{}</p><br />
 <hr>
 
 <?php include_once 'version.php';?>
