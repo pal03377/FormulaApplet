@@ -26,6 +26,7 @@ function init(){
 <!-- <button type="button" class="problemeditor language" id="de">DE</button> -->
 
 <!-- <p id="output">output</p> -->
+<p class="formula_applet" id="definition_set" def="x > 0 && y < 5">\frac{\sqrt{x^3}}{\sqrt{x}} = \MathQuillMathField{}</p><br />
 <p class="formula_applet" id="light-house" data-b64='gOmkT'>s=\sqrt{ h^2 + \MathQuillMathField{} }</p><br />
 <p class="formula_applet" id="binom_01">(2u + 7v)^2 = \MathQuillMathField{}</p><br />
 <p class="formula_applet" id="binom_02">(2u + 7v)^2 = 4u^2 + 28uv + \MathQuillMathField{}</p><br />

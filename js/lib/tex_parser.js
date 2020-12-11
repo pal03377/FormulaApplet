@@ -1897,8 +1897,10 @@ function check_children(tree) {
 }
 
 function value(tree) {
-    var hasValue = fillWithRandomValues(tree);
+    var temp = fillWithRandomValues(tree);
+    var hasValue = temp[0];
     if (hasValue) {
+        console.log(temp[1]);
         return val(tree.root, tree);
     } else {
         console.log('tree not evaluable');
@@ -2046,6 +2048,7 @@ function trigonometry(fu, arg) {
 }
 
 function fillWithRandomValues(tree) {
+    var variable_value_list = [];
     // console.clear();
     // console.log('fill leafs & greek with random values');
     hasValue = true;
@@ -2094,13 +2097,15 @@ function fillWithRandomValues(tree) {
                             }
                             if (node.content == '\pi') {
                                 node.value = Math.PI;
+                                value = Math.PI;
                                 console.log('PI');
                             }
                         }
                     })
+                    variable_value_list[content] = value;
                 }
             } while (stop === false);
         } while (found);
     }
-    return hasValue;
+    return [hasValue, variable_value_list];
 }

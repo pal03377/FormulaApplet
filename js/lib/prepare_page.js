@@ -17,6 +17,7 @@ class FA {
     this.mqEditableField = '';
     this.mathField = '';
     this.hammer = '';
+    this.definitionset_list= [];
   }
 }
 
@@ -133,7 +134,7 @@ function editHandler(index) {
   var solution = FAList[index].solution;
   var hasSolution = FAList[index].hasSolution;
   var id = FAList[index].id; // name of formula_applet
-
+  var ds_list = definitionset_list[index];
   // console.log(id + ' index=' + index + ' hasSolution=' + hasSolution + ' mode=' + entermode);
   if (hasSolution) {
     // out = mf.latex() + ' ' + solution;
@@ -160,6 +161,11 @@ function mathQuillify() {
     var index = $(".formula_applet").index(this);
     FApp.index = index;
     FApp.id = $(this).attr('id') // name of formula_applet
+    var def = $(this).attr('def');
+    if (typeof def !== 'undefined'){
+      FApp.definitionset_list = unify_definitionsets(def);
+      console.log(FApp.definitionset_list);
+    }
     var isEditor = (FApp.id.toLowerCase() == 'editor');
     // console.log('isEditor=' + isEditor);
     FApp.formula_applet = this;
@@ -267,6 +273,7 @@ function mathQuillify() {
           edit: function () {
             mqEditableField.focus();
             console.log('edit ' + index);
+            editHandler(index);
           },
           enter: function () {
             editHandler(index);
@@ -295,6 +302,28 @@ function mathQuillify() {
     });
   });
   // prepend();
+}
+
+function unify_definitionsets(def){
+  console.log(def);
+  def = def.replace(/\s/g, "");
+  console.log(def);
+  var ds_list = def.split("&&");
+  for(var i=0; i < ds_list.length; i++){
+    var ds = ds_list[i];
+    var result = '';
+    if (ds.indexOf('>') > -1){
+      var temp = ds.split('>');
+      result = temp[0] + '-' + temp[1];
+    }
+    if (ds.indexOf('<') > -1){
+      var temp = ds.split('<');
+      result = temp[1] + '-' + temp[0];
+    }
+    ds_list[i] = result;
+    console.log(result);
+  }
+  return ds_list;
 }
 
 function get_selection(mf, eraseClass) {

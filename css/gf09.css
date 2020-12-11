@@ -13,7 +13,7 @@
 }
 
 .mq-editable-field .mq-cursor {
-	border-left: 2px solid red;
+	border-left: 1px solid red;
 }
 
 .formula_applet.isEqual{
@@ -116,7 +116,14 @@ button.problemeditor {
 }
 
 span.mq-textcolor{
-	font-size: 22px;
+	/* font-size: 22px; */
 	font-family: Arial, Helvetica, sans-serif;
-	color: red !important;
+	font-style: normal;
+	/* color: red !important; */
+}
+
+.mq-math-mode,
+.mq-math-mode .mq-editable-field {
+  cursor: text;
+  font-family: Arial, "Times New Roman", Symbola, serif;
 }
