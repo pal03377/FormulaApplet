@@ -188,7 +188,7 @@ function withEachLeaf(tree, f) {
 
 function withEachLeafOrGreek(tree, f) {
     withEachNode(tree, function (node) {
-        if (node.type == 'leaf'|| node.type == 'greek') {
+        if (node.type == 'leaf' || node.type == 'greek') {
             f(node);
         }
     })
@@ -1919,13 +1919,13 @@ function check_children(tree) {
 
 function value(tree) {
     var temp = fillWithRandomValues(tree);
-    // var hasValue = temp[0];
-    // if (hasValue) {
-    //     console.log(temp[1]);
-    //     return val(tree.root, tree);
-    // } else {
-    //     console.log('tree not evaluable');
-    // }
+    var hasValue = temp[0];
+    if (hasValue) {
+        console.log(temp[1]);
+        return val(tree.root, tree);
+    } else {
+        console.log('tree not evaluable');
+    }
 }
 
 function val(node, tree) {
@@ -2068,16 +2068,16 @@ function trigonometry(fu, arg) {
     return result;
 }
 
-function fillWithRandomValues(tree) {
-    console.log('blibli');
-    withEachNode(tree, function (node) {
-        console.log(node.id + ' ' + node.type);
-        console.log(node.content);
-    });
-    console.log('blabla');
-}
+// function fillWithRandomValues_test(tree) {
+//     // console.log('blibli');
+//     withEachLeaf(tree, function (node) {
+//         console.log(node.id + ' ' + node.type);
+//         console.log(node.content);
+//     });
+//     // console.log('blabla');
+// }
 
-function fillWithRandomValues_temp(tree) {
+function fillWithRandomValues(tree) {
     var variable_value_list = [];
     // console.clear();
     // console.log('fill leafs & greek with random values');
@@ -2088,25 +2088,25 @@ function fillWithRandomValues_temp(tree) {
         if (node.type == 'text') hasValue = false;
     };
     if (hasValue) {
-        // tree.withEachLeafOrGreek(function (node) {
-        //     if (node.isInUnit(tree)) {
-        //         var temp = decompose_unit(node.content);
-        //         node.value =  temp[3];
-        //         //node.type = 'unit';
-        //     }
-        // });
+        withEachLeafOrGreek(tree, function (node) {
+            if (node.isInUnit(tree)) {
+                var temp = decompose_unit(node.content);
+                node.value = temp[3];
+                //node.type = 'unit';
+            }
+        });
         var i = 0;
         do {
             var stop = false;
             var found = false;
             var nodelist = tree.nodelist;
-            console.log(nodelist);
+            // console.log(nodelist);
             do {
                 var node = nodelist[i];
-                console.log(i);
-                console.log(node);
+                // console.log(i);
+                // console.log(node);
                 // doThis may add or delete nodes!
-                if ((node.type == 'leaf' || node.type == 'greek') && node.value == undefined) {
+                if ((node.type == 'leaf' || node.type == 'greek') && ((typeof node.value) == 'undefined')) {
                     found = true;
                     stop = true; //short circuit
                 } else {
@@ -2126,26 +2126,26 @@ function fillWithRandomValues_temp(tree) {
                     var value = 1000 * Math.cos(u1) * Math.sqrt(u2);
                     console.log('found ' + content + ' value=' + value);
                     withEachLeafOrGreek(tree, function (node) {
-                        console.log('withEachLeafOrGreek ' + node.id);
-                        console.log(node);
-                        // if (typeof node.value == 'undefined') {
-                        //     if (node.content == content) {
-                        //         node.value = value;
-                        //         console.log(node.value + '->' +
-                        //         node.content + ' ' + node.type);
-                        //     }
-                        //     if (node.content == '\pi') {
-                        //         node.value = Math.PI;
-                        //         value = Math.PI;
-                        //         console.log('PI');
-                        //     }
-                        // }
+                        // console.log('withEachLeafOrGreek ' + node.id);
+                        // console.log(node);
+                        if (typeof node.value == 'undefined') {
+                            if (node.content == content) {
+                                node.value = value;
+                                console.log(node.value + '->' +
+                                node.content + ' ' + node.type);
+                            }
+                            if (node.content == '\pi') {
+                                node.value = Math.PI;
+                                value = Math.PI;
+                                console.log('PI');
+                            }
+                        }
                     });
                     variable_value_list[content] = value;
                 }
             } while (stop === false);
         } while (found);
     }
-    console.log('bla');
+    console.log(variable_value_list);
     return [hasValue, variable_value_list];
 }
