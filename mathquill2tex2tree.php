@@ -59,9 +59,7 @@ function init(){
 var canvas = document.getElementById("treecanvas");
 
 function tree_output(){
-   var myTree = new tree();
-   myTree.leaf.content = latexSource.val();
-   parse(myTree);
+   var myTree =  parse(latexSource.val());
    paint_tree(myTree, canvas, 'TEX tree');
    var tex_1 = latexSource.val();
    var tex_2 = tree2TEX(myTree);

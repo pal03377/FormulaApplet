@@ -41,9 +41,7 @@ include_once 'header.php';
  }
 
  function tree_output(){
-   var myTree = new tree();
-   myTree.leaf.content = latexSource.val();
-   parse(myTree);
+   var myTree = parse(latexSource.val());
    var output = "";
    var indent = -1;
    var points = '.'.repeat(50);

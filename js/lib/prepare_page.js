@@ -105,16 +105,18 @@ function keyboardEvent(cmd) {
   }
 }
 
-function check_if_equal(id, a, b) {
+function check_if_equal(id, a, b, ds_list) {
   console.log(a + ' ?=? ' + b);
   var equ = a + '=' + b;
-  check_if_equality(id, equ);
+  check_if_equality(id, equ, ds_list);
 }
 
-function check_if_equality(id, equ) {
-  myTree = new tree();
-  myTree.leaf.content = equ;
-  parse(myTree);
+function check_if_equality(id, equ, ds_list) {
+  var myTree = parse(equ);
+  console.log(ds_list);
+  // if(ds_list.length > 0){
+    
+  // }
   var almostOne = value(myTree);
   var dif = Math.abs(almostOne - 1);
   console.log('dif=' + dif);
@@ -134,14 +136,14 @@ function editHandler(index) {
   var solution = FAList[index].solution;
   var hasSolution = FAList[index].hasSolution;
   var id = FAList[index].id; // name of formula_applet
-  var ds_list = definitionset_list[index];
+  var ds_list = FAList[index].definitionset_list;
   // console.log(id + ' index=' + index + ' hasSolution=' + hasSolution + ' mode=' + entermode);
   if (hasSolution) {
     // out = mf.latex() + ' ' + solution;
-    check_if_equal(id, mf.latex(), solution);
+    check_if_equal(id, mf.latex(), solution, ds_list);
   } else {
     // out = mf_container.latex();
-    check_if_equality(id, mf_container.latex());
+    check_if_equality(id, mf_container.latex(), ds_list);
   }
   // document.getElementById('output').innerHTML = out;
 };
@@ -165,7 +167,7 @@ function mathQuillify() {
     if (typeof def !== 'undefined'){
       FApp.definitionset_list = unify_definitionsets(def);
       console.log(FApp.definitionset_list);
-    }
+    } 
     var isEditor = (FApp.id.toLowerCase() == 'editor');
     // console.log('isEditor=' + isEditor);
     FApp.formula_applet = this;

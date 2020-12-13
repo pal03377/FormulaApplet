@@ -58,7 +58,11 @@ include_once 'header.php';
     } else {
       // one step
       $( '#treecanvas' ).click( function(event){
-          parse(myTree);
+          do {
+            var temp = parsetree_by_index(myTree);
+            var end_parse = temp[1];
+          }
+          while (end_parse == false);
           var tex = tree2TEX(myTree);
           message = 'end parse';
           paint_tree(myTree, canvas, message);
@@ -73,9 +77,7 @@ include_once 'header.php';
         mf = mathField[index];
         var tex_1 = mf.latex();
         tex_1 = deleteSpaceAndRemoveBackslash(tex_1);
-        myTree = new tree();
-        myTree.leaf.content = tex_1;
-        parse(myTree);
+        var myTree = parse(tex_1);
         var tex_2 = tree2TEX(myTree);
         tex_2 = deleteSpaceAndRemoveBackslash(tex_2);
 

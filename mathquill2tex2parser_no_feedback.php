@@ -44,9 +44,7 @@ include_once 'header.php';
  }
 
  function tree_output(){
-   var myTree = new tree();
-   myTree.leaf.content = latexSource.val();
-   parse(myTree);
+   var myTree =  parse(latexSource.val());
    var output = "";
    var indent = -1;
    var points = '.'.repeat(50);
@@ -69,4 +67,4 @@ include_once 'header.php';
  });
 </script>
 
- <?php include_once 'footer.php'; ?>
+ <?php include_once 'footer.php';?>

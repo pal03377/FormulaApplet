@@ -56,7 +56,10 @@ include_once 'header.php';
     } else {
       // one step
       $( '#treecanvas' ).click( function(event){
-          parse(myTree);
+          do{
+            var temp = parsetree_by_index(myTree);
+            var end_parse = temp[1];
+          } while (end_parse == false)
           var tex = tree2TEX(myTree);
           message = 'end parse';
           paint_tree(myTree, canvas, message);
@@ -72,7 +75,6 @@ include_once 'header.php';
     out = mf.latex();
      myTree = new tree();
      myTree.leaf.content = mf.latex();
-    // parse(myTree);
     document.getElementById('output').innerHTML = out + '<br>';
     parsetree_counter.setCounter(0);
     paint_tree(myTree, canvas, 'start of parsing');

@@ -70,9 +70,7 @@ include_once 'header.php';
     mf = mathField[index];
     // var out = mf.latex();
     out = mf.latex();
-     myTree = new tree();
-     myTree.leaf.content = mf.latex();
-    parse(myTree);
+    var myTree = parse(mf.latex());
     var almostOne = value(myTree);
     var dif = Math.abs(almostOne - 1);
     if (dif < 0.001){
