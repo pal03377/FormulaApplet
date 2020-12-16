@@ -44,7 +44,7 @@ include_once 'header.php';
           //   console.log('node ' + i + ': ' + myTree.nodelist[i].type + ' ' + myTree.nodelist[i].content);
           // }
           if(end_parse){
-              var hasValue = fillWithRandomValues(myTree);
+              var hasValue = fillWithValues(myTree, true, []);
               paint_tree(myTree, canvas, 'filWithRandomValues');
             if (hasValue){
                 var dummy = val(myTree.root, myTree);
@@ -63,7 +63,7 @@ include_once 'header.php';
           var tex = tree2TEX(myTree);
           message = 'end parse';
           paint_tree(myTree, canvas, message);
-          //fillWithRandomValues(myTree);
+          //fillWithValues(myTree, true, []);
           var dummy = value(myTree);
       });
     }

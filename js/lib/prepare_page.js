@@ -17,7 +17,7 @@ class FA {
     this.mqEditableField = '';
     this.mathField = '';
     this.hammer = '';
-    this.definitionset_list= [];
+    this.definitionset_list = [];
   }
 }
 
@@ -36,11 +36,11 @@ function prepare_page() {
     initTranslation();
   })
 
-  $('body').on('keyup', function(ev) {
+  $('body').on('keyup', function (ev) {
     var key = ev.originalEvent.key;
     // console.log(ev);
     // console.log(kev.key, kev.metaKey, kev.ctrlKey);
-    if(key == 'Tab'){
+    if (key == 'Tab') {
       var fa = $(ev.target).parents('.formula_applet');
       var id = $(fa).attr('id');
       console.log(id);
@@ -81,14 +81,11 @@ function keyboardEvent(cmd) {
       cmd = cmd.substring(1);
       if (cmd == 'Enter') {
         editHandler(activeMathfieldIndex, 'enter');
-      }
-      else if(cmd == 'set_unit') {
+      } else if (cmd == 'set_unit') {
         set_unit();
-      }
-      else if(cmd == 'erase_unit') {
+      } else if (cmd == 'erase_unit') {
         erase_unit();
-      }
-      else {
+      } else {
         mf.keystroke(cmd);
       }
     } else {
@@ -113,11 +110,11 @@ function check_if_equal(id, a, b, ds_list) {
 
 function check_if_equality(id, equ, ds_list) {
   var myTree = parse(equ);
-  console.log(ds_list);
-  // if(ds_list.length > 0){
-    
-  // }
-  var almostOne = value(myTree);
+  // console.log(ds_list);
+  var temp = fillWithRandomValuesAndCheckDefinitionSets(myTree, ds_list);
+  myTree = temp[2];
+  // console.log(JSON.stringify(myTree));
+  var almostOne = value2(myTree, [temp[0], temp[1]]);
   var dif = Math.abs(almostOne - 1);
   console.log('dif=' + dif);
   if (dif < precision) {
@@ -126,6 +123,63 @@ function check_if_equality(id, equ, ds_list) {
     $('#' + id).removeClass('mod_ok').addClass('mod_wrong');
   }
 }
+
+function fillWithRandomValuesAndCheckDefinitionSets(tree_var, ds_list) {
+  console.log('save');
+  // console.log(tree_var);
+  console.log(tree_var.nodelist[9].value);
+  var rememberTree = JSON.stringify(tree_var);
+  // console.log('rememberTree=' + rememberTree);
+  if (ds_list.length == 0) {
+    temp = fillWithValues(tree_var, true, []);
+    return [temp[0], temp[1], tree_var];
+  } else {
+    // start watchdog
+    var start = new Date();
+    var success = true;
+    var numberOfTries = 0;
+    do {
+      numberOfTries++;
+      var tree2 = tree();
+      tree2 = JSON.parse(rememberTree);
+      console.log('restore');
+      // console.log(tree2);
+      console.log(tree2.nodelist[9].value);
+      temp = fillWithValues(tree2, true, []);
+      var variable_value_list = temp[1];
+      console.log('fill');
+      // console.log(tree2);
+      console.log(tree2.nodelist[9].value);
+      // CheckDefinitionSets
+      for (var i = 0; i < ds_list.length; i++) {
+        // check
+        var definitionset = parse(ds_list[i]);
+        var temp2 = fillWithValues(definitionset, false, variable_value_list);
+        var value = value2(definitionset, temp2);
+        console.log('definitionset ' + i + ' value=' + value);
+        success = (value > 0);
+        if (success == false) {
+          // short circuit
+          i = ds_list.length;
+          // restore leafs with value = undefined
+        }
+      }
+      var now = new Date();
+      var timePassed = now.getTime() - start.getTime();
+      // in milliseconds
+    }
+    while (success == false && timePassed < 2000);
+    console.log('numberOfTries=' + numberOfTries);
+    if (success == true) {
+      console.log('filled with success');
+      return [temp[0], temp[1], tree2];
+    } else{
+      console.log('hasValue = false');
+      return [false, [], tree2];
+    }
+    // return [hasValue, variable_value_list, filled tree]
+  }
+ }
 
 function editHandler(index) {
   var fa = $(".formula_applet")[index];
@@ -164,10 +218,10 @@ function mathQuillify() {
     FApp.index = index;
     FApp.id = $(this).attr('id') // name of formula_applet
     var def = $(this).attr('def');
-    if (typeof def !== 'undefined'){
+    if (typeof def !== 'undefined') {
       FApp.definitionset_list = unify_definitionsets(def);
-      console.log(FApp.definitionset_list);
-    } 
+      // console.log(FApp.definitionset_list);
+    }
     var isEditor = (FApp.id.toLowerCase() == 'editor');
     // console.log('isEditor=' + isEditor);
     FApp.formula_applet = this;
@@ -306,24 +360,34 @@ function mathQuillify() {
   // prepend();
 }
 
-function unify_definitionsets(def){
+function unify_definitionsets(def) {
   console.log(def);
   def = def.replace(/\s/g, "");
-  console.log(def);
-  var ds_list = def.split("&&");
-  for(var i=0; i < ds_list.length; i++){
+  def = def.replace(/\&&/g, "&");
+  // console.log(def);
+  var ds_list = def.split("&");
+  for (var i = 0; i < ds_list.length; i++) {
     var ds = ds_list[i];
     var result = '';
-    if (ds.indexOf('>') > -1){
+    if (ds.indexOf('>') > -1) {
       var temp = ds.split('>');
-      result = temp[0] + '-' + temp[1];
+      if (temp[1] == '0') {
+        result = temp[0];
+      } else {
+        result = temp[0] + '-' + temp[1];
+      }
     }
-    if (ds.indexOf('<') > -1){
+    if (ds.indexOf('<') > -1) {
       var temp = ds.split('<');
-      result = temp[1] + '-' + temp[0];
+      if (temp[0] == '0') {
+        result = temp[1];
+      } else {
+        result = temp[1] + '-' + temp[0];
+      }
     }
+    console.log(i + ' ' + result);
     ds_list[i] = result;
-    console.log(result);
+    console.log(ds_list[i]);
   }
   return ds_list;
 }
@@ -437,7 +501,7 @@ function erase_unit_event() {
   });
 }
 
-function erase_unit(){
+function erase_unit() {
   console.log('erase-unit');
   var ori = editor_mf.latex();
   var temp = separate_class(ori, '\\textcolor{blue}{');

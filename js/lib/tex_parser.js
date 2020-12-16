@@ -15,7 +15,7 @@ function node() {
     this.content = '';
     this.comes_from = 1; //above
     this.way_back = false;
-    this.value = undefined;
+    this.value = 'u';
 }
 
 node.prototype.insertMeOver = function (insertPointId, leaf, nodelist) {
@@ -135,6 +135,14 @@ function tree() {
     this.root.children = [this.leaf.id];
 };
 
+function copy(myTree) {
+    var result = new tree();
+    for (let key in myTree) {
+        result[key] = myTree[key];
+    }
+    return result;
+}
+
 // node.prototype.val = function () {
 //     var result = 1;
 //     var numOfChildren = this.children.length;
@@ -203,17 +211,17 @@ function withEachLeafOrGreek(tree, f) {
 //     }
 // }
 
-node.prototype.isInUnit = function (tree) {
+// node.prototype.isInUnit = function (tree) {
+function isInUnit(tree, node) {
     var result = false;
     var stop = false;
-    var temp = this;
     do {
-        if (temp.type == 'unit') {
+        if (node.type == 'unit') {
             result = true;
             stop = true;
         } else {
-            temp = tree.nodelist[temp.parent];
-            if (temp.type == 'root') {
+            node = tree.nodelist[node.parent];
+            if (node.type == 'root') {
                 stop = true;
             }
         }
@@ -868,7 +876,7 @@ function makeDegreeUnit(text) {
             }
         } while (stop == false);
     }
-    console.log(text);
+    // console.log(text);
 
     //test
     var text_with_brackets_and_plus = '';
@@ -885,7 +893,7 @@ function makeDegreeUnit(text) {
     temp = text_with_brackets_and_plus.replace(/'/g, unit + "'}");
     temp = temp.replace(/°/g, unit + "°}");
     temp = temp.replace(/↟/g, unit + "''}");
-    console.log(temp);
+    // console.log(temp);
     return temp;
 }
 
@@ -1421,7 +1429,7 @@ function unify_sub_or_power(tree, power) {
                 var left_count = (leftpart.match(/§/g) || []).length;
                 var base = node.content.substr(pos - 1, 1);
                 var rest = node.content.substr(pos + 2);
-                if (node.isInUnit(tree)) {
+                if (isInUnit(tree, node)) {
                     leftpart = '';
                     left_count = 0;
                     base = node.content.substr(0, pos);
@@ -1446,7 +1454,7 @@ function parse_sub_power(tree, power) {
         type = 'power';
     }
     withEachLeaf(tree, function (node) {
-        // if (!node.isInUnit(tree)) {
+        // if (!isInUnit(tree, node)) {
         var stop = false;
         var pos = -1;
         do {
@@ -1488,11 +1496,11 @@ function parse_sub_power(tree, power) {
 
 function parse_unit(tree) {
     withEachNode(tree, function (node) {
-        node.value = undefined;
+        node.value = 'u';
         // console.log(node.id + ' ' + node.content + ' ' + node.type);
     });
     withEachLeaf(tree, function (node) {
-        if (node.isInUnit(tree)) {
+        if (isInUnit(tree, node)) {
             var temp = decompose_unit(node.content);
             var out = temp[1] + '_' + temp[2] + ' value=' + temp[3];
             // console.log(node.content + " -> " + out);
@@ -1504,7 +1512,7 @@ function parse_unit(tree) {
 function parse_factors(tree) {
     withEachLeaf(tree, function (node) {
         // console.log('processing ' + node.content + ' ' + node.type);
-        if (!node.isInUnit(tree)) {
+        if (!isInUnit(tree, node)) {
             // no unit
             var content = node.content.trim();
             node.content = content;
@@ -1555,18 +1563,18 @@ function decompose_unit(unitstring) {
     var prefix = '';
     var unit = 'dummy';
     var value = unit2value(unitstring);
-    if (typeof value == 'undefined') {
+    if (value == 'u') {
         if (unitstring.length > 1) {
             // attempt to separate prefix and unit
             var prefix = unitstring.substr(0, 1);
             // preserve default value of var unit
             var rest = unitstring.substr(1);
             var power = prefix2power(prefix);
-            if (typeof power == 'undefined') {
+            if (power == 'u') {
                 isUnit = false;
             } else {
                 temp = unit2value(rest);
-                if (typeof temp == 'undefined') {
+                if (temp == 'u') {
                     isUnit = false;
                 } else {
                     // success of separation
@@ -1597,7 +1605,7 @@ function prefix2power(needle) {
     if (pos > -1) {
         power = Math.pow(10, pos - 24);
     } else {
-        power = undefined;
+        power = 'u';
     }
     return power;
 }
@@ -1637,7 +1645,9 @@ function unit2value(unitname) {
     valueOf["dag"] = 10 * valueOf["g"];
     // console.log(valueOf);
     var result = valueOf[unitname];
-
+    if(typeof result == 'undefined'){
+        result = 'u';
+    }
     return result;
 }
 
@@ -1873,7 +1883,7 @@ function paint_tree_callback(currentNode, xa, ya, x, y, ctx, tree) {
         if (curr == 'number') {
             curr = 'num';
         }
-        if (currentNode.isInUnit(tree)) {
+        if (currentisInUnit(tree, node)) {
             // curr += '(U)';
             ctx.fillStyle = "#e050e0";
         }
@@ -1918,11 +1928,17 @@ function check_children(tree) {
 }
 
 function value(tree) {
-    var temp = fillWithRandomValues(tree);
+    var temp = fillWithValues(tree, true, []);
+    // temp = [hasValue, variable_value_list]
+    value2(tree, temp);
+}
+
+function value2(filledTree, temp) {
+    // temp = [hasValue, variable_value_list]
     var hasValue = temp[0];
     if (hasValue) {
-        console.log(temp[1]);
-        return val(tree.root, tree);
+        // console.log(temp[1]);
+        return val(filledTree.root, filledTree);
     } else {
         console.log('tree not evaluable');
     }
@@ -1940,7 +1956,7 @@ function val(node, tree) {
         if (node.type == 'invisible_zero') {
             node.value = 0;
         }
-        if (node.isInUnit(tree)) {
+        if (isInUnit(tree, node)) {
             var temp = decompose_unit(node.content);
             if (temp[0] == true) {
                 node.value = temp[3];
@@ -2028,13 +2044,13 @@ function val(node, tree) {
         var dummy = val(child_1, tree);
         var dummy = val(child_2, tree);
     }
-    console.log(node.type + ' (' + num_of_childs + ') ' + node.content + ' val=' + node.value);
+    // console.log(node.type + ' (' + num_of_childs + ') ' + node.content + ' val=' + node.value);
     return node.value;
 }
 
 function trigonometry(fu, arg) {
     //'sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'lg', 'log', 'exp', 'abs'
-    var result = undefined;
+    var result = 'u';
     if (fu == 'sinh') {
         result = Math.sinh(arg);
     }
@@ -2077,19 +2093,21 @@ function trigonometry(fu, arg) {
 //     // console.log('blabla');
 // }
 
-function fillWithRandomValues(tree) {
-    var variable_value_list = [];
+function fillWithValues(tree_var, random, list) {
+    // random = true: fillWithRandomValues
+    // random = false: fill with values of variable_value_list
+    var var_value_list = [];
     // console.clear();
     // console.log('fill leafs & greek with random values');
     hasValue = true;
-    tree.withEachNode = function (node) {
+    tree_var.withEachNode = function (node) {
         if (node.type == 'integral') hasValue = false;
         if (node.type == 'lim') hasValue = false;
         if (node.type == 'text') hasValue = false;
     };
     if (hasValue) {
-        withEachLeafOrGreek(tree, function (node) {
-            if (node.isInUnit(tree)) {
+        withEachLeafOrGreek(tree_var, function (node) {
+            if (isInUnit(tree_var, node)) {
                 var temp = decompose_unit(node.content);
                 node.value = temp[3];
                 //node.type = 'unit';
@@ -2099,14 +2117,14 @@ function fillWithRandomValues(tree) {
         do {
             var stop = false;
             var found = false;
-            var nodelist = tree.nodelist;
+            var nodelist = tree_var.nodelist;
             // console.log(nodelist);
             do {
                 var node = nodelist[i];
                 // console.log(i);
                 // console.log(node);
                 // doThis may add or delete nodes!
-                if ((node.type == 'leaf' || node.type == 'greek') && ((typeof node.value) == 'undefined')) {
+                if ((node.type == 'leaf' || node.type == 'greek') && (node.value == 'u')) {
                     found = true;
                     stop = true; //short circuit
                 } else {
@@ -2115,24 +2133,26 @@ function fillWithRandomValues(tree) {
                 if (i === nodelist.length) {
                     stop = true;
                 }
-                if (i === 30) {
-                    stop = true;
-                }
                 if (found) {
                     var content = node.content;
-                    // Box-Muller
-                    var u1 = 2 * Math.PI * Math.random();
-                    var u2 = -2 * Math.log(Math.random());
-                    var value = 1000 * Math.cos(u1) * Math.sqrt(u2);
-                    console.log('found ' + content + ' value=' + value);
-                    withEachLeafOrGreek(tree, function (node) {
+                    if (random == true) {
+                        // Box-Muller
+                        var u1 = 2 * Math.PI * Math.random();
+                        var u2 = -2 * Math.log(Math.random());
+                        var value = 1000 * Math.cos(u1) * Math.sqrt(u2);
+                        // console.log('found ' + content + ' value=' + value);
+                    } else {
+                        var value = list[content];
+                        console.log('found in list ' + content + ' value=' + value);
+                    }
+                    withEachLeafOrGreek(tree_var, function (node) {
                         // console.log('withEachLeafOrGreek ' + node.id);
                         // console.log(node);
-                        if (typeof node.value == 'undefined') {
+                        if (node.value == 'u') {
                             if (node.content == content) {
                                 node.value = value;
                                 console.log(node.value + '->' +
-                                node.content + ' ' + node.type);
+                                    node.content + ' ' + node.type);
                             }
                             if (node.content == '\pi') {
                                 node.value = Math.PI;
@@ -2141,11 +2161,11 @@ function fillWithRandomValues(tree) {
                             }
                         }
                     });
-                    variable_value_list[content] = value;
+                    var_value_list[content] = value;
                 }
             } while (stop === false);
         } while (found);
     }
-    console.log(variable_value_list);
-    return [hasValue, variable_value_list];
+    // console.log(var_value_list);
+    return [hasValue, var_value_list];
 }
