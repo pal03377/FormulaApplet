@@ -111,11 +111,12 @@ function check_if_equal(id, a, b, ds_list) {
 function check_if_equality(id, equ, ds_list) {
   var myTree = parse(equ);
   // console.log(ds_list);
-  var temp = fillWithRandomValuesAndCheckDefinitionSets(myTree, ds_list);
+  // var temp = fillWithRandomValAndCheckDefSets(myTree, ds_list);
+  myTree = fillWithRandomValAndCheckDefSets(myTree, ds_list);
   // console.log(temp);
-  myTree = temp[2];
+  // myTree = temp[2];
   // console.log(JSON.stringify(myTree));
-  var almostOne = value2(myTree, {hasValue: temp[0], variable_value_list: temp[1]});
+  var almostOne = value2(myTree);
   var dif = Math.abs(almostOne - 1);
   console.log('dif=' + dif);
   if (dif < precision) {
@@ -125,17 +126,18 @@ function check_if_equality(id, equ, ds_list) {
   }
 }
 
-function fillWithRandomValuesAndCheckDefinitionSets(tree_var, ds_list) {
+function fillWithRandomValAndCheckDefSets(tree_var, ds_list) {
   console.log('save');
   // console.log(tree_var);
-  console.log(tree_var.nodelist[9].value);
+  // console.log(tree_var.nodelist[9].value);
   var rememberTree = JSON.stringify(tree_var);
   var temp = '';
   // console.log('rememberTree=' + rememberTree);
   if (ds_list.length == 0) {
-    temp = fillWithValues(tree_var, true, []);
+    fillWithValues(tree_var);
     // return [temp[0], temp[1], tree_var];
-    return [temp.hasValue, temp.variable_value_list, tree_var];
+    // return [tree_var.hasValue, tree_var.variable_value_list, tree_var];
+    return tree_var;
   } else {
     // start watchdog
     var start = new Date();
@@ -147,21 +149,21 @@ function fillWithRandomValuesAndCheckDefinitionSets(tree_var, ds_list) {
       tree2 = JSON.parse(rememberTree);
       console.log('restore');
       // console.log(tree2);
-      console.log(tree2.nodelist[9].value);
-      temp = fillWithValues(tree2, true, []);
+      // console.log(tree2.nodelist[9].value);
+      fillWithValues(tree2);
       // var variable_value_list = temp[1];
-      var variable_value_list = temp.variable_value_list;
+      var variable_value_list = tree2.variable_value_list;
       console.log('fill');
       // console.log(tree2);
-      console.log(tree2.nodelist[9].value);
+      // console.log(tree2.nodelist[9].value);
       // CheckDefinitionSets
       for (var i = 0; i < ds_list.length; i++) {
         // check
         var definitionset = parse(ds_list[i]);
-        var temp2 = fillWithValues(definitionset, false, variable_value_list);
-        var value = value2(definitionset, temp2);
+        fillWithValues(definitionset, variable_value_list);
+        var value = value2(definitionset);
+        success = ((value > 0) || typeof value == 'undefined');
         // console.log('definitionset ' + i + ' value=' + value);
-        success = (value > 0);
         if (success == false) {
           // short circuit
           i = ds_list.length;
@@ -178,14 +180,16 @@ function fillWithRandomValuesAndCheckDefinitionSets(tree_var, ds_list) {
       console.log('filled with success. Time= ' + timePassed);
       // return [temp[0], temp[1], tree2];
       // console.log(temp);
-      return [temp.hasValue, temp.variable_value_list, tree2];
-    } else{
-      console.log('hasValue = false');
-      return [false, [], tree2];
+      // return [tree2.hasValue, tree2.variable_value_list, tree2];
+      return tree2;
+    } else {
+      tree2.hasValue = false;
+      tree2.variable_value_list = [];
     }
     // return [hasValue, variable_value_list, filled tree]
+    return tree2;
   }
- }
+}
 
 function editHandler(index) {
   var fa = $(".formula_applet")[index];

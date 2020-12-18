@@ -133,6 +133,8 @@ function tree() {
     this.leaf.id = 1;
     this.leaf.parent = this.root.id;
     this.root.children = [this.leaf.id];
+    this.hasValue = false;
+    this.variable_value_list = [];
 };
 
 function copy(myTree) {
@@ -828,7 +830,7 @@ function makeDegreeUnit(text) {
     degree.push('');
 
     var unitchain = degree.join('') + separator;
-    console.log(unitchain);
+    // console.log(unitchain);
 
     // console.log(gaps, number);
 
@@ -1645,7 +1647,7 @@ function unit2value(unitname) {
     valueOf["dag"] = 10 * valueOf["g"];
     // console.log(valueOf);
     var result = valueOf[unitname];
-    if(typeof result == 'undefined'){
+    if (typeof result == 'undefined') {
         result = 'u';
     }
     return result;
@@ -1883,7 +1885,7 @@ function paint_tree_callback(currentNode, xa, ya, x, y, ctx, tree) {
         if (curr == 'number') {
             curr = 'num';
         }
-        if (currentisInUnit(tree, node)) {
+        if (isInUnit(tree, currentNode)) {
             // curr += '(U)';
             ctx.fillStyle = "#e050e0";
         }
@@ -1928,16 +1930,16 @@ function check_children(tree) {
 }
 
 function value(tree) {
-    var temp = fillWithValues(tree, true, []);
+    fillWithValues(tree);
     // temp = {temp.hasValue, temp.variable_value_list}
-    return value2(tree, temp);
+    return value2(tree);
 }
 
-function value2(filledTree, temp) {
-     // temp = {temp.hasValue, temp.variable_value_list}
+function value2(filledTree) {
+    // temp = {temp.hasValue, temp.variable_value_list}
     // var hasValue = temp[0];
-    var hasValue = temp.hasValue;
-    if (hasValue) {
+    // var hasValue = temp.hasValue;
+    if (filledTree.hasValue) {
         // console.log(temp[1]);
         return val(filledTree.root, filledTree);
     } else {
@@ -2085,16 +2087,8 @@ function trigonometry(fu, arg) {
     return result;
 }
 
-// function fillWithRandomValues_test(tree) {
-//     // console.log('blibli');
-//     withEachLeaf(tree, function (node) {
-//         console.log(node.id + ' ' + node.type);
-//         console.log(node.content);
-//     });
-//     // console.log('blabla');
-// }
-
-function fillWithValues(tree_var, random, list) {
+function fillWithValues(tree_var, list) {
+    var random = (arguments.length == 1);
     // random = true: fillWithRandomValues
     // random = false: fill with values of variable_value_list
     var var_value_list = [];
@@ -2126,6 +2120,7 @@ function fillWithValues(tree_var, random, list) {
                 // console.log(node);
                 // doThis may add or delete nodes!
                 if ((node.type == 'leaf' || node.type == 'greek') && (node.value == 'u')) {
+                    // found leaf or greek with value undefined ('u')
                     found = true;
                     stop = true; //short circuit
                 } else {
@@ -2137,6 +2132,7 @@ function fillWithValues(tree_var, random, list) {
                 if (found) {
                     var content = node.content;
                     if (random == true) {
+                        // random = true -> fill with random value
                         // Box-Muller
                         var u1 = 2 * Math.PI * Math.random();
                         var u2 = -2 * Math.log(Math.random());
@@ -2145,31 +2141,44 @@ function fillWithValues(tree_var, random, list) {
                     } else {
                         var value = list[content];
                         console.log('found in list ' + content + ' value=' + value);
-                    }
-                    withEachLeafOrGreek(tree_var, function (node) {
-                        // console.log('withEachLeafOrGreek ' + node.id);
-                        // console.log(node);
-                        if (node.value == 'u') {
-                            if (node.content == content) {
-                                node.value = value;
-                                // console.log(node.value + '->' +
-                                //     node.content + ' ' + node.type);
-                            }
-                            if (node.content == '\pi') {
-                                node.value = Math.PI;
-                                value = Math.PI;
-                                console.log('PI');
-                            }
+                        if (typeof value == 'undefined') {
+                            console.log('Variable in definition set but not in applet: ' + content);
+                            stop = true;
+                            i++;
+                            hasValue = false;
+                            found = false;
                         }
-                    });
-                    var_value_list[content] = value;
+                    }
+                    if (typeof value !== 'undefined') {
+                        withEachLeafOrGreek(tree_var, function (node) {
+                            // console.log('withEachLeafOrGreek ' + node.id);
+                            // console.log(node);
+                            if (node.value == 'u') {
+                                if (node.content == content) {
+                                    node.value = value;
+                                    // console.log(node.value + '->' +
+                                    //     node.content + ' ' + node.type);
+                                }
+                                if (node.content == '\pi') {
+                                    node.value = Math.PI;
+                                    value = Math.PI;
+                                    console.log('PI');
+                                }
+                            }
+                        });
+                        var_value_list[content] = value;
+                    }
                 }
             } while (stop === false);
         } while (found);
     }
     // console.log(var_value_list);
-    var resulty = {hasValue: hasValue, variable_value_list: var_value_list};
+    tree_var.hasValue = hasValue;
+    tree_var.variable_value_list = var_value_list;
+    // No return. Return is changed tree_var
+    // this is all deprecated:
+    // var resulty = {hasValue: hasValue, variable_value_list: var_value_list};
     // console.log(resulty);
     // return [hasValue, var_value_list];
-    return resulty;
+    // return resulty;
 }
