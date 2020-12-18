@@ -27,8 +27,8 @@ function init(){
 
 <!-- <p id="output">output</p> -->
 <p class="formula_applet" id="definition_set" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} = \MathQuillMathField{}</p> One variable, one definition set. <br />
-<p class="formula_applet" id="definition_set" def="x > 0 && y < 5">\frac{\sqrt{x^3}}{\sqrt{x}} = \MathQuillMathField{}</p>Number of definition sets exceeds number of variables.<br />
-<p class="formula_applet" id="definition_set" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} + y \cdot z = \MathQuillMathField{}</p>Number of variables exceeds number of definition sets.<br />
+<p class="formula_applet" id="definition_set_more_than_numofvar" def="x > 0 && y < 5">\frac{\sqrt{x^3}}{\sqrt{x}} = \MathQuillMathField{}</p>Number of definition sets exceeds number of variables.<br />
+<p class="formula_applet" id="definition_set_less_than_numofvar" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} + y \cdot z = \MathQuillMathField{}</p>Number of variables exceeds number of definition sets.<br />
 <p class="formula_applet" id="light-house" data-b64='gOmkT'>s=\sqrt{ h^2 + \MathQuillMathField{} }</p><br />
 <p class="formula_applet" id="binom_01">(2u + 7v)^2 = \MathQuillMathField{}</p><br />
 <p class="formula_applet" id="binom_02">(2u + 7v)^2 = 4u^2 + 28uv + \MathQuillMathField{}</p><br />

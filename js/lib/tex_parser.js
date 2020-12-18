@@ -1944,6 +1944,7 @@ function value2(filledTree) {
         return val(filledTree.root, filledTree);
     } else {
         console.log('tree not evaluable');
+        return undefined;
     }
 }
 

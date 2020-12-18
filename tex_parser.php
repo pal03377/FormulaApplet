@@ -46,7 +46,8 @@ include_once 'header.php';
         //   console.log('node ' + i + ': ' + myTree.nodelist[i].type + ' ' + myTree.nodelist[i].content);
         // }
         if(end_parse){
-            var hasValue = fillWithValues(myTree, true, []);
+          fillWithValues(myTree, true, []);
+          var hasValue = myTree.hasValue;
             paint_tree(myTree, canvas, 'filWithRandomValues');
           if (hasValue){
               var dummy = val(myTree.root, myTree);
