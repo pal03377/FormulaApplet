@@ -1929,13 +1929,14 @@ function check_children(tree) {
 
 function value(tree) {
     var temp = fillWithValues(tree, true, []);
-    // temp = [hasValue, variable_value_list]
-    value2(tree, temp);
+    // temp = {temp.hasValue, temp.variable_value_list}
+    return value2(tree, temp);
 }
 
 function value2(filledTree, temp) {
-    // temp = [hasValue, variable_value_list]
-    var hasValue = temp[0];
+     // temp = {temp.hasValue, temp.variable_value_list}
+    // var hasValue = temp[0];
+    var hasValue = temp.hasValue;
     if (hasValue) {
         // console.log(temp[1]);
         return val(filledTree.root, filledTree);
@@ -2151,8 +2152,8 @@ function fillWithValues(tree_var, random, list) {
                         if (node.value == 'u') {
                             if (node.content == content) {
                                 node.value = value;
-                                console.log(node.value + '->' +
-                                    node.content + ' ' + node.type);
+                                // console.log(node.value + '->' +
+                                //     node.content + ' ' + node.type);
                             }
                             if (node.content == '\pi') {
                                 node.value = Math.PI;
@@ -2167,5 +2168,8 @@ function fillWithValues(tree_var, random, list) {
         } while (found);
     }
     // console.log(var_value_list);
-    return [hasValue, var_value_list];
+    var resulty = {hasValue: hasValue, variable_value_list: var_value_list};
+    // console.log(resulty);
+    // return [hasValue, var_value_list];
+    return resulty;
 }

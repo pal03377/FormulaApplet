@@ -112,9 +112,10 @@ function check_if_equality(id, equ, ds_list) {
   var myTree = parse(equ);
   // console.log(ds_list);
   var temp = fillWithRandomValuesAndCheckDefinitionSets(myTree, ds_list);
+  // console.log(temp);
   myTree = temp[2];
   // console.log(JSON.stringify(myTree));
-  var almostOne = value2(myTree, [temp[0], temp[1]]);
+  var almostOne = value2(myTree, {hasValue: temp[0], variable_value_list: temp[1]});
   var dif = Math.abs(almostOne - 1);
   console.log('dif=' + dif);
   if (dif < precision) {
@@ -129,10 +130,12 @@ function fillWithRandomValuesAndCheckDefinitionSets(tree_var, ds_list) {
   // console.log(tree_var);
   console.log(tree_var.nodelist[9].value);
   var rememberTree = JSON.stringify(tree_var);
+  var temp = '';
   // console.log('rememberTree=' + rememberTree);
   if (ds_list.length == 0) {
     temp = fillWithValues(tree_var, true, []);
-    return [temp[0], temp[1], tree_var];
+    // return [temp[0], temp[1], tree_var];
+    return [temp.hasValue, temp.variable_value_list, tree_var];
   } else {
     // start watchdog
     var start = new Date();
@@ -146,7 +149,8 @@ function fillWithRandomValuesAndCheckDefinitionSets(tree_var, ds_list) {
       // console.log(tree2);
       console.log(tree2.nodelist[9].value);
       temp = fillWithValues(tree2, true, []);
-      var variable_value_list = temp[1];
+      // var variable_value_list = temp[1];
+      var variable_value_list = temp.variable_value_list;
       console.log('fill');
       // console.log(tree2);
       console.log(tree2.nodelist[9].value);
@@ -156,7 +160,7 @@ function fillWithRandomValuesAndCheckDefinitionSets(tree_var, ds_list) {
         var definitionset = parse(ds_list[i]);
         var temp2 = fillWithValues(definitionset, false, variable_value_list);
         var value = value2(definitionset, temp2);
-        console.log('definitionset ' + i + ' value=' + value);
+        // console.log('definitionset ' + i + ' value=' + value);
         success = (value > 0);
         if (success == false) {
           // short circuit
@@ -171,8 +175,10 @@ function fillWithRandomValuesAndCheckDefinitionSets(tree_var, ds_list) {
     while (success == false && timePassed < 2000);
     console.log('numberOfTries=' + numberOfTries);
     if (success == true) {
-      console.log('filled with success');
-      return [temp[0], temp[1], tree2];
+      console.log('filled with success. Time= ' + timePassed);
+      // return [temp[0], temp[1], tree2];
+      // console.log(temp);
+      return [temp.hasValue, temp.variable_value_list, tree2];
     } else{
       console.log('hasValue = false');
       return [false, [], tree2];
