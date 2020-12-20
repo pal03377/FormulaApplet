@@ -1932,10 +1932,10 @@ function check_children(tree) {
 function value(tree) {
     fillWithValues(tree);
     // temp = {temp.hasValue, temp.variable_value_list}
-    return value2(tree);
+    return evaluateTree(tree);
 }
 
-function value2(filledTree) {
+function evaluateTree(filledTree) {
     // temp = {temp.hasValue, temp.variable_value_list}
     // var hasValue = temp[0];
     // var hasValue = temp.hasValue;

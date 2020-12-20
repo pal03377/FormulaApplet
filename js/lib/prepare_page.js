@@ -1,7 +1,7 @@
 // This is prepare_page.js
 
 var prepare_page_exists = true;
-var precision = 0.000001;
+var default_precision = 0.000001;
 var activeMathfieldIndex = '';
 var MQ = '';
 var FAList = [];
@@ -18,6 +18,7 @@ class FA {
     this.mathField = '';
     this.hammer = '';
     this.definitionset_list = [];
+    this.precision = default_precision;
   }
 }
 
@@ -56,7 +57,6 @@ function prepare_page() {
 
 // function isAndr() cannot be moved to glue.js because
 // glue.js is executed but not stored at test.mathebuch-online.de/wiki
-
 function isAndr() {
   return (navigator.userAgent.toUpperCase().indexOf('ANDROID') !== -1);
 }
@@ -102,6 +102,14 @@ function keyboardEvent(cmd) {
   }
 }
 
+function FApp_from_id(id) {
+  for (var i = 0; i < FAList.length; i++) {
+    if (FAList[i].id == id) {
+      return FAList[i];
+    }
+  }
+}
+
 function check_if_equal(id, a, b, ds_list) {
   console.log(a + ' ?=? ' + b);
   var equ = a + '=' + b;
@@ -110,15 +118,12 @@ function check_if_equal(id, a, b, ds_list) {
 
 function check_if_equality(id, equ, ds_list) {
   var myTree = parse(equ);
-  // console.log(ds_list);
-  // var temp = fillWithRandomValAndCheckDefSets(myTree, ds_list);
   myTree = fillWithRandomValAndCheckDefSets(myTree, ds_list);
-  // console.log(temp);
-  // myTree = temp[2];
-  // console.log(JSON.stringify(myTree));
-  var almostOne = value2(myTree);
+  var almostOne = evaluateTree(myTree);
   var dif = Math.abs(almostOne - 1);
   console.log('dif=' + dif);
+  var FApp = FApp_from_id(id);
+  var precision = FApp.precision;
   if (dif < precision) {
     $('#' + id).removeClass('mod_wrong').addClass('mod_ok');
   } else {
@@ -127,16 +132,11 @@ function check_if_equality(id, equ, ds_list) {
 }
 
 function fillWithRandomValAndCheckDefSets(tree_var, ds_list) {
-  console.log('save');
-  // console.log(tree_var);
-  // console.log(tree_var.nodelist[9].value);
+  // console.log('save');
   var rememberTree = JSON.stringify(tree_var);
   var temp = '';
-  // console.log('rememberTree=' + rememberTree);
   if (ds_list.length == 0) {
     fillWithValues(tree_var);
-    // return [temp[0], temp[1], tree_var];
-    // return [tree_var.hasValue, tree_var.variable_value_list, tree_var];
     return tree_var;
   } else {
     // start watchdog
@@ -148,22 +148,15 @@ function fillWithRandomValAndCheckDefSets(tree_var, ds_list) {
       var tree2 = tree();
       tree2 = JSON.parse(rememberTree);
       console.log('restore');
-      // console.log(tree2);
-      // console.log(tree2.nodelist[9].value);
       fillWithValues(tree2);
-      // var variable_value_list = temp[1];
       var variable_value_list = tree2.variable_value_list;
       console.log('fill');
-      // console.log(tree2);
-      // console.log(tree2.nodelist[9].value);
       // CheckDefinitionSets
       for (var i = 0; i < ds_list.length; i++) {
-        // check
         var definitionset = parse(ds_list[i]);
         fillWithValues(definitionset, variable_value_list);
-        var value = value2(definitionset);
+        var value = evaluateTree(definitionset);
         success = ((value > 0) || typeof value == 'undefined');
-        // console.log('definitionset ' + i + ' value=' + value);
         if (success == false) {
           // short circuit
           i = ds_list.length;
@@ -178,46 +171,47 @@ function fillWithRandomValAndCheckDefSets(tree_var, ds_list) {
     console.log('numberOfTries=' + numberOfTries);
     if (success == true) {
       console.log('filled with success. Time= ' + timePassed);
-      // return [temp[0], temp[1], tree2];
-      // console.log(temp);
-      // return [tree2.hasValue, tree2.variable_value_list, tree2];
-      return tree2;
     } else {
       tree2.hasValue = false;
       tree2.variable_value_list = [];
     }
-    // return [hasValue, variable_value_list, filled tree]
     return tree2;
   }
 }
 
 function editHandler(index) {
   var fa = $(".formula_applet")[index];
-  // var index = $(".formula_applet").index($('#' + id));
   var mf = FAList[index].mathField;
   var mf_container = MQ.StaticMath(FAList[index].formula_applet);
-  // console.log(fa);
   var solution = FAList[index].solution;
   var hasSolution = FAList[index].hasSolution;
   var id = FAList[index].id; // name of formula_applet
   var ds_list = FAList[index].definitionset_list;
-  // console.log(id + ' index=' + index + ' hasSolution=' + hasSolution + ' mode=' + entermode);
   if (hasSolution) {
-    // out = mf.latex() + ' ' + solution;
     check_if_equal(id, mf.latex(), solution, ds_list);
   } else {
-    // out = mf_container.latex();
     check_if_equality(id, mf_container.latex(), ds_list);
   }
-  // document.getElementById('output').innerHTML = out;
 };
 
-// function storeSolution(sol, ind) {
-//   console.log(ind + ' solution: ' + sol);
-//   FAList[ind].solution = sol;
-// }
-
 var editor_mf = '';
+
+function sanitizePrecision(prec) {
+  if (typeof prec == 'undefined') {
+    prec = default_precision;
+  } else {
+    prec = prec.replace(/,/g, '.');
+    var endsWithPercent = (prec.substr(prec.length - 1) == '%');
+    if (endsWithPercent) {
+      prec = prec.substring(0, prec.length - 1);
+    }
+    prec = prec.valueOf();
+    if (endsWithPercent) {
+      prec = prec * 0.01;
+    }
+  }
+  return prec;
+}
 
 function mathQuillify() {
   MQ = MathQuill.getInterface(2);
@@ -230,25 +224,26 @@ function mathQuillify() {
     var def = $(this).attr('def');
     if (typeof def !== 'undefined') {
       FApp.definitionset_list = unify_definitionsets(def);
-      // console.log(FApp.definitionset_list);
     }
+    var prec = $(this).attr('precision');
+    if (typeof prec == 'undefined'){
+      prec = $(this).attr('prec');
+    }
+    // console.log(prec);
+    prec = sanitizePrecision(prec);
+    console.log(FApp.id + ' precision=' + prec + ' ' + 0.5 * prec);
+    FApp.precision = prec;
     var isEditor = (FApp.id.toLowerCase() == 'editor');
-    // console.log('isEditor=' + isEditor);
     FApp.formula_applet = this;
     $(this).click(function () {
       $(".formula_applet").removeClass('selected');
       $(this).addClass('selected');
-      // var id = $(this).attr('id');
-      // activeMathfieldIndex = $(".formula_applet").index($('#' + id));
       activeMathfieldIndex = FApp.index;
-      // console.log(activeMathfieldIndex);
     });
     FAList[index] = FApp;
 
     if (isEditor) {
       // *** editor ***
-      // var eraseclass = '';
-
       console.log('init editor');
       prepend();
       // make whole mathFieldSpan editable
@@ -263,18 +258,12 @@ function mathQuillify() {
         }
       });
       FApp.mathField = editor_mf;
-      // console.log(editor_mf);
 
       var mqEditableField = $('#editor').find('.mq-editable-field')[0];
-      // console.log(mqEditableField);
-
-      // show output-codes before first edit
-      // show_editor_results(editor_edithandler(editor_mf.latex()));
       set_input_event();
       set_unit_event();
       erase_unit_event();
 
-      // $('#random-id').click(function (ev) {
       $('#random-id').on('mousedown', function (ev) {
         ev.preventDefault();
         console.log('random-id');
@@ -323,12 +312,7 @@ function mathQuillify() {
       if ($(this).attr('data-b64') !== undefined) {
         FApp.hasSolution = true;
         var zip = $(this).attr('data-b64');
-        // storeSolution(decode(zip), index);
         FAList[index].solution = decode(zip);
-
-        // base64_zip_decode(zip, function (decoded) {
-        //   // storeSolution(decoded, index);
-        // });
       } else {
         FApp.hasSolution = false;
       };
@@ -344,19 +328,11 @@ function mathQuillify() {
           enter: function () {
             editHandler(index);
           },
-          // select: function () {
-          //   console.log('select ' + index);
-          // }
         }
       });
       FApp.mathField = mf;
-      // console.log(index);
-      // console.log(FApp);
     }
     FApp.mqEditableField = mqEditableField;
-    // $(mqEditableField).on('focus blur select', function(ev){  
-    //   console.log(ev.target);
-    // });
     FApp.hammer = new Hammer(mqEditableField);
     FApp.hammer.on("doubletap", function (ev) {
       console.log(index + ' ' + ev.type);
@@ -364,10 +340,8 @@ function mathQuillify() {
     });
     FApp.hammer.on("press", function (ev) {
       console.log(index + ' ' + ev.type);
-      // vkbd_show();
     });
   });
-  // prepend();
 }
 
 function unify_definitionsets(def) {
@@ -407,7 +381,6 @@ function get_selection(mf, eraseClass) {
   console.log(mf);
   var ori = mf.latex();
   console.log('ori=' + ori);
-  // erase class{inputfield}
   var erased = ori;
   if (eraseClass) {
     erased = erase_class(ori);
@@ -423,7 +396,6 @@ function get_selection(mf, eraseClass) {
     if (eraseClass) {
       replaced_and_erased = erase_class(replaced_and_erased);
     }
-    // console.log(replaced_and_erased);
     var pre_selected = '?';
     var selected = '?';
     var post_selected = '?';
@@ -446,9 +418,7 @@ function get_selection(mf, eraseClass) {
     console.log('selected=' + selected);
     console.log('selected.length=' + selected.length);
     return [pre_selected, selected, post_selected, ori];
-    //   $('#editor').innerHTML = 'BliBlaBlu';
   }
-
 }
 
 function set_input_event() {
