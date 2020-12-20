@@ -4,13 +4,13 @@
 ?>
 <?php include_once( 'header.php' ); ?>
 <link href="css/table.css" rel="stylesheet">
-</head>
 
 <body>
     <h1><?php echo $title; ?></h1>
     <p><a href='problem_editor.php'>Problem Editor</a> for later use in MediaWiki</p>
     <p><a href='sample_task.php'>Sample task</a> for later use in MediaWiki</p>
     <p><a href='check_precision.php'>Check precision</a></p>
+    <p><a href='check_valid_digits.php'>Check valid digits</a></p>
     <p><a href='hammer_test.php'>VKBD - Virtual Keyboard</a> - uses library 'Hammer'</p>
     <p><a href='tex_parser.php'>TEX Parser</a></p>
     <p><a href='check_if_equal.php'>Check if equal</a></p>

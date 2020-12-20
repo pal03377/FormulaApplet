@@ -5,7 +5,6 @@
 <?php include_once( 'header.php' ); ?>
 <!-- <meta http-equiv="refresh" content="1; URL=./hiltrud.php"> -->
 <link href="css/table.css" rel="stylesheet">
-</head>
 
 <body>
     <h1><?php echo $title; ?></h1>
