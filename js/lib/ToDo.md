@@ -1,21 +1,31 @@
 # *ToDo* #
+## Online
+* MediaWiki Extension 'FormulaApplet' neu anlegen
+* FormulaApplet.php, FormulaApplet.body.php, /i18n
+* www.formelapplet.de mit Bootstrap
+* github gf09 privat -> public
+
+## Programmierung
+* Enhance
+  * class{...} <-> \class{inputfield}{...}
+  * \unit{...} <-> \textfield{blue}{...}
+  * string -> enhance -> mf.latex(string_e)
+  * string_e = mf.latex() -> simplify -> string
+* OOP, TypeScript. Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
+* try-catch, on error
+* Test und Debugging
+* Vereinheitlichung des Slice-Teils
+* https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
+* Legacy: Applet-Parameter decodieren
+* definite integral obsolete?
+* Triviale Lösungen sperren
+
 * Einheiten etc.
     * <s>physikalische Einheiten</s>
-    * <s>Grad</s>, Minuten, Sekunden
-    * Gemischte Zahlen
+    * <s>Grad, Minuten, Sekunden</s>
+    * <s>Gemischte Zahlen</s>
     * abs(x), |x|
     exp(x) = e^x
-* Objektorientierte Programmierung
-    * Vereinheitlichung des Slice-Teils
-    * Test und Debugging
-    * TypeScript
-    * https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
-* <s>Auf Gleichheit testen</s>
-    * <s>Paraneter 'solution'</s>
-* Legacy: Applet-Parameter decodieren
-* try-catch
-* definite integral obsolete?
-* <s>gf09.css: use glue to load</s>
 
 <s>## MediaWiki updaten (LOG)
 * braucht neuere PHP-Version
@@ -29,34 +39,18 @@
   $wgSessionCacheType = CACHE_DB;
   in LocalSettings.php</s>
 
-<s>## Android Bug: Virtuelle Tastatur geht nicht :-(
-* Initialisieren mit Space-Delete? FAIL
-* Explizites "addKeyListener" FAIL
-* Transparentes Textinput-Feld drüberlegen FAIL
-* Ein-Pixel-Textinput-Feld daneben (links oben) FAIL
-* Virtuelle Tastatur aus Library FAIL - lieber selber machen OK</s>
-
-## glue2
-* <s>Umbenennen glue.js -> glue_old.js und glue2.js -> glue.js OK
-* Test im Wiki OK
-* Test online mit/ohne Wiki OK
-* prepare_page *.js und innerhalb *.php unterscheiden! OK
-* Sind Waiter-Funktionen nötig? OK</s>
-* Fehlermeldungen testen
 
 ## DiesUndDas
 * Waiter-Funktionen vereinheitlichen
 * <s>other.php, uses.php aktualisieren OK
-* VKBD ergänzen (CAPS, Greek) OK
+* VKBD ergänzen (CAPS, Greek)
 * Koppelung VKBD - MathQuill OK
 * VKBD auch im Wiki OK</s>
-* on error, TypeScript
 * Problem-Editor OK, Integral, Limes
 * MediaWiki-WYSIWYG-Editor
 * Karl Kirst, Maria Eirich OK, Mandy Schütze OK
 * MediaWiki-Extensions aktualisieren
 ** GeoGebra: Nur Zbynek OK
 ** FormelApplet durch FormulaApplet ersetzen OK
-* GitHub von privat auf öffentlich
 * i18n
 

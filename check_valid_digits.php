@@ -15,11 +15,11 @@ include_once 'header.php';
                 mf.config({
                     handlers: {
                         edit: function () {
-                            console.log('editnew');
+                            // console.log('editnew');
                             editHandler2(mf.latex());
                         },
                         enter: function () {
-                            console.log('enternew');
+                            // console.log('enternew');
                             editHandler2(mf.latex());
                        },
                     }
@@ -28,8 +28,20 @@ include_once 'header.php';
     }
 
     function editHandler2(latex){
-        document.getElementById('output').innerHTML = latex ;
-    }
+        // delete latex whitespace
+        latex = latex.replace(/\\\s/g, '');
+         // delete whitespace
+        latex = latex.replace(/\s/g, '');
+        // delete comma/point
+        latex = latex.replace(/\./g, '');
+        latex = latex.replace(/\,/g, '');
+        //remove leading zeros
+        latex = latex.replace(/^0+/g, '');
+        // if e, take part before e
+        latex = latex.match(/([^e]*)(e?)([^e]*)/)[1];
+        var check = !(isNaN(latex));
+        document.getElementById('output').innerHTML = latex + ' ' + check;
+     }
 </script>
 <h1><?php echo $title; ?></h1>
 <p class="formula_applet" id="check_vd">\text{result} = \MathQuillMathField{}</p><br />
