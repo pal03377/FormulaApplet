@@ -5,12 +5,14 @@ var right = ['right', '<span style="font-size: 130%">\u25bb</span>', '#Right'];
 // ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
 var enter = ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', '#Enter'];
 var backspace = ['backspace', '\u232B', '#Backspace'];
+var poweroften =     ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>', '10^'];
 
 var keys = [];
 keys['mixed'] = [
     // row 0
     [
-        // [name, UTF-8, command] #command -> mathfield.keystroke(command)
+        // [name, UTF-8, command] 
+        // #command -> mathfield.keystroke(command)
         ['a'],
         ['b'],
         ['c'],
@@ -37,21 +39,16 @@ keys['mixed'] = [
     ],
     // row 2
     [
-        ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>'],
-        // ['exp', 'e<sup><small>\u2b1a</small></sup>'],
-        ['lg', 'lg'],
-        ['power', '\u2b1a<sup>\u2b1a</sup>'],
-        // ['nth_root', '<sup id="sup_root">\u2b1a</sup>' + squareroot],
-        ['nth_root', nth_root],
-        // ['nth_root', '\u221a', '\\nthroot'],
-        ['smallgap-2', '', ''],
+        poweroften,
+        ['lg', 'lg', 'lg('],
+        ['power', '\u2b1a<sup>\u2b1a</sup>', '^'],
+         ['nth_root', nth_root, '#nthroot'],
+         ['smallgap-2', '', ''],
         ['1'],
         ['2'],
         ['3'],
         ['up', '↑', '^'],
-        // ['up', '\uffea'],
         backspace,
-        // ['backspace', '⇐', 'backspace']
     ],
     // row 3
     [
@@ -62,17 +59,24 @@ keys['mixed'] = [
         ['squareroot', squareroot, '\\sqrt '],
         ['smallgap-3', '', ''],
         ['0'],
-        // ['.'],
-        ['comma', ','],
-        // ['left', '←'],
-        // ['right', '→'],
+        ['comma', ',', ','],
         left,
         right,
-        // ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
         enter,
-        // ['equal2', '=', '='],
     ]
 ]
+
+// obsolete
+// ['exp', 'e<sup><small>\u2b1a</small></sup>'],
+// ['power', '\u2b1a<sup>\u2b1a</sup>', '&nbsp;^&nbsp;'],
+// ['nth_root', '<sup id="sup_root">\u2b1a</sup>' + squareroot],
+// ['nth_root', '\u221a', '\\nthroot'],
+// ['up', '\uffea'],
+// ['up', '↑'],
+// ['backspace', '⇐', 'backspace']
+// ['left', '←'],
+// ['right', '→'],
+// ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
 
 keys['function'] = [
     // row 0
@@ -97,7 +101,7 @@ keys['function'] = [
         ['subscript', '\u2b1a<sub style="font-size: 85%">\u2b1a</sub>'],
         ['nth_root', nth_root],
         ['erase_unit', 'Clear<br>Unit', '#erase_unit'],
-        ['infinity', '&infin;'],
+        ['infinity', '&infin;', '\\infinity ']
     ],
     // row 2
     [
@@ -107,19 +111,18 @@ keys['function'] = [
         ['smallgap-2', '', ''],
         ['bracket-left', '('],
         ['bracket-right', ')'],
-        // ['up', '↑'],
-        ['up', '&uarr;'],
-        ['down', '&darr;'],
+        ['up', '&uarr;', '#Up'],
+        ['down', '&darr;', '#Down'],
         backspace,
     ],
     // row 3
     [
         ['exp', 'e<sup style="font-size: 85%">\u2b1a</sup>'],
-        ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>'],
+        poweroften,
         ['power', '\u2b1a<sup>\u2b1a</sup>'],
         ['smallgap-3', '', ''],
         ['squareroot', squareroot],
-        ['pi', '&pi;', '\\pi '],
+        ['keyboard', '\u2328', '\\xyz '],
         left,
         right,
         enter,
@@ -639,6 +642,7 @@ function vkbd_init() {
 
 function vkbd_hide() {
     $('#vkbd').css("display", "none");
+    $('.formula_applet.selected').nextAll("button.keyb_button:first").addClass('selected');
 }
 
 function vkbd_show() {

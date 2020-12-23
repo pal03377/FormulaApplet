@@ -39,8 +39,12 @@ include_once 'header.php';
         latex = latex.replace(/^0+/g, '');
         // if e, take part before e
         latex = latex.match(/([^e]*)(e?)([^e]*)/)[1];
-        var check = !(isNaN(latex));
-        document.getElementById('output').innerHTML = latex + ' ' + check;
+        var isNumber = !(isNaN(latex));
+        var valid_digits = 0;
+        if(isNumber){
+            valid_digits = latex.length;
+        }
+        document.getElementById('output').innerHTML = latex + ' valid_digits=' + valid_digits;
      }
 </script>
 <h1><?php echo $title; ?></h1>

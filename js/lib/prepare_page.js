@@ -31,8 +31,13 @@ function prepare_page() {
   console.log('isWiki=' + isWiki);
   // waits for MathQuill to load
   $("img.mod").remove();
+  ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
+  $('button.keyb_button').on('mousedown', function (ev) {
+    vkbd_show();
+    $("button.keyb_button").removeClass('selected');
+  });
   ($('<img class="mod">')).insertAfter($(".formula_applet"));
-  $(document).ready(function () {
+   $(document).ready(function () {
     mathQuillify();
     initTranslation();
   })
@@ -85,6 +90,8 @@ function keyboardEvent(cmd) {
         set_unit();
       } else if (cmd == 'erase_unit') {
         erase_unit();
+      } else if (cmd == 'nthroot') {
+        nthroot();
       } else {
         mf.keystroke(cmd);
       }
@@ -100,6 +107,18 @@ function keyboardEvent(cmd) {
       mf.keystroke('Backspace');
     }
   }
+}
+
+function nthroot(){
+  var mf = FAList[activeMathfieldIndex].mathField;
+  mf.cmd('\\nthroot');
+  mf.typedText(' ');
+  mf.keystroke('Tab');
+  mf.typedText(' ');
+  mf.keystroke('Left');
+  mf.keystroke('Left');
+  mf.keystroke('Shift-Left');
+
 }
 
 function FApp_from_id(id) {
@@ -238,6 +257,10 @@ function mathQuillify() {
     $(this).click(function () {
       $(".formula_applet").removeClass('selected');
       $(this).addClass('selected');
+      $("button.keyb_button").removeClass('selected');
+      if($('#vkbd').css('display')=='none'){
+        $(this).nextAll("button.keyb_button:first").addClass('selected');
+      }
       activeMathfieldIndex = FApp.index;
     });
     FAList[index] = FApp;
