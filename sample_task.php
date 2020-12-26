@@ -1,4 +1,4 @@
-<?php $title = 'Sample Tasks';
+<?php $title = 'Sample Tasks'; $heading='<span class="tr de samples">Aufgaben-Beispiele</span><span class="tr en samples">Sample Tasks</span>';
 $liblist = "[ 'hammer', 'decode', 'translate', 'prepare_page', 'mathquill', 'tex_parser', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss']";
 include_once 'header.php';
 ?>
@@ -6,15 +6,16 @@ include_once 'header.php';
 <script>
 function init(){
   console.log('init... (empty)');
-  initTranslation();
+  // initTranslation();
 }
 </script>
 
 </head>
 
 <body>
-<h1 class='tr' key='samples'><?php echo $title; ?></h1>
-<h2 class='tr' key='later'>for later use in MediaWiki</h2>
+<h1><?php echo $heading; ?></h1>
+<h2 class='tr de later'>zum späteren Gebrauch im MediaWiki</h2>
+<h2 class='tr en later'>for later use in MediaWiki</h2>
 <!-- <div id='keyboard'></div> -->
 <p id="mode_select">
   <input type="radio" name="lang" class="problemeditor language" id="en"></input>

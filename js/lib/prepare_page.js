@@ -22,6 +22,18 @@ class FA {
   }
 }
 
+function initTranslation(){
+  $('input.language').on('change', function (ev) {
+    console.log(ev);
+    // obtain lang = (id of .language button)
+    var lang = $(this).attr('id'); // obtain language id
+    if(lang == ''){
+      lang = 'de';
+    }
+    switchTo(lang);
+  });
+ }
+
 // prepare_page() is called by glue.js
 function prepare_page() {
   // dirty hack
