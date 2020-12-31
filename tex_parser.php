@@ -148,7 +148,7 @@ waitfor_mathquill_and_if_ready_then_do(function () {
         <p><button id="check">Check all</button></p>
         <!-- p id="version">version</p -->
         <p class="formula_applet">3 \frac{5}{13}a + 7\ \frac{5}{8}a^2-3\ \frac{x}{5}</p><br />
-        <p class="formula_applet">3,5\textcolor{blue}{\frac{km}{min}}+0,045\textcolor{blue}{\frac{cm^3}{s^2}}</p><br />
+        <p class="formula_applet">3,5\unit{\frac{km}{min}}+0,045\unit{\frac{cm^3}{s^2}}</p><br />
         <p class="formula_applet">7,5a + 3,5° 30' - 4n  - 5' 36'' + 35,8x - 3°12'24'' + 18,2° + 24.7'' - r</p><br />
         <p class="formula_applet">7,5a - 4n + 77° 12,5'' - 35,8x</p><br />
         <p class="formula_applet">- 3°12'24'' + 44' - s + 24.7''</p><br />

@@ -1,5 +1,5 @@
 <?php $title = 'License';
-$liblist = "['gf09css']";
+$liblist = "['gf09css', 'translate']";
 include_once 'header.php';
 ?>
 <link href="css/table.css" rel="stylesheet">

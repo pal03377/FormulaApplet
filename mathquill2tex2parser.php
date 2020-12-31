@@ -8,7 +8,7 @@ include_once 'header.php';
 
 <body>
   <p>MathQuill: <span id="editable-math"></span></p>
- <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3,5 \textcolor{blue}{\frac{km}{h}} </textarea>
+ <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3,5 \unit{\frac{km}{h}} </textarea>
   <hr>
   <textarea id="tree_out" rows="30" cols="80" style="width:80%;" readonly>tree</textarea>
  <hr>

@@ -1,9 +1,21 @@
 <?php 
   $title='Development';
-  $liblist = "['gf09css' ]";
+  $liblist = "['translate', 'gf09css']";
 ?>
 <?php include_once( 'header.php' ); ?>
 <link href="css/table.css" rel="stylesheet">
+<!-- <script>
+ document.onreadystatechange = function () {
+  if (document.readyState == "complete") {
+    initTranslation();
+  }
+}         
+</script> -->
+<script>
+function init(){
+  initTranslation();
+}
+</script>
 
 <body>
     <h1><?php echo $title; ?></h1>

@@ -6,7 +6,7 @@ include_once 'header.php';
 <body>
 <h1><?php echo $title; ?></h1>
 <p>MathQuill: <span id="editable-math"></span></p>
- <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3,5 \textcolor{blue}{\frac{km}{h}} </textarea>
+ <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3,5 \unit{\frac{km}{h}} </textarea>
 
 <script>
   function init(){

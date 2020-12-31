@@ -32,10 +32,22 @@ function switchTo(lang){
   }
 
   //default
-  $(window).on('load', function(){
+  // $(window).on('load', function(){
+  //     console.log('window.on.load');
+  function initTranslation(){
+      // backup of display attribute
+      console.log('initTranslation()');
+      $('.tr').each(function(){
+        var disp = $(this).css('display');
+        $(this).attr('data-disp', disp);
+        $(this).css('display', 'none');
+        // console.log(this);
+        console.log(disp);
+      })
 
+      // click event for language buttons
       $(function(){
-        $('.btn').button()
+        // $('.btn').button()
         $('#de').on('click', function(){
           console.log('de.click');
           switchTo('de');
@@ -46,13 +58,7 @@ function switchTo(lang){
         });
       });
 
-      $('.tr').each(function(){
-        // backup of display:...
-        var disp = $(this).css('display');
-        $(this).attr('data-disp', disp);
-        $(this).css('display', 'none');
-      })
-
+      // get current lang
       let url = new URL(document.location.href);
       var lang = url.searchParams.get('lang');
       if(lang == null || lang == ''){
@@ -62,4 +68,4 @@ function switchTo(lang){
       $('#'+lang).click().blur();
       switchTo(lang);
 
-  });
+  };

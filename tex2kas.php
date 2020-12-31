@@ -7,7 +7,7 @@
 <body>
   <p>MathQuill: <span id="editable-math"></span></p>
   <p>LaTeX:</p>
-  <!-- textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3.5 \textcolor{blue}{\frac{km}{h}} </textarea -->
+  <!-- textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3.5 \unit{\frac{km}{h}} </textarea -->
   <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3.5\frac{km}{h} </textarea>
    <p>KAS: Printed Representation</p>
   <textarea id="output" name="terminal" rows="4" cols="80" style="width:100%;">KAS</textarea>

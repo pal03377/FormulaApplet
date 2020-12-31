@@ -4,8 +4,16 @@
 
 if (typeof gf09_path == 'undefined') {
     var gf09_path = '/gf09/';
-    var server = document.location.hostname;
-    if (server.startsWith('test.grossmann.info')) {
+//    var server = document.location.hostname;
+    var href = document.location.href;
+    console.log(href);
+    if (href.startsWith('http://localhost:8080')) {
+        gf09_path = '/gf09/';
+    }
+    if (href.startsWith('https://test.grossmann.info')) {
+        gf09_path = '/';
+    }
+    if (href.startsWith('http://localhost:8088')) {
         gf09_path = '/';
     }
 }

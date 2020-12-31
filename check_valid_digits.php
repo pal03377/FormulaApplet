@@ -48,7 +48,7 @@ include_once 'header.php';
      }
 </script>
 <h1><?php echo $title; ?></h1>
-<p class="formula_applet" id="check_vd">\text{result} = \MathQuillMathField{}</p><br />
+<p class="formula_applet" id="check_vd">\text{result} = {{result}}</p><br />
 <p id="output">output</p>
 
 <?php include_once 'footer.php';?>

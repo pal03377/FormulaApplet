@@ -61,7 +61,7 @@ include_once 'header.php';
     unit_button.click( function() {
       console.log('unit_button event');
       var temp = mf.latex();
-      temp +='\\textcolor{blue}{ }';
+      temp +='\\unit{ }';
       mf.latex(temp);
    });
 

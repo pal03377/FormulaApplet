@@ -891,7 +891,7 @@ function makeDegreeUnit(text) {
             // console.log(text_with_brackets_and_plus);
         }
     }
-    var unit = "\\textcolor{blue}{";
+    var unit = "\\unit{";
     temp = text_with_brackets_and_plus.replace(/'/g, unit + "'}");
     temp = temp.replace(/°/g, unit + "°}");
     temp = temp.replace(/↟/g, unit + "''}");

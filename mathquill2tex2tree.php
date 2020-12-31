@@ -8,7 +8,7 @@ include_once 'header.php';
 
 <body>
   <p>MathQuill: <span id="editable-math"></span></p>
- <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3,5 \textcolor{blue}{\frac{km}{h}} </textarea><br />
+ <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3,5 \unit{\frac{km}{h}} </textarea><br />
  <button id="unit" class='button'>Insert Unit</button>
  <hr>
   <textarea id="tree2TEX" style="width:80%;vertical-align:top" class="formula_applet">tex2</textarea>
@@ -52,7 +52,7 @@ function init(){
   unit_button.click( function() {
       console.log('unit_button event');
       var temp = mf.latex();
-      temp +='\\textcolor{blue}{ }';
+      temp +='\\unit{ }';
       mf.latex(temp);
    });
 }

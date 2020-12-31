@@ -22,17 +22,17 @@ class FA {
   }
 }
 
-function initTranslation(){
-  $('input.language').on('change', function (ev) {
-    console.log(ev);
-    // obtain lang = (id of .language button)
-    var lang = $(this).attr('id'); // obtain language id
-    if(lang == ''){
-      lang = 'de';
-    }
-    switchTo(lang);
-  });
- }
+// function initTranslation(){
+//   $('input.language').on('change', function (ev) {
+//     console.log(ev);
+//     // obtain lang = (id of .language button)
+//     var lang = $(this).attr('id'); // obtain language id
+//     if(lang == ''){
+//       lang = 'de';
+//     }
+//     switchTo(lang);
+//   });
+//  }
 
 // prepare_page() is called by glue.js
 function prepare_page() {
@@ -51,7 +51,7 @@ function prepare_page() {
   ($('<img class="mod">')).insertAfter($(".formula_applet"));
    $(document).ready(function () {
     mathQuillify();
-    initTranslation();
+    // initTranslation();
   })
 
   $('body').on('keyup', function (ev) {
@@ -248,6 +248,16 @@ function mathQuillify() {
   MQ = MathQuill.getInterface(2);
   vkbd_init();
   $(".formula_applet").each(function () {
+    var temp = (this.innerHTML);
+    this.innerHTML = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
+  });
+  $(".formula_applet").each(function () {
+    var temp = (this.innerHTML);
+    console.log('temp=' + temp);
+    this.innerHTML = temp.replace(/\\unit{/g, '\\textcolor{blue}{');
+    console.log('replaced=' + this.innerHTML);
+  });
+  $(".formula_applet").each(function () {
     var FApp = new FA();
     var index = $(".formula_applet").index(this);
     FApp.index = index;
@@ -351,8 +361,12 @@ function mathQuillify() {
       } else {
         FApp.hasSolution = false;
       };
+      console.log('formula_applet=');
+      console.log(this);
       var mqEditableField = $(this).find('.mq-editable-field')[0];
+      console.log('mqEditableField=' + mqEditableField);
       var mf = MQ.MathField(mqEditableField, {});
+      console.log('mf=' + mf);
       mf.config({
         handlers: {
           edit: function () {
@@ -497,7 +511,7 @@ function set_unit() {
   var post_selected = temp[2];
   var ori = temp[3];
   if (selected.length > 0) {
-    var new_latex = pre_selected + '\\textcolor{blue}{' + selected + '}' + post_selected;
+    var new_latex = pre_selected + '\\unit{' + selected + '}' + post_selected;
     new_latex = new_latex.replace('class{', '\\class{inputfield}{');
     console.log(new_latex);
     mf.latex(new_latex);
@@ -519,7 +533,7 @@ function erase_unit_event() {
 function erase_unit() {
   console.log('erase-unit');
   var ori = editor_mf.latex();
-  var temp = separate_class(ori, '\\textcolor{blue}{');
+  var temp = separate_class(ori, '\\unit{');
   // console.log(temp);
   if (temp[1].length > 0) {
     var textcolor_erased = temp[0] + temp[1] + temp[2];
@@ -578,11 +592,8 @@ function show_editor_results(parts) {
   }
   common_result += '">';
   common_result += parts[0];
-  result += common_result;
-  wikiresult += common_result;
-  result += '\\MathQuillMathField{}';
-  wikiresult += '{{result}}';
-  common_result = parts[2];
+  common_result += '{{result}}';
+  common_result += parts[2];
   result += common_result + '</p>';
   wikiresult += common_result + '</f_app>';
 
@@ -614,7 +625,7 @@ function prepend() {
     // ed.after('<p id="output-code-3"></p>');
     ed.after('<hr /><textarea id="wiki-text" rows=4 cols=150></textarea>');
     ed.after('<button type="button" class="problemeditor" id="set-unit">Unit</button>' + '<button type="button" class="problemeditor" id="erase-unit">Erase Unit</button>');
-    ed.after('<p><span class="tr" key="uses">dummy</span></p>');
+    ed.after('<p><span class="tr de uses">FormulaApplet benutzt die Bibliotheken jQuery, MathQuill und Hammer. </span><span class="tr en uses>">FormulaApplet uses jQuery, MathQuill, and Hammer. </span><a href="license.php" class="tr de moreinfo">Weitere Informationen...</a><a href="license.php" class="tr en moreinfo">More info...</a></p>');
     ed.after('<button type="button" class="problemeditor" id="set-input">Set input field</button>');
   }
 }

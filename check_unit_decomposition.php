@@ -10,7 +10,7 @@ include_once 'header.php';
 <body>
   <h1><?php echo $title; ?></h1>
   <p>MathQuill: <span id="editable-math"></span></p>
- <textarea id="latex" style="width:80%;vertical-align:top">3,5\textcolor{blue}{\frac{km}{min}} </textarea><br />
+ <textarea id="latex" style="width:80%;vertical-align:top">3,5\unit{\frac{km}{min}} </textarea><br />
  <button id="unit" class='button'>Insert Unit</button>
  <hr>
   <textarea id="tree2TEX" style="width:80%;vertical-align:top" class="formula_applet">tex2</textarea>
@@ -56,7 +56,7 @@ background-color: #ffffdf !important;">
   unit_button.click( function() {
       console.log('unit_button event');
       var temp = mf.latex();
-      temp +='\\textcolor{blue}{ }';
+      temp +='\\unit{ }';
       mf.latex(temp);
    });
 }
