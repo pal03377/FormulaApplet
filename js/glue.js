@@ -38,7 +38,7 @@ function task(source) {
 
 var jQuery_url = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
 var jQuery_fallback = libPath + "jquery-3.4.1.min.js";
-var tasks = [];
+var tasks = {};
 tasks['mathquillcss'] = new task('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css');
 tasks['mathquillcss'].fallback = libPath + 'mathquill-0.10.1/mathquill.css';
 tasks['mathquill'] = new task('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js');
@@ -57,9 +57,16 @@ tasks['gf09css'] = new task(cssPath + 'gf09.css');
 tasks['vkbdcss'] = new task(cssPath + 'vkbd.css');
 tasks['tap4'] = new task(libPath + 'tap4.js');
 // console.log(tasks);
-liblist.forEach(function (taskname) {
+// console.log(tasks);
+// .forEach causes error 'foeEach is not a function' - maybe typescript error
+// liblist.forEach(function (taskname) {
+//     tasks[taskname].name = taskname;
+// })
+for( var i = 0; i < liblist.length; i++){
+    var taskname = liblist[i];
+    // console.log(tasks[taskname]);
     tasks[taskname].name = taskname;
-})
+}
 
 // Load jQuery (without using jQuery)
 

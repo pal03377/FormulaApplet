@@ -8,17 +8,20 @@
 ## Programmierung
 * Enhance
   * class{...} <-> \class{inputfield}{...}
-  * \unit{...} <-> \textfield{blue}{...}
-  * string -> enhance -> mf.latex(string_e)
-  * string_e = mf.latex() -> simplify -> string
+    * nicht nötig, da nicht sichtbar. Nur intern im Aufgaben-Editor verwendet.
+  <s>* \unit{...} <-> \textfield{blue}{...}</s>
+  <s>* string -> enhance -> mf.latex(string_e)</s>
+  <s>* string_e = mf.latex() -> simplify -> string</s>
 * OOP, TypeScript. Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
 * try-catch, on error
 * Test und Debugging
-* Vereinheitlichung des Slice-Teils
+* Vereinheitlichung des Slice-Teils ??
 * https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
 * Legacy: Applet-Parameter decodieren
 * definite integral obsolete?
 * Triviale Lösungen sperren
+* condition = ...
+* glue.js verbessern
 
 * Einheiten etc.
     * <s>physikalische Einheiten</s>
@@ -53,4 +56,7 @@
 ** GeoGebra: Nur Zbynek OK
 ** FormelApplet durch FormulaApplet ersetzen OK
 * i18n
+* Linux mit GUI unter WIN10
+* befreundete Seiten
+
 

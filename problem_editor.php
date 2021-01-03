@@ -5,7 +5,7 @@ include_once 'header.php';
 
 <script>
 function init(){
-  initTranslation();
+  // initTranslation();
 }
 </script>
 <style>
@@ -26,6 +26,6 @@ function init(){
 <hr>
 <p class="formula_applet" id="editor"><span id="math-field">17 + 4 = \class{inputfield}{21}</span></p>
 <hr />
-<?php include_once 'uses.php';?>
+<!-- <?php include_once 'uses.php';?> -->
 
 <?php include_once 'footer.php';?>

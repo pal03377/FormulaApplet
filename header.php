@@ -10,7 +10,7 @@
 <meta charset="utf-8">
 </head>
 <body>
-<p id="mode_select">
+<p id="lang_select">
   <input type="radio" name="lang" class="problemeditor language" id="en"></input>
   <label for="en"><span></span>Englisch </label>
   <br />

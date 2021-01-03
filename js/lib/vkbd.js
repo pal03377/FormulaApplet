@@ -52,8 +52,8 @@ keys['mixed'] = [
     ],
     // row 3
     [
-        ['bracket-left', '('],
-        ['bracket-right', ')'],
+        ['bracket-left', '(', '('],
+        ['bracket-right', ')', ')'],
         ['square', '\u2b1a<sup style="font-size: 85%">2</sup>'],
         // notice the space at end of string
         ['squareroot', squareroot, '\\sqrt '],
@@ -97,7 +97,7 @@ keys['function'] = [
         ['arccos', '<span style="font-size: 85%">cos<sup>-1</sup></span>'],
         ['arctan', '<span style="font-size: 85%">tan<sup>-1</sup></span>'],
         ['smallgap-1', '', ''],
-        ['abs', '\u2502\u2b1a\u2502'],
+        ['abs', '\u2502\u2b1a\u2502', '| |'],
         ['subscript', '\u2b1a<sub style="font-size: 85%">\u2b1a</sub>'],
         ['nth_root', nth_root],
         ['erase_unit', 'Clear<br>Unit', '#erase_unit'],

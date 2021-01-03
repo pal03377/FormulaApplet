@@ -1,6 +1,8 @@
 // translate.js
 function switchTo(lang){
     $('.tr').each(function(){
+      console.log('hide');
+      console.log(this);
       $(this).css('display', 'none');
     })
     $('.tr.de').each(function(){
@@ -12,7 +14,7 @@ function switchTo(lang){
         target = this;
       }
       var disp = $(target).attr('data-disp');
-      console.log(targetkey +  ' ' + disp);
+      console.log(targetkey +  ' show as ' + disp);
       $(target).css('display', disp);
     })
 

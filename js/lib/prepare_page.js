@@ -253,9 +253,9 @@ function mathQuillify() {
   });
   $(".formula_applet").each(function () {
     var temp = (this.innerHTML);
-    console.log('temp=' + temp);
+    // console.log('temp=' + temp);
     this.innerHTML = temp.replace(/\\unit{/g, '\\textcolor{blue}{');
-    console.log('replaced=' + this.innerHTML);
+    // console.log('replaced=' + this.innerHTML);
   });
   $(".formula_applet").each(function () {
     var FApp = new FA();
@@ -290,7 +290,7 @@ function mathQuillify() {
     if (isEditor) {
       // *** editor ***
       console.log('init editor');
-      prepend();
+      prepend( function(){ initTranslation() });
       // make whole mathFieldSpan editable
       var mathFieldSpan = document.getElementById('math-field');
       MQ = MathQuill.getInterface(2);
@@ -321,7 +321,7 @@ function mathQuillify() {
 
       $('#fa_name').on('input', function (ev) {
         var fa_name = ev.target.value;
-        console.log('fa_name=' + fa_name);
+        // console.log('fa_name=' + fa_name);
         // avoid XSS
         fa_name = fa_name.replace(/</g, '');
         fa_name = fa_name.replace(/>/g, '');
@@ -329,7 +329,7 @@ function mathQuillify() {
         fa_name = fa_name.replace(/'/g, '');
         fa_name = fa_name.replace(/&/g, '');
         fa_name = fa_name.replace(/ /g, '_');
-        console.log(fa_name);
+        // console.log(fa_name);
         if (fa_name !== '') {
           new_fa_id = fa_name;
         }
@@ -361,17 +361,17 @@ function mathQuillify() {
       } else {
         FApp.hasSolution = false;
       };
-      console.log('formula_applet=');
-      console.log(this);
+      // console.log('formula_applet=');
+      // console.log(this);
       var mqEditableField = $(this).find('.mq-editable-field')[0];
-      console.log('mqEditableField=' + mqEditableField);
+      // console.log('mqEditableField=' + mqEditableField);
       var mf = MQ.MathField(mqEditableField, {});
-      console.log('mf=' + mf);
+      // console.log('mf=' + mf);
       mf.config({
         handlers: {
           edit: function () {
             mqEditableField.focus();
-            console.log('edit ' + index);
+            // console.log('edit ' + index);
             editHandler(index);
           },
           enter: function () {
@@ -606,7 +606,7 @@ function show_editor_results(parts) {
   }
 }
 
-function prepend() {
+function prepend(after_prepend) {
   var before = $('div#ed_before');
   // console.log('before.length=' + before.length);
   if (before.length == 0) {
@@ -614,20 +614,29 @@ function prepend() {
     ed.before('<p id="mode_select">');
     $('p#mode_select').append('  <h3><span class="mw-headline" id="Mode">Mode</span></h3>');
     $('p#mode_select').append('  <input type="radio" id="auto" name="select_mode" checked />');
-    $('p#mode_select').append('  <label for="auto"><span></span>Automatic (left side of equation will be compared to right side)</label>');
+    var label_lse = '<label for="auto"><span class="tr en lse">Automatic (left side of equation will be compared to right side)</span>';
+    label_lse += '<span class="tr de lse">Automatisch (linke und rechte Gleichungsseite werden verglichen)</span></label>';
+    $('p#mode_select').append(label_lse);
     $('p#mode_select').append('  <br/>');
     $('p#mode_select').append('  <input type="radio" id="manu" name="select_mode" />');
-    $('p#mode_select').append('  <label for="manu"><span></span>Manual (input will be compared with given solution)</label>');
+    var label_manu = '<label for="auto"><span class="tr en manu">Manual (input will be compared with given solution)</span>';
+    label_manu += '<span class="tr de manu">Manuell (Eingabe wird mit einer vorgegeben L&ouml;sung verglichen)</span></label>';
+    $('p#mode_select').append(label_manu);
     ed.before('<p id="input_id">');
-    $('p#input_id').append('  <label for="fa_name">Id of Formula Applet (4 to 20 characters)</label>');
+    $('p#input_id').append('  <label class="tr de idfa" for="fa_name">Id des Formel-Applets (4 bis 20 Zeichen)</label><label class="tr en idfa" for="fa_name">Id of Formula Applet (4 to 20 characters)</label>');
     $('p#input_id').append('  <input type="text" id="fa_name" name="fa_bla_name" required minlength="4" maxlength="20" size="10">');
-    $('p#input_id').append('  <button type="button" class="problemeditor" id="random-id">Random ID</button>');
+    $('p#input_id').append('  <button type="button" class="tr de peri problemeditor" id="random-id">Zufalls-ID</button><button type="button" class="tr en problemeditor" id="random-id">Random ID</button>');
     // ed.after('<p id="output-code-3"></p>');
     ed.after('<hr /><textarea id="wiki-text" rows=4 cols=150></textarea>');
-    ed.after('<button type="button" class="problemeditor" id="set-unit">Unit</button>' + '<button type="button" class="problemeditor" id="erase-unit">Erase Unit</button>');
-    ed.after('<p><span class="tr de uses">FormulaApplet benutzt die Bibliotheken jQuery, MathQuill und Hammer. </span><span class="tr en uses>">FormulaApplet uses jQuery, MathQuill, and Hammer. </span><a href="license.php" class="tr de moreinfo">Weitere Informationen...</a><a href="license.php" class="tr en moreinfo">More info...</a></p>');
+    var unitbuttons = '<button type="button" class="tr de peri problemeditor" id="set-unit">Einheit</button>';
+    unitbuttons += '<button type="button" class="tr en peri problemeditor" id="set-unit">Unit</button>';
+    unitbuttons += '<button type="button" class="tr de erau problemeditor" id="erase-unit">Einheit l&ouml;schen</button>';
+    unitbuttons += '<button type="button" class="tr en erau problemeditor" id="erase-unit">Erase Unit</button>';
+    ed.after(unitbuttons);
+    ed.after('<p><span class="tr de uses">Das Formel-Applet benutzt die Bibliotheken jQuery, MathQuill und Hammer. </span><span class="tr en uses">FormulaApplet uses jQuery, MathQuill, and Hammer. </span><a href="license.php" class="tr de moreinfo">Weitere Informationen...</a><a href="license.php" class="tr en moreinfo">More info...</a></p>');
     ed.after('<button type="button" class="problemeditor" id="set-input">Set input field</button>');
   }
+  after_prepend();
 }
 
 function makeid(length) {

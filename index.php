@@ -8,7 +8,8 @@
 
 <body>
     <h1><?php echo $title; ?></h1>
-    <p><a href='sample_task.php'>Sample task</a> for later use in MediaWiki</p>
+    <p><a href='sample_task.php'>Sample task</a> part 1 - for later use in MediaWiki</p>
+    <p><a href='sample_task2.php'>Sample task</a> part 2 - for later use in MediaWiki</p>
     <p><a href='development.php'>Development</a></p>
     <!-- <p><a href='hiltrud.php'>Demo-Auswahl</a> f&uuml;r Hiltrud</p> -->
     
