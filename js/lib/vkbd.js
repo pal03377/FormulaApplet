@@ -54,7 +54,7 @@ keys['mixed'] = [
     [
         ['bracket-left', '(', '('],
         ['bracket-right', ')', ')'],
-        ['square', '\u2b1a<sup style="font-size: 85%">2</sup>'],
+        ['square', '\u2b1a<sup style="font-size: 85%">2</sup>', '#square'],
         // notice the space at end of string
         ['squareroot', squareroot, '\\sqrt '],
         ['smallgap-3', '', ''],
@@ -119,9 +119,9 @@ keys['function'] = [
     [
         ['exp', 'e<sup style="font-size: 85%">\u2b1a</sup>'],
         poweroften,
-        ['power', '\u2b1a<sup>\u2b1a</sup>'],
+        ['power', '\u2b1a<sup>\u2b1a</sup>', '^'],
         ['smallgap-3', '', ''],
-        ['squareroot', squareroot],
+        ['squareroot', squareroot, '\\sqrt '],
         ['keyboard', '\u2328', '\\xyz '],
         left,
         right,

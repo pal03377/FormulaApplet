@@ -104,6 +104,9 @@ function keyboardEvent(cmd) {
         erase_unit();
       } else if (cmd == 'nthroot') {
         nthroot();
+      } else if (cmd == 'square') {
+        mf.keystroke("Up");
+        mf.typedtext('2');
       } else {
         mf.keystroke(cmd);
       }
