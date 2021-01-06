@@ -628,7 +628,7 @@ function prepend(after_prepend) {
     ed.before('<p id="input_id">');
     $('p#input_id').append('  <label class="tr de idfa" for="fa_name">Id des Formel-Applets (4 bis 20 Zeichen)</label><label class="tr en idfa" for="fa_name">Id of Formula Applet (4 to 20 characters)</label>');
     $('p#input_id').append('  <input type="text" id="fa_name" name="fa_bla_name" required minlength="4" maxlength="20" size="10">');
-    $('p#input_id').append('  <button type="button" class="tr de peri problemeditor" id="random-id">Zufalls-ID</button><button type="button" class="tr en problemeditor" id="random-id">Random ID</button>');
+    $('p#input_id').append('  <button type="button" class="tr de mfxi problemeditor" id="random-id">Zufalls-ID</button><button type="button" class="tr en mfxi problemeditor" id="random-id">Random ID</button>');
     // ed.after('<p id="output-code-3"></p>');
     ed.after('<hr /><textarea id="wiki-text" rows=4 cols=150></textarea>');
     var unitbuttons = '<button type="button" class="tr de peri problemeditor" id="set-unit">Einheit</button>';
