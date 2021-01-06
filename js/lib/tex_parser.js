@@ -395,18 +395,32 @@ function find_leftmost_bracket(content) {
             }
         }
     }
+    // maybe there is a better (smaller) pos for a | bracket
+    var result = find_left_bracket(content, '|');
+    var pos = result[0];
+    if (pos > -1) {
+        if (left_pos === -1) {
+            left_pos = pos;
+            bra_kind = result[1];
+        } else {
+            if (pos < left_pos) {
+                left_pos = pos;
+                bra_kind = result[1];
+            }
+        }
+    }
     return [left_pos, bra_kind];
 }
 
 function find_corresponding_right_bracket(content, bra) {
     var rightbra = '';
     //    console.log('look for ' + bra + ' in ' + content);
-    var pos = ['(', '[', '{', '\\left(', '\\left[', '\\left\\{'].indexOf(bra);
+    var pos = ['(', '[', '{', '|', '\\left(', '\\left[', '\\left\\{', '\\left|'].indexOf(bra);
     //    console.log('pos=' + pos);
     if (pos === -1) {
         var rightbra = 'no bracket found error';
     } else {
-        var rightbra = [')', ']', '}', '\\right)', '\\right]', '\\right\\}'][pos];
+        var rightbra = [')', ']', '}', '|', '\\right)', '\\right]', '\\right\\}', '\\right|'][pos];
     }
     // console.log('rightbra=' + rightbra);
     var stop = false;
@@ -1971,7 +1985,13 @@ function val(node, tree) {
         var child_0 = tree.nodelist[children[0]];
         var arg = val(child_0, tree);
         if (node.type.startsWith('bracket-') || node.type == 'root' || node.type == 'unit') {
-            node.value = arg;
+            if (node.type == 'bracket-\\left|') {
+                // absolute value
+                node.value = Math.abs(arg);
+            } else {
+                // bracket
+                node.value = arg;
+            }
         } else {
             if (node.type.startsWith('fu-')) {
                 var fu = node.type.substr(3)
