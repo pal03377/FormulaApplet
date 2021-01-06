@@ -24,11 +24,25 @@
 * glue.js verbessern
 
 * Einheiten etc.
+<<<<<<< HEAD
     * <s>physikalische Einheiten</s>
     * <s>Grad, Minuten, Sekunden</s>
     * <s>Gemischte Zahlen</s>
     * abs(x), |x|
     exp(x) = e^x
+=======
+    * Gemischte Zahlen
+    * abs(x), |x| val()
+    exp(x) = e^x
+* Objektorientierte Programmierung
+    * Vereinheitlichung des Slice-Teils
+    * Test und Debugging
+    * TypeScript
+    * https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
+* Legacy: Applet-Parameter decodieren
+* try-catch
+* definite integral obsolete?
+>>>>>>> 00aef9c924b1fd5b09cf4c4f63eab9391b307e28
 
 <s>## MediaWiki updaten (LOG)
 * braucht neuere PHP-Version
@@ -37,6 +51,7 @@
 * Archiv muss unter Linux (Subsystem) entpackt werden, 
   da 7-Zip Dateinamen verstümmelt.
 * Schwierigkeiten beim Einloggen ins Wiki, behoben durch
+<<<<<<< HEAD
   session_save_path('tmp');
   // $wgSessionsInMemcached = true;
   $wgSessionCacheType = CACHE_DB;
@@ -60,3 +75,16 @@
 * befreundete Seiten
 
 
+=======
+  session_save_path("tmp");
+  $wgSessionCacheType = CACHE_DB;
+  in LocalSettings.php</s>
+
+## DiesUndDas
+* Waiter-Funktionen vereinheitlichen
+* Integral, Limes
+* MediaWiki-WYSIWYG-Editor (schwer)
+* Karl Kirst
+* MediaWiki-Extensions aktualisieren
+* GitHub von privat auf öffentlich
+>>>>>>> 00aef9c924b1fd5b09cf4c4f63eab9391b307e28
