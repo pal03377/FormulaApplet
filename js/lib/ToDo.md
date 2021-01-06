@@ -14,7 +14,6 @@
 * Vereinheitlichung des Slice-Teils ??
 * https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
 * Legacy: Applet-Parameter decodieren
-* definite integral obsolete?
 * Triviale Lösungen sperren
 * condition = ...
 * glue.js verbessern
@@ -34,15 +33,16 @@
   session_save_path('tmp');
   $wgSessionCacheType = CACHE_DB;
   in LocalSettings.php
+  </s>
 
 
 ## DiesUndDas
 * Waiter-Funktionen vereinheitlichen
 * Integral, Limes
-* MediaWiki-WYSIWYG-Editor
-* Karl Kirst
+* MediaWiki-WYSIWYG-Editor (schwer)
+* Karl Kirst kontaktieren
 * MediaWiki-Extensions aktualisieren
-* Linux mit GUI unter WIN10
+* <s>Linux mit GUI unter WIN10</s>
 * befreundete Seiten
 
 

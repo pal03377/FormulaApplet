@@ -535,7 +535,10 @@ function erase_unit_event() {
 
 function erase_unit() {
   console.log('erase-unit');
-  var ori = editor_mf.latex();
+  console.log('activeMathfieldIndex=' + activeMathfieldIndex);
+  var mf = FAList[activeMathfieldIndex].mathField;
+
+  var ori = mf.latex();
   ori = ori.replace(/\\textcolor{blue}{/, '\\unit{');
   var temp = separate_class(ori, '\\unit{');
   // console.log(temp);
@@ -546,7 +549,7 @@ function erase_unit() {
   }
   textcolor_erased = textcolor_erased.replace('class{', '\\class{inputfield}{');
   console.log(textcolor_erased);
-  editor_mf.latex(textcolor_erased);
+  mf.latex(textcolor_erased);
 }
 
 function separate_class(latex, class_tag) {
