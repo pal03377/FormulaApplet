@@ -1,21 +1,16 @@
 # *ToDo* #
 * Einheiten etc.
-    * <s>physikalische Einheiten</s>
-    * <s>Grad</s>, Minuten, Sekunden
     * Gemischte Zahlen
-    * abs(x), |x|
+    * abs(x), |x| val()
     exp(x) = e^x
 * Objektorientierte Programmierung
     * Vereinheitlichung des Slice-Teils
     * Test und Debugging
     * TypeScript
     * https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
-* <s>Auf Gleichheit testen</s>
-    * <s>Paraneter 'solution'</s>
 * Legacy: Applet-Parameter decodieren
 * try-catch
 * definite integral obsolete?
-* <s>gf09.css: use glue to load</s>
 
 <s>## MediaWiki updaten (LOG)
 * braucht neuere PHP-Version
@@ -25,38 +20,14 @@
   da 7-Zip Dateinamen verstümmelt.
 * Schwierigkeiten beim Einloggen ins Wiki, behoben durch
   session_save_path("tmp");
-  // $wgSessionsInMemcached = true;
   $wgSessionCacheType = CACHE_DB;
   in LocalSettings.php</s>
-
-<s>## Android Bug: Virtuelle Tastatur geht nicht :-(
-* Initialisieren mit Space-Delete? FAIL
-* Explizites "addKeyListener" FAIL
-* Transparentes Textinput-Feld drüberlegen FAIL
-* Ein-Pixel-Textinput-Feld daneben (links oben) FAIL
-* Virtuelle Tastatur aus Library FAIL - lieber selber machen OK</s>
-
-## glue2
-* <s>Umbenennen glue.js -> glue_old.js und glue2.js -> glue.js OK
-* Test im Wiki OK
-* Test online mit/ohne Wiki OK
-* prepare_page *.js und innerhalb *.php unterscheiden! OK
-* Sind Waiter-Funktionen nötig? OK</s>
-* Fehlermeldungen testen
 
 ## DiesUndDas
 * Waiter-Funktionen vereinheitlichen
 * <s>other.php, uses.php aktualisieren OK
-* VKBD ergänzen (CAPS, Greek) OK
-* Koppelung VKBD - MathQuill OK
-* VKBD auch im Wiki OK</s>
-* on error, TypeScript
-* Problem-Editor OK, Integral, Limes
-* MediaWiki-WYSIWYG-Editor
-* Karl Kirst, Maria Eirich OK, Mandy Schütze OK
+* Integral, Limes
+* MediaWiki-WYSIWYG-Editor (schwer)
+* Karl Kirst
 * MediaWiki-Extensions aktualisieren
-** GeoGebra: Nur Zbynek OK
-** FormelApplet durch FormulaApplet ersetzen OK
 * GitHub von privat auf öffentlich
-* i18n
-
