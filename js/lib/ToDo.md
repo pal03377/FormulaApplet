@@ -25,7 +25,6 @@
 
 ## DiesUndDas
 * Waiter-Funktionen vereinheitlichen
-* <s>other.php, uses.php aktualisieren OK
 * Integral, Limes
 * MediaWiki-WYSIWYG-Editor (schwer)
 * Karl Kirst
