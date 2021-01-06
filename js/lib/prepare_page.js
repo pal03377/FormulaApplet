@@ -636,8 +636,9 @@ function prepend(after_prepend) {
     unitbuttons += '<button type="button" class="tr de erau problemeditor" id="erase-unit">Einheit l&ouml;schen</button>';
     unitbuttons += '<button type="button" class="tr en erau problemeditor" id="erase-unit">Erase Unit</button>';
     ed.after(unitbuttons);
-    ed.after('<p><span class="tr de uses">Das Formel-Applet benutzt die Bibliotheken jQuery, MathQuill und Hammer. </span><span class="tr en uses">FormulaApplet uses jQuery, MathQuill, and Hammer. </span><a href="license.php" class="tr de moreinfo">Weitere Informationen...</a><a href="license.php" class="tr en moreinfo">More info...</a></p>');
-    ed.after('<button type="button" class="problemeditor" id="set-input">Set input field</button>');
+    ed.after('<button type="button" class="tr en sif problemeditor" id="set-input">Set input field</button><button type="button" class="tr de sif problemeditor" id="set-input">Eingabe-Feld setzen</button>');
+    var prepend_uses = $('.prepend_uses#p_u');
+    prepend_uses.after('<p><span class="tr de uses">Das Formel-Applet benutzt die Bibliotheken jQuery, MathQuill und Hammer. </span><span class="tr en uses">FormulaApplet uses jQuery, MathQuill, and Hammer. </span><a href="license.php" class="tr de moreinfo">Weitere Informationen...</a><a href="license.php" class="tr en moreinfo">More info...</a></p>');
   }
   after_prepend();
 }

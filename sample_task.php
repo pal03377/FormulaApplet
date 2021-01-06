@@ -16,6 +16,7 @@ function init(){
 <h1><?php echo $header; ?></h1>
 <h2 class='tr de later'>zum späteren Gebrauch im MediaWiki</h2>
 <h2 class='tr en later'>for later use in MediaWiki</h2>
+<p><a href='./render_md.php'>ToDo</a></p>
 <!-- <div id='keyboard'></div> -->
 <!-- <p id="lang_select">
   <input type="radio" name="lang" class="problemeditor language" id="en"></input>
