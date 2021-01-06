@@ -3,24 +3,24 @@
 * MediaWiki Extension 'FormulaApplet' neu anlegen
 * FormulaApplet.php, FormulaApplet.body.php, /i18n
 * www.formelapplet.de mit Bootstrap
-* github gf09 privat -> public
+* github: gf09 umbenennen in FormulaApplet
+* github: gf09 privat -> public
 
 ## Programmierung
-* class{...} <-> \class{inputfield}{...}
-    * nicht nötig, da nicht sichtbar. Nur intern im Aufgaben-Editor verwendet.
+<s>* class{...} <-> \class{inputfield}{...}
+   * nicht nötig, da nicht sichtbar. Nur intern im Aufgaben-Editor verwendet.</s>
 * OOP, TypeScript. Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
 * try-catch, on error
-* Test und Debugging
+* Tests
 * Vereinheitlichung des Slice-Teils ??
 * https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
 * Legacy: Applet-Parameter decodieren
 * Triviale Lösungen sperren
 * condition = ...
 * glue.js verbessern
-* 'Einheiten markieren' verbessern
-* abs(x), |x|
+* <s>abs(x), |x| </s>
 * exp(x) = e^x
-* 'Set Unit' verbessern, falls Markierungen verschachtelt sind
+* 'Set Unit', 'Einheiten markieren' verbessern, falls Markierungen verschachtelt sind
 
 
 <s>## MediaWiki updaten (LOG)
