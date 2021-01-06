@@ -1,1 +1,1 @@
-<p><span>FormulaApplet Version 305</span></p>
+<p><span>FormulaApplet Version 307</span></p>

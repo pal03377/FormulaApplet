@@ -1,13 +1,13 @@
 // translate.js
 function switchTo(lang) {
   $('.tr').each(function () {
-    console.log('hide');
-    console.log(this);
+    // console.log('hide');
+    // console.log(this);
     $(this).css('display', 'none');
   })
   $('.tr.de').each(function () {
     var defaultkey = $(this).attr('class');
-    console.log(defaultkey);
+    // console.log(defaultkey);
     if (defaultkey.length > 5) {
       var targetkey = '.' + defaultkey.substr(0, 2) + '.' + lang + '.' + defaultkey.substr(6);
       targetkey = targetkey.replace(' ', '.');
@@ -16,7 +16,7 @@ function switchTo(lang) {
       target = this;
     }
     var disp = $(target).attr('data-disp');
-    console.log(targetkey + ' show as ' + disp);
+    // console.log(targetkey + ' show as ' + disp);
     $(target).css('display', disp);
   })
 
@@ -28,7 +28,7 @@ function switchTo(lang) {
     // preserve other params?
     // }
     let new_href = split[0] + '?lang=' + lang;
-    console.log(h + ' -> ' + new_href);
+    // console.log(h + ' -> ' + new_href);
     this.href = new_href;
   });
 
@@ -47,19 +47,19 @@ function initTranslation() {
     $(this).attr('data-disp', disp);
     $(this).css('display', 'none');
     // console.log(this);
-    console.log(disp);
+    // console.log(disp);
   })
 
   // click event for language buttons
   $(function () {
     // $('.btn').button()
     $('#de').on('click', function () {
-      console.log('de.click');
+      // console.log('de.click');
       switchTo('de');
     });
     $('#en').on('click', function () {
       switchTo('en');
-      console.log('en.click');
+      // console.log('en.click');
     });
   });
 
@@ -67,7 +67,7 @@ function initTranslation() {
   var lang = null;
   if (isWiki){
     lang = mw.config.get( 'wgUserLanguage' );
-    console.log('wikiLang=' + lang);
+    // console.log('wikiLang=' + lang);
   } else {
     let url = new URL(document.location.href);
     lang = url.searchParams.get('lang');
@@ -75,7 +75,7 @@ function initTranslation() {
    if (lang == null || lang == '') {
     lang = 'de'; //default
   }
-  console.log('lang=' + lang);
+  console.log('switch to lang: ' + lang);
   $('#' + lang).click().blur();
   switchTo(lang);
 };

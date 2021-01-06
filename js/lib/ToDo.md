@@ -21,6 +21,8 @@
 * 'Einheiten markieren' verbessern
 * abs(x), |x|
 * exp(x) = e^x
+* 'Set Unit' verbessern, falls Markierungen verschachtelt sind
+
 
 <s>## MediaWiki updaten (LOG)
 * braucht neuere PHP-Version

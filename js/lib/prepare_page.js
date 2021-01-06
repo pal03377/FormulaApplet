@@ -270,7 +270,7 @@ function mathQuillify() {
       FApp.definitionset_list = unify_definitionsets(def);
     }
     var prec = $(this).attr('precision');
-    if (typeof prec == 'undefined'){
+    if (typeof prec !== 'undefined'){
       prec = $(this).attr('prec');
     }
     // console.log(prec);
@@ -514,7 +514,7 @@ function set_unit() {
   var post_selected = temp[2];
   var ori = temp[3];
   if (selected.length > 0) {
-    var new_latex = pre_selected + '\\unit{' + selected + '}' + post_selected;
+    var new_latex = pre_selected + '\\textcolor{blue}{' + selected + '}' + post_selected;
     new_latex = new_latex.replace('class{', '\\class{inputfield}{');
     console.log(new_latex);
     mf.latex(new_latex);
@@ -536,6 +536,7 @@ function erase_unit_event() {
 function erase_unit() {
   console.log('erase-unit');
   var ori = editor_mf.latex();
+  ori = ori.replace(/\\textcolor{blue}{/, '\\unit{');
   var temp = separate_class(ori, '\\unit{');
   // console.log(temp);
   if (temp[1].length > 0) {
@@ -588,7 +589,7 @@ function erase_class(latex) {
 function show_editor_results(parts) {
   var result = '<p class="formula_applet"';
   var wikiresult = '<f_app';
-  console.log(new_fa_id);
+  // console.log(new_fa_id);
   var common_result = ' id="' + new_fa_id;
   if (result_mode == 'manu') {
     common_result += '" data-b64="' + encode(parts[1]);
@@ -597,6 +598,7 @@ function show_editor_results(parts) {
   common_result += parts[0];
   common_result += '{{result}}';
   common_result += parts[2];
+  common_result = common_result.replace(/\\textcolor{blue}{/g, '\\unit{');
   result += common_result + '</p>';
   wikiresult += common_result + '</f_app>';
 
