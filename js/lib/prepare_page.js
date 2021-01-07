@@ -2,7 +2,7 @@
 
 var prepare_page_exists = true;
 var default_precision = 0.000001;
-var activeMathfieldIndex = '';
+var activeMathfieldIndex = 0;
 var MQ = '';
 var FAList = [];
 var new_fa_id = 'x8rT3dkkS';
@@ -49,7 +49,7 @@ function prepare_page() {
     $("button.keyb_button").removeClass('selected');
   });
   ($('<img class="mod">')).insertAfter($(".formula_applet"));
-   $(document).ready(function () {
+  $(document).ready(function () {
     mathQuillify();
     // initTranslation();
   })
@@ -124,7 +124,7 @@ function keyboardEvent(cmd) {
   }
 }
 
-function nthroot(){
+function nthroot() {
   var mf = FAList[activeMathfieldIndex].mathField;
   mf.cmd('\\nthroot');
   mf.typedText(' ');
@@ -270,7 +270,7 @@ function mathQuillify() {
       FApp.definitionset_list = unify_definitionsets(def);
     }
     var prec = $(this).attr('precision');
-    if (typeof prec !== 'undefined'){
+    if (typeof prec !== 'undefined') {
       prec = $(this).attr('prec');
     }
     // console.log(prec);
@@ -283,7 +283,7 @@ function mathQuillify() {
       $(".formula_applet").removeClass('selected');
       $(this).addClass('selected');
       $("button.keyb_button").removeClass('selected');
-      if($('#vkbd').css('display')=='none'){
+      if ($('#vkbd').css('display') == 'none') {
         $(this).nextAll("button.keyb_button:first").addClass('selected');
       }
       activeMathfieldIndex = FApp.index;
@@ -293,7 +293,9 @@ function mathQuillify() {
     if (isEditor) {
       // *** editor ***
       console.log('init editor');
-      prepend( function(){ initTranslation() });
+      prepend(function () {
+        initTranslation()
+      });
       // make whole mathFieldSpan editable
       var mathFieldSpan = document.getElementById('math-field');
       MQ = MathQuill.getInterface(2);
@@ -513,8 +515,92 @@ function set_unit() {
   var selected = temp[1];
   var post_selected = temp[2];
   var ori = temp[3];
+
+  var start = pre_selected.length;
+  var end = start + selected.length;
+  console.log(ori);
+  console.log('selection from ' + start + ' to ' + end);
+  var selectpattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
+  for (var k = start; k < end; k++) {
+    selectpattern[k] = 's';
+  }
+
+  // get position of exising unit tags
+  var unit_tag = '\\textcolor{blue}{';
+  var pos = 0;
+  var start_of_unittags = [];
+  var end_of_unittags = [];
+  do {
+    pos = ori.indexOf(unit_tag, pos);
+    if (pos >= 0) {
+      console.log(pos);
+      var rest = ori.substr(pos + unit_tag.length - 1);
+      console.log(rest);
+      var temp = find_corresponding_right_bracket(rest, '{');
+      var pos_right_bracket = pos + unit_tag.length + temp[2];
+      start_of_unittags.push(pos);
+      end_of_unittags.push(pos_right_bracket);
+      //pos_right_bracket points to char right of the right bracket
+      console.log(ori.substr(pos, unit_tag.length + temp[2])); // should log \textcolor{blue}{...}
+      pos++;
+    }
+  } while (pos >= 0)
+  var pattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
+  for (var i = 0; i < start_of_unittags.length; i++) {
+    console.log(start_of_unittags[i] + '->' + end_of_unittags[i]);
+    for (var k = start_of_unittags[i]; k < end_of_unittags[i]; k++) {
+      pattern[k] = '#';
+    }
+  }
+  console.log(selectpattern.join('')); // join: transform from array to string
+   console.log(pattern.join('')); // join: transform from array to string
+  // inspect selection start
+  for (var i = 0; i < start_of_unittags.length; i++) {
+    if (start_of_unittags[i] < start && start <= end_of_unittags[i]) {
+      // move start leftwards
+      start = start_of_unittags[i];
+      // short circuit:
+      i = start_of_unittags.length;
+    }
+  }
+  // inspect selection end
+  for (var i = 0; i < start_of_unittags.length; i++) {
+    if (start_of_unittags[i] <= end && end <= end_of_unittags[i]) {
+      // move end rightwards
+      end = end_of_unittags[i];
+      // short circuit:
+      i = start_of_unittags.length;
+    }
+  }
+  // debug
+  var selectpattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
+  for (var k = start; k < end; k++) {
+    selectpattern[k] = 's';
+  }
+  console.log(selectpattern.join('')); // join: transform from array to string
+
+  // delete unittags inside selection
+  var ori_array = ori.split('');
+  for (var i = 0; i < start_of_unittags.length; i++) {
+    if (start <= start_of_unittags[i] && end_of_unittags[i] <= end) {
+      for (var k = start_of_unittags[i]; k < start_of_unittags[i] + unit_tag.length; k++) {
+        ori_array[k] = '§';
+      }
+      ori_array[end_of_unittags[i] - 1] = '§';
+    }
+  }
+  console.log(ori);
+  ori = ori_array.join('');
+  console.log(ori); // join: transform from array to string
+
   if (selected.length > 0) {
-    var new_latex = pre_selected + '\\textcolor{blue}{' + selected + '}' + post_selected;
+    // new calculation necessary
+    pre_selected = ori.substring(0, start);
+    selected = ori.substring(start, end);
+    post_selected = ori.substring(end);
+    var new_latex = pre_selected + unit_tag + selected + '}' + post_selected;
+    // new_latex = new_latex.replace(/\xA7/g, '');
+    new_latex = new_latex.replace(/§/g, '');
     new_latex = new_latex.replace('class{', '\\class{inputfield}{');
     console.log(new_latex);
     mf.latex(new_latex);
@@ -573,7 +659,7 @@ function separate_class(latex, class_tag) {
     tag = '';
     after_tag = latex;
   }
-  console.log([before_tag, tag, after_tag]);
+  // console.log([before_tag, tag, after_tag]);
   return [before_tag, tag, after_tag];
 }
 

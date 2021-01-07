@@ -24,7 +24,7 @@ function init(){
 <!-- <div id='keyboard'></div> -->
 <!-- <p id="output">output</p> -->
 <hr>
-<p class="formula_applet" id="editor"><span id="math-field">17 + 4 = \class{inputfield}{21}</span></p>
+<p class="formula_applet" id="editor"><span id="math-field">17 + 4 + a + b + c + d = \class{inputfield}{21}</span></p>
 <hr />
 <code class='prepend_uses' id='p_u'></code>
 <!-- <?php include_once 'uses.php';?> -->

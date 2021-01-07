@@ -130,7 +130,7 @@ var oldText;
 var oldN;
 
 function encode(text) {
-    console.log(oldText, text);
+    // console.log(oldText, text);
     if (oldText == text) {
         var n = oldN; // do not change n
     } else {
