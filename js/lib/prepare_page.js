@@ -506,7 +506,31 @@ function set_unit_event() {
   });
 }
 
+function get_position_of_unittags(latex, unit_tag){
+ // get position of exising unit tags
+  var pos = 0;
+ var start_of_unittags = [];
+ var end_of_unittags = [];
+ do {
+   pos = latex.indexOf(unit_tag, pos);
+   if (pos >= 0) {
+     console.log(pos);
+     var rest = latex.substr(pos + unit_tag.length - 1);
+     console.log(rest);
+     var temp = find_corresponding_right_bracket(rest, '{');
+     var pos_right_bracket = pos + unit_tag.length + temp[2];
+     start_of_unittags.push(pos);
+     end_of_unittags.push(pos_right_bracket);
+     //pos_right_bracket points to char right of the right bracket
+     console.log(latex.substr(pos, unit_tag.length + temp[2])); // should log \textcolor{blue}{...}
+     pos++;
+   }
+ } while (pos >= 0)
+ return {sof_unittags:start_of_unittags, eof_unittags:end_of_unittags};
+}
+
 function set_unit() {
+  var unit_tag = '\\textcolor{blue}{';
   console.log('activeMathfieldIndex=' + activeMathfieldIndex);
   var mf = FAList[activeMathfieldIndex].mathField;
   // erase class inputfield = false
@@ -525,26 +549,9 @@ function set_unit() {
     selectpattern[k] = 's';
   }
 
-  // get position of exising unit tags
-  var unit_tag = '\\textcolor{blue}{';
-  var pos = 0;
-  var start_of_unittags = [];
-  var end_of_unittags = [];
-  do {
-    pos = ori.indexOf(unit_tag, pos);
-    if (pos >= 0) {
-      console.log(pos);
-      var rest = ori.substr(pos + unit_tag.length - 1);
-      console.log(rest);
-      var temp = find_corresponding_right_bracket(rest, '{');
-      var pos_right_bracket = pos + unit_tag.length + temp[2];
-      start_of_unittags.push(pos);
-      end_of_unittags.push(pos_right_bracket);
-      //pos_right_bracket points to char right of the right bracket
-      console.log(ori.substr(pos, unit_tag.length + temp[2])); // should log \textcolor{blue}{...}
-      pos++;
-    }
-  } while (pos >= 0)
+  var posn = get_position_of_unittags(ori, unit_tag);
+  var start_of_unittags = posn.sof_unittags;
+  var end_of_unittags = posn.eof_unittags;
   var pattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
   for (var i = 0; i < start_of_unittags.length; i++) {
     console.log(start_of_unittags[i] + '->' + end_of_unittags[i]);
@@ -620,22 +627,36 @@ function erase_unit_event() {
 }
 
 function erase_unit() {
+  var unit_tag = '\\textcolor{blue}{';
   console.log('erase-unit');
   console.log('activeMathfieldIndex=' + activeMathfieldIndex);
   var mf = FAList[activeMathfieldIndex].mathField;
+   var temp = get_selection(mf, false);
+  console.log(temp[0] + '::' + temp[1] + '::' + temp[2]);
+  var ori = temp[3];
+  // get position of unittags
+  var posn = get_position_of_unittags(ori, unit_tag);
+  var start_of_unittags = posn.sof_unittags;
+  var end_of_unittags = posn.eof_unittags;
 
-  var ori = mf.latex();
-  ori = ori.replace(/\\textcolor{blue}{/, '\\unit{');
-  var temp = separate_class(ori, '\\unit{');
-  // console.log(temp);
-  if (temp[1].length > 0) {
-    var textcolor_erased = temp[0] + temp[1] + temp[2];
-  } else {
-    var textcolor_erased = ori;
+  // delete unittag outside cursor (or left boundary of selection)
+  var cursorpos = temp[0].length;
+  var ori_array = ori.split('');
+  for (var i = 0; i < start_of_unittags.length; i++) {
+    if (start_of_unittags[i] <= cursorpos && cursorpos <= end_of_unittags[i]) {
+      for (var k = start_of_unittags[i]; k < start_of_unittags[i] + unit_tag.length; k++) {
+        ori_array[k] = '§';
+      }
+      ori_array[end_of_unittags[i] - 1] = '§';
+    }
   }
-  textcolor_erased = textcolor_erased.replace('class{', '\\class{inputfield}{');
-  console.log(textcolor_erased);
-  mf.latex(textcolor_erased);
+  console.log(ori);
+  ori = ori_array.join('');
+  console.log(ori); // join: transform from array to string
+  ori = ori.replace(/§/g, '');
+  ori = ori.replace('class{', '\\class{inputfield}{');
+  // restore selection-checked mf
+  mf.latex(ori);
 }
 
 function separate_class(latex, class_tag) {

@@ -3,6 +3,7 @@
 * MediaWiki Extension 'FormulaApplet' neu anlegen
 * FormulaApplet.php, FormulaApplet.body.php, /i18n
 * www.formelapplet.de: Link auf github. www.grossmann.info mit Bootstrap
+* github: gf09 umbenennen in FormulaApplet
 * github gf09 privat -> public
 
 ## Programmierung
@@ -11,15 +12,6 @@
 * Objekte
 * TypeScript
 * Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
-=======
-* www.formelapplet.de mit Bootstrap
-* github: gf09 umbenennen in FormulaApplet
-* github: gf09 privat -> public
-
-## Programmierung
-<s>* class{...} <-> \class{inputfield}{...}
-   * nicht nötig, da nicht sichtbar. Nur intern im Aufgaben-Editor verwendet.</s>
-* OOP, TypeScript. Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
 * try-catch, on error
 * Tests
 * Vereinheitlichung des Slice-Teils ??
@@ -27,13 +19,9 @@
 * Triviale Lösungen sperren
 * condition = ...
 * glue.js verbessern
-* <s>'Einheiten markieren' verbessern</s> Einheiten löschen verbessern
+* <s>'Einheiten markieren' verbessern</s> <s>Einheiten löschen verbessern</s>
 * <s>abs(x), |x| </s>
 * exp(x) = e^x
-=======
-* <s>abs(x), |x| </s>
-* exp(x) = e^x
-* 'Set Unit', 'Einheiten markieren' verbessern, falls Markierungen verschachtelt sind
 
 <s>## MediaWiki updaten (LOG)
 * braucht neuere PHP-Version
@@ -56,3 +44,4 @@
 * <s>Linux mit GUI unter WIN10</s>
 * befreundete Seiten
 * (Legacy: Applet-Parameter decodieren)
+* mode=physics
