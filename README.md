@@ -5,3 +5,4 @@
 * FormulaApplet can deal with physical units.
 * FormulaApplet is open source. It is written in JavaScript and uses some open source libraries.
 * FormulaApplet is the successor of Formel-Applet (Java, closed source).
+* <s>Update</s>
