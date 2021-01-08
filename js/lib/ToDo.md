@@ -31,3 +31,11 @@
 * befreundete Seiten
 * (Legacy: Applet-Parameter decodieren)
 * mode=physics
+
+## GIT
+* cmd
+* E:
+* cd \gut\gf09
+* git status
+* git log --graph --decorate
+* git remote show origin
