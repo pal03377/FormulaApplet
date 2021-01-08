@@ -2,3 +2,5 @@
 URL=https://protostern.de/xampp-laeuft-nicht-unter-windows-10/
 
 services.msc -> www-publishingdienst beenden
+
+XAMPP: Apache startet nicht mit PHP 7.4.14
