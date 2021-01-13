@@ -7,9 +7,9 @@ if (typeof gf09_path == 'undefined') {
 //    var server = document.location.hostname;
     var href = document.location.href;
     console.log(href);
-    if (href.startsWith('http://localhost:8080')) {
-        gf09_path = '/gf09/';
-    }
+    // if (href.startsWith('http://localhost:8080')) {
+    //     gf09_path = '/gf09/';
+    // }
     if (href.startsWith('https://test.grossmann.info')) {
         gf09_path = '/';
     }
@@ -274,18 +274,6 @@ function prepare_pg() {
     if (typeof init !== 'undefined'){
         init();
     }
-}
-
-function waitfor_hammer(hammer_ready) {
-	if ((typeof Hammer) === "undefined") {
-		console.log('waiting for Hammer...');
-		setTimeout(function () {
-			waitfor_hammer(hammer_ready)
-		}, 50);
-	} else {
-		console.log('Hammer ready......');
-		hammer_ready();
-	}
 }
 
 // used by many *.php files

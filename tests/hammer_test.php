@@ -1,7 +1,7 @@
 <!-- load vkbd after hammer -->
 <?php $title = 'Test Page - hammer (gf09)';
 $liblist = "['hammer', 'vkbd', 'vkbdcss', 'gf09css']";
-include_once 'header.php';
+include_once '../header.php';
 ?>
 
 <body>
@@ -19,6 +19,18 @@ function waitfor_vkbd(vkbd_ready) {
 	} else {
 		console.log('VKBD ready......');
 		vkbd_ready();
+	}
+}
+
+function waitfor_hammer(hammer_ready) {
+	if ((typeof Hammer) === "undefined") {
+		console.log('waiting for Hammer...');
+		setTimeout(function () {
+			waitfor_hammer(hammer_ready)
+		}, 50);
+	} else {
+		console.log('Hammer ready......');
+		hammer_ready();
 	}
 }
 
@@ -47,4 +59,4 @@ function keyboardEvent(cmd){
 <div id='output'><p>output</p></div>
 <div id='keyboard'></div>
 
-<?php include_once 'footer.php';?>
+<?php include_once '../footer.php';?>

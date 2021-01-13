@@ -1,12 +1,13 @@
 # *ToDo* #
 ## Online
-* MediaWiki Extension 'FormulaApplet' neu anlegen, FormulaApplet.php, FormulaApplet.body.php, /i18n
-* Verwendung von formelapplet.zum.de klären
-* ----
 * www.formelapplet.de: Link zu github. 
 * <s>www.grossmann.info mit Bootstrap statt WordPress</s>
 * <s>github: gf09 umbenennen in FormulaApplet</s>
 * github gf09 privat -> public
+----
+* MediaWiki Extension 'FormulaApplet' neu anlegen, FormulaApplet.php, FormulaApplet.body.php, /i18n
+* Verwendung von formelapplet.zum.de klären
+
 
 ## Programmierung
 * Objekte
