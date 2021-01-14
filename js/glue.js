@@ -3,6 +3,7 @@
 // and in D:\Users\privat\Laufwerk_E\gut\gf09\header.php
 
 if (typeof gf09_path == 'undefined') {
+    console.log('gf09_path undefined. This should not happen because it is defined in header.php or FormulaApplet.body.php');
     var gf09_path = '/gf09/';
 //    var server = document.location.hostname;
     var href = document.location.href;
