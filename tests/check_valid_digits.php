@@ -1,6 +1,6 @@
 <?php $title = 'Check valid digits';
 $liblist = "['hammer', 'translate', 'prepare_page', 'mathquill', 'tex_parser', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss']";
-include_once 'header.php';
+include_once '../header.php';
 ?>
 
 <body>
@@ -51,4 +51,4 @@ include_once 'header.php';
 <p class="formula_applet" id="check_vd">\text{result} = {{result}}</p><br />
 <p id="output">output</p>
 
-<?php include_once 'footer.php';?>
+<?php include_once '../footer.php';?>

@@ -1,6 +1,6 @@
 <?php $title = 'Check if equal';
 $liblist = "[ 'mathquill', 'tex_parser', 'mathquillcss' ]";
-include_once 'header.php';
+include_once '../header.php';
 ?>
 
 <!-- <script src="./js/lib/tex_parser.js"></script> -->
@@ -108,4 +108,4 @@ include_once 'header.php';
 <hr>
 <?php include_once 'uses.php';?>
 
-<?php include_once 'footer.php';?>
+<?php include_once '../footer.php';?>

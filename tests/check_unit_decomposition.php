@@ -1,7 +1,7 @@
 <?php
 $title = 'Check Unit Decomposition';
 $liblist = "['tex_parser', 'mathquill', 'mathquillcss', 'gf09css']";
-include_once 'header.php';
+include_once '../header.php';
 ?>
 
 <!-- <script src="./js/lib/tex_parser.js"></script> -->
@@ -95,4 +95,4 @@ function tree_output(){
 
 </script>
 
- <?php include_once 'footer.php';?>
+ <?php include_once '../footer.php';?>

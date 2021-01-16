@@ -1,6 +1,6 @@
 <?php $title = 'Check precision';
 $liblist = "[ 'hammer', 'decode', 'translate', 'prepare_page', 'mathquill', 'tex_parser', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss']";
-include_once 'header.php';
+include_once '../header.php';
 ?>
 
 <body>
@@ -15,4 +15,4 @@ include_once 'header.php';
 <p class="formula_applet" id="check_07" prec="0.1 %">(2u + 7v)^2 = {{result}}</p> prec="0.1 %" (space)<br />
 <p class="formula_applet" id="check_08" prec="4.7e-6">(2u + 7v)^2 = {{result}}</p> prec="4.7e-6"<br />
 
-<?php include_once 'footer.php';?>
+<?php include_once '../footer.php';?>

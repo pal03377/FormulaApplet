@@ -2,8 +2,8 @@
   $title='Other solutions - Demo ';
   $liblist = "['gf09css' ]";
 ?>
-<?php include_once( 'header.php' ); ?>
-<link href="css/table.css" rel="stylesheet">
+<?php include_once( '../header.php' ); ?>
+<link href="../css/table.css" rel="stylesheet">
 </head>
 
 <body>
@@ -14,7 +14,7 @@
     <p><a href='tex2mathquill.php'>TEX &lt;-&gt; MathQuill -&gt; Algebrite</a></p>
     <p><a href='tex2kas.php'>TEX &lt;-&gt; MathQuill -&gt; KAS</a></p>
     <p><a href='kas_compare.php'>KAS Compare</a></p>
-    <p><a href='index.php'> gf09 test and demos</a></p>
+    <p><a href='../index.php'>Test page</a></p>
     <hr>
     <table>
     <tr>
@@ -55,4 +55,10 @@
       <td>MIT License</td>
     </tr>
     </table>
-  <?php include_once( 'footer.php' ); ?>
+    </hr>
+  <!-- p id='load_logger' style='font-family: Verdana, Geneva, Tahoma, sans-serif'>Logger:</p -->
+  <p><a href="..\development.php">Development</a></p>
+  <p><a href="..\index.php">Overview</a></p>
+</body>
+
+</html>

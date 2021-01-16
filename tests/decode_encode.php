@@ -1,6 +1,6 @@
 <?php $title = 'Decode - Encode (gf09)';
 $liblist = "['decode']";
-include_once 'header.php';
+include_once '../header.php';
 ?>
 
 <body>
@@ -101,4 +101,4 @@ function test(text){
 
 </script>
 
- <?php include_once 'footer.php';?>
+ <?php include_once '../footer.php';?>
