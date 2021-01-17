@@ -56,9 +56,9 @@
     </tr>
     </table>
     </hr>
-  <!-- p id='load_logger' style='font-family: Verdana, Geneva, Tahoma, sans-serif'>Logger:</p -->
-  <p><a href="..\development.php">Development</a></p>
-  <p><a href="..\index.php">Overview</a></p>
+  <p><a href='../tests/tests.php'>Tests</a> </p>
+  <p><a href='../development/development.php'>Development</p>
+  <p><a href="../index.php">Overview</a></p>
 </body>
 
 </html>

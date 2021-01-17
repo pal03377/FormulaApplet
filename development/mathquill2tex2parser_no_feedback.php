@@ -63,7 +63,8 @@ include_once 'header.php';
 
  window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
-    waitfor_mathquill_and_if_ready_then_do( init );
+    // waitfor_mathquill_and_if_ready_then_do( init );
+    init();
  });
 </script>
 

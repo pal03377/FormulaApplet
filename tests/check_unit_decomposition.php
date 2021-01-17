@@ -25,7 +25,8 @@ background-color: #ffffdf !important;">
 
   <script>
 
-  waitfor_mathquill_and_if_ready_then_do( init );
+  // waitfor_mathquill_and_if_ready_then_do( init );
+  init();
 
   function init(){
     console.log( 'init' );

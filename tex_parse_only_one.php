@@ -88,9 +88,9 @@ include_once 'header.php';
   }
 }
 
-waitfor_mathquill_and_if_ready_then_do(function () {
-  prepare_page();
-});
+// waitfor_mathquill_and_if_ready_then_do(function () {
+prepare_page();
+// });
 
 </script>
 </head>

@@ -1,6 +1,6 @@
 <?php $title='Test Page - Algebrite (gf09) ';
   $liblist = "['algebrite' ]";
-  include_once( 'header.php' );
+  $prefix="./"; include_once( $prefix . 'header.php' );
 ?>
 <?php include_once( 'header.php' ); ?>
   

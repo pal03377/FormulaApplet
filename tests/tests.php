@@ -32,8 +32,10 @@ function init(){
     <p><a href='mathquill2tex2tree.php'>MathQuill <-> TEX -> Tree</a> and tree2TEX check</p>
     <p><a href='check_unit_decomposition.php'>Check Unit Decomposition</a></p>
     <p><a href='mathquill2tex2parser_no_feedback.php'>MathQuill -> TEX (without feedback) -> Parser </a></p>
-    <p><a href='./other/other.php'>Other solutions</a> KAS, Algebrite, MathQuill</p>
     </hr>
+    <p><a href='../development/development.php'>Development</a> </p>
+    <p><a href='../other/other.php'>Other solutions</a> KAS, Algebrite, MathQuill</p>
+    <p><a href="../index.php">Overview</a></p>
 </body>
 
 </html>

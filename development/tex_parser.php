@@ -1,6 +1,7 @@
 <?php $title = 'TEX Parser';
 $liblist = "[ 'tex_parser', 'mathquill', 'mathquillcss', 'gf09css']";
-include_once 'header.php';
+$prefix="../"; 
+include_once( $prefix . 'header.php' ); 
 ?>
 
 <script>
@@ -125,10 +126,10 @@ include_once 'header.php';
 }
 
 // This is not done by glue.js!
-waitfor_mathquill_and_if_ready_then_do(function () {
+// waitfor_mathquill_and_if_ready_then_do(function () {
   console.log('call prepare_page from tex_parser.php');
   prepare_page();
-});
+// });
 
   // Parse from LaTeX ...
   // const latexInput = '\\frac{1}{\\sqrt{2}}\\cdot x=10';
@@ -184,5 +185,5 @@ transform: scale(1.05);
 background-color: #ffffdf !important;">
 </canvas>
 
-<?php include_once 'uses.php';?>
-<?php include_once 'footer.php';?>
+<?php include_once ($prefix . 'uses.php');?>
+<?php include_once ($prefix . 'footer.php');?>

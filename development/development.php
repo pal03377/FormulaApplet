@@ -1,16 +1,10 @@
-<?php 
+<?php
   $title='Development';
   $liblist = "['translate', 'gf09css']";
+  $prefix="../"; 
+  include_once( $prefix . 'header.php' ); 
 ?>
-<?php include_once( 'header.php' ); ?>
-<link href="css/table.css" rel="stylesheet">
-<!-- <script>
- document.onreadystatechange = function () {
-  if (document.readyState == "complete") {
-    initTranslation();
-  }
-}         
-</script> -->
+<link href="../css/table.css" rel="stylesheet">
 <script>
 function init(){
   initTranslation();
@@ -27,7 +21,6 @@ function init(){
     <hr>
     <p><a href='../tests/tests.php'>Tests</a> </p>
     <p><a href='../other/other.php'>Other solutions</a> KAS, Algebrite, MathQuill</p>
-    </hr>
-</body>
-
-</html>
+<?php 
+ include_once( $prefix . 'header.php' );
+?>

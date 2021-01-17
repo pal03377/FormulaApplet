@@ -275,7 +275,7 @@ function mathQuillify() {
     }
     // console.log(prec);
     prec = sanitizePrecision(prec);
-    console.log(FApp.id + ' precision=' + prec + ' ' + 0.5 * prec);
+    // console.log(FApp.id + ' precision=' + prec + ' ' + 0.5 * prec);
     FApp.precision = prec;
     var isEditor = (FApp.id.toLowerCase() == 'editor');
     FApp.formula_applet = this;
@@ -399,7 +399,7 @@ function mathQuillify() {
 }
 
 function unify_definitionsets(def) {
-  console.log(def);
+  // console.log(def);
   def = def.replace(/\s/g, "");
   def = def.replace(/\&&/g, "&");
   // console.log(def);
@@ -423,9 +423,9 @@ function unify_definitionsets(def) {
         result = temp[1] + '-' + temp[0];
       }
     }
-    console.log(i + ' ' + result);
+    // console.log(i + ' ' + result);
     ds_list[i] = result;
-    console.log(ds_list[i]);
+    // console.log(ds_list[i]);
   }
   return ds_list;
 }

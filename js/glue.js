@@ -5,7 +5,7 @@
 if (typeof gf09_path == 'undefined') {
     console.log('gf09_path undefined. This should not happen because it is defined in header.php or FormulaApplet.body.php');
     var gf09_path = '/gf09/';
-//    var server = document.location.hostname;
+    //    var server = document.location.hostname;
     var href = document.location.href;
     console.log(href);
     // if (href.startsWith('http://localhost:8080')) {
@@ -24,7 +24,7 @@ console.log('libPath=' + libPath + '  cssPath=' + cssPath);
 
 // var gluetest = 'Here is glue!';
 
-if (typeof liblist === 'undefined') { 
+if (typeof liblist === 'undefined') {
     // default for wiki
     var liblist = ['mathquill', 'prepare_page', 'tex_parser', 'decode', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss', 'hammer', 'translate'];
 }
@@ -63,7 +63,7 @@ tasks['tap4'] = new task(libPath + 'tap4.js');
 // liblist.forEach(function (taskname) {
 //     tasks[taskname].name = taskname;
 // })
-for( var i = 0; i < liblist.length; i++){
+for (var i = 0; i < liblist.length; i++) {
     var taskname = liblist[i];
     // console.log(tasks[taskname]);
     tasks[taskname].name = taskname;
@@ -269,11 +269,21 @@ function load_libs() {
 }
 
 function prepare_pg() {
-    if (typeof prepare_page_exists !== 'undefined') {
-        prepare_page();
-    }
-    if (typeof init !== 'undefined'){
-        init();
+    waitfor_mathquill_if_in_liblist_and_then_do(function () {
+        if (typeof prepare_page_exists !== 'undefined') {
+            prepare_page();
+        }
+        if (typeof init !== 'undefined') {
+            init();
+        }
+    })
+}
+
+function waitfor_mathquill_if_in_liblist_and_then_do(mq_ready) {
+    if (liblist.indexOf('mathquill') >= 0) {
+        waitfor_mathquill_and_if_ready_then_do(mq_ready);
+    } else {
+        mq_ready();
     }
 }
 

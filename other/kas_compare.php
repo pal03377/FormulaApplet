@@ -131,9 +131,9 @@ include_once 'header.php';
 
 window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
-    waitfor_mathquill_and_if_ready_then_do( function(){
+    // waitfor_mathquill_and_if_ready_then_do( function(){
         waitfor_KAS_and_if_ready_then_do( function(){ init();  });
-    });
+    // });
 });
 
 </script>

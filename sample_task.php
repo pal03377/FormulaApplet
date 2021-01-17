@@ -1,6 +1,7 @@
 <?php $title = 'Sample Tasks'; $header='<span class="tr de samples">Aufgaben-Beispiele</span><span class="tr en samples">Sample Tasks</span>';
 $liblist = "[ 'hammer', 'decode', 'translate', 'prepare_page', 'mathquill', 'tex_parser', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss']";
-include_once 'header.php';
+$prefix="./"; 
+include_once( $prefix . 'header.php' ); 
 ?>
 
 <script>

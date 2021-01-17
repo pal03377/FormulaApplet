@@ -1,6 +1,7 @@
 <?php $title = 'Editable in Static MathQuill';
 $liblist = "[ 'mathquill', 'mathquillcss' ]";
-include_once 'header.php';
+$prefix="../"; 
+include_once( $prefix . 'header.php' ); 
 ?>
 <!-- derived from MathQuill e-math edition -->
 
@@ -40,9 +41,9 @@ code span {
 
 <span id="fill-in-the-blank">\sqrt{ \MathQuillMathField{x}^2 + \MathQuillMathField{y}^2 }</span>
 <script>
- waitfor_mathquill_and_if_ready_then_do(function () {
-    init();
-  });
+ // waitfor_mathquill_and_if_ready_then_do(function () {
+init();
+  // });
 
   function init(){
 // <!-- http://docs.mathquill.com/en/latest/Api_Methods/#mqmathfieldhtml_element-config -->
@@ -96,5 +97,5 @@ var MQ = MathQuill.getInterface(2);
 <p><span id="answer">x=</span></p>
 
 <hr>
-<?php include_once 'uses.php';?>
-<?php include_once 'footer.php';?>
+<?php include_once ($prefix . 'uses.php');?>
+<?php include_once ($prefix . 'footer.php');?>

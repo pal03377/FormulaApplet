@@ -1,1 +1,1 @@
-header.php looks for the file gf09.tag. 
+header.php will look for the file gf09.tag to identify the gf09 directory (whose name is not necessarily gf09).

@@ -1,5 +1,5 @@
 <?php $title='Test Page - Template (gf09) ' ?>
-<?php include_once( 'header.php' ); ?>
+<?php $prefix="./"; include_once( $prefix . 'header.php' ); ?>
   
   <!-- link rel="stylesheet" href="./Algebrite_files/styles.css" -->
   <!--[if lt IE 9]>

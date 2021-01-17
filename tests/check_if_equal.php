@@ -5,9 +5,9 @@ include_once '../header.php';
 
 <!-- <script src="./js/lib/tex_parser.js"></script> -->
 <script>
-  waitfor_mathquill_and_if_ready_then_do(function () {
+  // waitfor_mathquill_and_if_ready_then_do(function () {
     init();
-  });
+  // });
 
   function init() {
     var MQ = MathQuill.getInterface(2);

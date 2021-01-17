@@ -1,7 +1,8 @@
 <?php
   $title='Test Page - Tex2KAS';
   $liblist = "['mathquill', 'mathquillcss', 'kas']";
-  include_once( 'header.php' );
+  $prefix="../"; 
+  include_once( $prefix . 'header.php' );
 ?>
 
 <body>
@@ -72,9 +73,9 @@
 
   window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
-    waitfor_mathquill_and_if_ready_then_do( function(){
+    // waitfor_mathquill_and_if_ready_then_do( function(){
         waitfor_KAS_and_if_ready_then_do( function(){ init();  });
-      });
+      // });
    });
 
  </script>

@@ -1,7 +1,8 @@
 <?php
   $title='Test Page - Tex2MathQuill';
   $liblist = "['mathquill', 'mathquillcss', 'algebrite' ]";
-  include_once( 'header.php' );
+  $prefix="../"; 
+  include_once( $prefix . 'header.php' );
 ?>
 
 <body>
@@ -94,7 +95,8 @@ function printTree(html) {
 }
 window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
-    waitfor_mathquill_and_if_ready_then_do( init );
+    // waitfor_mathquill_and_if_ready_then_do( init );
+    init();
  });
 </script>
 
