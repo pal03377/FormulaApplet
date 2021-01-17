@@ -1,12 +1,12 @@
 <?php
   $title='Test Page - Tex2KAS';
-  $liblist = "['mathquill', 'mathquillcss', 'kas']";
+  $liblist = "['mathquill', 'mathquillcss', 'kas', 'translate']";
   $prefix="../"; 
   include_once( $prefix . 'header.php' );
 ?>
 
 <body>
-  <p>MathQuill: <span id="editable-math"></span></p>
+  <p>MathQuill: <span id="editable-math">x+y</span></p>
   <p>LaTeX:</p>
   <!-- textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3.5 \unit{\frac{km}{h}} </textarea -->
   <textarea id="latex" style="width:80%;vertical-align:top">\frac{d}{dx}\sqrt{x} = 3.5\frac{km}{h} </textarea>
@@ -15,9 +15,13 @@
   <hr>
   
   <script>
-    function init(){
-    console.log( 'init' );
+  function init(){
+    waitfor_KAS_and_if_ready_then_do( function(){ init2();  });
+  }
 
+    function init2(){
+    console.log( 'init' );
+    initTranslation();
 
     var eMath = $('#editable-math')[0]; latexSource = $('#latex');
     var MQ = MathQuill.getInterface(2);
@@ -71,13 +75,14 @@
     }
   }
 
-  window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
-    // waitfor_mathquill_and_if_ready_then_do( function(){
-        waitfor_KAS_and_if_ready_then_do( function(){ init();  });
-      // });
-   });
+  // window.addEventListener('DOMContentLoaded', (event) => {
+  //   console.log('DOM fully loaded and parsed');
+  //   // waitfor_mathquill_and_if_ready_then_do( function(){
+  //       waitfor_KAS_and_if_ready_then_do( function(){ init();  });
+  //     // });
+  //  });
 
  </script>
 
- <?php include_once( 'footer.php' ); ?>
+<?php include_once ($prefix . 'uses.php');?>
+<?php include_once ($prefix . 'footer.php');?>

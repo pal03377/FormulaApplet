@@ -22,6 +22,5 @@ function init(){
     <p><a href='../tests/tests.php'>Tests</a> </p>
     <p class='tr en oth'><a href='../other/other.php'>Other solutions</a> KAS, Algebrite, MathQuill</p>
     <p class='tr de oth'><a href='../other/other.php'>Andere Ansätze</a> KAS, Algebrite, MathQuill</p>
-<?php 
- include_once( $prefix . 'footer.php' );
-?>
+<?php include_once ($prefix . 'uses.php');?>
+<?php include_once ($prefix . 'footer.php');?>

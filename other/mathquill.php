@@ -1,6 +1,7 @@
 <?php $title = 'Test Page - MathQuill (gf09)';
-$liblist = "['mathquill', 'mathquillcss' ]";
-include_once 'header.php';
+$liblist = "['mathquill', 'mathquillcss', 'translate']";
+$prefix="../"; 
+include_once( $prefix . 'header.php' ); 
 ?>
 
 <body>
@@ -11,6 +12,7 @@ include_once 'header.php';
 <script>
   function init(){
     console.log( 'init' );
+    initTranslation();
     var eMath = $('#editable-math')[0]; latexSource = $('#latex');
     var MQ = MathQuill.getInterface(2);
     mf = MQ.MathField(eMath, {handlers:{
@@ -33,12 +35,13 @@ include_once 'header.php';
   mf.latex(latexSource.val());
  }
 
- window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
-    // waitfor_mathquill_and_if_ready_then_do( init );
-    init();
- });
+//  window.addEventListener('DOMContentLoaded', (event) => {
+//     console.log('DOM fully loaded and parsed');
+//     // waitfor_mathquill_and_if_ready_then_do( init );
+//     init();
+//  });
 
 </script>
 
- <?php include_once 'footer.php'; ?>
+<?php include_once ($prefix . 'uses.php');?>
+<?php include_once ($prefix . 'footer.php');?>

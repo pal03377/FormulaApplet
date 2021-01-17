@@ -1,8 +1,7 @@
 <?php $title='Test Page - Algebrite (gf09) ';
-  $liblist = "['algebrite' ]";
-  $prefix="./"; include_once( $prefix . 'header.php' );
+  $liblist = "['algebrite', 'translate' ]";
+  $prefix="../"; include_once( $prefix . 'header.php' );
 ?>
-<?php include_once( 'header.php' ); ?>
   
   <link rel="stylesheet" href="./Algebrite_files/styles.css">
   <link rel="stylesheet" href="./Algebrite_files/github-light.css">
@@ -16,7 +15,7 @@
   <h3>Sandbox</h3>
 
   <div style="width:100%;">
-    <textarea id="terminal1" name="terminal" rows="1" cols="80" style="width:100%;margin-bottom:-5px;">input</textarea>
+    <textarea id="terminal1" name="terminal" rows="2" cols="80" style="width:100%;margin-bottom:-5px;">input</textarea>
     <textarea id="output1" name="terminal" rows="4" cols="80" style="width:100%;"></textarea>
     <!--
     <input name="execute" value="▶" onclick="execute(1);" type="button">
@@ -29,7 +28,10 @@
   <!-- script src="./Algebrite_files/jquery.min.js"></script> -->
   <script src="./Algebrite_files/algebrite.bundle-for-browser.js"></script>
   <script type="text/javascript" language="javascript">
-    window.onkeypress = LogKey;
+    function init(){
+      initTranslation();
+    }
+   window.onkeypress = LogKey;
     function LogKey(e) {
       if (e.code == 'Enter') {
         var el_id = e.target.id;
@@ -63,4 +65,5 @@
       }
     }
   </script>
- <?php include_once( 'footer.php' ); ?>
+<?php include_once ($prefix . 'uses.php');?>
+<?php include_once ($prefix . 'footer.php');?>

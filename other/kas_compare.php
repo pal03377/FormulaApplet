@@ -1,7 +1,8 @@
 <?php
 $title = 'Test Page - KAS Compare';
-$liblist = "['mathquill', 'mathquillcss', 'kas' ]";
-include_once 'header.php';
+$liblist = "['mathquill', 'mathquillcss', 'kas', 'translate' ]";
+$prefix="../"; 
+include_once( $prefix . 'header.php' );
 ?>
 
 <body>
@@ -29,7 +30,12 @@ include_once 'header.php';
 <script>
 
   function init(){
-    console.log( 'init' );
+    waitfor_KAS_and_if_ready_then_do( function(){ init2();  });
+  }
+
+  function init2(){
+    console.log( 'init2' );
+    initTranslation();
 
     var eMathLeft = $('#editable-math-left')[0]; latexLeft = $('#latex-left');
     var eMathRight = $('#editable-math-right')[0]; latexRight = $('#latex-right');
@@ -129,13 +135,14 @@ include_once 'header.php';
     }
   }
 
-window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
-    // waitfor_mathquill_and_if_ready_then_do( function(){
-        waitfor_KAS_and_if_ready_then_do( function(){ init();  });
-    // });
-});
+// window.addEventListener('DOMContentLoaded', (event) => {
+//     console.log('DOM fully loaded and parsed');
+//     function init(){
+//       waitfor_KAS_and_if_ready_then_do( function(){ init2();  });
+//      }
+// });
 
 </script>
 
- <?php include_once 'footer.php';?>
+<?php include_once ($prefix . 'uses.php');?>
+<?php include_once ($prefix . 'footer.php');?>
