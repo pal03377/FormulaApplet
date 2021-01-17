@@ -1,14 +1,21 @@
 <?php $title = 'License';
 $liblist = "['gf09css', 'translate']";
-include_once 'header.php';
+$prefix="./"; 
+include_once( $prefix . 'header.php' );
 ?>
 <link href="css/table.css" rel="stylesheet">
+<script>
+    function init(){
+        initTranslation();
+    }
+ </script>
 </head>
 
 <body>
 <h1><?php echo $title; ?></h1>
 <h2>FormulaApplet</h2>
-<p>FormulaApplet will be published under the MIT license: <a href='https://github.com/gro58/gf09'>FormulaApplet (gf09) at GitHub</a></p>
+<p class='tr en willbe'>FormulaApplet will be published under the MIT license: <a href='https://github.com/gro58/gf09'>FormulaApplet at GitHub</a></p>
+<p class='tr de willbe'>FormulaApplet wird unter der MIT Lizenz veröffentlicht werden: <a href='https://github.com/gro58/gf09'>FormulaApplet bei GitHub</a></p>
 <h2>Open Source Libraries used by FormulaApplet</h2>
 <table>
     <tr>
@@ -41,4 +48,4 @@ include_once 'header.php';
     </tr>
 </table>
 
-<?php include_once 'footer.php';?>
+<?php include_once $prefix . 'footer.php';?>

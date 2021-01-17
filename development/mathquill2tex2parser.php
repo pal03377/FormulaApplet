@@ -1,7 +1,8 @@
 <?php
 $title = 'Test Page - MathQuill2Tex2Parser';
-$liblist = "['tex_parser', 'mathquill', 'mathquillcss']";
-include_once 'header.php';
+$liblist = "['tex_parser', 'mathquill', 'mathquillcss', 'translate']";
+$prefix="../"; 
+include_once( $prefix . 'header.php' );
 ?>
 
 <!-- <script src="./js/lib/tex_parser.js"></script> -->
@@ -17,6 +18,7 @@ include_once 'header.php';
 
   function init(){
     console.log( 'init' );
+    initTranslation();
     var eMath = $('#editable-math')[0]; latexSource = $('#latex'), tree_out = $('#tree_out');
     var MQ = MathQuill.getInterface(2);
     mf = MQ.MathField(eMath, {handlers:{
@@ -58,11 +60,12 @@ include_once 'header.php';
    tree_out.val(output);
  }
 
- window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
-    waitfor_mathquill_and_if_ready_then_do( init );
- });
+//  window.addEventListener('DOMContentLoaded', (event) => {
+//     console.log('DOM fully loaded and parsed');
+//     waitfor_mathquill_and_if_ready_then_do( init );
+//  });
 
 </script>
 
- <?php include_once 'footer.php'; ?>
+<?php include_once ($prefix . 'uses.php');?>
+<?php include_once ($prefix . 'footer.php');?>

@@ -270,7 +270,7 @@ function load_libs() {
 
 function prepare_pg() {
     waitfor_mathquill_if_in_liblist_and_then_do(function () {
-        console.log('MathQuill ready (2)');
+        console.log('MathQuill ready 2');
         // if (typeof prepare_page_exists !== 'undefined') {
         if (typeof prepare_page !== 'undefined') {
             console.log('calling prepare_page...');
@@ -304,7 +304,7 @@ function waitfor_mathquill_and_if_ready_then_do(mq_ready2) {
             waitfor_mathquill_and_if_ready_then_do(mq_ready2)
         }, 50);
     } else {
-        console.log('MathQuill ready (1)');
+        console.log('MathQuill ready......');
         mq_ready2();
     }
 }

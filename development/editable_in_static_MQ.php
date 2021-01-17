@@ -1,5 +1,5 @@
 <?php $title = 'Editable in Static MathQuill';
-$liblist = "[ 'mathquill', 'mathquillcss' ]";
+$liblist = "[ 'mathquill', 'mathquillcss', 'translate' ]";
 $prefix="../"; 
 include_once( $prefix . 'header.php' ); 
 ?>
@@ -42,12 +42,13 @@ code span {
 <span id="fill-in-the-blank">\sqrt{ \MathQuillMathField{x}^2 + \MathQuillMathField{y}^2 }</span>
 <script>
  // waitfor_mathquill_and_if_ready_then_do(function () {
-init();
+// init();
   // });
 
   function init(){
+    initTranslation();
 // <!-- http://docs.mathquill.com/en/latest/Api_Methods/#mqmathfieldhtml_element-config -->
-var MQ = MathQuill.getInterface(2);
+  var MQ = MathQuill.getInterface(2);
   var fillInTheBlank = MQ.StaticMath(document.getElementById('fill-in-the-blank'));
   var temp = fillInTheBlank.innerFields[0];
   var span= $('.mq-editable-field')[0];

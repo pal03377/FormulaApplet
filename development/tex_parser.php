@@ -1,13 +1,13 @@
 <?php $title = 'TEX Parser';
-$liblist = "[ 'tex_parser', 'mathquill', 'mathquillcss', 'gf09css']";
+$liblist = "[ 'tex_parser', 'mathquill', 'mathquillcss', 'gf09css', 'translate']";
 $prefix="../"; 
 include_once( $prefix . 'header.php' ); 
 ?>
-
 <script>
   // glue.js calls prepare_page(). prepare_page.js is not used, missing in liblist
   function prepare_page() {
   console.log('$$$ Here is prepare_page from tex_parser.php $$$');
+  initTranslation();
   var MQ = MathQuill.getInterface(2);
   var mathField = new Array();
   var out = '';
@@ -126,10 +126,10 @@ include_once( $prefix . 'header.php' );
 }
 
 // This is not done by glue.js!
-// waitfor_mathquill_and_if_ready_then_do(function () {
-  console.log('call prepare_page from tex_parser.php');
-  prepare_page();
-// });
+//  waitfor_mathquill_and_if_ready_then_do(function () {
+//   console.log('call prepare_page from tex_parser.php');
+//   prepare_page();
+//  });
 
   // Parse from LaTeX ...
   // const latexInput = '\\frac{1}{\\sqrt{2}}\\cdot x=10';
@@ -139,11 +139,16 @@ include_once( $prefix . 'header.php' );
   // link.href = "./css/gf09.css";
   // document.getElementsByTagName("head")[0].appendChild(link);
 </script>
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+<script>
+  $('#treecanvas').draggable();
+</script> -->
+  
 </head>
 
 <body>
 <h1><?php echo $title; ?></h1>
-<h2>TEX Parser</h2>
+<h2>Use mouse left click</h2>
 
         <p id="output">output</p>
         <p><button id="check">Check all</button></p>
