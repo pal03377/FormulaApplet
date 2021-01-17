@@ -1,7 +1,8 @@
 <!-- load vkbd after hammer -->
-<?php $title = 'Test Page - hammer (gf09)';
-$liblist = "['hammer', 'vkbd', 'vkbdcss', 'gf09css']";
-include_once '../header.php';
+<?php $title = 'Test Page - hammer/VKBD';
+$liblist = "['hammer', 'vkbd', 'vkbdcss', 'gf09css', 'translate']";
+$prefix="../"; 
+include_once( $prefix . 'header.php' );
 ?>
 
 <body>
@@ -43,7 +44,8 @@ function wfvi(){
 }
 
 function init(){
-    // get_vkbd() is defined in vkbd.js
+	// get_vkbd() is defined in vkbd.js
+	initTranslation();
     $('#keyboard').html(get_vkbd());
 	vkbd_bind_events();
 	keyboardActivate('mixed');
@@ -59,4 +61,5 @@ function keyboardEvent(cmd){
 <div id='output'><p>output</p></div>
 <div id='keyboard'></div>
 
-<?php include_once '../footer.php';?>
+<?php include_once ($prefix . 'uses.php');?>
+<?php include_once ($prefix . 'footer.php');?>

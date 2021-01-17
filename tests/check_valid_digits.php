@@ -1,12 +1,14 @@
 <?php $title = 'Check valid digits';
 $liblist = "['hammer', 'translate', 'prepare_page', 'mathquill', 'tex_parser', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss']";
-include_once '../header.php';
+$prefix="../"; 
+include_once( $prefix . 'header.php' );
 ?>
 
 <body>
 <script>
     function init(){
         console.log('init... ');
+        initTranslation();
         console.log(FAList);
         $(document).ready(function () {
                 var fa = FAList[0];
@@ -51,4 +53,5 @@ include_once '../header.php';
 <p class="formula_applet" id="check_vd">\text{result} = {{result}}</p><br />
 <p id="output">output</p>
 
-<?php include_once '../footer.php';?>
+<?php include_once ($prefix . 'uses.php');?>
+<?php include_once ($prefix . 'footer.php');?>

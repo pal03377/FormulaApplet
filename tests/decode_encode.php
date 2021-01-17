@@ -1,6 +1,7 @@
 <?php $title = 'Decode - Encode (gf09)';
-$liblist = "['decode']";
-include_once '../header.php';
+$liblist = "['decode', 'translate']";
+$prefix = "../";
+include_once $prefix . 'header.php';
 ?>
 
 <body>
@@ -22,7 +23,8 @@ function test(text){
   }
 
   function init(){
-    // create_permutations();
+    console.log( 'init' );
+      // create_permutations();
     test('ganzVielGeheim');
     test('g=a+n/kNurrBliBlablu');
     test('Leerzeichen Ist Nicht Im Zeichensatz BliBlaBlu');
@@ -37,15 +39,13 @@ function test(text){
     test('49v^2');
     test('Besonders lange Strings sind interessant zu codieren, wenn sie Sonderzeichen wie @ und µ und \\ oder " und \" enthalten.');
     test('Ab>cD?');
-
-
+    init_old();
 }
 
  function init_old(){
-    console.log( 'init' );
+  initTranslation();
 
- 
-  
+
   function init_alpha_permutation(){
     // var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
@@ -67,7 +67,7 @@ function test(text){
     var h = [];
     for(var i = 0; i< n; i++){
       var char = characters[i].toString();
-      h[char] = characters[p[i]].toString(); 
+      h[char] = characters[p[i]].toString();
     }
     for(var i = 0; i< n; i++){
       var char = characters[i].toString();
@@ -75,7 +75,7 @@ function test(text){
     }
     for(var i = 0; i< n; i++){
       var char = characters[i].toString();
-      h[char] = characters[q[i]].toString(); 
+      h[char] = characters[q[i]].toString();
     }
     for(var i = 0; i< n; i++){
       var char = characters[i].toString();
@@ -101,4 +101,5 @@ function test(text){
 
 </script>
 
- <?php include_once '../footer.php';?>
+<?php include_once $prefix . 'uses.php';?>
+<?php include_once $prefix . 'footer.php';?>

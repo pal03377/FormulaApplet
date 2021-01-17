@@ -1,15 +1,17 @@
 <?php $title = 'Check if equal';
-$liblist = "[ 'mathquill', 'tex_parser', 'mathquillcss' ]";
-include_once '../header.php';
+$liblist = "[ 'mathquill', 'tex_parser', 'mathquillcss', 'translate' ]";
+$prefix="../"; 
+include_once( $prefix . 'header.php' );
 ?>
 
 <!-- <script src="./js/lib/tex_parser.js"></script> -->
 <script>
   // waitfor_mathquill_and_if_ready_then_do(function () {
-    init();
+    // init();
   // });
 
   function init() {
+    // initTranslation();
     var MQ = MathQuill.getInterface(2);
     var mathField = new Array();
     var out = '';
@@ -19,7 +21,7 @@ include_once '../header.php';
     var link = document.createElement("link");
     link.type = "text/css";
     link.rel = "stylesheet";
-    link.href = "./css/gf09.css";
+    link.href = "../css/gf09.css";
     document.getElementsByTagName("head")[0].appendChild(link);
 
     $(document).ready(function () {
@@ -98,14 +100,14 @@ include_once '../header.php';
         <p><button id="check">Check all</button></p>
         <!-- p id="version">version</p -->
         <p class="formula_applet" id="frs993">7\frac{5}{8}a^2=7,625a^2</p><br />
-        <p class="formula_applet" id="unu683">3,5\unit{\frac{km}{h}}=\ 0,972\unit{\frac{m}{s}}</p><br />
-        <p class="formula_applet" id="inv862">3,5 \unit{kWh} = 12,6 \unit{MJ}</p><br />
-        <p class="formula_applet" id="utr575">\sin\left(\frac{\pi}{2}\right)=\ \sin\left(90\unit{°}\right)</p><br />
+        <p class="formula_applet" id="unu683">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,972\textcolor{blue}{\frac{m}{s}}</p><br />
+        <p class="formula_applet" id="inv862">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
+        <p class="formula_applet" id="utr575">\sin\left(\frac{\pi}{2}\right)=\ \sin\left(90\textcolor{blue}{°}\right)</p> buggy<br />
         <p class="formula_applet" id="fal487">(7,2c - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
         <p class="formula_applet" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
         <p class="formula_applet" id="con335">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}</p><br />
 
 <hr>
-<?php include_once 'uses.php';?>
 
-<?php include_once '../footer.php';?>
+<?php include_once ($prefix . 'uses.php');?>
+<?php include_once ($prefix . 'footer.php');?>

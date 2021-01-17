@@ -1,7 +1,8 @@
 <?php
 $title = 'Check Unit Decomposition';
-$liblist = "['tex_parser', 'mathquill', 'mathquillcss', 'gf09css']";
-include_once '../header.php';
+$liblist = "['tex_parser', 'mathquill', 'mathquillcss', 'gf09css', 'translate']";
+$prefix="../"; 
+include_once( $prefix . 'header.php' );
 ?>
 
 <!-- <script src="./js/lib/tex_parser.js"></script> -->
@@ -9,6 +10,7 @@ include_once '../header.php';
 
 <body>
   <h1><?php echo $title; ?></h1>
+  <h2> 'insert unit' button is broken</h2>
   <p>MathQuill: <span id="editable-math"></span></p>
  <textarea id="latex" style="width:80%;vertical-align:top">3,5\unit{\frac{km}{min}} </textarea><br />
  <button id="unit" class='button'>Insert Unit</button>
@@ -26,10 +28,11 @@ background-color: #ffffdf !important;">
   <script>
 
   // waitfor_mathquill_and_if_ready_then_do( init );
-  init();
+  // init();
 
   function init(){
     console.log( 'init' );
+    initTranslation();
     var eMath = $('#editable-math')[0]; latexSource = $('#latex'), tree2tex = $('#tree2TEX');
     var MQ = MathQuill.getInterface(2);
     mf = MQ.MathField(eMath, {handlers:{
@@ -96,4 +99,5 @@ function tree_output(){
 
 </script>
 
- <?php include_once '../footer.php';?>
+<?php include_once ($prefix . 'uses.php');?>
+<?php include_once ($prefix . 'footer.php');?>
