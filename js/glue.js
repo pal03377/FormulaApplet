@@ -4,23 +4,24 @@
 
 if (typeof gf09_path == 'undefined') {
     console.log('gf09_path undefined. This should not happen because it is defined in header.php or FormulaApplet.body.php');
-    var gf09_path = '/gf09/';
-    //    var server = document.location.hostname;
-    var href = document.location.href;
-    console.log(href);
-    // if (href.startsWith('http://localhost:8080')) {
-    //     gf09_path = '/gf09/';
+    // var gf09_path = '/gf09/';
+    // //    var server = document.location.hostname;
+    // var href = document.location.href;
+    // console.log(href);
+    // // if (href.startsWith('http://localhost:8080')) {
+    // //     gf09_path = '/gf09/';
+    // // }
+    // if (href.startsWith('https://test.grossmann.info')) {
+    //     gf09_path = '/';
     // }
-    if (href.startsWith('https://test.grossmann.info')) {
-        gf09_path = '/';
-    }
-    if (href.startsWith('http://localhost:8088')) {
-        gf09_path = '/';
-    }
+    // if (href.startsWith('http://localhost:8088')) {
+    //     gf09_path = '/';
+    // }
 }
-var libPath = gf09_path + 'js/lib/';
+var jsPath = gf09_path + 'js/';
+var libPath = jsPath + 'lib/';
 var cssPath = gf09_path + 'css/';
-console.log('libPath=' + libPath + '  cssPath=' + cssPath);
+console.log('jsPath=' + jsPath + ' libPath=' + libPath + '  cssPath=' + cssPath);
 
 // var gluetest = 'Here is glue!';
 
@@ -47,17 +48,17 @@ tasks['mathquill'].fallback = libPath + 'mathquill-0.10.1/mathquill.js';
 tasks['algebrite'] = new task('http://algebrite.org/dist/1.2.0/algebrite.bundle-for-browser.js');
 tasks['algebrite'].fallback = libPath + 'Algebrite/dist/algebrite.bundle-for-browser.js';
 tasks['kas'] = new task(libPath + 'KAS/KAS_loader.js');
-tasks['tex_parser'] = new task(libPath + 'tex_parser.js');
-tasks['vkbd'] = new task(libPath + 'vkbd.js');
-tasks['decode'] = new task(libPath + 'decode.js');
-tasks['translate'] = new task(libPath + 'translate.js');
-tasks['prepare_page'] = new task(libPath + 'prepare_page.js');
 tasks['hammer'] = new task(libPath + 'hammer.js');
 tasks['hammer'].fallback = 'https://hammerjs.github.io/dist/hammer.js';
-tasks['drag'] = new task(libPath + 'tzdragg.js');
+//
+tasks['tex_parser'] = new task(jsPath + 'tex_parser.js');
+tasks['vkbd'] = new task(jsPath + 'vkbd.js');
+tasks['decode'] = new task(jsPath + 'decode.js');
+tasks['translate'] = new task(jsPath + 'translate.js');
+tasks['prepare_page'] = new task(jsPath + 'prepare_page.js');
 tasks['gf09css'] = new task(cssPath + 'gf09.css');
 tasks['vkbdcss'] = new task(cssPath + 'vkbd.css');
-tasks['tap4'] = new task(libPath + 'tap4.js');
+// tasks['tap4'] = new task(libPath + 'tap4.js');
 // console.log(tasks);
 // console.log(tasks);
 // .forEach causes error 'foeEach is not a function' - maybe typescript error

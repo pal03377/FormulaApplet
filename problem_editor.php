@@ -28,6 +28,5 @@ function init(){
 <p class="formula_applet" id="editor"><span id="math-field">17 + 4 + a + b + c + d = \class{inputfield}{21}</span></p>
 <hr />
 <code class='prepend_uses' id='p_u'></code>
-<!-- <?php include_once 'uses.php';?> -->
-
+<!-- ?php include_once 'uses.php';? -->
 <?php include_once 'footer.php';?>
