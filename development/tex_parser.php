@@ -1,5 +1,5 @@
 <?php $title = 'TEX Parser';
-$liblist = "[ 'tex_parser', 'mathquill', 'mathquillcss', 'gf09css', 'translate']";
+$liblist = "['hammer', 'tex_parser', 'mathquill', 'mathquillcss', 'gf09css', 'translate']";
 $prefix="../"; 
 include_once( $prefix . 'header.php' ); 
 ?>
@@ -143,10 +143,33 @@ include_once( $prefix . 'header.php' );
 <script>
   $('#treecanvas').draggable();
 </script> -->
-  
-</head>
+<script>
+  // window.onload = function(){
+  //   console.log('onload...');
+  //   waitfor_drag_and_if_ready_then_do( function(){
+  //     console.log('drag ready');
+  //     tzdragg.drag('treecanvas');
+  //    });
+  // }
 
-<body>
+  // function waitfor_drag_and_if_ready_then_do(drag_ready) {
+  //   // console.log( 'window.jQuery =' + window.jQuery);
+  //   if (typeof tzdragg !== 'undefined') {
+  //     console.log('drag is available');
+  //     drag_ready();
+  //   } else {
+  //     console.log('Waiting for drag...');
+  //     console.log(typeof tzdragg);
+  //     setTimeout(function () {
+  //       waitfor_drag_and_if_ready_then_do(drag_ready)
+  //     }, 50);
+  //   }
+  // }
+
+
+
+</script>
+ 
 <h1><?php echo $title; ?></h1>
 <h2>Use mouse left click</h2>
 
@@ -189,6 +212,49 @@ top: 30px;
 transform: scale(1.05);
 background-color: #ffffdf !important;">
 </canvas>
+
+<script>
+  function makeDraggable(){
+      // dragElement(document.getElementById("vkbd"));
+      var tree_canv = document.getElementById('treecanvas');
+    // https://hammerjs.github.io/getting-started/
+    var mc = new Hammer(tree_canv);
+
+    var left_temp = 1;
+    var top_temp = 1;
+    var left_start = 1;
+    var top_start = 1;
+    mc.on("panstart panmove", function (ev) {
+        if (ev.type == 'panstart') {
+            left_start = tree_canv.offsetLeft;
+            top_start = tree_canv.offsetTop;
+            left_temp = left_start;
+            top_temp = top_start;
+        }
+        if (ev.type == 'panmove') {
+            left_temp = left_start + ev.deltaX;
+            top_temp = top_start + ev.deltaY;
+            tree_canv.style.left = left_temp + 'px';
+            tree_canv.style.top = top_temp + 'px';
+        }
+    });
+  }
+
+    function waitfor_hammer(hammer_ready) {
+      if ((typeof Hammer) === "undefined") {
+        console.log('waiting for Hammer...');
+        setTimeout(function () {
+          waitfor_hammer(hammer_ready)
+        }, 50);
+      } else {
+        console.log('Hammer ready......');
+        hammer_ready();
+      }
+    }
+
+    waitfor_hammer( makeDraggable );
+
+</script>
 
 <?php include_once ($prefix . 'uses.php');?>
 <?php include_once ($prefix . 'footer.php');?>

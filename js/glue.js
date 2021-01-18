@@ -54,6 +54,7 @@ tasks['translate'] = new task(libPath + 'translate.js');
 tasks['prepare_page'] = new task(libPath + 'prepare_page.js');
 tasks['hammer'] = new task(libPath + 'hammer.js');
 tasks['hammer'].fallback = 'https://hammerjs.github.io/dist/hammer.js';
+tasks['drag'] = new task(libPath + 'tzdragg.js');
 tasks['gf09css'] = new task(cssPath + 'gf09.css');
 tasks['vkbdcss'] = new task(cssPath + 'vkbd.css');
 tasks['tap4'] = new task(libPath + 'tap4.js');
