@@ -310,10 +310,20 @@ function mathQuillify() {
       FApp.mathField = editor_mf;
 
       var mqEditableField = $('#editor').find('.mq-editable-field')[0];
-      set_input_event();
-      set_unit_event();
-      erase_unit_event();
-
+      // adjust events
+      $('#set-input').on('mousedown', function (ev) {
+        ev.preventDefault();
+        set_input();
+      });
+      $('#set-unit').on('mousedown', function (ev) {
+        ev.preventDefault();
+        set_unit();
+      });
+      $('#erase-unit').on('mousedown', function (ev) {
+        ev.preventDefault();
+        erase_unit();
+      });
+    
       $('#random-id').on('mousedown', function (ev) {
         ev.preventDefault();
         console.log('random-id');
@@ -351,7 +361,7 @@ function mathQuillify() {
 
         }
         console.log(result_mode);
-        $('#set-input').mousedown();
+        // $('#set-input').mousedown();
       });
       $('#random-id').mousedown();
       $('input[type="radio"]#manu').click();
@@ -432,14 +442,14 @@ function unify_definitionsets(def) {
 
 function get_selection(mf, eraseClass) {
   // typeOf mf = mathField
-  console.log(mf);
+  // console.log(mf);
   var ori = mf.latex();
-  console.log('ori=' + ori);
+  // console.log('ori=' + ori);
   var erased = ori;
   if (eraseClass) {
     erased = erase_class(ori);
   }
-  console.log(erased);
+  // console.log(erased);
   var replacement = createReplacement(ori);
   if (ori.indexOf(replacement) == -1) {
     // replacement has to be done before erase of class{...
@@ -469,41 +479,29 @@ function get_selection(mf, eraseClass) {
       console.log('Something went wrong with replacement of input field');
     }
     selected = erased.substring(0, erased.length - post_selected.length);
-    console.log('selected=' + selected);
-    console.log('selected.length=' + selected.length);
+    // console.log('selected=' + selected);
+    // console.log('selected.length=' + selected.length);
     return [pre_selected, selected, post_selected, ori];
   }
 }
 
-function set_input_event() {
-  $('#set-input').on('mousedown', function (ev) {
-    ev.preventDefault();
-    set_input();
-  });
-}
-
 function set_input() {
+  console.log('set_input');
   var temp = get_selection(editor_mf, true);
+  console.log(temp);
   var pre_selected = temp[0];
   var selected = temp[1];
   var post_selected = temp[2];
   var ori = temp[3];
   if (selected.length > 0) {
     var new_latex = pre_selected + '\\class{inputfield}{' + selected + '}' + post_selected;
-    console.log(new_latex);
+    // console.log(new_latex);
     editor_mf.latex(new_latex);
   } else {
     ori = ori.replace('class{', '\\class{inputfield}{');
-    console.log(ori);
+    // console.log(ori);
     editor_mf.latex(ori);
   }
-}
-
-function set_unit_event() {
-  $('#set-unit').on('mousedown', function (ev) {
-    ev.preventDefault();
-    set_unit();
-  });
 }
 
 function get_position_of_unittags(latex, unit_tag){
@@ -514,15 +512,15 @@ function get_position_of_unittags(latex, unit_tag){
  do {
    pos = latex.indexOf(unit_tag, pos);
    if (pos >= 0) {
-     console.log(pos);
+    //  console.log(pos);
      var rest = latex.substr(pos + unit_tag.length - 1);
-     console.log(rest);
+    //  console.log(rest);
      var temp = find_corresponding_right_bracket(rest, '{');
      var pos_right_bracket = pos + unit_tag.length + temp[2];
      start_of_unittags.push(pos);
      end_of_unittags.push(pos_right_bracket);
      //pos_right_bracket points to char right of the right bracket
-     console.log(latex.substr(pos, unit_tag.length + temp[2])); // should log \textcolor{blue}{...}
+    //  console.log(latex.substr(pos, unit_tag.length + temp[2])); // should log \textcolor{blue}{...}
      pos++;
    }
  } while (pos >= 0)
@@ -531,7 +529,7 @@ function get_position_of_unittags(latex, unit_tag){
 
 function set_unit() {
   var unit_tag = '\\textcolor{blue}{';
-  console.log('activeMathfieldIndex=' + activeMathfieldIndex);
+  // console.log('activeMathfieldIndex=' + activeMathfieldIndex);
   var mf = FAList[activeMathfieldIndex].mathField;
   // erase class inputfield = false
   var temp = get_selection(mf, false);
@@ -542,8 +540,8 @@ function set_unit() {
 
   var start = pre_selected.length;
   var end = start + selected.length;
-  console.log(ori);
-  console.log('selection from ' + start + ' to ' + end);
+  // console.log(ori);
+  // console.log('selection from ' + start + ' to ' + end);
   var selectpattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
   for (var k = start; k < end; k++) {
     selectpattern[k] = 's';
@@ -554,13 +552,13 @@ function set_unit() {
   var end_of_unittags = posn.eof_unittags;
   var pattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
   for (var i = 0; i < start_of_unittags.length; i++) {
-    console.log(start_of_unittags[i] + '->' + end_of_unittags[i]);
+    // console.log(start_of_unittags[i] + '->' + end_of_unittags[i]);
     for (var k = start_of_unittags[i]; k < end_of_unittags[i]; k++) {
       pattern[k] = '#';
     }
   }
-  console.log(selectpattern.join('')); // join: transform from array to string
-   console.log(pattern.join('')); // join: transform from array to string
+  // console.log(selectpattern.join('')); // join: transform from array to string
+  //  console.log(pattern.join('')); // join: transform from array to string
   // inspect selection start
   for (var i = 0; i < start_of_unittags.length; i++) {
     if (start_of_unittags[i] < start && start <= end_of_unittags[i]) {
@@ -584,7 +582,7 @@ function set_unit() {
   for (var k = start; k < end; k++) {
     selectpattern[k] = 's';
   }
-  console.log(selectpattern.join('')); // join: transform from array to string
+  // console.log(selectpattern.join('')); // join: transform from array to string
 
   // delete unittags inside selection
   var ori_array = ori.split('');
@@ -596,9 +594,9 @@ function set_unit() {
       ori_array[end_of_unittags[i] - 1] = '§';
     }
   }
-  console.log(ori);
+  // console.log(ori);
   ori = ori_array.join('');
-  console.log(ori); // join: transform from array to string
+  // console.log(ori); // join: transform from array to string
 
   if (selected.length > 0) {
     // new calculation necessary
@@ -609,30 +607,22 @@ function set_unit() {
     // new_latex = new_latex.replace(/\xA7/g, '');
     new_latex = new_latex.replace(/§/g, '');
     new_latex = new_latex.replace('class{', '\\class{inputfield}{');
-    console.log(new_latex);
+    // console.log(new_latex);
     mf.latex(new_latex);
   } else {
     ori = ori.replace('class{', '\\class{inputfield}{');
-    console.log(ori);
+    // console.log(ori);
     mf.latex(ori);
   }
 }
 
-function erase_unit_event() {
-  console.log('init erase unit button');
-  $('#erase-unit').on('mousedown', function (ev) {
-    ev.preventDefault();
-    erase_unit();
-  });
-}
-
 function erase_unit() {
   var unit_tag = '\\textcolor{blue}{';
-  console.log('erase-unit');
-  console.log('activeMathfieldIndex=' + activeMathfieldIndex);
+  // console.log('erase-unit');
+  // console.log('activeMathfieldIndex=' + activeMathfieldIndex);
   var mf = FAList[activeMathfieldIndex].mathField;
    var temp = get_selection(mf, false);
-  console.log(temp[0] + '::' + temp[1] + '::' + temp[2]);
+  // console.log(temp[0] + '::' + temp[1] + '::' + temp[2]);
   var ori = temp[3];
   // get position of unittags
   var posn = get_position_of_unittags(ori, unit_tag);
@@ -650,9 +640,9 @@ function erase_unit() {
       ori_array[end_of_unittags[i] - 1] = '§';
     }
   }
-  console.log(ori);
+  // console.log(ori);
   ori = ori_array.join('');
-  console.log(ori); // join: transform from array to string
+  // console.log(ori); // join: transform from array to string
   ori = ori.replace(/§/g, '');
   ori = ori.replace('class{', '\\class{inputfield}{');
   // restore selection-checked mf
@@ -748,9 +738,14 @@ function prepend(after_prepend) {
     unitbuttons += '<button type="button" class="tr de erau problemeditor" id="erase-unit">Einheit l&ouml;schen</button>';
     unitbuttons += '<button type="button" class="tr en erau problemeditor" id="erase-unit">Erase Unit</button>';
     ed.after(unitbuttons);
-    ed.after('<button type="button" class="tr en sif problemeditor" id="set-input">Set input field</button><button type="button" class="tr de sif problemeditor" id="set-input">Eingabe-Feld setzen</button>');
+    ed.after('<button type="button" class="tr de sif problemeditor" id="set-input">Eingabe-Feld setzen</button><button type="button" class="tr en sif problemeditor" id="set-input">Set input field</button>');
     var prepend_uses = $('.prepend_uses#p_u');
-    prepend_uses.after('<p><span class="tr de uses">Das Formel-Applet benutzt die Bibliotheken jQuery, MathQuill und Hammer. </span><span class="tr en uses">FormulaApplet uses jQuery, MathQuill, and Hammer. </span><a href="license.php" class="tr de moreinfo">Weitere Informationen...</a><a href="license.php" class="tr en moreinfo">More info...</a></p>');
+    if (isWiki){
+      license_link = 'https://github.com/gro58/FormulaApplet/blob/master/js/lib/ToDo.md';
+    } else {
+      license_link = 'license.php';
+    }
+    prepend_uses.after('<p><span class="tr de uses">Das Formel-Applet benutzt die Bibliotheken jQuery, MathQuill und Hammer. </span><span class="tr en uses">FormulaApplet uses jQuery, MathQuill, and Hammer. </span><a href="' + license_link + '" class="tr de moreinfo">Weitere Informationen...</a><a href="' + license_link + '" class="tr en moreinfo">More info...</a></p>');
   }
   after_prepend();
 }
