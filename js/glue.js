@@ -209,7 +209,7 @@ function waitfor_num_of_libs_then_do(cont) {
         // console.log('Not enough libs: ' + number_of_loaded_libs);
         setTimeout(function () {
             waitfor_num_of_libs_then_do(cont)
-        }, 50);
+        }, 100);
     }
 }
 
@@ -265,7 +265,7 @@ function waitfor_mathquill_and_if_ready_then_do(mq_ready2) {
         console.log('waiting for MathQuill...');
         setTimeout(function () {
             waitfor_mathquill_and_if_ready_then_do(mq_ready2)
-        }, 50);
+        }, 100);
     } else {
         console.log('MathQuill ready (1)');
         mq_ready2();
