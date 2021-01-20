@@ -7,7 +7,7 @@
 <link href="css/table.css" rel="stylesheet">
 <script>
  function init(){
-    initTranslation();
+    // initTranslation();
  }
 </script>
 

@@ -35,7 +35,9 @@ function switchTo(lang) {
 }
 
 //default
-// $(window).on('load', function(){
+$(window).on('load', function(){
+  initTranslation();
+});
 //     console.log('window.on.load');
 function initTranslation() {
   if (isWiki){

@@ -58,7 +58,7 @@ do {
     // console.log('Header: gf09_path=' + gf09_path);
     var gf09_path = "<?php echo $gf09; ?>";
     if (gf09_path == 'null'){ gf09_path = null};
-    console.log('gf09_path=' + gf09_path);
+    // console.log('gf09_path=' + gf09_path);
     document.getElementById('glue').src = gf09_path + "js/glue.js";
 </script>
 <meta charset="utf-8">

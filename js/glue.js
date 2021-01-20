@@ -21,7 +21,7 @@ if (typeof gf09_path == 'undefined') {
 var jsPath = gf09_path + 'js/';
 var libPath = jsPath + 'lib/';
 var cssPath = gf09_path + 'css/';
-console.log('jsPath=' + jsPath + ' libPath=' + libPath + '  cssPath=' + cssPath);
+console.log('gf09_path=' + gf09_path + ' jsPath=' + jsPath + ' libPath=' + libPath + '  cssPath=' + cssPath);
 
 // var gluetest = 'Here is glue!';
 
@@ -34,8 +34,7 @@ function task(source) {
     this.name = 'unknown';
     this.source = source;
     this.fallback = null;
-    this.css = source.endsWith('.css');
-    this.state = 'unused';
+    this.state = 'unused'; //delete?
 }
 
 var jQuery_url = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
@@ -44,13 +43,13 @@ var tasks = {};
 tasks['mathquillcss'] = new task('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css');
 tasks['mathquillcss'].fallback = libPath + 'mathquill-0.10.1/mathquill.css';
 tasks['mathquill'] = new task('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js');
-tasks['mathquill'].fallback = libPath + 'mathquill-0.10.1/mathquill.js';
+tasks['mathquill'].fallback = libPath + 'mathquill-0.10.1/mathquill.min.js';
 tasks['algebrite'] = new task('http://algebrite.org/dist/1.2.0/algebrite.bundle-for-browser.js');
 tasks['algebrite'].fallback = libPath + 'Algebrite/dist/algebrite.bundle-for-browser.js';
 tasks['kas'] = new task(libPath + 'KAS/KAS_loader.js');
 tasks['hammer'] = new task(libPath + 'hammer.js');
 tasks['hammer'].fallback = 'https://hammerjs.github.io/dist/hammer.js';
-//
+// without fallback
 tasks['tex_parser'] = new task(jsPath + 'tex_parser.js');
 tasks['vkbd'] = new task(jsPath + 'vkbd.js');
 tasks['decode'] = new task(jsPath + 'decode.js');
@@ -58,40 +57,49 @@ tasks['translate'] = new task(jsPath + 'translate.js');
 tasks['prepare_page'] = new task(jsPath + 'prepare_page.js');
 tasks['gf09css'] = new task(cssPath + 'gf09.css');
 tasks['vkbdcss'] = new task(cssPath + 'vkbd.css');
-// tasks['tap4'] = new task(libPath + 'tap4.js');
-// console.log(tasks);
-// console.log(tasks);
+
+var keys = Object.keys(tasks);
+for (var i = 0; i < keys.length; i++) {
+    var taskname = keys[i];
+    tasks[taskname].name = taskname;
+}
+
 // .forEach causes error 'foeEach is not a function' - maybe typescript error
 // liblist.forEach(function (taskname) {
 //     tasks[taskname].name = taskname;
 // })
-for (var i = 0; i < liblist.length; i++) {
-    var taskname = liblist[i];
-    // console.log(tasks[taskname]);
-    tasks[taskname].name = taskname;
-}
+// for (var i = 0; i < liblist.length; i++) {
+//     var taskname = liblist[i];
+//     // console.log(tasks[taskname]);
+//     tasks[taskname].name = taskname;
+// }
 
 // Load jQuery (without using jQuery)
 
-// helper function for loading, see:
-// https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
-function loadScript(url, callback) {
-    var script = document.createElement('script');
-    // script.type = 'text/javascript';
-    script.src = url;
-    // Then bind the event to the callback function.
-    // There are several events for cross browser compatibility.
-    script.onreadystatechange = callback;
-    script.onload = callback;
-    // Fire the loading
-    document.head.appendChild(script);
+jq = new task("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
+jq.fallback = libPath + "jquery-3.4.1.min.js";
+jq.name = 'jq';
+var try_counter_limit = 50;
+// do not add jq to tasks[]!
+
+// start loading of jQuery (if necessary)
+if (window.jQuery) {
+    // jQuery is already there.
+    console.log('jQuery version (Wiki) = ' + $.fn.jquery);
+    load_libs();
+} else {
+    // Start to load jQuery and wait until loaded
+    appendScriptOrStyleSheetWithFallback(jq);
+    var try_counter = 0;
+    waitfor_jquery(load_libs);
+}
+// Done with jQuery.
+
+function jquery_timeout(){
+    console.log('Load of jQuery: timeout. Stop of loading');
 }
 
-// https://stackoverflow.com/questions/7486309/how-to-make-script-execution-wait-until-jquery-is-loaded
-// defer -> waitfor_jquery    method -> cont
 var try_counter = 0;
-var try_counter_limit = 50;
-
 function waitfor_jquery(cont) {
     //TODO replace by use of script.onerror
     // console.log( 'window.jQuery =' + window.jQuery);
@@ -106,130 +114,81 @@ function waitfor_jquery(cont) {
                 waitfor_jquery(cont);
             }, 50);
         } else {
-            second_try_for_jquery();
+            jquery_timeout();
         }
     }
 }
 
-function second_try_for_jquery() {
-    console.log('Try to load jQuery fallback');
-    try_counter = 0;
-    loadScript(jQuery_fallback, waitfor_jquery(load_libs));
-}
-
-
-// start loading of jQuery (if necessary)
-if (window.jQuery) {
-    // jQuery is already there.
-    console.log('jQuery version (Wiki) = ' + $.fn.jquery);
-    load_libs();
-} else {
-    // Start to load jQuery and wait until loaded
-    loadScript(jQuery_url, waitfor_jquery(load_libs));
-}
-// Done with jQuery.
-
-
-function errorFunc(task) {
-    var fb = 'no fallback';
-    if (task.fallback !== null) {
-        fb = task.fallback;
+function OK_Func(ev, task) {
+    var message = task.name + ' - Success loading ';
+    if(task.name !== 'jq'){
+        number_of_loaded_libs++;
+        message += '#=' + number_of_loaded_libs;
     }
-    console.log(task.name + ' ERROR ' + fb);
-    task.state = 'error';
+    console.log(message);
+     task.state = 'OK';
+    // when_ok();
     // state();
     // console.log(task);
 }
 
-function OK_Func(task) {
-    number_of_loaded_libs++;
-    console.log(number_of_loaded_libs + ': ' + task.name);
-    task.state = 'OK';
-    // state();
-    // console.log(task);
-}
+// var when_ok = function(){
+//     console.log('when ok...');
+// }
 
-// ***************************** load CSS *********************************** 
+// ***************************** load CSS or JS *********************************** 
 // https://stackoverflow.com/questions/17666785/check-external-stylesheet-has-loaded-for-fallback
 // https://www.phpied.com/when-is-a-stylesheet-really-loaded/
-function appendStyleSheet(task, errorFunc, OK_Func, fallback) {
-    var link = document.createElement("link");
-    link.rel = "stylesheet";
-    if (fallback) {
-        link.href = task.fallback;
+function appendScriptOrStyleSheet(task, isFallback) {
+    var elem;
+    if (task.source.endsWith('.css')) {
+        elem = document.createElement("link");
+        elem.rel = "stylesheet";
+        if (isFallback) {
+            elem.href = task.fallback;
+        } else {
+            elem.href = task.source;
+        }
     } else {
-        link.href = task.source;
+        // javascript
+        // https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
+        elem = document.createElement('script');
+        elem.type = 'text/javascript';
+        if (isFallback) {
+            elem.src = task.fallback;
+        } else {
+            elem.src = task.source;
+        }
     }
-    // console.log('appendStyleSheet ' + link.href);
-    link.onerror = errorFunc;
+    // Then bind the event to the callback function.
+    // There are several events for cross browser compatibility.
     // https://www.w3schools.com/tags/ev_onload.asp
-    // link.onload = function () {
-    //     console.log(link.href + ' successfully loaded.');
-    //     OK_Func(task);
-    // };
-    link.onload = function () {
-        OK_Func(task)
+    elem.onreadystatechange = function (ev) {
+        OK_Func(ev, task);
     };
-    document.getElementsByTagName("head")[0].appendChild(link);
-    console.log(link.href + ' appended to "head", but not yet loaded.');
-}
-
-function appendStyleSheetOrFallback(task, errorFunc, OK_Func) {
-    // prepare for fallback
-    var firstError = function () {
+    elem.onload = function (ev) {
+        OK_Func(ev, task);
+    };
+    elem.onerror = function (ev) {
+        // console.log(ev);
         if (task.fallback == null) {
-            errorFunc(task);
+            console.log(task.name + '(1) ERROR - no fallback!');
         } else {
-            // second try: fallback = true
-            appendStyleSheet(task, errorFunc, OK_Func, true);
+            console.log(task.name + '(2): ' + task.fallback);
+            // second try: isFallback = true
+            appendScriptOrStyleSheet(task, true);
+            //stop infinite loop
+            task.fallback = null;
         }
     }
-    // first try: fallback = false
-    appendStyleSheet(task, firstError, OK_Func, false);
+    // Fire the loading
+    document.head.appendChild(elem);
 }
 
-function appendScript(task, errorFunc, OK_Func, fallback) {
-    if (fallback) {
-        var url = task.fallback;
-    } else {
-        var url = task.source;
-    }
-    // console.log('appendScript ' + url);
-    $.getScript(url)
-        // .done(function (script, textStatus) {
-        //     console.log(textStatus);
-        // })
-        // .fail(function (jqxhr, settings, exception) {
-        //     console.log("Triggered ajaxError handler. " + exception);
-        // });
-        .done(function (script, textStatus) {
-            OK_Func(task);
-        })
-        .fail(function (jqxhr, settings, exception) {
-            errorFunc(task);
-        });
-}
-
-function appendScriptOrFallback(task, errorFunc, OK_Func) {
-    // prepare for fallback
-    var firstError = function () {
-        if (task.fallback == null) {
-            errorFunc(task);
-        } else {
-            // second try: fallback = true
-            appendScript(task, errorFunc, OK_Func, true);
-        }
-    }
-    // first try: fallback = false
-    appendScript(task, firstError, OK_Func, false);
-}
-
-function appendScriptOrStyleSheet(task, errorFunc, OK_Func) {
-    if (task.css == true) {
-        appendStyleSheetOrFallback(task, errorFunc, OK_Func);
-    } else {
-        appendScriptOrFallback(task, errorFunc, OK_Func);
-    }
+function appendScriptOrStyleSheetWithFallback(task) {
+    console.log(task.name + '(1): ' + task.source);
+    // first try: isFallback = false
+    appendScriptOrStyleSheet(task, false);
 }
 
 function state() {
@@ -264,8 +223,9 @@ function load_libs() {
     // state();
 
     liblist.forEach(function (taskname) {
-        tasks[taskname].state = 'pending';
-        appendScriptOrStyleSheet(tasks[taskname], errorFunc, OK_Func);
+        var task = tasks[taskname];
+        task.state = 'pending';
+        appendScriptOrStyleSheetWithFallback(task);
     });
     waitfor_num_of_libs_then_do(prepare_pg);
 }
@@ -288,6 +248,7 @@ function prepare_pg() {
     })
 }
 
+// used in prepare_pg
 function waitfor_mathquill_if_in_liblist_and_then_do(mq_ready) {
     if (liblist.indexOf('mathquill') >= 0) {
         console.log('MathQuill in liblist. Waiting');

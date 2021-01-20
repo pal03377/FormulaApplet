@@ -439,7 +439,7 @@ function create_table(table_id) {
 }
 
 function vkbd_bind_events() {
-    console.log('Here is vkbd.js');
+    console.log('Init vkbd');
     $(".vkbd_button").mousedown(function (ev) {
         ev.preventDefault();
         var cmd = clickEvent(ev);
