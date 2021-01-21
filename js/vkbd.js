@@ -99,7 +99,7 @@ keys['function'] = [
         ['smallgap-1', '', ''],
         ['abs', '\u2502\u2b1a\u2502', '| |'],
         ['subscript', '\u2b1a<sub style="font-size: 85%">\u2b1a</sub>'],
-        ['nth_root', nth_root],
+        ['nth_root', nth_root, '#nthroot'],
         ['erase_unit', 'Clear<br>Unit', '#erase_unit'],
         ['infinity', '&infin;', '\\infinity ']
     ],
@@ -107,10 +107,10 @@ keys['function'] = [
     [
         ['ln'],
         ['lg'],
-        ['log_base', 'log<sub style="font-size: 85%">\u2b1a</sub>'],
+        ['log_base', 'log<sub style="font-size: 85%">\u2b1a</sub>', 'log_'],
         ['smallgap-2', '', ''],
-        ['bracket-left', '('],
-        ['bracket-right', ')'],
+        ['bracket-left', '(', '('],
+        ['bracket-right', ')', ')'],
         ['up', '&uarr;', '#Up'],
         ['down', '&darr;', '#Down'],
         backspace,

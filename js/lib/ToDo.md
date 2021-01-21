@@ -26,31 +26,28 @@
 
 
 ## Programmierung
+* mode=physics
 * Objekte
 * Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
 * try-catch, on error
 * Tests
 * (TypeScript) 
 * Vereinheitlichung des Slice-Teils ??
-* https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file
+* <s>https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file</s>
 * Triviale Lösungen sperren
 * condition = ...
-* glue.js verbessern
+* <s>glue.js verbessern</s>
 * <s>'Einheiten markieren' verbessern</s> <s>Einheiten löschen verbessern</s>
 * <s>abs(x), |x| </s>
 * exp(x) = e^x
 
 ## DiesUndDas
-* Waiter-Funktionen vereinheitlichen
+* <s>Waiter-Funktionen vereinheitlichen</s>
 * Integral, Limes
 * MediaWiki-WYSIWYG-Editor (schwer)
 * Karl Kirst kontaktieren
-* MediaWiki-Extensions aktualisieren
 * <s>Linux mit GUI unter WIN10</s>
-* befreundete Seiten
 * (Legacy: Applet-Parameter decodieren)
-* mode=physics
-
 ## GIT
 * cmd
 * E:

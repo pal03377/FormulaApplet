@@ -26,11 +26,15 @@ function my_server_url()
     return $scheme.'://'.$server_name.$port;
 }
 
-$haystack = dirname($_SERVER['PHP_SELF']) . "/";
+$haystack = dirname($_SERVER['PHP_SELF']);
+// echo $haystack . '<br />';
+if (substr($haystack, -1) !== '/'){
+  $haystack .= '/';
+}
 // retrieve directory containing gf09-tag.txt
 $stop = false;
 do {
-  $needle =  my_server_url() . $haystack . 'gf09.tag';
+  $needle =  my_server_url() . $haystack . 'gf09.tag';  
   $handle = @fopen($needle, 'r');
   $exists = true;
   if(!$handle){
