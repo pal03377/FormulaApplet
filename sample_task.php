@@ -30,6 +30,7 @@ function init(){
 
 <!-- <p id="output">output</p> -->
 <!-- <p class="formula_applet" id="inv862a">3,5 \textcolor{blue}{kWh} = {{result}} \textcolor{blue}{MJ}</p> (12,6MJ)<br /> -->
+<p class="formula_applet" id="no_res">sin^2 \alpha + cos^2\alpha = 1</p><br />
 <p class="formula_applet" id="inv862a">3,5 \unit{kWh} = {{result}} \unit{MJ}</p> (12,6MJ)<br />
 <p class="formula_applet" id="definition_set" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} = {{result}}</p><span class='padding'><span class='tr en oneone'>One variable, one definition set.</span><span class='tr de oneone'>Eine Variable, eine Definitionsmenge.</span></span><br />
 <!-- <p class="formula_applet" id="definition_set_more_than_numofvar" def="x > 0 && y < 5">\frac{\sqrt{x^3}}{\sqrt{x}} = {{result}}</p><span class='padding'><span class='tr en moredef'>Number of definition sets exceeds number of variables.</span><span class='tr de moredef'>Mehr Definitionsmengen als Variablen.</span></span><br /> -->

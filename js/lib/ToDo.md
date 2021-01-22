@@ -1,8 +1,5 @@
 # *ToDo* #
 ## Online
-* <s>www.grossmann.info mit Bootstrap statt WordPress</s>
-* <s>github: gf09 umbenennen in FormulaApplet</s>
-----
 * MediaWiki Extension 'FormulaApplet' neu anlegen, FormulaApplet.php, FormulaApplet.body.php, /i18n
 * Verwendung von formelapplet.zum.de klären
 
@@ -33,20 +30,15 @@
 * Tests
 * (TypeScript) 
 * Vereinheitlichung des Slice-Teils ??
-* <s>https://stackoverflow.com/questions/950087/how-do-i-include-a-javascript-file-in-another-javascript-file</s>
 * Triviale Lösungen sperren
 * condition = ...
-* <s>glue.js verbessern</s>
-* <s>'Einheiten markieren' verbessern</s> <s>Einheiten löschen verbessern</s>
-* <s>abs(x), |x| </s>
 * exp(x) = e^x
+* Applets ohne Eingabefeld erlauben
 
 ## DiesUndDas
-* <s>Waiter-Funktionen vereinheitlichen</s>
 * Integral, Limes
 * MediaWiki-WYSIWYG-Editor (schwer)
 * Karl Kirst kontaktieren
-* <s>Linux mit GUI unter WIN10</s>
 * (Legacy: Applet-Parameter decodieren)
 ## GIT
 * cmd

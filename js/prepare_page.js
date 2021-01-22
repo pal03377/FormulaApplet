@@ -19,6 +19,7 @@ class FA {
     this.hammer = '';
     this.definitionset_list = [];
     this.precision = default_precision;
+    this.hasResultField = true;
   }
 }
 
@@ -262,9 +263,15 @@ function mathQuillify() {
   });
   $(".formula_applet").each(function () {
     var FApp = new FA();
+    FApp.hasResultField = (this.innerHTML.indexOf('\\MathQuillMathField{}') >= 0);
     var index = $(".formula_applet").index(this);
     FApp.index = index;
     FApp.id = $(this).attr('id') // name of formula_applet
+    var isEditor = (FApp.id.toLowerCase() == 'editor');
+    if (isEditor) {
+      FApp.hasResultField = true;
+    }
+    // console.log('§§§ ' + this.innerHTML + ' ' + FApp.hasResultField);
     var def = $(this).attr('def');
     if (typeof def !== 'undefined') {
       FApp.definitionset_list = unify_definitionsets(def);
@@ -277,17 +284,18 @@ function mathQuillify() {
     prec = sanitizePrecision(prec);
     // console.log(FApp.id + ' precision=' + prec + ' ' + 0.5 * prec);
     FApp.precision = prec;
-    var isEditor = (FApp.id.toLowerCase() == 'editor');
     FApp.formula_applet = this;
-    $(this).click(function () {
-      $(".formula_applet").removeClass('selected');
-      $(this).addClass('selected');
-      $("button.keyb_button").removeClass('selected');
-      if ($('#vkbd').css('display') == 'none') {
-        $(this).nextAll("button.keyb_button:first").addClass('selected');
-      }
-      activeMathfieldIndex = FApp.index;
-    });
+    if (FApp.hasResultField){
+      $(this).click(function () {
+        $(".formula_applet").removeClass('selected');
+        $(this).addClass('selected');
+        $("button.keyb_button").removeClass('selected');
+        if ($('#vkbd').css('display') == 'none') {
+          $(this).nextAll("button.keyb_button:first").addClass('selected');
+        }
+        activeMathfieldIndex = FApp.index;
+      });
+    }
     FAList[index] = FApp;
 
     if (isEditor) {
@@ -323,7 +331,7 @@ function mathQuillify() {
         ev.preventDefault();
         erase_unit();
       });
-    
+
       $('#random-id').on('mousedown', function (ev) {
         ev.preventDefault();
         console.log('random-id');
@@ -369,42 +377,46 @@ function mathQuillify() {
       //******************
       // *** no editor ***
       MQ.StaticMath(this);
-      if ($(this).attr('data-b64') !== undefined) {
-        FApp.hasSolution = true;
-        var zip = $(this).attr('data-b64');
-        FAList[index].solution = decode(zip);
-      } else {
-        FApp.hasSolution = false;
-      };
-      // console.log('formula_applet=');
-      // console.log(this);
-      var mqEditableField = $(this).find('.mq-editable-field')[0];
-      // console.log('mqEditableField=' + mqEditableField);
-      var mf = MQ.MathField(mqEditableField, {});
-      // console.log('mf=' + mf);
-      mf.config({
-        handlers: {
-          edit: function () {
-            mqEditableField.focus();
-            // console.log('edit ' + index);
-            editHandler(index);
-          },
-          enter: function () {
-            editHandler(index);
-          },
-        }
-      });
-      FApp.mathField = mf;
+      if (FApp.hasResultField) {
+        if ($(this).attr('data-b64') !== undefined) {
+          FApp.hasSolution = true;
+          var zip = $(this).attr('data-b64');
+          FAList[index].solution = decode(zip);
+        } else {
+          FApp.hasSolution = false;
+        };
+        // console.log('formula_applet=');
+        // console.log(this);
+        var mqEditableField = $(this).find('.mq-editable-field')[0];
+        // console.log('mqEditableField=' + mqEditableField);
+        var mf = MQ.MathField(mqEditableField, {});
+        // console.log('mf=' + mf);
+        mf.config({
+          handlers: {
+            edit: function () {
+              mqEditableField.focus();
+              // console.log('edit ' + index);
+              editHandler(index);
+            },
+            enter: function () {
+              editHandler(index);
+            },
+          }
+        });
+        FApp.mathField = mf;
+      }
     }
-    FApp.mqEditableField = mqEditableField;
-    FApp.hammer = new Hammer(mqEditableField);
-    FApp.hammer.on("doubletap", function (ev) {
-      console.log(index + ' ' + ev.type);
-      vkbd_show();
-    });
-    FApp.hammer.on("press", function (ev) {
-      console.log(index + ' ' + ev.type);
-    });
+    if (FApp.hasResultField) {
+      FApp.mqEditableField = mqEditableField;
+      FApp.hammer = new Hammer(mqEditableField);
+      FApp.hammer.on("doubletap", function (ev) {
+        console.log(index + ' ' + ev.type);
+        vkbd_show();
+      });
+      FApp.hammer.on("press", function (ev) {
+        console.log(index + ' ' + ev.type);
+      });
+    }
   });
 }
 
@@ -504,27 +516,30 @@ function set_input() {
   }
 }
 
-function get_position_of_unittags(latex, unit_tag){
- // get position of exising unit tags
+function get_position_of_unittags(latex, unit_tag) {
+  // get position of exising unit tags
   var pos = 0;
- var start_of_unittags = [];
- var end_of_unittags = [];
- do {
-   pos = latex.indexOf(unit_tag, pos);
-   if (pos >= 0) {
-    //  console.log(pos);
-     var rest = latex.substr(pos + unit_tag.length - 1);
-    //  console.log(rest);
-     var temp = find_corresponding_right_bracket(rest, '{');
-     var pos_right_bracket = pos + unit_tag.length + temp[2];
-     start_of_unittags.push(pos);
-     end_of_unittags.push(pos_right_bracket);
-     //pos_right_bracket points to char right of the right bracket
-    //  console.log(latex.substr(pos, unit_tag.length + temp[2])); // should log \textcolor{blue}{...}
-     pos++;
-   }
- } while (pos >= 0)
- return {sof_unittags:start_of_unittags, eof_unittags:end_of_unittags};
+  var start_of_unittags = [];
+  var end_of_unittags = [];
+  do {
+    pos = latex.indexOf(unit_tag, pos);
+    if (pos >= 0) {
+      //  console.log(pos);
+      var rest = latex.substr(pos + unit_tag.length - 1);
+      //  console.log(rest);
+      var temp = find_corresponding_right_bracket(rest, '{');
+      var pos_right_bracket = pos + unit_tag.length + temp[2];
+      start_of_unittags.push(pos);
+      end_of_unittags.push(pos_right_bracket);
+      //pos_right_bracket points to char right of the right bracket
+      //  console.log(latex.substr(pos, unit_tag.length + temp[2])); // should log \textcolor{blue}{...}
+      pos++;
+    }
+  } while (pos >= 0)
+  return {
+    sof_unittags: start_of_unittags,
+    eof_unittags: end_of_unittags
+  };
 }
 
 function set_unit() {
@@ -621,7 +636,7 @@ function erase_unit() {
   // console.log('erase-unit');
   // console.log('activeMathfieldIndex=' + activeMathfieldIndex);
   var mf = FAList[activeMathfieldIndex].mathField;
-   var temp = get_selection(mf, false);
+  var temp = get_selection(mf, false);
   // console.log(temp[0] + '::' + temp[1] + '::' + temp[2]);
   var ori = temp[3];
   // get position of unittags
@@ -740,7 +755,7 @@ function prepend(after_prepend) {
     ed.after(unitbuttons);
     ed.after('<button type="button" class="tr de sif problemeditor" id="set-input">Eingabe-Feld setzen</button><button type="button" class="tr en sif problemeditor" id="set-input">Set input field</button>');
     var prepend_uses = $('.prepend_uses#p_u');
-    if (isWiki){
+    if (isWiki) {
       license_link = 'https://github.com/gro58/FormulaApplet/blob/master/js/lib/ToDo.md';
     } else {
       license_link = 'license.php';
