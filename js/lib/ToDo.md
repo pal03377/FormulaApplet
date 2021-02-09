@@ -34,9 +34,11 @@
 * condition = ...
 * exp(x) = e^x
 * Applets ohne Eingabefeld erlauben
+* Hammer als jQuery-Plugin
+* Node.js
 
 ## DiesUndDas
-* Integral, Limes
+* Integral, Limes (VKBD)
 * MediaWiki-WYSIWYG-Editor (schwer)
 * Karl Kirst kontaktieren
 * (Legacy: Applet-Parameter decodieren)
