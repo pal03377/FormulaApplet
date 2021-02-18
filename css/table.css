@@ -10,6 +10,10 @@
   tr:nth-child(odd) {
 	  background-color: #e4ebf2 ;
   }
-  td {
+  th, td {
     padding: 10px;
+  }
+  
+  div.input-group{
+	display:none;
   }

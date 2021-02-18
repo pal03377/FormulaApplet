@@ -4,17 +4,17 @@
 * Verwendung von formelapplet.zum.de klären
 
 ## www.formelapplet.de
-* Download ZIP (File-System-Version)
-* Installationsanleitung ZIP
-* Tabelle mit Libraries, Lizenzen
-* History des Formel-Applets
+* Download ZIP (File-System-Version) aktualisieren
+* <s>Installationsanleitung ZIP</s>
+* <s>Tabelle mit Libraries, Lizenzen</s>
+* <s>History des Formel-Applets</s>
 * Befreundete Seiten
 * YouTube HowTo
 * DOC
-* www.formelapplet.de: Link zu github. 
+* <s>www.formelapplet.de: Link zu github.</s> 
 ## GitHub
 * Bedeutung der einzelnen js-Dateien
-* Installation auf Server mit PHP
+* Anleitung: Installation auf Server mit PHP
 * (Installation in Wiki) -> MediaWiki
 * Lizenz
 * ToDo (diese Datei)
@@ -23,17 +23,19 @@
 
 
 ## Programmierung
+* www.formwlapplet.de (bootstrap) verwendet auch glue.js
+* Aufgaben-Editor: Schalter Wiki j/n
 * mode=physics
 * Objekte
 * Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
 * try-catch, on error
 * Tests
 * (TypeScript) 
-* Vereinheitlichung des Slice-Teils ??
+* <s>Vereinheitlichung des Slice-Teils ??</s>
 * Triviale Lösungen sperren
 * condition = ...
 * exp(x) = e^x
-* Applets ohne Eingabefeld erlauben
+* <s>Applets ohne Eingabefeld erlauben</s>
 * Hammer als jQuery-Plugin
 * Node.js
 
