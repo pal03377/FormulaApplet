@@ -40,10 +40,10 @@ function task(source) {
 var jQuery_url = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
 var jQuery_fallback = libPath + "jquery-3.4.1.min.js";
 var tasks = {};
-tasks['mathquillcss'] = new task('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css');
-tasks['mathquillcss'].fallback = libPath + 'mathquill-0.10.1/mathquill.css';
-tasks['mathquill'] = new task('https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js');
-tasks['mathquill'].fallback = libPath + 'mathquill-0.10.1/mathquill.min.js';
+tasks['mathquillcss'] = new task(libPath + 'mathquill-0.10.1/mathquill.css');
+tasks['mathquillcss'].fallback = 'https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css';
+tasks['mathquill'] = new task(libPath + 'mathquill-0.10.1/mathquill.min.js');
+tasks['mathquill'].fallback = 'https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js';
 tasks['algebrite'] = new task('http://algebrite.org/dist/1.2.0/algebrite.bundle-for-browser.js');
 tasks['algebrite'].fallback = libPath + 'Algebrite/dist/algebrite.bundle-for-browser.js';
 tasks['kas'] = new task(libPath + 'KAS/KAS_loader.js');

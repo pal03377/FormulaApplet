@@ -22,7 +22,7 @@ function switchTo(lang) {
 
   // save lang
   setCookie('lang', lang, 7);
-  update_all_more_less();
+  // update_all_more_less();
 
   // $('a').each(function () {
   //   // console.log(this.href);

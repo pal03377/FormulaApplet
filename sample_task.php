@@ -30,8 +30,8 @@ function init(){
 
 <!-- <p id="output">output</p> -->
 <!-- <p class="formula_applet" id="inv862a">3,5 \textcolor{blue}{kWh} = {{result}} \textcolor{blue}{MJ}</p> (12,6MJ)<br /> -->
-<p class="formula_applet" id="no_res">\int^x_{3} t^2 dt = \frac{x^3}{3} - 9   + \int_2^5\sin x\ \mathrm{d}x</p> Integral.<br />
-<p class="formula_applet" id="no_bnd">\int^x_{3} t^2 dt </p><br>
+<p class="formula_applet" id="no_res">\int^x_{3} t^2\ \mathrm{dt} = \frac{x^3}{3} - 9</p> Integral.<br />
+<p class="formula_applet" id="no_bnd">\int_2^5\sin x\ \mathrm{d}x</p><br>
 <p class="formula_applet" id="no_xay">sin^2 \alpha + cos^2\alpha = 1</p> No result field {{...}} necessary.<br />
 <p class="formula_applet" id="inv862a">3,5 \unit{kWh} = {{result}} \unit{MJ}</p> (12,6MJ)<br />
 <p class="formula_applet" id="definition_set" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} = {{result}}</p><span class='padding'><span class='tr en oneone'>One variable, one definition set.</span><span class='tr de oneone'>Eine Variable, eine Definitionsmenge.</span></span><br />
