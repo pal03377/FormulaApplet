@@ -14,7 +14,7 @@
 * <s>www.formelapplet.de: Link zu github.</s> 
 ## GitHub
 * Bedeutung der einzelnen js-Dateien
-* Anleitung: Installation auf Server mit PHP
+* Installations-Anleitung (PHP)
 * (Installation in Wiki) -> MediaWiki
 * Lizenz
 * ToDo (diese Datei)
@@ -23,9 +23,10 @@
 
 
 ## Programmierung
-* www.formwlapplet.de (bootstrap) verwendet auch glue.js
+* Bug: Buttons reagieren nicht (Aufgaben-Editor)
+* www.formelapplet.de (bootstrap) verwendet auch glue.js
 * Aufgaben-Editor: Schalter Wiki j/n
-* mode=physics
+* mode=physics oder unit=auto
 * Objekte
 * Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
 * try-catch, on error
