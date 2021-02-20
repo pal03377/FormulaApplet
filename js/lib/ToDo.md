@@ -25,7 +25,9 @@
 ## Programmierung
 * Bug: Buttons reagieren nicht (Aufgaben-Editor)
 * www.formelapplet.de (bootstrap) verwendet auch glue.js
-* Aufgaben-Editor: Schalter Wiki j/n
+* <s>Aufgaben-Editor: Schalter Wiki j/n</s> isWiki auswerten (OK)
+* Ausgabe reagiert auf Wechsel auto/manu
+* Eingabe der ID: Return-Taste abfragen (oder changeedit)
 * mode=physics oder unit=auto
 * Objekte
 * Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
