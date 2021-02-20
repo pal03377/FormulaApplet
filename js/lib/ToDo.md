@@ -1,4 +1,25 @@
 # *ToDo* #
+
+## Programmierung
+* mode=physics (oder unit=auto)
+* <s>Bug: Buttons reagieren nicht (Aufgaben-Editor)</s>
+* www.formelapplet.de (bootstrap) verwendet auch glue.js
+* <s>Aufgaben-Editor: Schalter Wiki j/n</s> isWiki auswerten (OK)
+* Ausgabe reagiert auf Wechsel auto/manu
+* Eingabe der ID: Return-Taste abfragen (oder changeedit)
+* Objekte
+* Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
+* try-catch, on error
+* Tests
+* (TypeScript) 
+* <s>Vereinheitlichung des Slice-Teils ??</s>
+* Triviale Lösungen sperren
+* condition = ...
+* exp(x) = e^x
+* <s>Applets ohne Eingabefeld erlauben</s>
+* Hammer als jQuery-Plugin
+* Node.js
+
 ## Online
 * MediaWiki Extension 'FormulaApplet' neu anlegen, FormulaApplet.php, FormulaApplet.body.php, /i18n
 * Verwendung von formelapplet.zum.de klären
@@ -21,26 +42,6 @@
 * einfache Beispiele
 * github gf09 privat -> public
 
-
-## Programmierung
-* Bug: Buttons reagieren nicht (Aufgaben-Editor)
-* www.formelapplet.de (bootstrap) verwendet auch glue.js
-* <s>Aufgaben-Editor: Schalter Wiki j/n</s> isWiki auswerten (OK)
-* Ausgabe reagiert auf Wechsel auto/manu
-* Eingabe der ID: Return-Taste abfragen (oder changeedit)
-* mode=physics oder unit=auto
-* Objekte
-* Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
-* try-catch, on error
-* Tests
-* (TypeScript) 
-* <s>Vereinheitlichung des Slice-Teils ??</s>
-* Triviale Lösungen sperren
-* condition = ...
-* exp(x) = e^x
-* <s>Applets ohne Eingabefeld erlauben</s>
-* Hammer als jQuery-Plugin
-* Node.js
 
 ## DiesUndDas
 * Integral, Limes (VKBD)

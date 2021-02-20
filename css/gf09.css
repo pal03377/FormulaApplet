@@ -80,6 +80,12 @@ div#output{
 	padding: 1px;
 }
 
+/* editoe mode "auto" */
+.mq-class.inputfield[contenteditable="false"]{
+	/* color: crimson; */
+	color: lightgreen; /* foreground = background */
+}
+
 #editor.formula_applet {
 	display: inline-block;
 }

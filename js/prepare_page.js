@@ -347,7 +347,7 @@ function mathQuillify() {
 
       $('#fa_name').on('input', function (ev) {
         var fa_name = ev.target.value;
-        // console.log('fa_name=' + fa_name);
+        console.log('fa_name=' + fa_name);
         // avoid XSS
         fa_name = fa_name.replace(/</g, '');
         fa_name = fa_name.replace(/>/g, '');
@@ -356,8 +356,9 @@ function mathQuillify() {
         fa_name = fa_name.replace(/&/g, '');
         fa_name = fa_name.replace(/ /g, '_');
         // console.log(fa_name);
-        if (fa_name !== '') {
+        if (4 <= fa_name.length && fa_name.length <= 20) {
           new_fa_id = fa_name;
+          show_editor_results(editor_edithandler(editor_mf.latex()));
         }
       });
 
@@ -365,11 +366,11 @@ function mathQuillify() {
         result_mode = ev.target.id;
         if (result_mode == 'auto') {
           $('span.mq-class.inputfield').prop('contentEditable', 'false');
-
+          show_editor_results(editor_edithandler(editor_mf.latex()));
         }
         if (result_mode == 'manu') {
           $('span.mq-class.inputfield').prop('contentEditable', 'true');
-
+          show_editor_results(editor_edithandler(editor_mf.latex()));
         }
         console.log(result_mode);
       });
@@ -726,12 +727,25 @@ function show_editor_results(parts) {
   if (out.length > 0) {
     // var iw = 'isWiki='+isWiki +  String.fromCharCode(13, 10);
     // out.text(iw + wikiresult + String.fromCharCode(13, 10) + String.fromCharCode(13, 10) + result);
-    if (isWiki) {
+    var isw = get_isWiki_from_URL();
+    // console.log('isw=' + isw);
+    if (isWiki || isw) {
       out.text(wikiresult);
     } else {
       out.text(result);
     }
   }
+}
+
+function get_isWiki_from_URL(){
+    var url = new URL(document.location.href);
+    // console.log(url);
+    var iw = url.searchParams.get('isWiki');
+    if(iw == 'true'){
+      return true;
+    } else{
+      return false;
+    }
 }
 
 function prepend(after_prepend) {
