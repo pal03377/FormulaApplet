@@ -1,0 +1,75 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>'Problem Editor'</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href='./js/lib/mathquill-0.10.1/mathquill.css'>
+<link rel="stylesheet" href='./css/gf09.css'>
+<link rel="stylesheet" href='./css/vkbd.css'>
+
+<script>
+<!-- https://www.javascripttutorial.net/javascript-dom/javascript-onload/ -->
+window.addEventListener('load', LoadJS_and_count)
+
+var load_counter = 0;
+var isWiki = false;
+
+function load(src, name){
+    let script = document.createElement('script');
+        script.addEventListener('load', (event) => {
+        load_counter++;
+        console.log(name + ' file has been loaded as #' + load_counter);
+        if(load_counter == 8){
+            do_init();
+        }
+    });
+    script.src = src;
+    document.body.appendChild(script);
+}
+
+function LoadJS_and_count() {
+    console.log('LoadJS_and_count');
+    // load('./js/glue.js', 'glue.js');
+    load('./js/lib/jquery-3.4.1.min.js', 'jquery-3.4.1.min.js');
+    load('./js/lib/hammer.js', 'hammer.js');
+    load('./js/decode.js', 'decode.js');
+    load('./js/translate.js', 'translate.js');
+    load('./js/prepare_page.js', 'prepare_page.js');
+    load('./js/lib/mathquill-0.10.1/mathquill.js', 'mathquill.js');
+    load('./js/tex_parser.js', 'tex_parser.js');
+    load('./js/vkbd.js', 'vkbd.js');
+}
+
+function do_init(){
+    console.log('init()');
+    prepare_page();
+}
+</script>
+
+<style>
+  body {
+    font-family: "OpenSans Regular", sans-serif;
+    margin-left: 4em;
+    margin-right: 2em;
+  }
+</style>
+
+</head>
+<body>
+<h1><span class="tr de problemeditor">Aufgaben-Editor</span><span class="tr en problemeditor">Problem Editor</span></h1>
+<h2 class='tr de later'>Zum späteren Gebrauch in einem MediaWiki</h2>
+<h2 class='tr en later'>for later use in MediaWiki</h2>
+
+<p id="lang_select">
+  <input type="radio" name="lang" class="problemeditor language" id="en"></input>
+  <label for="en">Englisch </label>
+  <br />
+  <input type="radio" name="lang" class="problemeditor language" id="de" checked></input>
+  <label for="de">Deutsch </label>
+</P>
+
+<hr>
+<p class="formula_applet" id="editor"><span id="math-field">17 + 4 = \class{inputfield}{21}</span></p>
+<hr />
+</body>
+</html>

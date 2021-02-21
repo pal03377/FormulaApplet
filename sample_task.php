@@ -18,6 +18,7 @@ function init(){
 <h2 class='tr de later'>zum späteren Gebrauch im MediaWiki</h2>
 <h2 class='tr en later'>for later use in MediaWiki</h2>
 <p><a href='https://github.com/gro58/gf09/blob/master/js/lib/ToDo.md'>ToDo</a> (github)</p>
+<p><a href='./js/lib/ToDo.md'>ToDo</a> (local file)</p>
 <!-- <div id='keyboard'></div> -->
 <!-- <p id="lang_select">
   <input type="radio" name="lang" class="problemeditor language" id="en"></input>

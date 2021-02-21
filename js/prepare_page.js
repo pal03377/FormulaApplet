@@ -146,7 +146,7 @@ function FApp_from_id(id) {
 }
 
 function check_if_equal(id, a, b, ds_list) {
-  console.log(a + ' ?=? ' + b);
+  // console.log(a + ' ?=? ' + b);
   var equ = a + '=' + b;
   check_if_equality(id, equ, ds_list);
 }
@@ -156,7 +156,7 @@ function check_if_equality(id, equ, ds_list) {
   myTree = fillWithRandomValAndCheckDefSets(myTree, ds_list);
   var almostOne = evaluateTree(myTree);
   var dif = Math.abs(almostOne - 1);
-  console.log('dif=' + dif);
+  // console.log('dif=' + dif);
   var FApp = FApp_from_id(id);
   var precision = FApp.precision;
   if (dif < precision) {
@@ -182,10 +182,10 @@ function fillWithRandomValAndCheckDefSets(tree_var, ds_list) {
       numberOfTries++;
       var tree2 = tree();
       tree2 = JSON.parse(rememberTree);
-      console.log('restore');
+      // console.log('restore');
       fillWithValues(tree2);
       var variable_value_list = tree2.variable_value_list;
-      console.log('fill');
+      // console.log('fill');
       // CheckDefinitionSets
       for (var i = 0; i < ds_list.length; i++) {
         var definitionset = parse(ds_list[i]);
@@ -203,9 +203,9 @@ function fillWithRandomValAndCheckDefSets(tree_var, ds_list) {
       // in milliseconds
     }
     while (success == false && timePassed < 2000);
-    console.log('numberOfTries=' + numberOfTries);
+    // console.log('numberOfTries=' + numberOfTries);
     if (success == true) {
-      console.log('filled with success. Time= ' + timePassed);
+      // console.log('filled with success. Time= ' + timePassed);
     } else {
       tree2.hasValue = false;
       tree2.variable_value_list = [];
@@ -222,6 +222,9 @@ function editHandler(index) {
   var hasSolution = FAList[index].hasSolution;
   var id = FAList[index].id; // name of formula_applet
   var ds_list = FAList[index].definitionset_list;
+  var texstring = mf.latex();
+  var sci = checkScientificNotation(texstring);
+  console.log(texstring + ' sci=' + sci);
   if (hasSolution) {
     check_if_equal(id, mf.latex(), solution, ds_list);
   } else {

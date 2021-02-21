@@ -2,11 +2,11 @@
 
 ## Programmierung
 * mode=physics (oder unit=auto)
-* <s>Bug: Buttons reagieren nicht (Aufgaben-Editor)</s>
 * www.formelapplet.de (bootstrap) verwendet auch glue.js
-* <s>Aufgaben-Editor: Schalter Wiki j/n</s> isWiki auswerten (OK)
-* Ausgabe reagiert auf Wechsel auto/manu
-* Eingabe der ID: Return-Taste abfragen (oder changeedit)
+* <s>Bug: Buttons reagieren nicht (Aufgaben-Editor)</s>
+* <s>Aufgaben-Editor: Schalter Wiki j/n isWiki auswerten (OK)</s>
+* <s>Ausgabe reagiert auf Wechsel auto/manu</s>
+* <s>Eingabe der ID: Return-Taste abfragen (oder changeedit)</s>
 * Objekte
 * Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
 * try-catch, on error

@@ -1,0 +1,74 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>'Sample Tasks'</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href='./js/lib/mathquill-0.10.1/mathquill.css'>
+<link rel="stylesheet" href='./css/gf09.css'>
+<link rel="stylesheet" href='./css/vkbd.css'>
+
+<script>
+<!-- https://www.javascripttutorial.net/javascript-dom/javascript-onload/ -->
+window.addEventListener('load', LoadJS_and_count)
+
+var load_counter = 0;
+var isWiki = false;
+
+function load(src, name){
+    let script = document.createElement('script');
+        script.addEventListener('load', (event) => {
+        load_counter++;
+        console.log(name + ' file has been loaded as #' + load_counter);
+        if(load_counter == 8){
+            do_init();
+        }
+    });
+    script.src = src;
+    document.body.appendChild(script);
+}
+
+function LoadJS_and_count() {
+    console.log('LoadJS_and_count');
+    // load('./js/glue.js', 'glue.js');
+    load('./js/lib/jquery-3.4.1.min.js', 'jquery-3.4.1.min.js');
+    load('./js/lib/hammer.js', 'hammer.js');
+    load('./js/decode.js', 'decode.js');
+    load('./js/translate.js', 'translate.js');
+    load('./js/prepare_page.js', 'prepare_page.js');
+    load('./js/lib/mathquill-0.10.1/mathquill.js', 'mathquill.js');
+    load('./js/tex_parser.js', 'tex_parser.js');
+    load('./js/vkbd.js', 'vkbd.js');
+}
+
+function do_init(){
+    console.log('init()');
+    initTranslation();
+    prepare_page();
+}
+</script>
+
+</head>
+<body>
+<p id="mode_select">
+  <input type="radio" name="lang" class="problemeditor language" id="en"></input>
+  <label for="en"><span></span>Englisch </label>
+  <br />
+  <input type="radio" name="lang" class="problemeditor language" id="de" checked></input>
+  <label for="de"><span></span>Deutsch </label>
+</P>
+
+<p class="formula_applet" id="inv862a">3,5 \unit{kWh} = {{result}} \unit{MJ}</p> (12,6MJ)<br />
+<p class="formula_applet" id="definition_set" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} = {{result}}</p>
+<span class='padding'><span class='tr en oneone'>One variable, one definition set.</span>
+<span class='tr de oneone'>Eine Variable, eine Definitionsmenge.</span></span><br />
+<p class="formula_applet" id="light-house" data-b64='gOmkT'>s=\sqrt{ h^2 + {{result}} }</p><br />
+<p class="formula_applet" id="binom_02">(2u + 7v)^2 = 4u^2 + 28uv + {{result}}</p><br />
+<p class="formula_applet" id="fraction">\frac{13t^2 - 5t}{t} = {{result}}</p><br />
+<p class="formula_applet" id="BliBlaBlu" data-b64="N2gMy">17x+4x={{result}}</p><br />
+<p class="formula_applet" id="CheckIfEqual">{{result}} = 0</p><br />
+<hr>
+<a href='problem_editor.html'>Aufgaben-Editor</a>
+<p><span class='tr de uses'>FormulaApplet benutzt die Bibliotheken jQuery, MathQuill und Hammer. </span><span class='tr en uses'>FormulaApplet uses jQuery, MathQuill, and Hammer. </span><a href="license.php" class="tr de moreinfo">Weitere Informationen...</a><a href="license.php" class="tr en moreinfo">More info...</a></p>
+
+</body>
+</html>

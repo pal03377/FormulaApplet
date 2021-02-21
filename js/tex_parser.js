@@ -779,7 +779,7 @@ function parsetree_by_index(tree) {
 function parse(texstring) {
     var myTree = new tree();
     myTree.leaf.content = texstring;
-    console.log('Start parsing...');
+    // console.log('Start parsing......');
     var end_parse = false;
     parsetree_counter.setCounter(0);
     while (!end_parse) {
@@ -2161,7 +2161,7 @@ function fillWithValues(tree_var, list) {
                         // console.log('found ' + content + ' value=' + value);
                     } else {
                         var value = list[content];
-                        console.log('found in list ' + content + ' value=' + value);
+                        // console.log('found in list ' + content + ' value=' + value);
                         if (typeof value == 'undefined') {
                             console.log('Variable in definition set but not in applet: ' + content);
                             stop = true;
@@ -2202,4 +2202,55 @@ function fillWithValues(tree_var, list) {
     // console.log(resulty);
     // return [hasValue, var_value_list];
     // return resulty;
+}
+
+function checkScientificNotation(texstring) {
+    var isScientific = false;
+    // var regex =  RegExp('\\.?', 'g');
+    var repl = texstring.replace(".", ",");
+    repl = repl.replace("e", "*10^");
+    repl = repl.replace("E", "*10^");
+    repl = repl.replace("\\cdot", "*");
+    repl = repl.replace(/\\ /g, '');
+    var mantissa = repl;
+    var exponent = ''; //default
+    var pos = repl.indexOf('*10^');
+    if (pos > -1) {
+        mantissa = repl.substr(0, pos);
+        exponent = repl.substr(pos + 4);
+    } else {
+        if (mantissa.startsWith('10^')) {
+            exponent = mantissa.substr(3);
+            mantissa = '';
+        }
+    }
+    exponent = exponent.replace("{", "");
+    exponent = exponent.replace("}", "");
+    exponent = exponent.toString();
+    // https://regex101.com/
+    // var regex = RegExp('((\\d+\\,)?\\d+)', 'g');
+    console.clear();
+    var regex = RegExp('((\\-)?((\\d+)?\\,)?(\\d+))');
+    // https://stackoverflow.com/questions/6003884/how-do-i-check-for-null-values-in-javascript
+    var left_ok = false;
+    var left = regex.exec(mantissa);
+    if (left !== null) {
+        if (mantissa == left[0]) {
+            left_ok = true;
+        }
+    }
+    var right_ok = false;
+    var right = regex.exec(exponent);
+    if (right !== null) {
+        if (exponent == right[0]) {
+            right_ok = true;
+        }
+    } else {
+        // not existing exponent is always ok
+        right_ok = true;
+    }
+    console.log(mantissa + ' ' + left_ok);
+    console.log(exponent + ' ' + right_ok);
+    isScientific = (left_ok && right_ok);
+    return isScientific;
 }

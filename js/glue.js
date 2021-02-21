@@ -49,6 +49,10 @@ tasks['algebrite'].fallback = libPath + 'Algebrite/dist/algebrite.bundle-for-bro
 tasks['kas'] = new task(libPath + 'KAS/KAS_loader.js');
 tasks['hammer'] = new task(libPath + 'hammer.js');
 tasks['hammer'].fallback = 'https://hammerjs.github.io/dist/hammer.js';
+// tasks['md'] = new task(libPath + 'markdown-it.min.js');
+// tasks['md'].fallback = 'https://cdn.jsdelivr.net/npm/markdown-it@8.4.2/dist/markdown-it.min.js';
+// tasks['md'] = new task('https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js');
+// tasks['md'].fallback = libPath + 'zero-md.min.js';
 // without fallback
 tasks['tex_parser'] = new task(jsPath + 'tex_parser.js');
 tasks['vkbd'] = new task(jsPath + 'vkbd.js');
