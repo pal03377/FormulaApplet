@@ -214,9 +214,19 @@ function fillWithRandomValAndCheckDefSets(tree_var, ds_list) {
   }
 }
 
+function magic(str){
+  return str;
+}
+
+var config_backup = '';
 function editHandler(index) {
+  console.log('called editHandler: ' + index);
   var fa = $(".formula_applet")[index];
   var mf = FAList[index].mathField;
+  // var ltx = mf.latex();
+  // var ltx2 = magic(ltx);
+  // console.log(ltx + '->' + ltx2);
+  // mf.latex(ltx2);
   var mf_container = MQ.StaticMath(FAList[index].formula_applet);
   var solution = FAList[index].solution;
   var hasSolution = FAList[index].hasSolution;
@@ -224,11 +234,26 @@ function editHandler(index) {
   var ds_list = FAList[index].definitionset_list;
   var texstring = mf.latex();
   var sci = checkScientificNotation(texstring);
-  console.log(texstring + ' sci=' + sci);
+  // console.log(texstring + ' sci=' + sci);
+  if(config_backup.length == 0){
+    //create backup the first time when editHandler(index) is called
+    console.log('first config backup');
+    config_backup = mf.config();
+  }
+  console.log(mf.config['handlers']);
+  mf.config({ handlers: { edit: function(mathField) { console.log('edit off'); }}});
+  mf.latex(texstring + ' + a^2');
+  restoreEditHandler(mf);
   if (hasSolution) {
     check_if_equal(id, mf.latex(), solution, ds_list);
   } else {
     check_if_equality(id, mf_container.latex(), ds_list);
+  }
+
+  function restoreEditHandler(mf){
+    console.log('restore config');
+    console.log(config_backup);
+    mf.config(config_backup); 
   }
 };
 

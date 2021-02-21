@@ -2229,7 +2229,7 @@ function checkScientificNotation(texstring) {
     exponent = exponent.toString();
     // https://regex101.com/
     // var regex = RegExp('((\\d+\\,)?\\d+)', 'g');
-    console.clear();
+    // console.clear();
     var regex = RegExp('((\\-)?((\\d+)?\\,)?(\\d+))');
     // https://stackoverflow.com/questions/6003884/how-do-i-check-for-null-values-in-javascript
     var left_ok = false;
@@ -2249,8 +2249,8 @@ function checkScientificNotation(texstring) {
         // not existing exponent is always ok
         right_ok = true;
     }
-    console.log(mantissa + ' ' + left_ok);
-    console.log(exponent + ' ' + right_ok);
+    // console.log(mantissa + ' ' + left_ok);
+    // console.log(exponent + ' ' + right_ok);
     isScientific = (left_ok && right_ok);
     return isScientific;
 }

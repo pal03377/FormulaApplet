@@ -21,7 +21,7 @@ include_once( $prefix . 'header.php' );
       mf = MQ.MathField(this, {
         handlers: {
           edit: function () {
-            editHandler(index);
+             editHandler(index);
           }
         }
       });

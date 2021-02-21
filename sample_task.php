@@ -17,20 +17,10 @@ function init(){
 <h1><?php echo $header; ?></h1>
 <h2 class='tr de later'>zum späteren Gebrauch im MediaWiki</h2>
 <h2 class='tr en later'>for later use in MediaWiki</h2>
-<p><a href='https://github.com/gro58/gf09/blob/master/js/lib/ToDo.md'>ToDo</a> (github)</p>
-<p><a href='./js/lib/ToDo.md'>ToDo</a> (local file)</p>
-<!-- <div id='keyboard'></div> -->
-<!-- <p id="lang_select">
-  <input type="radio" name="lang" class="problemeditor language" id="en"></input>
-  <label for="en"><span></span>Englisch </label>
-  <br />
-  <input type="radio" name="lang" class="problemeditor language" id="de" checked></input>
-  <label for="de"><span></span>Deutsch </label>
-</P> -->
-<!-- <button type="button" class="problemeditor language" id="de">DE</button> -->
+<!-- <p><a href='https://github.com/gro58/gf09/blob/master/js/lib/ToDo.md'>ToDo</a> (github)</p>
+<p><a href='./js/lib/ToDo.md'>ToDo</a> (local file)</p> -->
+<p><a href='./todo.php'>ToDo</a></p>
 
-<!-- <p id="output">output</p> -->
-<!-- <p class="formula_applet" id="inv862a">3,5 \textcolor{blue}{kWh} = {{result}} \textcolor{blue}{MJ}</p> (12,6MJ)<br /> -->
 <p class="formula_applet" id="no_res">\int^x_{3} t^2\ \mathrm{dt} = \frac{x^3}{3} - 9</p> Integral.<br />
 <p class="formula_applet" id="no_bnd">\int_2^5\ {\sin} x\ \mathrm{d}x</p><br>
 <p class="formula_applet" id="no_xay">sin^2 \alpha + cos^2\alpha = 1</p> No result field {{...}} necessary.<br />
