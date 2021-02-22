@@ -1,6 +1,6 @@
 <?php
 $title = 'Test Page - MathQuill2Tex2tree';
-$liblist = "['tex_parser', 'mathquill', 'mathquillcss', 'gf09css', 'translate']";
+$liblist = "['tex_parser', 'mathquill', 'mathquillcss', 'translate', 'gf09css', 'hammer', 'vkbd', 'vkbdcss', 'prepare_page']";
 $prefix="../"; 
 include_once( $prefix . 'header.php' );
 ?>
@@ -21,7 +21,9 @@ top: 30px;
 transform: scale(1.05);
 background-color: #ffffdf !important;">
 </canvas>
-
+<hr>
+<p class="formula_applet" id="h6xv-s%h">4,5\unit{m}={{result}}</p>
+<hr>
   <script>
 
 function init(){
@@ -77,7 +79,13 @@ function tree_output(){
         $(tree2tex).removeClass('isEqual').addClass('isNotEqual');
     }
 
-   }
+  var link = document.createElement("link");
+  link.type = "text/css";
+  link.rel = "stylesheet";
+  link.href = "../css/gf09.css";
+  document.getElementsByTagName("head")[0].appendChild(link);
+
+ }
 
 //  window.addEventListener('DOMContentLoaded', (event) => {
 //     console.log('DOM fully loaded and parsed');

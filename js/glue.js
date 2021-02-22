@@ -4,26 +4,11 @@
 
 if (typeof gf09_path == 'undefined') {
     console.log('gf09_path undefined. This should not happen because it is defined in header.php or FormulaApplet.body.php');
-    // var gf09_path = '/gf09/';
-    // //    var server = document.location.hostname;
-    // var href = document.location.href;
-    // console.log(href);
-    // // if (href.startsWith('http://localhost:8080')) {
-    // //     gf09_path = '/gf09/';
-    // // }
-    // if (href.startsWith('https://test.grossmann.info')) {
-    //     gf09_path = '/';
-    // }
-    // if (href.startsWith('http://localhost:8088')) {
-    //     gf09_path = '/';
-    // }
 }
 var jsPath = gf09_path + 'js/';
 var libPath = jsPath + 'lib/';
 var cssPath = gf09_path + 'css/';
 console.log('gf09_path=' + gf09_path + ' jsPath=' + jsPath + ' libPath=' + libPath + '  cssPath=' + cssPath);
-
-// var gluetest = 'Here is glue!';
 
 if (typeof liblist === 'undefined') {
     // default for wiki
@@ -37,8 +22,8 @@ function task(source) {
     this.state = 'unused'; //delete?
 }
 
-var jQuery_url = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
-var jQuery_fallback = libPath + "jquery-3.4.1.min.js";
+// var jQuery_url = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
+// var jQuery_fallback = libPath + "jquery-3.4.1.min.js";
 var tasks = {};
 tasks['mathquillcss'] = new task(libPath + 'mathquill-0.10.1/mathquill.css');
 tasks['mathquillcss'].fallback = 'https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css';
@@ -49,10 +34,7 @@ tasks['algebrite'].fallback = libPath + 'Algebrite/dist/algebrite.bundle-for-bro
 tasks['kas'] = new task(libPath + 'KAS/KAS_loader.js');
 tasks['hammer'] = new task(libPath + 'hammer.js');
 tasks['hammer'].fallback = 'https://hammerjs.github.io/dist/hammer.js';
-// tasks['md'] = new task(libPath + 'markdown-it.min.js');
-// tasks['md'].fallback = 'https://cdn.jsdelivr.net/npm/markdown-it@8.4.2/dist/markdown-it.min.js';
-// tasks['md'] = new task('https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js');
-// tasks['md'].fallback = libPath + 'zero-md.min.js';
+
 // without fallback
 tasks['tex_parser'] = new task(jsPath + 'tex_parser.js');
 tasks['vkbd'] = new task(jsPath + 'vkbd.js');
@@ -72,13 +54,6 @@ for (var i = 0; i < keys.length; i++) {
 // liblist.forEach(function (taskname) {
 //     tasks[taskname].name = taskname;
 // })
-// for (var i = 0; i < liblist.length; i++) {
-//     var taskname = liblist[i];
-//     // console.log(tasks[taskname]);
-//     tasks[taskname].name = taskname;
-// }
-
-// Load jQuery (without using jQuery)
 
 jq = new task("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 jq.fallback = libPath + "jquery-3.4.1.min.js";
@@ -92,8 +67,9 @@ if (window.jQuery) {
     console.log('jQuery version (Wiki) = ' + $.fn.jquery);
     load_libs();
 } else {
-    // Start to load jQuery and wait until loaded
+    // Start to load jQuery 
     appendScriptOrStyleSheetWithFallback(jq);
+    // and wait until loaded
     var try_counter = 0;
     waitfor_jquery(load_libs);
 }
@@ -131,14 +107,7 @@ function OK_Func(ev, task) {
     }
     console.log(message);
      task.state = 'OK';
-    // when_ok();
-    // state();
-    // console.log(task);
 }
-
-// var when_ok = function(){
-//     console.log('when ok...');
-// }
 
 // ***************************** load CSS or JS *********************************** 
 // https://stackoverflow.com/questions/17666785/check-external-stylesheet-has-loaded-for-fallback
