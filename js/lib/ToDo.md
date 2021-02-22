@@ -1,20 +1,20 @@
 # *ToDo* #
 
 ## Programmierung
-* mode=physics (oder unit=auto)
-* www.formelapplet.de (bootstrap) verwendet auch glue.js
-* Objekte
+* <s>mode=physics (oder unit=auto)</s>
+    * Some improvements necessary, e.g. fractions
+* exp(x) = e^x
 * Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
     + prepare_page teilen
     * tex_parser teilen
+* Objekte
 * try/catch
 * Tests
 * (TypeScript) 
 *  Triviale Lösungen sperren
 * condition = ...
-* exp(x) = e^x
-* Hammer als jQuery-Plugin
-* Node.js
+* (Hammer als jQuery-Plugin)
+* (Node.js)
 
 ## Online
 * MediaWiki Extension 'FormulaApplet' neu anlegen, FormulaApplet.php, FormulaApplet.body.php, /i18n
@@ -22,17 +22,19 @@
 
 ## www.formelapplet.de
 * <s>Download ZIP (File-System-Version) aktualisieren</s>
+* www.formelapplet.de (bootstrap) soll auch glue.js verwenden
 * Befreundete Seiten
-* YouTube HowTo
+* YouTube HowTo (stabile Version nötig)
 * DOC
 * ## GitHub
+* github gf09 privat -> public
 * Bedeutung der einzelnen js-Dateien
 * Installations-Anleitung (PHP)
 * (Installation in Wiki) -> MediaWiki
 * Lizenz
 * ToDo (diese Datei)
 * einfache Beispiele
-* github gf09 privat -> public
+
 
 
 ## DiesUndDas

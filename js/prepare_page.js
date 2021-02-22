@@ -253,13 +253,17 @@ function editHandler(index) {
     var auto_unit = FAList[index].auto_unit;
     var id = FAList[index].id; // name of formula_applet
     var ds_list = FAList[index].definitionset_list;
-    var a_unit = make_auto_unitstring(mf.latex());
-    editHandlerActive = 'false-1';
-    mf.latex(a_unit.newString);
-    if (a_unit.isUnitAdded) { // if is_unit_added
-      mf.keystroke('Left');
+    if (auto_unit) {
+      var a_unit = make_auto_unitstring(mf.latex());
+      editHandlerActive = 'false-1';
+      mf.latex(a_unit.newString);
+      if (a_unit.isUnitAdded) { // if is_unit_added
+        mf.keystroke('Left');
+      }
+      setTimeout(reactivateEditHandler, 2000);
     }
-    setTimeout(reactivateEditHandler, 2000);
+
+    // the following part: auto_unit does not matter
     if (hasSolution) {
       check_if_equal(id, mf.latex(), solution, ds_list);
     } else {
