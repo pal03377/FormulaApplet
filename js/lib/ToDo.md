@@ -6,12 +6,14 @@
 * exp(x) = e^x
 * Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
     + prepare_page teilen
+    * prepare_page braucht vkbd
+    * vkbd braucht hammer
     * tex_parser teilen
 * Objekte
 * try/catch
 * Tests
 * (TypeScript) 
-*  Triviale Lösungen sperren
+* Triviale Lösungen sperren
 * condition = ...
 * (Hammer als jQuery-Plugin)
 * (Node.js)

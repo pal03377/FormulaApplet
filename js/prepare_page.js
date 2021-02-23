@@ -122,7 +122,7 @@ function keyboardEvent(cmd) {
     }
     if (endsWithSpace) {
       mf.typedText(' ');
-      mf.keystroke('Backspace');
+      mf.keystroke('Backspace'); 
     }
   }
 }
@@ -238,8 +238,9 @@ function make_auto_unitstring(str) {
 }
 
 
+
 function editHandler(index) {
-  // console.log('called editHandler: ' + index + ' active=' + editHandlerActive);
+  console.log('called editHandler: ' + index + ' active=' + editHandlerActive);
   if (editHandlerActive == 'true') {
     var fa = $(".formula_applet")[index];
     var mf = FAList[index].mathField;
@@ -250,16 +251,19 @@ function editHandler(index) {
     var mf_container = MQ.StaticMath(FAList[index].formula_applet);
     var solution = FAList[index].solution;
     var hasSolution = FAList[index].hasSolution;
-    var auto_unit = FAList[index].auto_unit;
+    var unit_auto = FAList[index].unit_auto;
     var id = FAList[index].id; // name of formula_applet
     var ds_list = FAList[index].definitionset_list;
-    if (auto_unit) {
+    console.log(mf.latex());
+    if (unit_auto) {
       var a_unit = make_auto_unitstring(mf.latex());
+      console.log(a_unit.newString);
       editHandlerActive = 'false-1';
       mf.latex(a_unit.newString);
       if (a_unit.isUnitAdded) { // if is_unit_added
         mf.keystroke('Left');
       }
+      expandUnitTag(mf);
       setTimeout(reactivateEditHandler, 2000);
     }
 
@@ -607,6 +611,26 @@ function get_position_of_unittags(latex, unit_tag) {
     sof_unittags: start_of_unittags,
     eof_unittags: end_of_unittags
   };
+}
+
+function expandUnitTag(mf){
+  var cursorMarker = createReplacement(mf.latex());
+  // mf.typedText(cursorMarker);
+  var latex = mf.latex();
+  var unit_tag = '\\textcolor{blue}{';
+  var pos = latex.indexOf(unit_tag);
+  if (pos >= 0) {
+     // rest starts with {
+    var rest = latex.substr(pos + unit_tag.length - 1);
+    var temp = find_corresponding_right_bracket(rest, '{');
+    var pos_right_bracket = pos + unit_tag.length + temp[2];
+    var new_latex = latex.substr(0, pos_right_bracket - 1);
+    var new_latex_rest = latex.substr(pos_right_bracket);
+    new_latex = new_latex + new_latex_rest + '}';
+    console.log(latex);
+    console.log(new_latex);
+  }
+  // pos=-1: No unit_tag found. Nothing to expand. Nothing do do. 
 }
 
 function set_unit() {
