@@ -240,27 +240,62 @@ function make_auto_unitstring(mf) {
     }
   } else {
     // maybe create unit tag
-    var sci = checkScientificNotation(str);
-    if (sci == false && str.length > 0) {
-      var beginning = str.substr(0, str.length - 1);
-      var lastChar = str.substr(str.length - 1);
-      sci = checkScientificNotation(beginning);
+    var beginning = '';
+    for (var i = str.length; i >= 0; i--) {
+      beginning = str.substr(0, i);
+      var sci = checkScientificNotation(beginning);
+      // console.log(beginning + ' sci=' + sci);
       if (sci == true) {
-        var new_latex = beginning + unit_tag + lastChar + '}';
+        i = -1;
+      }
+    }
+    if (beginning.length > 0) {
+      var rest = str.substr(beginning.length);
+      // console.log(beginning + '|' + rest);
+      if (rest.length > 0){
+        // console.log('Make unit of ' + rest);
+        var new_latex = beginning + unit_tag + rest + '}';
         console.log(new_latex);
         editHandlerActive = false;
         mf.latex(new_latex);
         editHandlerActive = true;
-      } else {
-        // e.g. xyz sci= false ann xy sci=false
-        // do nothing
-      }
-    } else {
-      // incomplete expressions like 7,  4.  3*10  3*10^ should give sci=true
+}   } else {
+      // console.log(str + ' sci=permanent false');
       // do nothing
     }
+
+
+
+
+
+
+    // var sci = checkScientificNotation(str);
+    // if (sci == false && str.length > 0) {
+    //   var beginning = str.substr(0, str.length - 1);
+    //   var lastChar = str.substr(str.length - 1);
+    //   sci = checkScientificNotation(beginning);
+    //   if (sci == true) {
+    //     var new_latex = beginning + unit_tag + lastChar + '}';
+    //     console.log(new_latex);
+    //     editHandlerActive = false;
+    //     mf.latex(new_latex);
+    //     editHandlerActive = true;
+    //   } else {
+    //     // e.g. xyz sci= false ann xy sci=false
+    //     // do nothing
+    //   }
+    // } else {
+    //   // incomplete expressions like 7,  4.  3*10  3*10^ should give sci=true
+    //   // do nothing
+    // }
+
+
+
+
+
+
   }
-  return 
+  return
 }
 
 function editHandler(index) {

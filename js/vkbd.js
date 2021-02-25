@@ -99,7 +99,8 @@ keys['function'] = [
         ['smallgap-1', '', ''],
         ['abs', '\u2502\u2b1a\u2502', '| |'],
         ['subscript', '\u2b1a<sub style="font-size: 85%">\u2b1a</sub>'],
-        ['nth_root', nth_root, '#nthroot'],
+        // ['nth_root', nth_root, '#nthroot'],
+        ['space', 'Space', '\\ '],
         ['erase_unit', 'Clear<br>Unit', '#erase_unit'],
         ['infinity', '&infin;', '\\infinity ']
     ],

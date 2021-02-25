@@ -2206,7 +2206,7 @@ function checkScientificNotation(texstring) {
     repl = repl.replace("E", "*10^");
     repl = repl.replace("\\cdot", "*");
     repl = repl.replace(/\\ /g, '');
-    console.log('repl=' + repl);
+    // console.log('repl=' + repl);
     if(repl.endsWith(',')){
         repl = repl.substr(0, repl.length - 1);
     }
@@ -2256,8 +2256,7 @@ function checkScientificNotation(texstring) {
         // not existing exponent is always ok
         right_ok = true;
     }
-    console.log(mantissa + ' ' + left_ok);
-    console.log(exponent + ' ' + right_ok);
+    // console.log(mantissa + '|' + left_ok + '|' + exponent + '|' + right_ok);
     isScientific = (left_ok && right_ok);
     return isScientific;
 }
