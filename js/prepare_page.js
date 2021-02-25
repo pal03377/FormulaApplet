@@ -7,7 +7,7 @@ var MQ = '';
 var FAList = [];
 var new_fa_id = 'x8rT3dkkS';
 var result_mode = '';
-var editHandlerActive = 'true';
+var editHandlerActive = true;
 class FA {
   constructor() {
     this.index = '';
@@ -122,7 +122,7 @@ function keyboardEvent(cmd) {
     }
     if (endsWithSpace) {
       mf.typedText(' ');
-      mf.keystroke('Backspace'); 
+      mf.keystroke('Backspace');
     }
   }
 }
@@ -216,32 +216,56 @@ function fillWithRandomValAndCheckDefSets(tree_var, ds_list) {
   }
 }
 
-function make_auto_unitstring(str) {
-  var new_str = str;
-  var is_unit_added = false;
-  var sci2 = checkScientificNotation(str);
-  if (sci2 == false && str.length > 1) {
-    var beginning = str.substr(0, str.length - 1)
-    var lastChar = str.slice(str.length - 1);
-    var sci1 = checkScientificNotation(beginning);
-    if (sci1 == true && sci2 == false) {
-      if (lastChar !== ',' && lastChar !== '.') {
-        var new_str = beginning + '\\textcolor{blue}{' + lastChar + '}';
-        is_unit_added = true;
+function make_auto_unitstring(mf) {
+  // mf = MathField
+  var str = mf.latex();
+  console.log('make_auto_unitstring ' + str);
+  var unit_tag = '\\textcolor{blue}{';
+  var pos = str.indexOf(unit_tag);
+  if (pos >= 0) {
+    var left = str.substr(0, pos);
+    // rest has to start with {
+    var rest = str.substr(pos + unit_tag.length - 1);
+    var temp = find_corresponding_right_bracket(rest, '{');
+    var middle = rest.substring(1, temp[2]);
+    var right = rest.substr(temp[2] + 1);
+    console.log(left + '|' + middle + '|' + right);
+    var sci = checkScientificNotation(left);
+    if (sci == true && middle.length > 0) {
+      var new_latex = left + unit_tag + middle + right + '}';
+      console.log(new_latex);
+      editHandlerActive = false;
+      mf.latex(new_latex);
+      editHandlerActive = true;
+    }
+  } else {
+    // maybe create unit tag
+    var sci = checkScientificNotation(str);
+    if (sci == false && str.length > 0) {
+      var beginning = str.substr(0, str.length - 1);
+      var lastChar = str.substr(str.length - 1);
+      sci = checkScientificNotation(beginning);
+      if (sci == true) {
+        var new_latex = beginning + unit_tag + lastChar + '}';
+        console.log(new_latex);
+        editHandlerActive = false;
+        mf.latex(new_latex);
+        editHandlerActive = true;
+      } else {
+        // e.g. xyz sci= false ann xy sci=false
+        // do nothing
       }
+    } else {
+      // incomplete expressions like 7,  4.  3*10  3*10^ should give sci=true
+      // do nothing
     }
   }
-  return {
-    isUnitAdded: is_unit_added,
-    newString: new_str
-  };
+  return 
 }
-
-
 
 function editHandler(index) {
   console.log('called editHandler: ' + index + ' active=' + editHandlerActive);
-  if (editHandlerActive == 'true') {
+  if (editHandlerActive == true) {
     var fa = $(".formula_applet")[index];
     var mf = FAList[index].mathField;
     // var ltx = mf.latex();
@@ -254,17 +278,16 @@ function editHandler(index) {
     var unit_auto = FAList[index].unit_auto;
     var id = FAList[index].id; // name of formula_applet
     var ds_list = FAList[index].definitionset_list;
-    console.log(mf.latex());
+    console.log(mf.latex() + ' unit_auto=' + unit_auto);
     if (unit_auto) {
-      var a_unit = make_auto_unitstring(mf.latex());
-      console.log(a_unit.newString);
-      editHandlerActive = 'false-1';
-      mf.latex(a_unit.newString);
-      if (a_unit.isUnitAdded) { // if is_unit_added
-        mf.keystroke('Left');
-      }
-      expandUnitTag(mf);
-      setTimeout(reactivateEditHandler, 2000);
+      make_auto_unitstring(mf);
+      // var a_unit = make_auto_unitstring(mf.latex());
+      // if (a_unit.isUnitAdded) { // if is_unit_added
+      //   editHandlerActive = false;
+      //   setTimeout(function(){editHandlerActive = true;}, 2000);
+      //   mf.latex(a_unit.newString);
+      //   editHandlerActive = true;
+      // }
     }
 
     // the following part: auto_unit does not matter
@@ -274,21 +297,17 @@ function editHandler(index) {
       check_if_equality(id, mf_container.latex(), ds_list);
     }
   } else {
-    if (editHandlerActive == 'false-2') {
-      editHandlerActive = 'true';
-      // console.log('reactivate');
-    }
-    if (editHandlerActive == 'false-1') {
-      editHandlerActive = 'false-2';
-      setTimeout(reactivateEditHandler, 500);
-      // console.log('false-1' -> 'false-2');
-    }
+    // if (editHandlerActive == 'false-2') {
+    //   editHandlerActive = 'true';
+    //   // console.log('reactivate');
+    // }
+    // if (editHandlerActive == 'false-1') {
+    //   editHandlerActive = 'false-2';
+    //   setTimeout(reactivateEditHandler, 500);
+    //   // console.log('false-1' -> 'false-2');
+    // }
   }
 };
-
-function reactivateEditHandler() {
-  editHandlerActive = 'true';
-}
 
 var editor_mf = '';
 
@@ -613,25 +632,28 @@ function get_position_of_unittags(latex, unit_tag) {
   };
 }
 
-function expandUnitTag(mf){
-  var cursorMarker = createReplacement(mf.latex());
-  // mf.typedText(cursorMarker);
-  var latex = mf.latex();
-  var unit_tag = '\\textcolor{blue}{';
-  var pos = latex.indexOf(unit_tag);
-  if (pos >= 0) {
-     // rest starts with {
-    var rest = latex.substr(pos + unit_tag.length - 1);
-    var temp = find_corresponding_right_bracket(rest, '{');
-    var pos_right_bracket = pos + unit_tag.length + temp[2];
-    var new_latex = latex.substr(0, pos_right_bracket - 1);
-    var new_latex_rest = latex.substr(pos_right_bracket);
-    new_latex = new_latex + new_latex_rest + '}';
-    console.log(latex);
-    console.log(new_latex);
-  }
-  // pos=-1: No unit_tag found. Nothing to expand. Nothing do do. 
-}
+// function expandUnitTag(mf) {
+//   var cursorMarker = createReplacement(mf.latex());
+//   setEditHandlerDead();
+//   mf.typedText(cursorMarker);
+//   var latex = mf.latex();
+//   var unit_tag = '\\textcolor{blue}{';
+//   var pos = latex.indexOf(unit_tag);
+//   if (pos >= 0) {
+//     // rest starts with {
+//     var rest = latex.substr(pos + unit_tag.length - 1);
+//     var temp = find_corresponding_right_bracket(rest, '{');
+//     var pos_right_bracket = pos + unit_tag.length + temp[2];
+//     var new_latex = latex.substr(0, pos_right_bracket - 1);
+//     var new_latex_rest = latex.substr(pos_right_bracket);
+//     new_latex = new_latex + new_latex_rest + '}';
+//     console.log(latex);
+//     console.log(new_latex);
+//     setEditHandlerDead();
+//     mf.latex(new_latex);
+//   }
+//   // pos=-1: No unit_tag found. Nothing to expand. Nothing do do. 
+// }
 
 function set_unit() {
   var unit_tag = '\\textcolor{blue}{';

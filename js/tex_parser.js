@@ -2196,12 +2196,6 @@ function fillWithValues(tree_var, list) {
     // console.log(var_value_list);
     tree_var.hasValue = hasValue;
     tree_var.variable_value_list = var_value_list;
-    // No return. Return is changed tree_var
-    // this is all deprecated:
-    // var resulty = {hasValue: hasValue, variable_value_list: var_value_list};
-    // console.log(resulty);
-    // return [hasValue, var_value_list];
-    // return resulty;
 }
 
 function checkScientificNotation(texstring) {
@@ -2212,6 +2206,19 @@ function checkScientificNotation(texstring) {
     repl = repl.replace("E", "*10^");
     repl = repl.replace("\\cdot", "*");
     repl = repl.replace(/\\ /g, '');
+    console.log('repl=' + repl);
+    if(repl.endsWith(',')){
+        repl = repl.substr(0, repl.length - 1);
+    }
+    if(repl.endsWith('*')){
+        repl = repl.substr(0, repl.length - 1);
+    }
+    if(repl.endsWith('*1')){
+        repl = repl.substr(0, repl.length - 2);
+    }
+    if(repl.endsWith('*10')){
+        repl = repl.substr(0, repl.length - 3);
+    }
     var mantissa = repl;
     var exponent = ''; //default
     var pos = repl.indexOf('*10^');
@@ -2249,8 +2256,8 @@ function checkScientificNotation(texstring) {
         // not existing exponent is always ok
         right_ok = true;
     }
-    // console.log(mantissa + ' ' + left_ok);
-    // console.log(exponent + ' ' + right_ok);
+    console.log(mantissa + ' ' + left_ok);
+    console.log(exponent + ' ' + right_ok);
     isScientific = (left_ok && right_ok);
     return isScientific;
 }
