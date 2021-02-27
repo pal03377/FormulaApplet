@@ -404,7 +404,7 @@ function mathQuillify() {
     }
     // console.log(prec);
     prec = sanitizePrecision(prec);
-    // console.log(FApp.id + ' precision=' + prec + ' ' + 0.5 * prec);
+    console.log(FApp.id + ' precision=' + prec);
     FApp.precision = prec;
     FApp.formula_applet = this;
     if (FApp.hasResultField) {

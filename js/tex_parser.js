@@ -2185,6 +2185,11 @@ function fillWithValues(tree_var, list) {
                                     value = Math.PI;
                                     console.log('PI');
                                 }
+                                if (node.content == 'e') {
+                                    node.value = Math.E;
+                                    value = Math.E;
+                                    console.log("Euler's Number");
+                                }
                             }
                         });
                         var_value_list[content] = value;

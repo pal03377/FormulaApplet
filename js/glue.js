@@ -6,8 +6,10 @@ if (typeof gf09_path == 'undefined') {
     console.log('gf09_path undefined. This should not happen because it is defined in header.php or FormulaApplet.body.php');
 }
 var jsPath = gf09_path + 'js/';
+var js_bootstrapPath = gf09_path + 'js_bootstrap/';
 var libPath = jsPath + 'lib/';
 var cssPath = gf09_path + 'css/';
+var css_bootstrapPath = gf09_path + 'css_bootstrap/';
 console.log('gf09_path=' + gf09_path + ' jsPath=' + jsPath + ' libPath=' + libPath + '  cssPath=' + cssPath);
 
 if (typeof liblist === 'undefined') {
@@ -34,7 +36,10 @@ tasks['algebrite'].fallback = libPath + 'Algebrite/dist/algebrite.bundle-for-bro
 tasks['kas'] = new task(libPath + 'KAS/KAS_loader.js');
 tasks['hammer'] = new task(libPath + 'hammer.js');
 tasks['hammer'].fallback = 'https://hammerjs.github.io/dist/hammer.js';
-
+tasks['bootstrap'] = new task('https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js');
+tasks['bootstrap'].fallback = js_bootstrapPath + 'bootstrap.min.js';
+tasks['bootstrapcss'] = new task('https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+tasks['bootstrapcss'].fallback = css_bootstrapPath + 'bootstrap.min.css';
 // without fallback
 tasks['tex_parser'] = new task(jsPath + 'tex_parser.js');
 tasks['vkbd'] = new task(jsPath + 'vkbd.js');
@@ -43,6 +48,10 @@ tasks['translate'] = new task(jsPath + 'translate.js');
 tasks['prepare_page'] = new task(jsPath + 'prepare_page.js');
 tasks['gf09css'] = new task(cssPath + 'gf09.css');
 tasks['vkbdcss'] = new task(cssPath + 'vkbd.css');
+tasks['tablecss'] = new task(cssPath + 'table.css');
+tasks['bootstrapcss'] = new task(css_bootstrapPath + 'bootstrap.css');
+tasks['collapse_help'] = new task(js_bootstrapPath + 'bootstrap.collapse_helper.js');
+tasks['popper'] = new task('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js');
 
 var keys = Object.keys(tasks);
 for (var i = 0; i < keys.length; i++) {

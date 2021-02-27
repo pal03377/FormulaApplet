@@ -1,9 +1,10 @@
 # *ToDo* #
 
 ## Programmierung
-* <s>mode=physics (oder unit=auto)</s>
-    * Some improvements necessary, e.g. fractions
-* exp(x) = e^x
+* <s>www.formelapplet.de (bootstrap) shall use glue.js too</s>
+* unit=auto causes bugs with cursor movement.
+* <s>exp(x) = e^x</e>
+* Missing cursor bug.
 * Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
     + prepare_page teilen
     * prepare_page braucht vkbd
@@ -12,39 +13,35 @@
 * Objekte
 * try/catch
 * Tests
-* (TypeScript) 
+
+## Nice to have
+* Integral, Limes (VKBD)
 * Triviale Lösungen sperren
 * condition = ...
-* (Hammer als jQuery-Plugin)
-* (Node.js)
-
+* Naturkonstanten c, e,..
+* Node, modules
+* Karl Kirst kontaktieren
+* Hammer als jQuery-Plugin
+* (TypeScript)
+* (Legacy: Applet-Parameter decodieren)
+* MediaWiki-WYSIWYG-Editor (schwierig)
 ## Online
 * MediaWiki Extension 'FormulaApplet' neu anlegen, FormulaApplet.php, FormulaApplet.body.php, /i18n
-* Verwendung von formelapplet.zum.de klären
+* Verwendung von formelapplet.zum.de klären -> Jan Böhme/UweSchützenmeister
 
 ## www.formelapplet.de
-* <s>Download ZIP (File-System-Version) aktualisieren</s>
-* www.formelapplet.de (bootstrap) soll auch glue.js verwenden
 * Befreundete Seiten
 * YouTube HowTo (stabile Version nötig)
 * DOC
 * ## GitHub
 * github gf09 privat -> public
+* GitHub Wiki?
 * Bedeutung der einzelnen js-Dateien
 * Installations-Anleitung (PHP)
-* (Installation in Wiki) -> MediaWiki
-* Lizenz
+* License (2nd)
 * ToDo (diese Datei)
 * einfache Beispiele
-
-
-
-## DiesUndDas
-* Integral, Limes (VKBD)
-* MediaWiki-WYSIWYG-Editor (schwer)
-* Karl Kirst kontaktieren
-* (Legacy: Applet-Parameter decodieren)
-## GIT
+## GIT Cheat sheet
 * Terminal, wechseln nach e:\gut\gf09
 * git status
 * git log --graph --decorate
