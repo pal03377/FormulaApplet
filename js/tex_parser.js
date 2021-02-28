@@ -905,11 +905,12 @@ function makeDegreeUnit(text) {
             // console.log(text_with_brackets_and_plus);
         }
     }
-    var unit = "\\unit{";
+    // var unit = "\\unit{";
+    var unit = "\\textcolor{blue}{";
     temp = text_with_brackets_and_plus.replace(/'/g, unit + "'}");
     temp = temp.replace(/°/g, unit + "°}");
     temp = temp.replace(/↟/g, unit + "''}");
-    // console.log(temp);
+    // console.log('makeDegreeUnit has result ' + temp);
     return temp;
 }
 
@@ -1150,7 +1151,7 @@ function parse_log_lim(tree, kind) {
 }
 
 function function_list() {
-    var result = ['sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'lg', 'log', 'exp', 'abs'];
+    var result = ['sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'lg', 'log', 'exp', 'abs', 'arcsin', 'arccos', 'arctan' ];
     return result;
 }
 
@@ -1717,7 +1718,7 @@ function tree2TEX(tree) {
                 done = true;
             }
             if (node.type.startsWith('unit')) {
-                result = '\\textcolor{';
+                result = '\\textcolor{blue}{';
                 result += node.content;
                 result += '}';
                 result += res[0];
@@ -2057,7 +2058,6 @@ function val(node, tree) {
             } else {
                 node.value = (Number(ch0) + Math.PI) / (Number(ch1) + Math.PI);
             }
-
         }
     }
     if (num_of_childs > 2) {
@@ -2104,6 +2104,15 @@ function trigonometry(fu, arg) {
     }
     if (fu == 'abs') {
         result = Math.abs(arg);
+    }
+    if (fu == 'arcsin') {
+        result = Math.asin(arg);
+    }
+    if (fu == 'arccos') {
+        result = Math.acos(arg);
+    }
+    if (fu == 'arctan') {
+        result = Math.atan(arg);
     }
     return result;
 }
