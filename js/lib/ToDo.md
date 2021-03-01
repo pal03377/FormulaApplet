@@ -2,15 +2,16 @@
 
 ## Programmierung
 * <s>www.formelapplet.de (bootstrap) shall use glue.js too</s>
-* unit=auto causes bugs with cursor movement.
+*<s> unit=auto causes bugs with cursor movement.</s>
 * <s>exp(x) = e^x</e>
+* e for Exponent interferes with e for Euler's number.
 * <s>"Missing cursor" bug at www.formelapplet.de. gf09 is ok.</s>
 * Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
     + prepare_page teilen
     * prepare_page braucht vkbd
     * vkbd braucht hammer
     * tex_parser teilen
-* Objekte
+* OOP
 * try/catch
 * Tests
 
@@ -25,11 +26,13 @@
 * (TypeScript)
 * (Legacy: Applet-Parameter decodieren)
 * MediaWiki-WYSIWYG-Editor (schwierig)
+* asinh, acosh, atanh
+* Komplexe Zahlen
+* Vektoren
+* Check erst nach Enter
 ## Online
 * MediaWiki Extension 'FormulaApplet' neu anlegen, FormulaApplet.php, FormulaApplet.body.php, /i18n
 * Verwendung von formelapplet.zum.de klären -> Jan Böhme/UweSchützenmeister
-* asinh, acosh, atanh
-* Komplexe Zahlen
 
 ## www.formelapplet.de
 * Befreundete Seiten

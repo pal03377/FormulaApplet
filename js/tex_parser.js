@@ -1653,6 +1653,7 @@ function unit2value(unitname) {
     valueOf["Pa"] = valueOf["N"] / (valueOf["m"] * valueOf["m"]);
     valueOf["bar"] = 100000 * valueOf["Pa"];
     valueOf["Liter"] = 0.001 * valueOf["m"] * valueOf["m"] * valueOf["m"];
+    valueOf["l"] = valueOf["Liter"];
     valueOf["Ar"] = 100 * valueOf["m"] * valueOf["m"];
     valueOf["°C"] = valueOf["Celsius"];
     valueOf["°"] = valueOf["one"] * Math.PI / 180;
