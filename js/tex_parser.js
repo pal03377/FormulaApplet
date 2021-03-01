@@ -1422,7 +1422,7 @@ function parse_mixed_numbers(tree) {
                     }
                 }
             }
-            console.log(content + ' is mixedNumber: ' + isMixedNumber);
+            // console.log(content + ' is mixedNumber: ' + isMixedNumber);
         }
     })
 }

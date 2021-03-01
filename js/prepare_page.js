@@ -219,7 +219,7 @@ function fillWithRandomValAndCheckDefSets(tree_var, ds_list) {
 function make_auto_unitstring(mf) {
   // mf = MathField
   var str = mf.latex();
-  console.log('make_auto_unitstring ' + str);
+  // console.log('make_auto_unitstring ' + str);
   var unit_tag = '\\textcolor{blue}{';
   var pos = str.indexOf(unit_tag);
   if (pos >= 0) {
@@ -229,14 +229,19 @@ function make_auto_unitstring(mf) {
     var temp = find_corresponding_right_bracket(rest, '{');
     var middle = rest.substring(1, temp[2]);
     var right = rest.substr(temp[2] + 1);
-    console.log(left + '|' + middle + '|' + right);
+    // console.log(left + '|' + middle + '|' + right);
     var sci = checkScientificNotation(left);
     if (sci == true && middle.length > 0) {
+      // expand the unit tag at the right side
       var new_latex = left + unit_tag + middle + right + '}';
-      console.log(new_latex);
+      // console.log(new_latex);
       editHandlerActive = false;
+      console.log('Expand to ' + new_latex);
       mf.latex(new_latex);
+      mf.keystroke('Left');
       editHandlerActive = true;
+    } else {
+      console.log('Do not expand.');
     }
   } else {
     // maybe create unit tag
@@ -255,74 +260,35 @@ function make_auto_unitstring(mf) {
       if (rest.length > 0){
         // console.log('Make unit of ' + rest);
         var new_latex = beginning + unit_tag + rest + '}';
-        console.log(new_latex);
+        // console.log(new_latex);
         editHandlerActive = false;
+        console.log('Create ' + new_latex);
         mf.latex(new_latex);
+        mf.keystroke('Left');
         editHandlerActive = true;
 }   } else {
+      console.log('Do not create.');
       // console.log(str + ' sci=permanent false');
       // do nothing
     }
-
-
-
-
-
-
-    // var sci = checkScientificNotation(str);
-    // if (sci == false && str.length > 0) {
-    //   var beginning = str.substr(0, str.length - 1);
-    //   var lastChar = str.substr(str.length - 1);
-    //   sci = checkScientificNotation(beginning);
-    //   if (sci == true) {
-    //     var new_latex = beginning + unit_tag + lastChar + '}';
-    //     console.log(new_latex);
-    //     editHandlerActive = false;
-    //     mf.latex(new_latex);
-    //     editHandlerActive = true;
-    //   } else {
-    //     // e.g. xyz sci= false ann xy sci=false
-    //     // do nothing
-    //   }
-    // } else {
-    //   // incomplete expressions like 7,  4.  3*10  3*10^ should give sci=true
-    //   // do nothing
-    // }
-
-
-
-
-
-
   }
   return
 }
 
 function editHandler(index) {
-  console.log('called editHandler: ' + index + ' active=' + editHandlerActive);
+  // console.log('called editHandler: ' + index + ' active=' + editHandlerActive);
   if (editHandlerActive == true) {
     var fa = $(".formula_applet")[index];
     var mf = FAList[index].mathField;
-    // var ltx = mf.latex();
-    // var ltx2 = magic(ltx);
-    // console.log(ltx + '->' + ltx2);
-    // mf.latex(ltx2);
     var mf_container = MQ.StaticMath(FAList[index].formula_applet);
     var solution = FAList[index].solution;
     var hasSolution = FAList[index].hasSolution;
     var unit_auto = FAList[index].unit_auto;
     var id = FAList[index].id; // name of formula_applet
     var ds_list = FAList[index].definitionset_list;
-    console.log(mf.latex() + ' unit_auto=' + unit_auto);
+    // console.log(mf.latex() + ' unit_auto=' + unit_auto);
     if (unit_auto) {
       make_auto_unitstring(mf);
-      // var a_unit = make_auto_unitstring(mf.latex());
-      // if (a_unit.isUnitAdded) { // if is_unit_added
-      //   editHandlerActive = false;
-      //   setTimeout(function(){editHandlerActive = true;}, 2000);
-      //   mf.latex(a_unit.newString);
-      //   editHandlerActive = true;
-      // }
     }
 
     // the following part: auto_unit does not matter
@@ -331,16 +297,6 @@ function editHandler(index) {
     } else {
       check_if_equality(id, mf_container.latex(), ds_list);
     }
-  } else {
-    // if (editHandlerActive == 'false-2') {
-    //   editHandlerActive = 'true';
-    //   // console.log('reactivate');
-    // }
-    // if (editHandlerActive == 'false-1') {
-    //   editHandlerActive = 'false-2';
-    //   setTimeout(reactivateEditHandler, 500);
-    //   // console.log('false-1' -> 'false-2');
-    // }
   }
 };
 
