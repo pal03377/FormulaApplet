@@ -57,6 +57,11 @@ function prepare_page() {
     // initTranslation();
   })
 
+  $('body').on('click', function(ev){
+    console.log('body click');
+    $(".formula_applet").removeClass('selected');
+  });
+
   $('body').on('keyup', function (ev) {
     var key = ev.originalEvent.key;
     // console.log(ev);
@@ -364,7 +369,8 @@ function mathQuillify() {
     FApp.precision = prec;
     FApp.formula_applet = this;
     if (FApp.hasResultField) {
-      $(this).click(function () {
+      $(this).click(function (ev) {
+        ev.stopPropagation(); //avoid body click
         $(".formula_applet").removeClass('selected');
         $(this).addClass('selected');
         $("button.keyb_button").removeClass('selected');

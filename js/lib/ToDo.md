@@ -33,11 +33,6 @@
 ## Online
 * MediaWiki Extension 'FormulaApplet' neu anlegen, FormulaApplet.php, FormulaApplet.body.php, /i18n
 * Verwendung von formelapplet.zum.de klären -> Jan Böhme/UweSchützenmeister
-
-## www.formelapplet.de
-* Befreundete Seiten
-* YouTube HowTo (stabile Version nötig)
-* DOC
 * ## GitHub
 * github gf09 privat -> public
 * GitHub Wiki?
@@ -51,3 +46,15 @@
 * git status
 * git log --graph --decorate
 * git remote show origin
+
+## www.formelapplet.de
+* GWK
+* Tree (Kategorienbaum)
+* Befreundete Seiten
+* YouTube HowTo (stabile Version des FA nötig)
+* DOC, Usage
+* Suche mit Phuchs
+* Link zu wiki.formelapplet.de
+* Community 
+* Support
+   

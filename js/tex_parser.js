@@ -801,6 +801,8 @@ function deleteSpaceAndRemoveBackslash(text) {
     temp = temp.replace(/\\max/g, 'max');
     temp = temp.replace(/\\cdot/g, '\\cdot '); // no space -> one space, but one space -> two spaces
     temp = temp.replace(/\\cdot  /g, '\\cdot '); // two spaces -> one space
+    temp = temp.replace(/\\Ohm/g, '\\Omega'); // transform unit Ohm to greek Omega
+    console.log(temp);
     return temp;
 }
 
@@ -1151,7 +1153,7 @@ function parse_log_lim(tree, kind) {
 }
 
 function function_list() {
-    var result = ['sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'lg', 'log', 'exp', 'abs', 'arcsin', 'arccos', 'arctan' ];
+    var result = ['sinh', 'cosh', 'tanh', 'sin', 'cos', 'tan', 'ln', 'lg', 'log', 'exp', 'abs', 'arcsin', 'arccos', 'arctan'];
     return result;
 }
 
@@ -1997,7 +1999,7 @@ function val(node, tree) {
         } else {
             if (node.type.startsWith('fu-')) {
                 var fu = node.type.substr(3)
-                console.log('fu=' + fu);
+                // console.log('fu=' + fu);
                 node.value = trigonometry(fu, arg);
             }
         }
@@ -2032,6 +2034,10 @@ function val(node, tree) {
         if (node.type == 'power') {
             // console.log(ch0 + ' ^ ' + ch1);
             node.value = Math.pow(Number(ch0), Number(ch1));
+        }
+        if (node.type == 'fu-log') {
+            // console.log(ch0 + ' ^ ' + ch1);
+            node.value = Math.log(Number(ch1))/Math.log(Number(ch0));
         }
         if (node.type.startsWith('fu-') && node.content == 'power') {
             var fu = node.type.substr(3)
@@ -2094,7 +2100,8 @@ function trigonometry(fu, arg) {
     if (fu == 'tan') {
         result = Math.tan(arg);
     }
-    if (fu == 'ln' || fu == 'log') {
+    // if (fu == 'ln' || fu == 'log') {
+    if (fu == 'ln') {
         result = Math.log(arg);
     }
     if (fu == 'lg') {
@@ -2222,16 +2229,16 @@ function checkScientificNotation(texstring) {
     repl = repl.replace("\\cdot", "*");
     repl = repl.replace(/\\ /g, '');
     // console.log('repl=' + repl);
-    if(repl.endsWith(',')){
+    if (repl.endsWith(',')) {
         repl = repl.substr(0, repl.length - 1);
     }
-    if(repl.endsWith('*')){
+    if (repl.endsWith('*')) {
         repl = repl.substr(0, repl.length - 1);
     }
-    if(repl.endsWith('*1')){
+    if (repl.endsWith('*1')) {
         repl = repl.substr(0, repl.length - 2);
     }
-    if(repl.endsWith('*10')){
+    if (repl.endsWith('*10')) {
         repl = repl.substr(0, repl.length - 3);
     }
     var mantissa = repl;

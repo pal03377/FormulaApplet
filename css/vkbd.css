@@ -3,7 +3,8 @@ div#vkbd{
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background-color: #c0c0c050;
+	/* background-color: #c0c0c050; transparency #50 */
+	background-color: #a0e0a0d0;
 	border-radius: 10px;
 }
 

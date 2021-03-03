@@ -50,7 +50,7 @@ function create_permutations() {
         text += 'perm[1][' + num_perm + ']='
         text += JSON.stringify(temp[1]) + ';\r\n';
     }
-    console.log(text);
+    //console.log(text);
     var out = $('textarea#permutations');
     if (out.length > 0) {
         out.text(text);

@@ -154,9 +154,9 @@ function appendScriptOrStyleSheet(task, isFallback) {
     elem.onerror = function (ev) {
         // console.log(ev);
         if (task.fallback == null) {
-            console.log(task.name + '(1) ERROR - no fallback!');
+            //console.log(task.name + '(1) ERROR - no fallback!');
         } else {
-            console.log(task.name + '(2): ' + task.fallback);
+            //console.log(task.name + '(2): ' + task.fallback);
             // second try: isFallback = true
             appendScriptOrStyleSheet(task, true);
             //stop infinite loop
@@ -168,17 +168,17 @@ function appendScriptOrStyleSheet(task, isFallback) {
 }
 
 function appendScriptOrStyleSheetWithFallback(task) {
-    console.log(task.name + '(1): ' + task.source);
+    //console.log(task.name + '(1): ' + task.source);
     // first try: isFallback = false
     appendScriptOrStyleSheet(task, false);
 }
 
 function state() {
-    console.log('***');
+    //console.log('***');
     liblist.forEach(function (taskname) {
         var t = tasks[taskname];
         // console.log(taskname + ': ' + t.state+ ' ' + t.name);
-        console.log(taskname + ': ' + t.state);
+        //console.log(taskname + ': ' + t.state);
     });
     // console.log('Hammer=' + (typeof Hammer));
     // console.log('***');
@@ -198,7 +198,7 @@ function waitfor_num_of_libs_then_do(cont) {
 var number_of_loaded_libs = 0;
 
 function load_libs() {
-    console.log(JSON.stringify(liblist));
+    //console.log(JSON.stringify(liblist));
     liblist.forEach(function (taskname) {
         tasks[taskname].state = 'wait for load';
     });
@@ -214,18 +214,18 @@ function load_libs() {
 
 function prepare_pg() {
     waitfor_mathquill_if_in_liblist_and_then_do(function () {
-        console.log('MathQuill ready (2)');
+        //console.log('MathQuill ready (2)');
         // if (typeof prepare_page_exists !== 'undefined') {
         if (typeof prepare_page !== 'undefined') {
-            console.log('calling prepare_page...');
+            //console.log('calling prepare_page...');
             prepare_page();
         } else {
-            console.log('prepare_page undefined');
+            //console.log('prepare_page undefined');
         }
         if (typeof init !== 'undefined') {
             init();
         } else {
-            console.log('init undefined');
+            //console.log('init undefined');
         }
     })
 }
@@ -244,12 +244,12 @@ function waitfor_mathquill_if_in_liblist_and_then_do(mq_ready) {
 function waitfor_mathquill_and_if_ready_then_do(mq_ready2) {
     // console.log( typeof MathQuill );
     if ((typeof MathQuill) === "undefined") {
-        console.log('waiting for MathQuill...');
+        //console.log('waiting for MathQuill...');
         setTimeout(function () {
             waitfor_mathquill_and_if_ready_then_do(mq_ready2)
         }, 100);
     } else {
-        console.log('MathQuill ready (1)');
+        //console.log('MathQuill ready (1)');
         mq_ready2();
     }
 }

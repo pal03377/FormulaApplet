@@ -35,14 +35,41 @@
 	margin-left: 20px;
 }
 
-.formula_applet.mod_ok + img.mod{
-	background-image: url("haken.svg");
+img.mod_wrong{
+	background-image: url("blitz.svg");
 	background-repeat: no-repeat;
-	width: 50px;
+	width: 25px;
 	height: 50px;
 	zoom: 0.5;
 	padding: 1px;
 	margin-left: 20px;
+}
+
+.formula_applet.mod_ok + img.mod{
+	background-image: url("haken.svg");
+	background-repeat: no-repeat;
+	background-color: rgba(250, 250, 210, 0.4);
+	width: 50px;
+	height: 50px;
+	zoom: 0.5;
+	padding: 2px;
+	margin-left: 20px;
+}
+
+img.mod_ok{
+	background-image: url("haken.svg");
+	background-repeat: no-repeat;
+	background-color: rgba(250, 250, 210, 0.4);
+	width: 50px;
+	height: 50px;
+	zoom: 0.5;
+	padding: 2px;
+	margin-left: 20px;
+}
+
+.formula_applet.solution{
+	border:none;
+	background-color: transparent;
 }
 
 span.padding{
@@ -159,11 +186,14 @@ button.problemeditor {
 /* style of units */
 span.mq-textcolor{
 	/* font-size: 22px; */
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-style: normal !important;
-	color: blue !important;
-	/* background-color:#88bbdd; */
-	background-color:#fcac40;
+	font-weight: normal;
+	padding:0 5 0 3;
+	color: navy !important;
+	/* background-color:lightgoldenrodyellow; #fafad2 */
+	background-color:rgba(150, 230, 230, 0.6);
+	/* border:darkgreen dotted 2px; */
 }
 
 /* .mq-math-mode,
