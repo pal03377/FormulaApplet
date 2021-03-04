@@ -1,11 +1,13 @@
 # *ToDo* #
 
 ## Programmierung
-* <s>www.formelapplet.de (bootstrap) shall use glue.js too</s>
-*<s> unit=auto causes bugs with cursor movement.</s>
-* <s>exp(x) = e^x</e>
+* Comment console.logs
+* \Ohm -> \Omega
+* <del>www.formelapplet.de (bootstrap) shall use glue.js too</del>
+*<del> unit=auto causes bugs with cursor movement.</del>
+* <del>exp(x) = e^x</del>
 * e for Exponent interferes with e for Euler's number.
-* <s>"Missing cursor" bug at www.formelapplet.de. gf09 is ok.</s>
+* <del>"Missing cursor" bug at www.formelapplet.de. gf09 is ok.</del>
 * Kleinere Code-Teile, z.B. Editor-Code in eigene Datei
     + prepare_page teilen
     * prepare_page braucht vkbd

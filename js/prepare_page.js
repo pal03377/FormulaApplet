@@ -60,6 +60,7 @@ function prepare_page() {
   $('body').on('click', function(ev){
     console.log('body click');
     $(".formula_applet").removeClass('selected');
+    $("button.keyb_button").removeClass('selected');
   });
 
   $('body').on('keyup', function (ev) {
