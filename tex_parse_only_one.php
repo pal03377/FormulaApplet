@@ -82,7 +82,7 @@ include_once 'header.php';
     traverseSimple(
             function (node) {
               if (node.type == 'unknown leaf'){
-                console.log(node.id + ' ' + node.content);
+                // console.log(node.id + ' ' + node.content);
               }
             }, myTree.nodelist);
   }

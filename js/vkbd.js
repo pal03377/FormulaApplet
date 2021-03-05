@@ -440,7 +440,7 @@ function create_table(table_id) {
 }
 
 function vkbd_bind_events() {
-    console.log('Init vkbd');
+    //console.log('Init vkbd');
     $(".vkbd_button").mousedown(function (ev) {
         ev.preventDefault();
         var cmd = clickEvent(ev);
@@ -489,19 +489,19 @@ function vkbd_bind_events() {
         if (ev.type == 'pinch') {
             scale_temp = scale_start * ev.scale;
             var scalecommand = "translate(-50%, -50%) scale(" + scale_temp + ")";
-            console.log(scalecommand);
+            //console.log(scalecommand);
             $("#vkbd").css("transform", scalecommand);
         }
     });
 
     function clickEvent(ev) {
-        console.log(ev);
+        //console.log(ev);
         var cmd = $(ev.target).attr('cmd');
         if (typeof cmd == 'undefined') {
             var temp = $(ev.target).parents().filter('.vkbd_button');
             cmd = $(temp).attr('cmd');
         }
-        console.log(cmd);
+        //console.log(cmd);
         // $('#output').text(cmd);
         return cmd;
     }

@@ -58,7 +58,7 @@ function prepare_page() {
   })
 
   $('body').on('click', function(ev){
-    console.log('body click');
+    //console.log('body click');
     $(".formula_applet").removeClass('selected');
     $("button.keyb_button").removeClass('selected');
   });
@@ -70,7 +70,7 @@ function prepare_page() {
     if (key == 'Tab') {
       var fa = $(ev.target).parents('.formula_applet');
       var id = $(fa).attr('id');
-      console.log(id);
+      //console.log(id);
       // for (var i = 0; i < FAList.length; i++){
       //   var fapp = FAList[i];
       //   fapp.formula_applet.click();
@@ -88,14 +88,14 @@ function isAndr() {
 }
 
 function keyboardEvent(cmd) {
-  console.log('prepare_page activeMathfieldIndex=' + activeMathfieldIndex);
+  //console.log('prepare_page activeMathfieldIndex=' + activeMathfieldIndex);
   var FApp = FAList[activeMathfieldIndex];
   var mf = FApp.mathField;
   // var fa = FApp.formula_applet;
   // var mqEditableField = FApp.mqEditableField;
 
   if (typeof mf !== 'undefined') {
-    console.log(cmd);
+    //console.log(cmd);
     var endsWithSpace = false;
     if ((cmd.substr(cmd.length - 1)) == ' ') {
       endsWithSpace = true;
@@ -242,12 +242,12 @@ function make_auto_unitstring(mf) {
       var new_latex = left + unit_tag + middle + right + '}';
       // console.log(new_latex);
       editHandlerActive = false;
-      console.log('Expand to ' + new_latex);
+      //console.log('Expand to ' + new_latex);
       mf.latex(new_latex);
       mf.keystroke('Left');
       editHandlerActive = true;
     } else {
-      console.log('Do not expand.');
+      //console.log('Do not expand.');
     }
   } else {
     // maybe create unit tag
@@ -268,12 +268,12 @@ function make_auto_unitstring(mf) {
         var new_latex = beginning + unit_tag + rest + '}';
         // console.log(new_latex);
         editHandlerActive = false;
-        console.log('Create ' + new_latex);
+        //console.log('Create ' + new_latex);
         mf.latex(new_latex);
         mf.keystroke('Left');
         editHandlerActive = true;
 }   } else {
-      console.log('Do not create.');
+      //console.log('Do not create.');
       // console.log(str + ' sci=permanent false');
       // do nothing
     }
@@ -366,7 +366,7 @@ function mathQuillify() {
     }
     // console.log(prec);
     prec = sanitizePrecision(prec);
-    console.log(FApp.id + ' precision=' + prec);
+    //console.log(FApp.id + ' precision=' + prec);
     FApp.precision = prec;
     FApp.formula_applet = this;
     if (FApp.hasResultField) {
@@ -385,7 +385,7 @@ function mathQuillify() {
 
     if (isEditor) {
       // *** editor ***
-      console.log('init editor');
+      //console.log('init editor');
       prepend(function () {
         initTranslation()
       });
@@ -422,7 +422,7 @@ function mathQuillify() {
       });
       $('#random-id-d, #random-id-e').on('mousedown', function (ev) {
         ev.preventDefault();
-        console.log('random-id');
+        //console.log('random-id');
         var r_id = makeid(8);
         // console.log(r_id);
         document.getElementById('fa_name').value = r_id;
@@ -432,7 +432,7 @@ function mathQuillify() {
 
       $('#fa_name').on('input', function (ev) {
         var fa_name = ev.target.value;
-        console.log('fa_name=' + fa_name);
+        //console.log('fa_name=' + fa_name);
         // avoid XSS
         fa_name = fa_name.replace(/</g, '');
         fa_name = fa_name.replace(/>/g, '');
@@ -457,7 +457,7 @@ function mathQuillify() {
           $('span.mq-class.inputfield').prop('contentEditable', 'true');
           show_editor_results(editor_edithandler(editor_mf.latex()));
         }
-        console.log(result_mode);
+        //console.log(result_mode);
       });
       $('#random-id-d').mousedown();
       $('input[type="radio"]#manu').click();
@@ -498,11 +498,11 @@ function mathQuillify() {
       FApp.mqEditableField = mqEditableField;
       FApp.hammer = new Hammer(mqEditableField);
       FApp.hammer.on("doubletap", function (ev) {
-        console.log(index + ' ' + ev.type);
+        //console.log(index + ' ' + ev.type);
         vkbd_show();
       });
       FApp.hammer.on("press", function (ev) {
-        console.log(index + ' ' + ev.type);
+        //console.log(index + ' ' + ev.type);
       });
     }
   });
@@ -586,9 +586,9 @@ function get_selection(mf, eraseClass) {
 }
 
 function set_input() {
-  console.log('set_input');
+  //console.log('set_input');
   var temp = get_selection(editor_mf, true);
-  console.log(temp);
+  //console.log(temp);
   var pre_selected = temp[0];
   var selected = temp[1];
   var post_selected = temp[2];

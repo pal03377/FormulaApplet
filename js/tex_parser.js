@@ -802,7 +802,7 @@ function deleteSpaceAndRemoveBackslash(text) {
     temp = temp.replace(/\\cdot/g, '\\cdot '); // no space -> one space, but one space -> two spaces
     temp = temp.replace(/\\cdot  /g, '\\cdot '); // two spaces -> one space
     temp = temp.replace(/\\Ohm/g, '\\Omega'); // transform unit Ohm to greek Omega
-    console.log(temp);
+    //console.log(temp);
     return temp;
 }
 
@@ -1210,7 +1210,7 @@ function parse_function(tree) {
                         // console.log('node=' + node.content + ' right_count=' + right_count + ' rest=' + rest);
                         for (var i = left_count + 1; i <= left_count + right_count; i++) {
                             var id = node.children[i];
-                            console.log('i=' + i + ' id=' + id + ' ' + tree.nodelist[id]);
+                            //console.log('i=' + i + ' id=' + id + ' ' + tree.nodelist[id]);
                             arg.children.push(id);
                             tree.nodelist[id].parent = arg.id;
                         }
@@ -1928,19 +1928,19 @@ function paint_tree_recurse(currentNode, nodelist, xa, ya, x, y, ctx, factor, tr
 function check_children(tree) {
     /// console.clear();
     tree.withEachNode = function (node) {
-        console.log('node #' + node.id + ' ' + node.type + ' ' + node.content + ' parent=' + node.parent);
+        //console.log('node #' + node.id + ' ' + node.type + ' ' + node.content + ' parent=' + node.parent);
         if (node.type == 'free') {
-            console.log('deleted');
+            //console.log('deleted');
         } else {
             for (var i = 0; i < node.children.length; i++) {
                 var childindex = node.children[i];
                 var child = tree.nodelist[childindex];
-                console.log('    ' + childindex + ' ' + child.type + ' ' + child.content);
+                //console.log('    ' + childindex + ' ' + child.type + ' ' + child.content);
                 var parent = child.parent;
                 if (parent == node.id) {
                     // console.log('parent ok');
                 } else {
-                    console.log('parent link ERROR - parent=' + parent);
+                    //console.log('parent link ERROR - parent=' + parent);
                 }
             }
         }
@@ -1961,7 +1961,7 @@ function evaluateTree(filledTree) {
         // console.log(temp[1]);
         return val(filledTree.root, filledTree);
     } else {
-        console.log('tree not evaluable');
+        //console.log('tree not evaluable');
         return undefined;
     }
 }
@@ -2200,12 +2200,12 @@ function fillWithValues(tree_var, list) {
                                 if (node.content == '\pi') {
                                     node.value = Math.PI;
                                     value = Math.PI;
-                                    console.log('PI');
+                                    //console.log('PI');
                                 }
                                 if (node.content == 'e') {
                                     node.value = Math.E;
                                     value = Math.E;
-                                    console.log("Euler's Number");
+                                    //console.log("Euler's Number");
                                 }
                             }
                         });
