@@ -1,1 +1,41 @@
-D:/Users/privat/Documents/xampp_gf09_wiki/htdocs/wiki/extensions/FormulaApplet/extension.json
+{
+	"name": "FormulaApplet",
+	"version": "0.5.2",
+	"author": [
+		"Rudolf Grossmann"				
+	],
+	"url": "not yet published",
+	"descriptionmsg": "formelapplet-desc",
+	"license-name": "GPL-2.0-or-later",
+	"type": "parserhook",
+	"requires": {
+		"MediaWiki": ">= 1.25.0"
+	},
+	"Hooks": {
+		"ParserFirstCallInit": "ExtFormulaApplet::init",
+		"BeforePageDisplay": "ExtFormulaApplet::injectJS"
+	},
+	"MessagesDirs": {
+		"FormulaApplet": [
+			"i18n"
+		]
+	},
+	"ResourceModules": { 
+		"ext.glue": {
+			"scripts": [ "js/extensionUrl.js", "js/glue.js" ],
+			"dependencies": [ 
+               "jquery",
+               "mediawiki.util",
+			   "mediawiki.api"
+            ]
+		}	
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "FormulaApplet"
+	},
+	"AutoloadClasses": {
+		"ExtFormulaApplet": "FormulaApplet.body.php"
+	},
+	"manifest_version": 1
+}
