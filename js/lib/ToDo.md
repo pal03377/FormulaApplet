@@ -3,6 +3,8 @@
 ## Coding
 * <del>Comment console.logs</del>
 * \Ohm -> \Omega
+* Render \cdot as times(cross) if lang=en
+* Rende , as . if lang=en
 * <del>www.formelapplet.de (bootstrap) shall use glue.js too</del>
 *<del> unit=auto causes bugs with cursor movement.</del>
 * <del>exp(x) = e^x</del>

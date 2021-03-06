@@ -334,6 +334,7 @@ function mathQuillify() {
   });
   $(".formula_applet").each(function () {
     var temp = (this.innerHTML);
+    temp = temp.replace(/\\Ohm/g,'\\Omega');
     // console.log('temp=' + temp);
     this.innerHTML = temp.replace(/\\unit{/g, '\\textcolor{blue}{');
     // console.log('replaced=' + this.innerHTML);
