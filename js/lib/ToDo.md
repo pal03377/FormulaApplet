@@ -18,6 +18,7 @@
 * Tests
 
 ## Nice to have
+* Transfer this list (ToDo.md) to Issues (GitHub)
 * Integral, Limit (VKBD)
 * Triviale Lösungen sperren
 * condition = ...
