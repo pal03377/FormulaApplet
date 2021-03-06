@@ -20,6 +20,7 @@
 * Tests
 
 ## Nice to have
+* Transfer this list (ToDo.md) to Issues (GitHub)
 * Integral, Limit (VKBD)
 * Triviale Lösungen sperren
 * condition = ...
@@ -37,8 +38,9 @@
 ## Online
 * MediaWiki Extension 'FormulaApplet' neu anlegen, FormulaApplet.php, FormulaApplet.body.php, /i18n
 * (Verwendung von formelapplet.zum.de klären -> Jan Böhme/UweSchützenmeister)
-* ## GitHub
+## GitHub
 * github gf09 private -> public
+* Problem Editor (or better at www.formelapplet.de?)
 * GitHub Wiki?
 * Meaning of different jsfiles
 * Instuction: Install with PHP
