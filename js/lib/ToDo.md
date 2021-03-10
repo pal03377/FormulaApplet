@@ -1,15 +1,10 @@
 # *ToDo* #
 
 ## Coding
-* <del>Comment console.logs</del>
-* \Ohm -> \Omega
+* Update files of directory 'development' according to changes (/lib, /css)
 * Render \cdot as times(cross) if lang=en
 * Rende , as . if lang=en
-* <del>www.formelapplet.de (bootstrap) shall use glue.js too</del>
-*<del> unit=auto causes bugs with cursor movement.</del>
-* <del>exp(x) = e^x</del>
 * e for Exponent interferes with e for Euler's number.
-* <del>"Missing cursor" bug at www.formelapplet.de. gf09 is ok.</del>
 * Move smaller parts of code (e.g. problem editor) into separate file
     + Divide prepare_page into smaller parts
     * prepare_page needs vkbd
@@ -22,19 +17,19 @@
 ## Nice to have
 * Transfer this list (ToDo.md) to Issues (GitHub)
 * Integral, Limit (VKBD)
-* Triviale Lösungen sperren
+* Block trivial solutions
 * condition = ...
-* Naturkonstanten c, e,..
+* Natural constants like e, c,...
 * Node, modules
 * Contact Karl Kirst
 * Hammer as jQuery plugin
 * (TypeScript)
 * (Legacy: decode Java Applet Parameters)
-* MediaWiki WYSIWYG Editor (expectet to be difficult)
+* MediaWiki WYSIWYG Editor (expected to be difficult)
 * asinh, acosh, atanh
 * Complex Numbers
 * Vectors
-* Check after pressing Enter
+* Check only after pressing Enter
 ## Online
 * MediaWiki Extension 'FormulaApplet' neu anlegen, FormulaApplet.php, FormulaApplet.body.php, /i18n
 * (Verwendung von formelapplet.zum.de klären -> Jan Böhme/UweSchützenmeister)
@@ -46,7 +41,6 @@
 * Instuction: Install with PHP
 * License (2nd)
 * ToDo (this file)
-* <del>simple examples</del>
 ## GIT Cheat sheet
 * Terminal, wechseln nach e:\gut\gf09
 * git status

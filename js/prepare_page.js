@@ -334,10 +334,9 @@ function mathQuillify() {
   });
   $(".formula_applet").each(function () {
     var temp = (this.innerHTML);
-    temp = temp.replace(/\\Ohm/g,'\\Omega');
-    // console.log('temp=' + temp);
+    temp = temp.replace(/\\Ohm/g,'\\Omega'); 
     this.innerHTML = temp.replace(/\\unit{/g, '\\textcolor{blue}{');
-    // console.log('replaced=' + this.innerHTML);
+    console.log('replaced=' + this.innerHTML);
   });
   $(".formula_applet").each(function () {
     var FApp = new FA();
@@ -359,7 +358,7 @@ function mathQuillify() {
     var mode_attr = $(this).attr('mode');
     var mode_physics = (typeof mode_attr !== 'undefined' && mode_attr == 'physics');
     FApp.unit_auto = unit_auto || mode_physics;
-    console.info(`${FApp.id} unit_auto=${FApp.unit_auto}`);
+    // console.info(`${FApp.id} unit_auto=${FApp.unit_auto}`);
 
     var prec = $(this).attr('precision');
     if (typeof prec !== 'undefined') {
@@ -461,7 +460,8 @@ function mathQuillify() {
         //console.log(result_mode);
       });
       $('#random-id-d').mousedown();
-      $('input[type="radio"]#manu').click();
+      // $('input[type="radio"]#manu').click();
+      $('input[type="radio"]#auto').click();
     } else {
       //******************
       // *** no editor ***
@@ -863,7 +863,7 @@ function prepend(after_prepend) {
   if (before.length == 0) {
     var ed = $('.formula_applet#editor');
     ed.before('<p id="mode_select">');
-    $('p#mode_select').append('  <h3><span class="mw-headline" id="Mode">Mode</span></h3>');
+    $('p#mode_select').append('  <h3><span class="tr en mw-headline" id="Mode">Mode</span><span class="tr de mw-headline" id="Mode">Modus</span></h3>');
     $('p#mode_select').append('  <input type="radio" id="auto" name="select_mode" checked />');
     var label_lse = '<label for="auto"><span class="tr en lse">Automatic (left side of equation will be compared to right side)</span>';
     label_lse += '<span class="tr de lse">Automatisch (linke und rechte Gleichungsseite werden verglichen)</span></label>';

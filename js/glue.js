@@ -84,11 +84,12 @@ if (window.jQuery) {
 }
 // Done with jQuery.
 
-function jquery_timeout(){
+function jquery_timeout() {
     console.log('Load of jQuery: timeout. Stop of loading');
 }
 
 var try_counter = 0;
+
 function waitfor_jquery(cont) {
     //TODO replace by use of script.onerror
     // console.log( 'window.jQuery =' + window.jQuery);
@@ -109,13 +110,13 @@ function waitfor_jquery(cont) {
 }
 
 function OK_Func(ev, task) {
-    var message = task.name + ' - Success loading ';
-    if(task.name !== 'jq'){
+    var message = task.name + ' - Success loading ' + task.source;
+    if (task.name !== 'jq') {
         number_of_loaded_libs++;
         message += '#=' + number_of_loaded_libs;
     }
     console.log(message);
-     task.state = 'OK';
+    task.state = 'OK';
 }
 
 // ***************************** load CSS or JS *********************************** 
@@ -252,4 +253,41 @@ function waitfor_mathquill_and_if_ready_then_do(mq_ready2) {
         //console.log('MathQuill ready (1)');
         mq_ready2();
     }
+}
+
+function waitfor_hammer(hammer_ready) {
+    if ((typeof Hammer) === "undefined") {
+        console.log('waiting for Hammer...');
+        setTimeout(function () {
+            waitfor_hammer(hammer_ready)
+        }, 50);
+    } else {
+        console.log('Hammer ready......');
+        hammer_ready();
+    }
+}
+
+function makeDraggable( object ){
+    // dragElement(document.getElementById("vkbd"));
+  // https://hammerjs.github.io/getting-started/
+  var mc = new Hammer(object);
+
+  var left_temp = 1;
+  var top_temp = 1;
+  var left_start = 1;
+  var top_start = 1;
+  mc.on("panstart panmove", function (ev) {
+      if (ev.type == 'panstart') {
+          left_start = object.offsetLeft;
+          top_start = object.offsetTop;
+          left_temp = left_start;
+          top_temp = top_start;
+      }
+      if (ev.type == 'panmove') {
+          left_temp = left_start + ev.deltaX;
+          top_temp = top_start + ev.deltaY;
+          object.style.left = left_temp + 'px';
+          object.style.top = top_temp + 'px';
+      }
+  });
 }
