@@ -1,9 +1,10 @@
 # *ToDo* #
 
 ## Coding
-* Update files of directory 'development' according to changes (/lib, /css)
+* <del>Update files of directory 'development' according to changes (/lib, /css)</del>
+* Bug in tex_parser.php: \$ in TEX string, doubling of TEX string
 * Render \cdot as times(cross) if lang=en
-* Rende , as . if lang=en
+* Render , as . if lang=en
 * e for Exponent interferes with e for Euler's number.
 * Move smaller parts of code (e.g. problem editor) into separate file
     + Divide prepare_page into smaller parts
@@ -31,22 +32,17 @@
 * Vectors
 * Check only after pressing Enter
 ## Online
-* MediaWiki Extension 'FormulaApplet' neu anlegen, FormulaApplet.php, FormulaApplet.body.php, /i18n
-* (Verwendung von formelapplet.zum.de klären -> Jan Böhme/UweSchützenmeister)
+* Create new MediaWiki Extension named 'FormulaApplet', containing FormulaApplet.php, FormulaApplet.body.php, /i18n
+* <del>Verwendung von formelapplet.zum.de klären -> Jan Böhme/UweSchützenmeister</del>
 ## GitHub
 * github gf09 private -> public
 * Problem Editor (or better at www.formelapplet.de?)
 * GitHub Wiki?
-* Meaning of different jsfiles
+* Meaning of different js files
 * Instuction: Install with PHP
 * License (2nd)
 * ToDo (this file)
-## GIT Cheat sheet
-* Terminal, wechseln nach e:\gut\gf09
-* git status
-* git log --graph --decorate
-* git remote show origin
-
+## [GIT Cheat Sheet](../../git-cheat.php "Spickzettel für GIT")
 ## www.formelapplet.de
 * Problem Editor
 * GWK
