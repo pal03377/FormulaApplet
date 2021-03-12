@@ -109,11 +109,16 @@ function waitfor_jquery(cont) {
     }
 }
 
-function OK_Func(ev, task) {
+function OK_Func(ev, task, isFallback) {
     var message = task.name + ' - Success loading ' + task.source;
+    if(isFallback){
+        console.log(tasks[task.name]);
+        // message = task.name + ' - Success loading fallback - ' + tasks[task.name].fallback;
+        message = task.name + ' - Success loading fallback';
+    }
     if (task.name !== 'jq') {
         number_of_loaded_libs++;
-        message += '#=' + number_of_loaded_libs;
+        message += ' (' + number_of_loaded_libs + ')';
     }
     console.log(message);
     task.state = 'OK';
@@ -147,10 +152,10 @@ function appendScriptOrStyleSheet(task, isFallback) {
     // There are several events for cross browser compatibility.
     // https://www.w3schools.com/tags/ev_onload.asp
     elem.onreadystatechange = function (ev) {
-        OK_Func(ev, task);
+        OK_Func(ev, task, isFallback);
     };
     elem.onload = function (ev) {
-        OK_Func(ev, task);
+        OK_Func(ev, task, isFallback);
     };
     elem.onerror = function (ev) {
         // console.log(ev);

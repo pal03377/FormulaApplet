@@ -13,6 +13,7 @@ function init(){
 </script>
 
 <h1><?php echo $header; ?></h1>
+<p>Do not use this file with GitHub - you will only get the PHP code. Use with local repository and XAMPP.</p>
 <zero-md src="./js/lib/Git_Cheat_Sheet.md"></zero-md>
 <hr>
 <p><a href='https://github.com/gro58/gf09/blob/master/js/lib/ToDo.md'>ToDo</a> (github)</p>

@@ -20,6 +20,7 @@ function init(){
 <!-- <p><a href='https://github.com/gro58/gf09/blob/master/js/lib/ToDo.md'>ToDo</a> (github)</p>
 <p><a href='./js/lib/ToDo.md'>ToDo</a> (local file)</p> -->
 <p><a href='./todo.php'>ToDo</a></p>
+<p><a href='./git-cheat.php'>GIT Cheat Sheet</a></p>
 
 <p class="formula_applet" id="no_res">\int^x_{3} t^2\ \mathrm{dt} = \frac{x^3}{3} - 9</p> Integral.<br />
 <p class="formula_applet" id="no_bnd">\int_2^5\ {\sin} x\ \mathrm{d}x</p><br>

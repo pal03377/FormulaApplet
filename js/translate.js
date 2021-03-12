@@ -7,14 +7,17 @@ function switchTo(lang) {
   })
   $('.tr.de').each(function () {
     var defaultkey = $(this).attr('class');
-    // console.log(defaultkey);
+    // example: defaultkey = 'tr de bliblablu'
+    // console.log('tr de bliblablu ' + defaultkey);
     if (defaultkey.length > 5) {
       var targetkey = '.' + defaultkey.substr(0, 2) + '.' + lang + '.' + defaultkey.substr(6);
+      // example: if lang='en' then targetkey = '.tr.en.bliblablu' 
       targetkey = targetkey.replace(' ', '.');
       var target = $(targetkey);
     } else {
       target = this;
     }
+    // restore display attribute
     var disp = $(target).attr('data-disp');
     // console.log(targetkey + ' show as ' + disp);
     $(target).css('display', disp);

@@ -336,7 +336,7 @@ function mathQuillify() {
     var temp = (this.innerHTML);
     temp = temp.replace(/\\Ohm/g,'\\Omega'); 
     this.innerHTML = temp.replace(/\\unit{/g, '\\textcolor{blue}{');
-    console.log('replaced=' + this.innerHTML);
+    // console.log('replaced=' + this.innerHTML);
   });
   $(".formula_applet").each(function () {
     var FApp = new FA();
