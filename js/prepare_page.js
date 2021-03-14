@@ -232,9 +232,9 @@ function make_auto_unitstring(mf) {
     var left = str.substr(0, pos);
     // rest has to start with {
     var rest = str.substr(pos + unit_tag.length - 1);
-    var temp = find_corresponding_right_bracket(rest, '{');
-    var middle = rest.substring(1, temp[2]);
-    var right = rest.substr(temp[2] + 1);
+    var bracket = find_corresponding_right_bracket(rest, '{');
+    var middle = rest.substring(1, bracket.right_pos);
+    var right = rest.substr(bracket.right_pos + 1);
     // console.log(left + '|' + middle + '|' + right);
     var sci = checkScientificNotation(left);
     if (sci == true && middle.length > 0) {
@@ -616,12 +616,12 @@ function get_position_of_unittags(latex, unit_tag) {
       //  console.log(pos);
       var rest = latex.substr(pos + unit_tag.length - 1);
       //  console.log(rest);
-      var temp = find_corresponding_right_bracket(rest, '{');
-      var pos_right_bracket = pos + unit_tag.length + temp[2];
+      var bracket = find_corresponding_right_bracket(rest, '{');
+      var pos_right_bracket = pos + unit_tag.length + bracket.right_pos;
       start_of_unittags.push(pos);
       end_of_unittags.push(pos_right_bracket);
       //pos_right_bracket points to char right of the right bracket
-      //  console.log(latex.substr(pos, unit_tag.length + temp[2])); // should log \textcolor{blue}{...}
+      //  console.log(latex.substr(pos, unit_tag.length + bracket.right_pos)); // should log \textcolor{blue}{...}
       pos++;
     }
   } while (pos >= 0)
@@ -641,8 +641,8 @@ function get_position_of_unittags(latex, unit_tag) {
 //   if (pos >= 0) {
 //     // rest starts with {
 //     var rest = latex.substr(pos + unit_tag.length - 1);
-//     var temp = find_corresponding_right_bracket(rest, '{');
-//     var pos_right_bracket = pos + unit_tag.length + temp[2];
+//     var bracket = find_corresponding_right_bracket(rest, '{');
+//     var pos_right_bracket = pos + unit_tag.length + bracket.right_pos;
 //     var new_latex = latex.substr(0, pos_right_bracket - 1);
 //     var new_latex_rest = latex.substr(pos_right_bracket);
 //     new_latex = new_latex + new_latex_rest + '}';
@@ -785,13 +785,13 @@ function separate_class(latex, class_tag) {
     before_tag = latex.substring(0, pos);
     var rest = latex.substring(pos + class_tag.length - 1);
     // rest starts with {
-    var temp = find_corresponding_right_bracket(rest, '{');
-    // temp = [left_pos, bra.length, right_pos, rightbra.length]
-    if (temp[0] !== 0 || temp[1] !== 1 || temp[3] !== 1) {
+    var bracket = find_corresponding_right_bracket(rest, '{');
+    // bracket = [left_pos, bra.length, right_pos, rightbra.length]
+    if (bracket.left_pos !== 0 || bracket.bra_length !== 1 || bracket.rightbra_length !== 1) {
       console.log('Something went wront at separate_class()');
     }
-    tag = rest.substring(1, temp[2]);
-    after_tag = rest.substring(temp[2] + 1);
+    tag = rest.substring(1, bracket.right_pos);
+    after_tag = rest.substring(bracket.right_pos + 1);
   } else {
     before_tag = '';
     tag = '';

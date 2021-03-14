@@ -35,9 +35,9 @@ include_once 'header.php';
     var single_step = true;
     if (single_step){
       $( '#treecanvas' ).click( function(event){
-        var temp = parsetree_by_index(myTree);
-          var message = temp[0];
-          end_parse = temp[1];
+        var parse_result = parsetree_by_index(myTree);
+          var message = parse_result.message;
+          end_parse = parse_result.end_parse;
           paint_tree(myTree, canvas, message);
           // console.log('***' + message);
           //  for(var i=0; i <7; i++){
@@ -58,8 +58,8 @@ include_once 'header.php';
       // one step
       $( '#treecanvas' ).click( function(event){
           do{
-            var temp = parsetree_by_index(myTree);
-            var end_parse = temp[1];
+            var parse_result = parsetree_by_index(myTree);
+            var end_parse = parse_result.end_parse;
           } while (end_parse == false)
           var tex = tree2TEX(myTree);
           message = 'end parse';

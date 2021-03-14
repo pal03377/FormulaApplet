@@ -49,12 +49,12 @@ node.prototype.addBracket = function (tree) {
     var temp = find_leftmost_bracket(this.content);
     var left_pos = temp[0];
     var bra = temp[1];
-    temp = find_corresponding_right_bracket(this.content, bra);
-    // console.log(temp);
-    var left_pos2 = temp[0];
-    var bra_len = temp[1];
-    var right_pos = temp[2];
-    var rightbra_len = temp[3];
+    bracket = find_corresponding_right_bracket(this.content, bra);
+    // console.log(bracket);
+    var left_pos2 = bracket.left_pos;
+    var bra_len = bracket.bra_length;
+    var right_pos = bracket.right_pos;
+    var rightbra_len = bracket.rightbra_length;
     // this should not happen
     if (left_pos !== left_pos2) {
         throw 'Inconsistent left positions ';
@@ -466,7 +466,8 @@ function find_corresponding_right_bracket(content, bra) {
         mass[i] = sum;
         //        console.log('mass[' + i + ']=' + sum);
     }
-    return [left_pos, bra.length, right_pos, rightbra.length];
+    // return [left_pos, bra.length, right_pos, rightbra.length];
+    return {left_pos: left_pos, bra_length: bra.length, right_pos: right_pos, rightbra_length: rightbra.length};
 }
 
 function remove_operators(tree, kind_of_operators) {
@@ -773,7 +774,7 @@ function parsetree_by_index(tree) {
     // }
 
     // check_children(tree);
-    return [message, end_parse];
+    return {message: message, end_parse: end_parse};
 }
 
 function parse(texstring) {
@@ -783,10 +784,10 @@ function parse(texstring) {
     var end_parse = false;
     parsetree_counter.setCounter(0);
     while (!end_parse) {
-        var temp = parsetree_by_index(myTree);
-        var message = temp[0];
+        var parse_result = parsetree_by_index(myTree);
+        var message = parse_result.message;
         // console.log(parsetree_counter.getCounter() + ' parse: ' + message);
-        end_parse = temp[1];
+        end_parse = parse_result.end_parse;
         //paint_tree(tree, canvas, message);
     }
     return myTree;
