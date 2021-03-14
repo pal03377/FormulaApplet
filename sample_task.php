@@ -19,8 +19,10 @@ function init(){
 <h2 class='tr en later'>for later use in MediaWiki</h2>
 <!-- <p><a href='https://github.com/gro58/gf09/blob/master/js/lib/ToDo.md'>ToDo</a> (github)</p>
 <p><a href='./js/lib/ToDo.md'>ToDo</a> (local file)</p> -->
-<p><a href='./todo.php'>ToDo</a></p>
-<p><a href='./git-cheat.php'>GIT Cheat Sheet</a></p>
+<p><a href='./development/development.php'>Development</a></p>
+<p><a href='./tests/tests.php'>Tests</a></p>
+<p><a href='./sample_task_and_parse.php'>sample_task_and_parse</a></p>
+<p><a href='./todo.php'>ToDo</a> <a href='./git-cheat.php'>GIT Cheat Sheet</a></p>
 
 <p class="formula_applet" id="no_res">\int^x_{3} t^2\ \mathrm{dt} = \frac{x^3}{3} - 9</p> Integral.<br />
 <p class="formula_applet" id="no_bnd">\int_2^5\ {\sin} x\ \mathrm{d}x</p><br>
@@ -33,7 +35,7 @@ function init(){
 <!-- <p class="formula_applet" id="binom_01">(2u + 7v)^2 = {{result}}</p><br /> -->
 <p class="formula_applet" id="binom_02" mode = 'physics'>(2u + 7v)^2 = 4u^2 + 28uv + {{result}}</p><br />
 <p class="formula_applet" id="fraction" unit=auto>\frac{13t^2 - 5t}{t} = {{result}}</p><br />
-<p class="formula_applet" id="BliBlaBlu" data-b64="N2gMy">17x+4x={{result}}</p><br />
+<p class="formula_applet" id="multof_x" data-b64="N2gMy">17x+4x={{result}}</p><br />
 <p class="formula_applet" id="CheckIfEqual">{{result}} = 0</p><br />
 <!-- <p class="formula_applet" id="CheckIfTrue">{{result}}</p><br /> -->
 <hr>

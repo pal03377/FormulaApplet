@@ -303,6 +303,11 @@ function editHandler(index) {
     } else {
       check_if_equality(id, mf_container.latex(), ds_list);
     }
+    if(typeof editHandlerDebug == 'undefined'){
+      console.log('editHandlerDebug() is undefined');
+    } else {
+      editHandlerDebug(mf);
+    }
   }
 };
 
