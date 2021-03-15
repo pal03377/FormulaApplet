@@ -19,41 +19,19 @@ function init(){
       $('#step').on('click', function () {
         single_step = true;
         console.log('single_step=' + single_step);
+        parsetree_counter.setCounter(0);
+        $( '#treecanvas' ).off('click');
         $( '#treecanvas' ).click( function(event){
-        var parse_result = parsetree_by_index(myTree);
-          var message = parse_result.message;
-          end_parse = parse_result.end_parse;
-          paint_tree(myTree, tree_canv, message);
-          // console.log('***' + message);
-          //  for(var i=0; i <7; i++){
-          //   console.log('node ' + i + ': ' + myTree.nodelist[i].type + ' ' + myTree.nodelist[i].content);
-          // }
-          if(end_parse){
-              fillWithValues(myTree, true, []);
-              var hasValue = myTree.hasValue;
-              paint_tree(myTree, tree_canv, 'filWithRandomValues');
-            if (hasValue){
-                var dummy = val(myTree.root, myTree);
-            } else {
-                console.log('tree not evaluable');
-            }
-          }
-      });
+          canvasclick_singlestep();
+        });
       });
       $('#quick').on('click', function () {
         single_step = false;
         console.log('single_step=' + single_step);
         // one step
+        $( '#treecanvas' ).off('click');
         $( '#treecanvas' ).click( function(event){
-            do{
-                var parse_result = parsetree_by_index(myTree);
-                var end_parse = parse_result.end_parse;
-            } while (end_parse == false)
-            var tex = tree2TEX(myTree);
-            message = 'end parse';
-            paint_tree(myTree, tree_canv, message);
-            //fillWithValues(myTree, true, []);
-            var dummy = value(myTree);
+          canvasclick_quick();
         });
       });
    });
@@ -62,14 +40,50 @@ function init(){
     // });
 }
 
-
-
 function editHandlerDebug(mf){
     myTree = new tree();
     myTree.leaf.content = mf.latex();
     document.getElementById('output').innerHTML = mf.latex() + '<br>';
     parsetree_counter.setCounter(0);
     paint_tree(myTree, tree_canv, 'start of parsing');
+    if(single_step){
+    } else {
+      canvasclick_quick();
+    }
+}
+
+function canvasclick_singlestep(){
+  var parse_result = parsetree_by_index(myTree);
+  var message = parse_result.message;
+  console.log(message);
+  end_parse = parse_result.end_parse;
+  paint_tree(myTree, tree_canv, message);
+  // console.log('***' + message);
+  //  for(var i=0; i <7; i++){
+  //   console.log('node ' + i + ': ' + myTree.nodelist[i].type + ' ' + myTree.nodelist[i].content);
+  // }
+  if(end_parse){
+      fillWithValues(myTree, true, []);
+      var hasValue = myTree.hasValue;
+      paint_tree(myTree, tree_canv, 'filWithRandomValues');
+    if (hasValue){
+        var dummy = val(myTree.root, myTree);
+    } else {
+        console.log('tree not evaluable');
+    }
+  }
+}
+
+function canvasclick_quick(){
+  do{
+      var parse_result = parsetree_by_index(myTree);
+      var end_parse = parse_result.end_parse;
+  } while (end_parse == false)
+  var tex = tree2TEX(myTree);
+  message = 'end parse';
+  paint_tree(myTree, tree_canv, message);
+  //fillWithValues(myTree, true, []);
+  var dummy = value(myTree);
 }
 
 </script>
@@ -79,11 +93,11 @@ function editHandlerDebug(mf){
 <!-- <body> -->
 <h1><?php echo $header; ?></h1>
 <p id="parsemode_select">
-  <input type="radio" name="parsemode" class="problemeditor parsemode" id="step"></input>
-  <label for="step">Step by step</label>
-  <br />
   <input type="radio" name="parsemode" class="problemeditor parsemode" id="quick" checked></input>
   <label for="quick">Quick</label>
+  <br>
+  <input type="radio" name="parsemode" class="problemeditor parsemode" id="step"></input>
+  <label for="step">Step by step</label>
 </P>
 <p id='output'>output</p>
 <hr>
