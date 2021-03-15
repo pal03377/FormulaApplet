@@ -36,7 +36,7 @@
 * <del>Verwendung von formelapplet.zum.de klären -> Jan Böhme/UweSchützenmeister</del>
 ## GitHub
 * github gf09 private -> public
-* Problem Editor (or better at www.formelapplet.de?)
+* <del>Problem Editor (or better at www.formelapplet.de?)</del> (HowTo missing)
 * GitHub Wiki?
 * Meaning of different js files
 * Instuction: Install with PHP
