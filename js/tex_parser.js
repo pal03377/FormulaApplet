@@ -2231,7 +2231,7 @@ function checkScientificNotation(texstring) {
     repl = repl.replace("E", "*10^");
     repl = repl.replace("\\cdot", "*");
     repl = repl.replace(/\\ /g, '');
-    console.log('repl=' + repl);
+    // console.log('repl=' + repl);
     // accept 'almost scientific' strings like 23, 23,4* 23,4*10^ 
     if (repl.endsWith(',')) {
         repl = repl.substr(0, repl.length - 1);
@@ -2245,6 +2245,7 @@ function checkScientificNotation(texstring) {
     if (repl.endsWith('*10')) {
         repl = repl.substr(0, repl.length - 3);
     }
+    // repl is used by prepare_page.make_auto_unitstring
     var mantissa = repl;
     var exponent = ''; //default
     var pos = repl.indexOf('*10^');
@@ -2282,7 +2283,7 @@ function checkScientificNotation(texstring) {
         // not existing exponent is always ok
         right_ok = true;
     }
-    console.log(mantissa + '|' + left_ok + '|' + exponent + '|' + right_ok);
+    // console.log(mantissa + '|' + left_ok + '|' + exponent + '|' + right_ok);
     isScientific = (left_ok && right_ok);
-    return isScientific;
+    return {isScientific: isScientific, repl: repl};
 }

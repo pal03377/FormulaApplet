@@ -6,7 +6,7 @@ include_once $prefix . 'header.php';
 ?>
 
 <script>
-var single_step = true;
+var single_step = false;
 
 function init(){
   // console.log('init... (empty)');
@@ -40,14 +40,15 @@ function init(){
     // });
 }
 
-function editHandlerDebug(mf){
+function editHandlerDebug(mf_latex_for_parser){
+    // console.log('editHandlerDebug ' + mf_latex_for_parser);
     myTree = new tree();
-    myTree.leaf.content = mf.latex();
-    document.getElementById('output').innerHTML = mf.latex() + '<br>';
+    myTree.leaf.content = mf_latex_for_parser;
+    document.getElementById('output').innerHTML = mf_latex_for_parser + '<br>';
     parsetree_counter.setCounter(0);
     paint_tree(myTree, tree_canv, 'start of parsing');
-    if(single_step){
-    } else {
+    // console.log('single_step=' + single_step);
+    if(! single_step){
       canvasclick_quick();
     }
 }
@@ -75,6 +76,7 @@ function canvasclick_singlestep(){
 }
 
 function canvasclick_quick(){
+  console.log('canvasclick_quick');
   do{
       var parse_result = parsetree_by_index(myTree);
       var end_parse = parse_result.end_parse;

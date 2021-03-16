@@ -57,7 +57,7 @@ function prepare_page() {
     // initTranslation();
   })
 
-  $('body').on('click', function(ev){
+  $('body').on('click', function (ev) {
     //console.log('body click');
     $(".formula_applet").removeClass('selected');
     $("button.keyb_button").removeClass('selected');
@@ -225,6 +225,7 @@ function fillWithRandomValAndCheckDefSets(tree_var, ds_list) {
 function make_auto_unitstring(mf) {
   // mf = MathField
   var str = mf.latex();
+  var mf_latex_for_parser = str;
   // console.log('make_auto_unitstring ' + str);
   var unit_tag = '\\textcolor{blue}{';
   var pos = str.indexOf(unit_tag);
@@ -236,13 +237,15 @@ function make_auto_unitstring(mf) {
     var middle = rest.substring(1, bracket.right_pos);
     var right = rest.substr(bracket.right_pos + 1);
     // console.log(left + '|' + middle + '|' + right);
-    var sci = checkScientificNotation(left);
-    if (sci == true && middle.length > 0) {
+    var csn = checkScientificNotation(left);
+    // checkScientificNotation(arg) does not change arg
+    if (csn.isScientific == true && middle.length > 0) {
       // expand the unit tag at the right side
       var new_latex = left + unit_tag + middle + right + '}';
-      // console.log(new_latex);
+      var mf_latex_for_parser = csn.repl + unit_tag + middle + right + '}';
+      console.log('new_latex=' + new_latex);
+      console.log('mf_latex_for_parser=' + mf_latex_for_parser);
       editHandlerActive = false;
-      //console.log('Expand to ' + new_latex);
       mf.latex(new_latex);
       mf.keystroke('Left');
       editHandlerActive = true;
@@ -254,31 +257,33 @@ function make_auto_unitstring(mf) {
     var beginning = '';
     for (var i = str.length; i >= 0; i--) {
       beginning = str.substr(0, i);
-      var sci = checkScientificNotation(beginning);
+      var csn = checkScientificNotation(beginning);
       // console.log(beginning + ' sci=' + sci);
-      if (sci == true) {
+      if (csn.isScientific == true) {
         i = -1;
       }
     }
     if (beginning.length > 0) {
       var rest = str.substr(beginning.length);
       // console.log(beginning + '|' + rest);
-      if (rest.length > 0){
+      if (rest.length > 0) {
         // console.log('Make unit of ' + rest);
         var new_latex = beginning + unit_tag + rest + '}';
-        // console.log(new_latex);
+        var mf_latex_for_parser = csn.repl + unit_tag + rest + '}';
+        console.log('new_latex=' + new_latex);
+        console.log('mf_latex_for_parser=' + mf_latex_for_parser);
         editHandlerActive = false;
-        //console.log('Create ' + new_latex);
         mf.latex(new_latex);
         mf.keystroke('Left');
         editHandlerActive = true;
-}   } else {
+      }
+    } else {
       //console.log('Do not create.');
       // console.log(str + ' sci=permanent false');
       // do nothing
     }
   }
-  return
+  return mf_latex_for_parser;
 }
 
 function editHandler(index) {
@@ -293,20 +298,23 @@ function editHandler(index) {
     var id = FAList[index].id; // name of formula_applet
     var ds_list = FAList[index].definitionset_list;
     // console.log(mf.latex() + ' unit_auto=' + unit_auto);
+    var mf_latex_for_parser = mf.latex();
     if (unit_auto) {
-      make_auto_unitstring(mf);
+      mf_latex_for_parser = make_auto_unitstring(mf);
     }
 
     // the following part: auto_unit does not matter
     if (hasSolution) {
-      check_if_equal(id, mf.latex(), solution, ds_list);
+      check_if_equal(id, mf_latex_for_parser, solution, ds_list);
     } else {
       check_if_equality(id, mf_container.latex(), ds_list);
+      // mf_latex_for_parser = mf_container.latex();
     }
-    if(typeof editHandlerDebug == 'undefined'){
+    if (typeof editHandlerDebug == 'undefined') {
       console.log('editHandlerDebug() is undefined');
     } else {
-      editHandlerDebug(mf);
+      // see sample_task_and_parse.php
+      editHandlerDebug(mf_latex_for_parser);
     }
   }
 };
@@ -339,7 +347,7 @@ function mathQuillify() {
   });
   $(".formula_applet").each(function () {
     var temp = (this.innerHTML);
-    temp = temp.replace(/\\Ohm/g,'\\Omega'); 
+    temp = temp.replace(/\\Ohm/g, '\\Omega');
     this.innerHTML = temp.replace(/\\unit{/g, '\\textcolor{blue}{');
     // console.log('replaced=' + this.innerHTML);
   });
