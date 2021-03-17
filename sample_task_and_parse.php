@@ -11,8 +11,7 @@ var single_step = false;
 function init(){
   // console.log('init... (empty)');
   tree_canv = document.getElementById('treecanvas');
-  initTranslation();
-  waitfor_hammer( function(){
+   waitfor_hammer( function(){
     makeDraggable(tree_canv);
   });
   $(function () {
@@ -38,7 +37,7 @@ function init(){
     // waitfor_mathquill_and_if_ready_then_do(function () {
     //     local_prepare_page();
     // });
-}
+ }
 
 function editHandlerDebug(mf_latex_for_parser){
     // console.log('editHandlerDebug ' + mf_latex_for_parser);

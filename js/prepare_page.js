@@ -54,7 +54,8 @@ function prepare_page() {
   ($('<img class="mod">')).insertAfter($(".formula_applet"));
   $(document).ready(function () {
     mathQuillify();
-    // initTranslation();
+    //inittranslation after mathQuillify which evokes vkbd_init
+    initTranslation();
   })
 
   $('body').on('click', function (ev) {
@@ -340,7 +341,7 @@ function sanitizePrecision(prec) {
 
 function mathQuillify() {
   MQ = MathQuill.getInterface(2);
-  vkbd_init();
+  vkbd_init(); 
   $(".formula_applet").each(function () {
     var temp = (this.innerHTML);
     this.innerHTML = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
@@ -400,7 +401,7 @@ function mathQuillify() {
       // *** editor ***
       //console.log('init editor');
       prepend(function () {
-        initTranslation()
+        // initTranslation()
       });
       // make whole mathFieldSpan editable
       var mathFieldSpan = document.getElementById('math-field');

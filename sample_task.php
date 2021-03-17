@@ -7,7 +7,7 @@ include_once( $prefix . 'header.php' );
 <script>
 function init(){
   // console.log('init... (empty)');
-  initTranslation();
+  // initTranslation();
 }
 </script>
 

@@ -6,20 +6,34 @@ function switchTo(lang) {
     $(this).css('display', 'none');
   })
   $('.tr.de').each(function () {
-    var defaultkey = $(this).attr('class');
-    // example: defaultkey = 'tr de bliblablu'
-    // console.log('tr de bliblablu ' + defaultkey);
-    if (defaultkey.length > 5) {
-      var targetkey = '.' + defaultkey.substr(0, 2) + '.' + lang + '.' + defaultkey.substr(6);
-      // example: if lang='en' then targetkey = '.tr.en.bliblablu' 
-      targetkey = targetkey.replace(' ', '.');
+    var tr_de_key = $(this).attr('class');
+    var clamp = '';
+    // example: tr_de_key = 'xyz tr de blibla blu'
+    var pos = tr_de_key.indexOf('tr de ');
+    if (pos >= 0) {
+      var rest = tr_de_key.substr(pos + 6) + ' ';
+      // example: rest = 'blibla blu '
+      pos = rest.indexOf(' ');
+      if (pos >= 0) {
+        clamp = rest.substr(0, pos);
+        // example: clamp = 'blibla'
+      }
+    }
+    // error -> clamp='';
+
+    // if (defaultkey.length > 5) {
+    //   var targetkey = '.' + defaultkey.substr(0, 2) + '.' + lang + '.' + defaultkey.substr(6);
+    if (clamp.length > 0) {
+      var targetkey = '.tr.' + lang + '.' + clamp;
+      // example: if lang='en' then targetkey = '.tr.en.blibla' 
+      // targetkey = targetkey.replace(' ', '.');
       var target = $(targetkey);
     } else {
       target = this;
     }
     // restore display attribute
     var disp = $(target).attr('data-disp');
-    // console.log(targetkey + ' show as ' + disp);
+    console.log(targetkey + ' show as ' + disp);
     $(target).css('display', disp);
   })
 
