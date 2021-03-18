@@ -1,5 +1,5 @@
 <?php $title = 'ToDo'; $header='';
-$liblist = "[ 'translate', 'gf09css']";
+$liblist = "'translate gf09css'";
 $prefix="./"; 
 include_once( $prefix . 'header.php' ); 
 ?>

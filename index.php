@@ -1,6 +1,6 @@
 <?php 
   $title='Formula Applet (gf09) ';
-  $liblist = "[ 'gf09css', 'translate' ]";
+  $liblist = "'gf09css translate'";
 ?>
 <?php $prefix="./"; include_once( $prefix . 'header.php' ); ?>
 <!-- <meta http-equiv="refresh" content="1; URL=./hiltrud.php"> -->

@@ -2,7 +2,7 @@
 
 ## Coding
 * <del>Update files of directory 'development' according to changes (/lib, /css)</del>
-* Bug in tex_parser.php: \$ in TEX string, doubling of TEX string
+* Serious bug in tex_parser.php: $ in TEX string, doubling of TEX string
 * Render \cdot as times(cross) if lang=en
 * Render , as . if lang=en
 * e for Exponent interferes with e for Euler's number.

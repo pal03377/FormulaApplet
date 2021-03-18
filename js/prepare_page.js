@@ -25,18 +25,6 @@ class FA {
   }
 }
 
-// function initTranslation(){
-//   $('input.language').on('change', function (ev) {
-//     console.log(ev);
-//     // obtain lang = (id of .language button)
-//     var lang = $(this).attr('id'); // obtain language id
-//     if(lang == ''){
-//       lang = 'de';
-//     }
-//     switchTo(lang);
-//   });
-//  }
-
 // prepare_page() is called by glue.js
 function prepare_page() {
   // dirty hack
@@ -71,15 +59,9 @@ function prepare_page() {
     if (key == 'Tab') {
       var fa = $(ev.target).parents('.formula_applet');
       var id = $(fa).attr('id');
-      //console.log(id);
-      // for (var i = 0; i < FAList.length; i++){
-      //   var fapp = FAList[i];
-      //   fapp.formula_applet.click();
-      // }
       fa.click();
     }
   });
-  // testcreateReplacement();
 }
 
 // function isAndr() cannot be moved to glue.js because
@@ -89,11 +71,8 @@ function isAndr() {
 }
 
 function keyboardEvent(cmd) {
-  //console.log('prepare_page activeMathfieldIndex=' + activeMathfieldIndex);
   var FApp = FAList[activeMathfieldIndex];
   var mf = FApp.mathField;
-  // var fa = FApp.formula_applet;
-  // var mqEditableField = FApp.mqEditableField;
 
   if (typeof mf !== 'undefined') {
     //console.log(cmd);
@@ -123,9 +102,6 @@ function keyboardEvent(cmd) {
     } else {
       // no #
       mf.typedText(cmd);
-      // $(mqEditableField).click();
-      // mf.typedText(' ');
-      // mqEditableField.focus();
     }
     if (endsWithSpace) {
       mf.typedText(' ');
@@ -143,7 +119,6 @@ function nthroot() {
   mf.keystroke('Left');
   mf.keystroke('Left');
   mf.keystroke('Shift-Left');
-
 }
 
 function FApp_from_id(id) {
@@ -279,8 +254,6 @@ function make_auto_unitstring(mf) {
         editHandlerActive = true;
       }
     } else {
-      //console.log('Do not create.');
-      // console.log(str + ' sci=permanent false');
       // do nothing
     }
   }
@@ -556,7 +529,7 @@ function unify_definitionsets(def) {
 }
 
 function get_selection(mf, eraseClass) {
-  // typeOf mf = mathField
+  // typof mf = mathField
   // console.log(mf);
   var ori = mf.latex();
   // console.log('ori=' + ori);
@@ -644,29 +617,6 @@ function get_position_of_unittags(latex, unit_tag) {
     eof_unittags: end_of_unittags
   };
 }
-
-// function expandUnitTag(mf) {
-//   var cursorMarker = createReplacement(mf.latex());
-//   setEditHandlerDead();
-//   mf.typedText(cursorMarker);
-//   var latex = mf.latex();
-//   var unit_tag = '\\textcolor{blue}{';
-//   var pos = latex.indexOf(unit_tag);
-//   if (pos >= 0) {
-//     // rest starts with {
-//     var rest = latex.substr(pos + unit_tag.length - 1);
-//     var bracket = find_corresponding_right_bracket(rest, '{');
-//     var pos_right_bracket = pos + unit_tag.length + bracket.right_pos;
-//     var new_latex = latex.substr(0, pos_right_bracket - 1);
-//     var new_latex_rest = latex.substr(pos_right_bracket);
-//     new_latex = new_latex + new_latex_rest + '}';
-//     console.log(latex);
-//     console.log(new_latex);
-//     setEditHandlerDead();
-//     mf.latex(new_latex);
-//   }
-//   // pos=-1: No unit_tag found. Nothing to expand. Nothing do do. 
-// }
 
 function set_unit() {
   var unit_tag = '\\textcolor{blue}{';

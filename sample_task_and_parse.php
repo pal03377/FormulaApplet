@@ -1,6 +1,6 @@
 <?php $title = 'Sample Tasks';
 $header = '<span class="tr de samples">Beispiele parsen</span><span class="tr en samples">Parse examples</span>';
-$liblist = "[ 'hammer', 'decode', 'translate', 'prepare_page', 'mathquill', 'tex_parser', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss']";
+$liblist = "'hammer decode translate prepare_page mathquill tex_parser mathquillcss gf09css vkbd vkbdcss'";
 $prefix = "./";
 include_once $prefix . 'header.php';
 ?>
@@ -80,7 +80,7 @@ function canvasclick_quick(){
       var parse_result = parsetree_by_index(myTree);
       var end_parse = parse_result.end_parse;
   } while (end_parse == false)
-  var tex = tree2TEX(myTree);
+  // var tex = tree2TEX(myTree);
   message = 'end parse';
   paint_tree(myTree, tree_canv, message);
   //fillWithValues(myTree, true, []);

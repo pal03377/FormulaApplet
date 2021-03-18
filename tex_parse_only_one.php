@@ -1,5 +1,5 @@
 <?php $title = 'TEX Parser (only one)';
-$liblist = "[ 'tex_parser', 'mathquill', 'mathquillcss', 'gf09css']";
+$liblist = "'tex_parser mathquill mathquillcss gf09css'";
 include_once 'header.php';
 ?>
 
@@ -61,7 +61,7 @@ include_once 'header.php';
             var parse_result = parsetree_by_index(myTree);
             var end_parse = parse_result.end_parse;
           } while (end_parse == false)
-          var tex = tree2TEX(myTree);
+          // var tex = tree2TEX(myTree);
           message = 'end parse';
           paint_tree(myTree, canvas, message);
           //fillWithValues(myTree, true, []);

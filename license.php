@@ -1,5 +1,5 @@
 <?php $title = 'License';
-$liblist = "['gf09css', 'translate']";
+$liblist = "'gf09css translate'";
 $prefix="./"; 
 include_once( $prefix . 'header.php' );
 ?>
