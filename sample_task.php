@@ -8,7 +8,7 @@ include_once( $prefix . 'header.php' );
 function init(){
   // console.log('init... (empty)');
   // initTranslation();
-}
+ }
 </script>
 
 <!-- </head> -->
@@ -34,7 +34,8 @@ function init(){
 <p class="formula_applet" id="light-house" data-b64='gOmkT'>s=\sqrt{ h^2 + {{result}} }</p><br />
 <!-- <p class="formula_applet" id="binom_01">(2u + 7v)^2 = {{result}}</p><br /> -->
 <p class="formula_applet" id="binom_02">(2u + 7v)^2 = 4u^2 + 28uv + {{result}}</p><br />
-<p class="formula_applet" id="fraction" unit=auto>\frac{13t^2 - 5t}{t} = {{result}}</p><br />
+<!-- <p class="formula_applet" id="fraction" unit=auto>\frac{13t^2 - 5t}{t} = {{result}}</p><br /> -->
+<p class="formula_applet" id="fraction">\frac{13t^2 - 5t}{t} = {{result}}</p><br />
 <p class="formula_applet" id="multof_x" data-b64="N2gMy">17x+4x={{result}}</p><br />
 <p class="formula_applet" id="CheckIfEqual">{{result}} = 0</p><br />
 <!-- <p class="formula_applet" id="CheckIfTrue">{{result}}</p><br /> -->

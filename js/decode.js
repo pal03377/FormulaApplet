@@ -14,6 +14,18 @@ function init_permutation(n) {
     return [p, q];
 }
 
+/**
+ * This function swaps p[i] and p[j] and
+ * also q[ii] and q[jj] of the inverse q of p.<br>
+ * Example: i = 3 and j = 7. p[3] = 11 and p[7] = 2
+ * Then q[11] = 3 and q[2] = 7<br>
+ * After swap of p ii = p[3] = 2 and jj = p[7] = 11.
+ * After swap of q q[2] = 3 and q[11] = 7 
+ * @param p Array of integers
+ * @param q Array of integers
+ * @param i integer, j integer
+ * @returns {} Arrays p and q .
+ */
 function swap(p, q, i, j) {
     var h = p[i];
     p[i] = p[j];

@@ -22,6 +22,8 @@ class FA {
     this.precision = default_precision;
     this.hasResultField = true;
     this.unit_auto = false;
+    this.inner_ori = '';
+    this.replaced = '';
   }
 }
 
@@ -43,7 +45,9 @@ function prepare_page() {
   $(document).ready(function () {
     mathQuillify();
     //inittranslation after mathQuillify which evokes vkbd_init
-    initTranslation();
+    if (typeof initTranslation !== 'undefined') {
+      initTranslation();
+    }
   })
 
   $('body').on('click', function (ev) {
@@ -262,6 +266,7 @@ function make_auto_unitstring(mf) {
 
 function editHandler(index) {
   // console.log('called editHandler: ' + index + ' active=' + editHandlerActive);
+  // console.log(FAList[index]);
   if (editHandlerActive == true) {
     var fa = $(".formula_applet")[index];
     var mf = FAList[index].mathField;
@@ -272,7 +277,12 @@ function editHandler(index) {
     var id = FAList[index].id; // name of formula_applet
     var ds_list = FAList[index].definitionset_list;
     // console.log(mf.latex() + ' unit_auto=' + unit_auto);
-    var mf_latex_for_parser = mf.latex();
+    var mf_latex_for_parser = '';
+    if (hasSolution) {
+      mf_latex_for_parser = mf.latex();
+    } else {
+      mf_latex_for_parser = mf_container.latex();
+    }
     if (unit_auto) {
       mf_latex_for_parser = make_auto_unitstring(mf);
     }
@@ -288,6 +298,9 @@ function editHandler(index) {
       console.log('editHandlerDebug() is undefined');
     } else {
       // see sample_task_and_parse.php
+      if (typeof document.getElementById('output_2') !== 'undefined') {
+        document.getElementById('output_2').innerHTML = mf_latex_for_parser + '<br>';
+      }
       editHandlerDebug(mf_latex_for_parser);
     }
   }
@@ -314,16 +327,19 @@ function sanitizePrecision(prec) {
 
 function mathQuillify() {
   MQ = MathQuill.getInterface(2);
-  vkbd_init(); 
+  vkbd_init();
   $(".formula_applet").each(function () {
     var temp = (this.innerHTML);
+    this.inner_ori = temp;
     this.innerHTML = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
   });
   $(".formula_applet").each(function () {
     var temp = (this.innerHTML);
     temp = temp.replace(/\\Ohm/g, '\\Omega');
+    temp = temp.replace(/\\mathrm/g, '');
     this.innerHTML = temp.replace(/\\unit{/g, '\\textcolor{blue}{');
-    // console.log('replaced=' + this.innerHTML);
+    this.replaced = temp;
+    console.log('replaced=' + this.innerHTML);
   });
   $(".formula_applet").each(function () {
     var FApp = new FA();
@@ -356,8 +372,15 @@ function mathQuillify() {
     //console.log(FApp.id + ' precision=' + prec);
     FApp.precision = prec;
     FApp.formula_applet = this;
+
+
+
+
+
+
     if (FApp.hasResultField) {
       $(this).click(function (ev) {
+        // console.log('resultfield')
         ev.stopPropagation(); //avoid body click
         $(".formula_applet").removeClass('selected');
         $(this).addClass('selected');
@@ -366,8 +389,57 @@ function mathQuillify() {
           $(this).nextAll("button.keyb_button:first").addClass('selected');
         }
         activeMathfieldIndex = FApp.index;
+         // if (typeof editHandlerDebug == 'undefined') {
+        //   console.log('editHandlerDebug() is undefined');
+        // } else {
+        //   // see sample_task_and_parse.php
+        //   // editHandlerDebug(FApp.mqEditable.latex());
+        //   editHandlerDebug(FApp.mqEditable.latex());
+        // }
+        try{
+          console.log(document.getElementById('output_1').innerHTML);
+          document.getElementById('output_1').innerHTML = this.inner_ori + '<br>';
+        } catch {
+          console.log('no output_1');
+        }
+        try{
+          console.log(document.getElementById('output_2').innerHTML);
+          document.getElementById('output_2').innerHTML = this.replaced + '<br>';
+        } catch {
+          console.log('no output_2');
+        }
       });
+    } else {
+      $(this).click(function (ev) {
+        // console.log('no resultfield')
+        var mf_container = MQ.StaticMath(FAList[index].formula_applet);
+        var mf_latex_for_parser = mf_container.latex();
+        // if (typeof editHandlerDebug == 'undefined') {
+        //   console.log('editHandlerDebug() is undefined');
+        // } else {
+        //   // see sample_task_and_parse.php
+        //   editHandlerDebug(mf_latex_for_parser);
+        // }
+        try{
+          console.log(document.getElementById('output_1').innerHTML);
+          document.getElementById('output_1').innerHTML = this.inner_ori + '<br>';
+        } catch {
+          console.log('no output_1');
+        }
+        try{
+          console.log(document.getElementById('output_2').innerHTML);
+          document.getElementById('output_2').innerHTML = this.replaced + '<br>';
+        } catch {
+          console.log('no output_2');
+        }
+     });
     }
+
+
+
+
+
+
     FAList[index] = FApp;
 
     if (isEditor) {

@@ -11,6 +11,8 @@
     * prepare_page needs vkbd
     * vkbd needs hammer
     * Divide tex_parser into smaller parts
+* use strict
+* documentation.js
 * OOP
 * try/catch
 * Tests

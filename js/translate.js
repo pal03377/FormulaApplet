@@ -33,7 +33,7 @@ function switchTo(lang) {
     }
     // restore display attribute
     var disp = $(target).attr('data-disp');
-    console.log(targetkey + ' show as ' + disp);
+    // console.log(targetkey + ' show as ' + disp);
     $(target).css('display', disp);
   })
 

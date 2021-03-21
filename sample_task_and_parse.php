@@ -9,7 +9,13 @@ include_once $prefix . 'header.php';
 var single_step = false;
 
 function init(){
-  // console.log('init... (empty)');
+  try{
+    console.log(document.getElementById('output_1').innerHTML);
+    console.log('output_1 exists');
+  } catch {
+    console.log('no output_1');
+  }
+    // console.log('init... (empty)');
   tree_canv = document.getElementById('treecanvas');
    waitfor_hammer( function(){
     makeDraggable(tree_canv);
@@ -40,10 +46,10 @@ function init(){
  }
 
 function editHandlerDebug(mf_latex_for_parser){
-    // console.log('editHandlerDebug ' + mf_latex_for_parser);
+    console.log('editHandlerDebug ' + mf_latex_for_parser);
     myTree = new tree();
     myTree.leaf.content = mf_latex_for_parser;
-    document.getElementById('output').innerHTML = mf_latex_for_parser + '<br>';
+    document.getElementById('output_2').innerHTML = mf_latex_for_parser + '<br>';
     parsetree_counter.setCounter(0);
     paint_tree(myTree, tree_canv, 'start of parsing');
     // console.log('single_step=' + single_step);
@@ -100,7 +106,8 @@ function canvasclick_quick(){
   <input type="radio" name="parsemode" class="problemeditor parsemode" id="step"></input>
   <label for="step">Step by step</label>
 </P>
-<p id='output'>output</p>
+<p id='output_1'>output_1</p>
+<p id='output_2'>output_2</p>
 <hr>
 <p class="formula_applet" id="no_res">\int^x_{3} t^2\ \mathrm{dt} = \frac{x^3}{3} - 9</p> Integral.<br />
 <p class="formula_applet" id="no_bnd">\int_2^5\ {\sin} x\ \mathrm{d}x</p><br>
@@ -109,10 +116,10 @@ function canvasclick_quick(){
 <p class="formula_applet" id="definition_set" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} = {{result}}</p><span class='padding'><span class='tr en oneone'>One variable, one definition set.</span><span class='tr de oneone'>Eine Variable, eine Definitionsmenge.</span></span><br />
 <!-- <p class="formula_applet" id="definition_set_more_than_numofvar" def="x > 0 && y < 5">\frac{\sqrt{x^3}}{\sqrt{x}} = {{result}}</p><span class='padding'><span class='tr en moredef'>Number of definition sets exceeds number of variables.</span><span class='tr de moredef'>Mehr Definitionsmengen als Variablen.</span></span><br /> -->
 <!-- <p class="formula_applet" id="definition_set_less_than_numofvar" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} + y \cdot z = {{result}}</p><span class='padding'><span class='tr en morevars'>Number of variables exceeds number of definition sets.</span><span class='tr de morevars'>Mehr Variablen als Definitionsmengen.</span></span><br /> -->
-<p class="formula_applet" id="light-house" mode="physics" data-b64='gOmkT'>s=\sqrt{ h^2 + {{result}} }</p><br />
+<p class="formula_applet" id="light-house" data-b64='gOmkT'>s=\sqrt{ h^2 + {{result}} }</p><br />
 <!-- <p class="formula_applet" id="binom_01">(2u + 7v)^2 = {{result}}</p><br /> -->
-<p class="formula_applet" id="binom_02" mode = 'physics'>(2u + 7v)^2 = 4u^2 + 28uv + {{result}}</p><br />
-<p class="formula_applet" id="fraction" unit=auto>\frac{13t^2 - 5t}{t} = {{result}}</p><br />
+<p class="formula_applet" id="binom_02">(2u + 7v)^2 = 4u^2 + 28uv + {{result}}</p><br />
+<p class="formula_applet" id="fraction">\frac{13t^2 - 5t}{t} = {{result}}</p><br />
 <p class="formula_applet" id="multof_x" data-b64="N2gMy">17x+4x={{result}}</p><br />
 <p class="formula_applet" id="CheckIfEqual">{{result}} = 0</p><br />
 <!-- <p class="formula_applet" id="CheckIfTrue">{{result}}</p><br /> -->
