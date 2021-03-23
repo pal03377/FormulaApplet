@@ -1,6 +1,6 @@
 <?php $title = 'Sample Tasks';
 $header = '<span class="tr de samples">Beispiele parsen</span><span class="tr en samples">Parse examples</span>';
-$liblist = "'hammer decode translate prepare_page mathquill tex_parser mathquillcss gf09css vkbd vkbdcss'";
+$liblist = "'hammer decode translate prepare_page mathquill tex_parser tree_canvas mathquillcss gf09css vkbd vkbdcss'";
 $prefix = "./";
 include_once $prefix . 'header.php';
 ?>
@@ -58,40 +58,6 @@ function editHandlerDebug(mf_latex_for_parser){
     }
 }
 
-function canvasclick_singlestep(){
-  var parse_result = parsetree_by_index(myTree);
-  var message = parse_result.message;
-  console.log(message);
-  end_parse = parse_result.end_parse;
-  paint_tree(myTree, tree_canv, message);
-  // console.log('***' + message);
-  //  for(var i=0; i <7; i++){
-  //   console.log('node ' + i + ': ' + myTree.nodelist[i].type + ' ' + myTree.nodelist[i].content);
-  // }
-  if(end_parse){
-      fillWithValues(myTree, true, []);
-      var hasValue = myTree.hasValue;
-      paint_tree(myTree, tree_canv, 'filWithRandomValues');
-    if (hasValue){
-        var dummy = val(myTree.root, myTree);
-    } else {
-        console.log('tree not evaluable');
-    }
-  }
-}
-
-function canvasclick_quick(){
-  console.log('canvasclick_quick');
-  do{
-      var parse_result = parsetree_by_index(myTree);
-      var end_parse = parse_result.end_parse;
-  } while (end_parse == false)
-  // var tex = tree2TEX(myTree);
-  message = 'end parse';
-  paint_tree(myTree, tree_canv, message);
-  //fillWithValues(myTree, true, []);
-  var dummy = value(myTree);
-}
 
 </script>
 

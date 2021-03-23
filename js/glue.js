@@ -42,6 +42,7 @@ tasks['bootstrapcss'] = new task('https://maxcdn.bootstrapcdn.com/bootstrap/4.5.
 tasks['bootstrapcss'].fallback = css_bootstrapPath + 'bootstrap.min.css';
 // without fallback
 tasks['tex_parser'] = new task(jsPath + 'tex_parser.js');
+tasks['tree_canvas'] = new task(jsPath + 'tree_canvas.js');
 tasks['tree2tex'] = new task(jsPath + 'tree2tex.js');
 tasks['vkbd'] = new task(jsPath + 'vkbd.js');
 tasks['decode'] = new task(jsPath + 'decode.js');

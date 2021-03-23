@@ -145,34 +145,6 @@ function copy(myTree) {
     return result;
 }
 
-// node.prototype.val = function () {
-//     var result = 1;
-//     var numOfChildren = this.children.length;
-//     if (numOfChildren == 0) {
-//         this.value = undefined;
-//     }
-//     return result;
-// }
-
-// tree.prototype.val = function () {
-//     return tree.root.val;
-// }
-
-// tree.prototype.withEachNode = function (doThis) {
-// var i = 0;
-// var stop = false;
-// var list_of_nodes = this.nodelist;
-// do {
-//     var node = list_of_nodes[i];
-//     // doThis may add or delete nodes!
-//     doThis(node);
-//     i++;
-//     if (i === this.nodelist.length) {
-//         stop = true;
-//     }
-// } while (stop === false);
-// }
-
 function withEachNode(tree, f) {
     var i = 0;
     var stop = false;
@@ -204,16 +176,6 @@ function withEachLeafOrGreek(tree, f) {
     })
 }
 
-// tree.prototype.withEachLeafOrGreek = function (doThis) {
-//     // var tree = this;
-//     this.withEachNode = function (node) {
-//         if (node.type == 'leaf' || node.type == 'greek') {
-//             doThis(node)
-//         }
-//     }
-// }
-
-// node.prototype.isInUnit = function (tree) {
 function isInUnit(tree, node) {
     var result = false;
     var stop = false;
@@ -1677,75 +1639,6 @@ function unit2value(unitname) {
 // *** output to TEX string ***//
 
 
-// output to canvas
-
-function paint_tree(tree, canvas, message) {
-    var ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#ffffdf";
-    ctx.beginPath();
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.stroke;
-    ctx.font = '12pt Consolas';
-    paint_tree_recurse(tree.root, tree.nodelist, -9999, -9999, 0, 0, ctx, 1, tree);
-    ctx.fillText(message, 20, 30);
-};
-
-function paint_tree_callback(currentNode, xa, ya, x, y, ctx, tree) {
-    // console.log(currentNode.id + '::' + currentNode.children);
-    // console.log(xa + ' ' + ya + ' ' + x + ' ' + y);
-    if (xa > -9999) {
-        //        var xf = 600;
-        var xf = ctx.canvas.width / 2 - 100;
-        var yf = 40;
-        var xt = ctx.canvas.width / 2;
-        var yt = 30;
-        xxa = xa * xf + xt;
-        yya = ya * yf + yt;
-        xx = x * xf + xt;
-        yy = y * yf + yt - 5;
-        //console.log(xxa + ' ' + yya + ' ' + xx + ' ' + yy);
-        ctx.beginPath();
-        ctx.moveTo(xxa, yya);
-        ctx.lineTo(xx, yy);
-        ctx.stroke();
-        ctx.fillStyle = "#5050ff";
-        var curr = currentNode.type;
-        if (curr.startsWith('bracket-')) {
-            curr = curr.substring(8);
-        }
-        if (curr.startsWith('fu-')) {
-            curr = curr.substring(3);
-        }
-        // if (curr == 'leaf') {
-        //     curr = '';
-        // }
-        if (curr == 'plusminus') {
-            curr = '+/-';
-        }
-        if (curr == 'number') {
-            curr = 'num';
-        }
-        if (isInUnit(tree, currentNode)) {
-            // curr += '(U)';
-            ctx.fillStyle = "#e050e0";
-        }
-        ctx.fillText(curr, xx + 2, yy);
-        ctx.fillStyle = "#ff5050";
-        ctx.fillText(currentNode.content, xx + 2, yy + 15);
-    }
-};
-
-function paint_tree_recurse(currentNode, nodelist, xa, ya, x, y, ctx, factor, tree) {
-    paint_tree_callback(currentNode, xa, ya, x, y, ctx, tree);
-    var xa = x;
-    var ya = y;
-    // factor = factor * 0.75;
-    factor = factor * 0.7;
-    var cnchl = currentNode.children.length;
-    for (var i = 0, length = cnchl; i < length; i++) {
-        paint_tree_recurse(nodelist[currentNode.children[i]], nodelist, xa, ya, xa + factor * (i - 0.5 * (cnchl - 1)), y + 1, ctx, factor, tree);
-    }
-};
 
 function check_children(tree) {
     /// console.clear();

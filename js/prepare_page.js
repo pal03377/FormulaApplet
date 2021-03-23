@@ -13,7 +13,7 @@ class FA {
     this.index = '';
     this.id = '';
     this.formula_applet = '';
-    this.hasSolution = '';
+    this.hasSolution = 'undefined';
     this.solution = '';
     this.mqEditableField = '';
     this.mathField = '';
@@ -298,8 +298,11 @@ function editHandler(index) {
       console.log('editHandlerDebug() is undefined');
     } else {
       // see sample_task_and_parse.php
-      if (typeof document.getElementById('output_2') !== 'undefined') {
-        document.getElementById('output_2').innerHTML = mf_latex_for_parser + '<br>';
+      try {
+        var dummy = document.getElementById('output_2').innerHTML;
+        document.getElementById('output_2').innerHTML = mf_latex_for_parser;
+      } catch {
+        console.log('no output_2');
       }
       editHandlerDebug(mf_latex_for_parser);
     }
@@ -373,14 +376,8 @@ function mathQuillify() {
     FApp.precision = prec;
     FApp.formula_applet = this;
 
-
-
-
-
-
-    if (FApp.hasResultField) {
-      $(this).click(function (ev) {
-        // console.log('resultfield')
+    $(this).click(function (ev) {
+      if (FApp.hasResultField) {
         ev.stopPropagation(); //avoid body click
         $(".formula_applet").removeClass('selected');
         $(this).addClass('selected');
@@ -389,57 +386,26 @@ function mathQuillify() {
           $(this).nextAll("button.keyb_button:first").addClass('selected');
         }
         activeMathfieldIndex = FApp.index;
-         // if (typeof editHandlerDebug == 'undefined') {
-        //   console.log('editHandlerDebug() is undefined');
-        // } else {
-        //   // see sample_task_and_parse.php
-        //   // editHandlerDebug(FApp.mqEditable.latex());
-        //   editHandlerDebug(FApp.mqEditable.latex());
-        // }
-        try{
-          console.log(document.getElementById('output_1').innerHTML);
-          document.getElementById('output_1').innerHTML = this.inner_ori + '<br>';
-        } catch {
-          console.log('no output_1');
-        }
-        try{
-          console.log(document.getElementById('output_2').innerHTML);
-          document.getElementById('output_2').innerHTML = this.replaced + '<br>';
-        } catch {
-          console.log('no output_2');
-        }
-      });
-    } else {
-      $(this).click(function (ev) {
-        // console.log('no resultfield')
+      } else {
         var mf_container = MQ.StaticMath(FAList[index].formula_applet);
-        var mf_latex_for_parser = mf_container.latex();
-        // if (typeof editHandlerDebug == 'undefined') {
-        //   console.log('editHandlerDebug() is undefined');
-        // } else {
-        //   // see sample_task_and_parse.php
-        //   editHandlerDebug(mf_latex_for_parser);
-        // }
-        try{
-          console.log(document.getElementById('output_1').innerHTML);
-          document.getElementById('output_1').innerHTML = this.inner_ori + '<br>';
-        } catch {
-          console.log('no output_1');
-        }
-        try{
-          console.log(document.getElementById('output_2').innerHTML);
-          document.getElementById('output_2').innerHTML = this.replaced + '<br>';
-        } catch {
-          console.log('no output_2');
-        }
-     });
-    }
+        mf_latex_for_parser = mf_container.latex();
+        myTree = new tree();
+        myTree.leaf.content = mf_latex_for_parser;
+      }
 
-
-
-
-
-
+      try {
+        var dummy = document.getElementById('output_1').innerHTML;
+        document.getElementById('output_1').innerHTML = this.inner_ori + ' hasSolution=' + FApp.hasSolution;
+      } catch {
+        console.log(this.inner_ori + ' hasSolution=' + FApp.hasSolution);
+      }
+      try {
+        var dummy = document.getElementById('output_2').innerHTML;
+        document.getElementById('output_2').innerHTML = this.replaced + ' unit_auto=' + FApp.unit_auto;
+      } catch {
+        console.log(this.replaced + ' unit_auto=' + FApp.unit_auto);
+      }
+    })
     FAList[index] = FApp;
 
     if (isEditor) {
