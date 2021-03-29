@@ -301,10 +301,10 @@ function editHandler(index) {
       try {
         var dummy = document.getElementById('output_2').innerHTML;
         document.getElementById('output_2').innerHTML = mf_latex_for_parser;
+        editHandlerDebug(mf_latex_for_parser);
       } catch {
         console.log('no output_2');
       }
-      editHandlerDebug(mf_latex_for_parser);
     }
   }
 };
@@ -402,6 +402,10 @@ function mathQuillify() {
       try {
         var dummy = document.getElementById('output_2').innerHTML;
         document.getElementById('output_2').innerHTML = this.replaced + ' unit_auto=' + FApp.unit_auto;
+        var replace_back = this.replaced;
+        replace_back = replace_back.replace(/\\unit{/g, '\\textcolor{blue}{');
+        replace_back = replace_back.replace(/\\MathQuillMathField{}/g, '?');
+        editHandlerDebug(replace_back);
       } catch {
         console.log(this.replaced + ' unit_auto=' + FApp.unit_auto);
       }

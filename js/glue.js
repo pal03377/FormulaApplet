@@ -48,6 +48,7 @@ tasks['vkbd'] = new task(jsPath + 'vkbd.js');
 tasks['decode'] = new task(jsPath + 'decode.js');
 tasks['translate'] = new task(jsPath + 'translate.js');
 tasks['prepare_page'] = new task(jsPath + 'prepare_page.js');
+tasks['editor'] = new task(jsPath + 'editor.js');
 tasks['gf09css'] = new task(cssPath + 'gf09.css');
 tasks['vkbdcss'] = new task(cssPath + 'vkbd.css');
 tasks['tablecss'] = new task(cssPath + 'table.css');
