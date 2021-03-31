@@ -223,6 +223,7 @@ function load_libs() {
 
 function prepare_pg() {
     waitfor_mathquill_if_in_liblist_and_then_do(function () {
+        check_if_editor();
         //console.log('MathQuill ready (2)');
         // if (typeof prepare_page_exists !== 'undefined') {
         if (typeof prepare_page !== 'undefined') {
@@ -238,6 +239,22 @@ function prepare_pg() {
         }
     })
 }
+
+function check_if_editor(){
+    console.log('check_if_editor');
+    var editor = false;
+    $(".formula_applet").each(function () {
+         var id = $(this).attr('id').toLowerCase();
+         console.log(id);
+         if ( id == 'editor'){
+            editor = true;
+         }
+    });
+    if (editor){
+        var editor_task = tasks['editor'];
+        appendScriptOrStyleSheet(editor_task, false);
+    }
+ }
 
 // used in prepare_pg
 function waitfor_mathquill_if_in_liblist_and_then_do(mq_ready) {
