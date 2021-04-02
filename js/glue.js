@@ -114,7 +114,7 @@ function waitfor_jquery(cont) {
 
 function OK_Func(ev, task, isFallback) {
     var message = task.name + ' - Success loading ' + task.source;
-    if(isFallback){
+    if (isFallback) {
         console.log(tasks[task.name]);
         // message = task.name + ' - Success loading fallback - ' + tasks[task.name].fallback;
         message = task.name + ' - Success loading fallback';
@@ -218,12 +218,11 @@ function load_libs() {
         task.state = 'pending';
         appendScriptOrStyleSheetWithFallback(task);
     });
-    waitfor_num_of_libs_then_do(prepare_pg);
+    waitfor_num_of_libs_then_do(check_if_editor);
 }
 
 function prepare_pg() {
-    waitfor_mathquill_if_in_liblist_and_then_do(function () {
-        check_if_editor();
+   waitfor_mathquill_if_in_liblist_and_then_do(function () {
         //console.log('MathQuill ready (2)');
         // if (typeof prepare_page_exists !== 'undefined') {
         if (typeof prepare_page !== 'undefined') {
@@ -240,21 +239,24 @@ function prepare_pg() {
     })
 }
 
-function check_if_editor(){
+function check_if_editor() {
     console.log('check_if_editor');
     var editor = false;
     $(".formula_applet").each(function () {
-         var id = $(this).attr('id').toLowerCase();
-         console.log(id);
-         if ( id == 'editor'){
+        var id = $(this).attr('id').toLowerCase();
+        console.log(id);
+        if (id == 'editor') {
             editor = true;
-         }
+        }
     });
-    if (editor){
+    if (editor) {
         var editor_task = tasks['editor'];
         appendScriptOrStyleSheet(editor_task, false);
-    }
- }
+        waitfor_editor(prepare_pg);
+    } else {
+        prepare_pg();
+    };
+}
 
 // used in prepare_pg
 function waitfor_mathquill_if_in_liblist_and_then_do(mq_ready) {
@@ -292,27 +294,39 @@ function waitfor_hammer(hammer_ready) {
     }
 }
 
-function makeDraggable( object ){
-    // dragElement(document.getElementById("vkbd"));
-  // https://hammerjs.github.io/getting-started/
-  var mc = new Hammer(object);
+function waitfor_editor(editor_ready) {
+    if ((typeof prepend) === "undefined") {
+        console.log('waiting for editor...');
+        setTimeout(function () {
+            waitfor_editor(editor_ready)
+        }, 50);
+    } else {
+        console.log('editor ready......');
+        editor_ready();
+    }
+}
 
-  var left_temp = 1;
-  var top_temp = 1;
-  var left_start = 1;
-  var top_start = 1;
-  mc.on("panstart panmove", function (ev) {
-      if (ev.type == 'panstart') {
-          left_start = object.offsetLeft;
-          top_start = object.offsetTop;
-          left_temp = left_start;
-          top_temp = top_start;
-      }
-      if (ev.type == 'panmove') {
-          left_temp = left_start + ev.deltaX;
-          top_temp = top_start + ev.deltaY;
-          object.style.left = left_temp + 'px';
-          object.style.top = top_temp + 'px';
-      }
-  });
+function makeDraggable(object) {
+    // dragElement(document.getElementById("vkbd"));
+    // https://hammerjs.github.io/getting-started/
+    var mc = new Hammer(object);
+
+    var left_temp = 1;
+    var top_temp = 1;
+    var left_start = 1;
+    var top_start = 1;
+    mc.on("panstart panmove", function (ev) {
+        if (ev.type == 'panstart') {
+            left_start = object.offsetLeft;
+            top_start = object.offsetTop;
+            left_temp = left_start;
+            top_temp = top_start;
+        }
+        if (ev.type == 'panmove') {
+            left_temp = left_start + ev.deltaX;
+            top_temp = top_start + ev.deltaY;
+            object.style.left = left_temp + 'px';
+            object.style.top = top_temp + 'px';
+        }
+    });
 }
