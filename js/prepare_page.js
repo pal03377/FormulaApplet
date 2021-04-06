@@ -342,7 +342,7 @@ function mathQuillify() {
     temp = temp.replace(/\\mathrm/g, '');
     this.innerHTML = temp.replace(/\\unit{/g, '\\textcolor{blue}{');
     this.replaced = temp;
-    console.log('replaced=' + this.innerHTML);
+    // console.log('replaced=' + this.innerHTML);
   });
   $(".formula_applet").each(function () {
     var FApp = new FA();

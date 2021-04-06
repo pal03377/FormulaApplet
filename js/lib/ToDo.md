@@ -15,7 +15,8 @@
 * documentation.js
 * OOP
 * try/catch
-* Tests
+* Tests (https://developer.mozilla.org/en-US/docs/Web/API/console/assert)
+* Tests using browsers like FireFox, IE, Edge, and using OS like Linux, Android, iOS
 
 ## Nice to have
 * Transfer this list (ToDo.md) to Issues (GitHub)

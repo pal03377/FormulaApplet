@@ -67,7 +67,7 @@ for (var i = 0; i < keys.length; i++) {
 //     tasks[taskname].name = taskname;
 // })
 
-jq = new task("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
+var jq = new task("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 jq.fallback = libPath + "jquery-3.4.1.min.js";
 jq.name = 'jq';
 var try_counter_limit = 50;
@@ -244,7 +244,7 @@ function check_if_editor() {
     var editor = false;
     $(".formula_applet").each(function () {
         var id = $(this).attr('id').toLowerCase();
-        console.log(id);
+        // console.log(id);
         if (id == 'editor') {
             editor = true;
         }
@@ -306,27 +306,30 @@ function waitfor_editor(editor_ready) {
     }
 }
 
-function makeDraggable(object) {
-    // dragElement(document.getElementById("vkbd"));
-    // https://hammerjs.github.io/getting-started/
-    var mc = new Hammer(object);
+// function makeDraggable(object) {
+//     // dragElement(document.getElementById("vkbd"));
+//     // https://hammerjs.github.io/getting-started/
+//     var mc = new Hammer(object);
 
-    var left_temp = 1;
-    var top_temp = 1;
-    var left_start = 1;
-    var top_start = 1;
-    mc.on("panstart panmove", function (ev) {
-        if (ev.type == 'panstart') {
-            left_start = object.offsetLeft;
-            top_start = object.offsetTop;
-            left_temp = left_start;
-            top_temp = top_start;
-        }
-        if (ev.type == 'panmove') {
-            left_temp = left_start + ev.deltaX;
-            top_temp = top_start + ev.deltaY;
-            object.style.left = left_temp + 'px';
-            object.style.top = top_temp + 'px';
-        }
-    });
-}
+//     var left_temp = 1;
+//     var top_temp = 1;
+//     var left_start = 1;
+//     var top_start = 1;
+//     mc.on("panstart panmove", function (ev) {
+//         if (ev.type == 'panstart') {
+//             left_start = object.offsetLeft;
+//             top_start = object.offsetTop;
+//             left_temp = left_start;
+//             top_temp = top_start;
+//         }
+//         if (ev.type == 'panmove') {
+//             left_temp = left_start + ev.deltaX;
+//             top_temp = top_start + ev.deltaY;
+//             object.style.left = left_temp + 'px';
+//             object.style.top = top_temp + 'px';
+//         }
+//     });
+// }
+
+import { makeDraggable } from './makeDraggable.js';
+

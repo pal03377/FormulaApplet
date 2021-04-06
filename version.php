@@ -1,1 +1,1 @@
-<span class="version">Version 395</span>
+<span class="version">Version 396</span>
