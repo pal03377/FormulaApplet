@@ -4,7 +4,7 @@
 <title><?php echo $title; ?></title>
 <!-- ?php $docroot=$_SERVER['SCRIPT_NAME']; $gf09 = substr($docroot,0,strpos($docroot,'gf09')-1); ? -->
 <!-- ?php $header_dir = dirname($_SERVER['SCRIPT_NAME']); ? -->
-<script type="module" id='glue'></script>
+<script id='glue'></script>
 
 <?php 
 // https://stackoverflow.com/questions/7431313/php-getting-full-server-name-including-port-number-and-protocol#7431358
