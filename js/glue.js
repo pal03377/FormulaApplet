@@ -243,10 +243,14 @@ function check_if_editor() {
     console.log('check_if_editor');
     var editor = false;
     $(".formula_applet").each(function () {
-        var id = $(this).attr('id').toLowerCase();
-        // console.log(id);
-        if (id == 'editor') {
-            editor = true;
+        try{
+            var id = $(this).attr('id').toLowerCase();
+            // console.log(id);
+            if (id == 'editor') {
+                editor = true;
+            }
+        } catch {
+            // do nothing
         }
     });
     if (editor) {
