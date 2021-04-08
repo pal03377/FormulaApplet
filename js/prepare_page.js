@@ -1,4 +1,5 @@
 // This is prepare_page.js
+"use strict";
 
 var prepare_page_exists = true;
 var default_precision = 0.000001;
@@ -388,8 +389,8 @@ function mathQuillify() {
         activeMathfieldIndex = FApp.index;
       } else {
         var mf_container = MQ.StaticMath(FAList[index].formula_applet);
-        mf_latex_for_parser = mf_container.latex();
-        myTree = new tree();
+        var mf_latex_for_parser = mf_container.latex();
+        var myTree = new tree();
         myTree.leaf.content = mf_latex_for_parser;
       }
 

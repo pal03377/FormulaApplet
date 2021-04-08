@@ -5,6 +5,7 @@
  * https://code.tutsplus.com/articles/data-structures-with-javascript-tree--cms-23393 **/
 
 // old filename: parse_brackets5.part1.js
+"use strict";
 
 // node-Konstruktor
 function node() {
@@ -101,7 +102,7 @@ function create_node(type, content, tree) {
     var nodelist = tree.nodelist;
     var lof = tree.list_of_free || [];
     if (lof.length === 0) {
-        temp = new node();
+        var temp = new node();
         temp.type = type;
         temp.content = content;
         nodelist.push(temp);
@@ -118,23 +119,44 @@ function create_node(type, content, tree) {
     }
 }
 
-function tree() {
-    this.list_of_free = [];
-    this.nodelist = [];
-    this.nodelist[0] = new node();
-    this.root = this.nodelist[0];
-    this.root.type = 'root';
-    this.root.id = 0;
-    this.root.parent = -1;
-    this.leaf = new node();
-    this.leaf.type = 'leaf';
-    this.leaf.content = 'my first leaf';
-    this.nodelist[1] = this.leaf;
-    this.leaf.id = 1;
-    this.leaf.parent = this.root.id;
-    this.root.children = [this.leaf.id];
-    this.hasValue = false;
-    this.variable_value_list = [];
+// function tree() {
+//     this.list_of_free = [];
+//     this.nodelist = [];
+//     this.nodelist[0] = new node();
+//     this.root = this.nodelist[0];
+//     this.root.type = 'root';
+//     this.root.id = 0;
+//     this.root.parent = -1;
+//     this.leaf = new node();
+//     this.leaf.type = 'leaf';
+//     this.leaf.content = 'my first leaf';
+//     this.nodelist[1] = this.leaf;
+//     this.leaf.id = 1;
+//     this.leaf.parent = this.root.id;
+//     this.root.children = [this.leaf.id];
+//     this.hasValue = false;
+//     this.variable_value_list = [];
+// };
+
+class tree {
+    constructor() {
+        this.list_of_free = [];
+        this.nodelist = [];
+        this.nodelist[0] = new node();
+        this.root = this.nodelist[0];
+        this.root.type = 'root';
+        this.root.id = 0;
+        this.root.parent = -1;
+        this.leaf = new node();
+        this.leaf.type = 'leaf';
+        this.leaf.content = 'my first leaf';
+        this.nodelist[1] = this.leaf;
+        this.leaf.id = 1;
+        this.leaf.parent = this.root.id;
+        this.root.children = [this.leaf.id];
+        this.hasValue = false;
+        this.variable_value_list = [];
+    }
 };
 
 function copy(myTree) {
@@ -429,7 +451,12 @@ function find_corresponding_right_bracket(content, bra) {
         //        console.log('mass[' + i + ']=' + sum);
     }
     // return [left_pos, bra.length, right_pos, rightbra.length];
-    return {left_pos: left_pos, bra_length: bra.length, right_pos: right_pos, rightbra_length: rightbra.length};
+    return {
+        left_pos: left_pos,
+        bra_length: bra.length,
+        right_pos: right_pos,
+        rightbra_length: rightbra.length
+    };
 }
 
 function remove_operators(tree, kind_of_operators) {
@@ -601,130 +628,142 @@ let parsetree_counter = {
 }
 
 function parsetree_by_index(tree) {
-    // counter++;
-    parsetree_counter.inc();
+    // console.log('typeof tree=');
+    // console.log(typeof tree);
     var end_parse = false;
-    // console.log('switch to ' + parsetree_counter.getCounter());
-    // console.log(tree);
-    var message = '';
-    switch (parsetree_counter.getCounter()) {
-        case 1:
-            message = 'delete spaces and remove backslash at \min';
-            // console.clear();
-            tree.leaf.content = deleteSpaceAndRemoveBackslash(tree.leaf.content);
-            // console.log(tree.leaf.content)
-            tree.leaf.content = makeDegreeUnit(tree.leaf.content);
-            break;
-        case 2:
-            message = 'parse brackets';
-            result = parse_brackets(tree);
-            break;
-        case 3:
-            message = 'parse equal';
-            result = remove_operators(tree, 'equal');
-            message = 'parse plusminus';
-            result = remove_operators(tree, 'plusminus');
-            break;
-        case 4:
-            message = 'parse timesdivided';
-            result = remove_operators(tree, 'timesdivided');
-            break;
-        case 5:
-            message = 'unify subscript and exponent (part 1)';
-            unify_sub_exponent(tree);
-            break;
-        case 6:
-            message = 'parse integral';
-            parse_integral(tree);
-            break;
-        case 7:
-            message = 'parse square root / nth root';
-            parse_nthroot(tree);
-            parse_sqrt(tree);
-            break;
-        case 8:
-            message = 'parse log_base';
-            parse_log_lim(tree, 'log'); //log
-            // check_children(tree);
-            break;
-        case 9:
-            message = 'parse lim';
-            parse_log_lim(tree, 'lim'); //lim
-            // check_children(tree);
-            break;
-        case 10:
-            message = 'parse functions';
-            parse_function(tree);
-            // check_children(tree);
-            break;
-        case 11:
-            message = 'parse fractions';
-            parse_frac(tree);
-            break;
-        case 12:
-            message = 'parse textcolor (unit)';
-            //check_children(tree);
-            parse_textcolor(tree);
-            //check_children(tree);
-            break;
-        case 13:
-            message = 'delete single § nodes'
-            var list_of_free = delete_single_nodes(tree);
-            break;
-        case 14:
-            message = 'parse greek';
-            parse_greek(tree);
-            break;
-        case 15:
-            message = 'parse numbers';
-            parse_numbers(tree);
-            break;
-        case 16:
-            message = 'delete single § nodes';
-            var list_of_free = delete_single_nodes(tree);
-            break;
-        case 17:
-            message = 'parse mixed numbers ';
-            parse_mixed_numbers(tree);
-            break;
-        case 18:
-            message = 'unify subscript (part 2) '
-            unify_sub_or_power(tree, false);
-            break;
-        case 19:
-            message = 'parse subscript'
-            parse_sub_power(tree, false);
-            break;
-        case 20:
-            message = 'unify power (part 2) '
-            unify_sub_or_power(tree, true);
-            break;
-        case 21:
-            message = 'parse power'
-            parse_sub_power(tree, true);
-            break;
-        case 22:
-            message = 'delete single § nodes'
-            var list_of_free = delete_single_nodes(tree);
-            break;
-        case 23:
-            message = 'parse unit'
-            parse_unit(tree);
-            //check_children(tree);
-            break;
-        case 24:
-            message = 'parse factors';
-            parse_factors(tree);
-            //check_children(tree);
-            break;
-        case 25:
-            message = 'delete single § nodes';
-            var list_of_free = delete_single_nodes(tree);
-            break;
-        default:
-            message = 'end of parse';
-            end_parse = true;
-    };
+
+    if (typeof tree !== 'undefined') {
+
+        // counter++;
+        parsetree_counter.inc();
+        // console.log('switch to ' + parsetree_counter.getCounter());
+        // console.log(tree);
+        var message = '';
+        var result = '';
+        // result seems to be useless
+        switch (parsetree_counter.getCounter()) {
+            case 1:
+                message = 'delete spaces and remove backslash at \min';
+                // console.clear();
+                tree.leaf.content = deleteSpaceAndRemoveBackslash(tree.leaf.content);
+                // console.log(tree.leaf.content)
+                tree.leaf.content = makeDegreeUnit(tree.leaf.content);
+                break;
+            case 2:
+                message = 'parse brackets';
+                result = parse_brackets(tree);
+                break;
+            case 3:
+                message = 'parse equal';
+                result = remove_operators(tree, 'equal');
+                message = 'parse plusminus';
+                result = remove_operators(tree, 'plusminus');
+                break;
+            case 4:
+                message = 'parse timesdivided';
+                result = remove_operators(tree, 'timesdivided');
+                break;
+            case 5:
+                message = 'unify subscript and exponent (part 1)';
+                unify_sub_exponent(tree);
+                break;
+            case 6:
+                message = 'parse integral';
+                parse_integral(tree);
+                break;
+            case 7:
+                message = 'parse square root / nth root';
+                parse_nthroot(tree);
+                parse_sqrt(tree);
+                break;
+            case 8:
+                message = 'parse log_base';
+                parse_log_lim(tree, 'log'); //log
+                // check_children(tree);
+                break;
+            case 9:
+                message = 'parse lim';
+                parse_log_lim(tree, 'lim'); //lim
+                // check_children(tree);
+                break;
+            case 10:
+                message = 'parse functions';
+                parse_function(tree);
+                // check_children(tree);
+                break;
+            case 11:
+                message = 'parse fractions';
+                parse_frac(tree);
+                break;
+            case 12:
+                message = 'parse textcolor (unit)';
+                //check_children(tree);
+                parse_textcolor(tree);
+                //check_children(tree);
+                break;
+            case 13:
+                message = 'delete single § nodes'
+                var list_of_free = delete_single_nodes(tree);
+                break;
+            case 14:
+                message = 'parse greek';
+                parse_greek(tree);
+                break;
+            case 15:
+                message = 'parse numbers';
+                parse_numbers(tree);
+                break;
+            case 16:
+                message = 'delete single § nodes';
+                var list_of_free = delete_single_nodes(tree);
+                break;
+            case 17:
+                message = 'parse mixed numbers ';
+                parse_mixed_numbers(tree);
+                break;
+            case 18:
+                message = 'unify subscript (part 2) '
+                unify_sub_or_power(tree, false);
+                break;
+            case 19:
+                message = 'parse subscript'
+                parse_sub_power(tree, false);
+                break;
+            case 20:
+                message = 'unify power (part 2) '
+                unify_sub_or_power(tree, true);
+                break;
+            case 21:
+                message = 'parse power'
+                parse_sub_power(tree, true);
+                break;
+            case 22:
+                message = 'delete single § nodes'
+                var list_of_free = delete_single_nodes(tree);
+                break;
+            case 23:
+                message = 'parse unit'
+                parse_unit(tree);
+                //check_children(tree);
+                break;
+            case 24:
+                message = 'parse factors';
+                parse_factors(tree);
+                //check_children(tree);
+                break;
+            case 25:
+                message = 'delete single § nodes';
+                var list_of_free = delete_single_nodes(tree);
+                break;
+            default:
+                message = 'end of parse';
+                end_parse = true;
+        };
+    } else {
+        message = 'tree undefined';
+        end_parse = true;
+    }
+
     // console.log('back from ' + parsetree_counter.getCounter());
 
     // console.log(' ');
@@ -736,7 +775,10 @@ function parsetree_by_index(tree) {
     // }
 
     // check_children(tree);
-    return {message: message, end_parse: end_parse};
+    return {
+        message: message,
+        end_parse: end_parse
+    };
 }
 
 function parse(texstring) {
@@ -746,11 +788,13 @@ function parse(texstring) {
     var end_parse = false;
     parsetree_counter.setCounter(0);
     while (!end_parse) {
+        // if (typeof myTree !== 'undefined') {
         var parse_result = parsetree_by_index(myTree);
         var message = parse_result.message;
         // console.log(parsetree_counter.getCounter() + ' parse: ' + message);
         end_parse = parse_result.end_parse;
         //paint_tree(tree, canvas, message);
+        // }
     }
     return myTree;
 }
@@ -764,7 +808,7 @@ function deleteSpaceAndRemoveBackslash(text) {
     temp = temp.replace(/\\max/g, 'max');
     temp = temp.replace(/\\cdot/g, '\\cdot '); // no space -> one space, but one space -> two spaces
     temp = temp.replace(/\\cdot  /g, '\\cdot '); // two spaces -> one space
-   
+
     // console.log('temp=' + temp);
     // temp = temp.replace(/\\Ohm/g, '\\Omega'); // transform unit Ohm to greek Omega. Done in prepare_page.js
     //console.log(temp);
@@ -874,7 +918,7 @@ function makeDegreeUnit(text) {
     }
     // var unit = "\\unit{";
     var unit = "\\textcolor{blue}{";
-    temp = text_with_brackets_and_plus.replace(/'/g, unit + "'}");
+    var temp = text_with_brackets_and_plus.replace(/'/g, unit + "'}");
     temp = temp.replace(/°/g, unit + "°}");
     temp = temp.replace(/↟/g, unit + "''}");
     // console.log('makeDegreeUnit has result ' + temp);
@@ -926,7 +970,7 @@ function unify_sub_exponent(tree) {
                     // left_count++;
 
                     if (exponent_or_subscript !== '§') {
-                        new_node = create_node('leaf', exponent_or_subscript, tree);
+                        var new_node = create_node('leaf', exponent_or_subscript, tree);
                         new_node.parent = node.id;
                         node.children.splice(left_count, 0, new_node.id);
                         // for (var i = 0; i < node.children.length; i++) {
@@ -944,7 +988,7 @@ function parse_integral(tree) {
     // for (var i = 0; i < list_of_nodes.length; i++) {
     // does not fit because length of list changes
     withEachLeaf(tree, function (node) {
-        content = node.content;
+        var content = node.content;
         var needle = '\\int_§^§';
         var pos = content.indexOf(needle);
         if (pos > -1) {
@@ -1023,7 +1067,7 @@ function parse_radix(tree, nthroot) {
     withEachLeaf(tree, function (node) {
         var stop = false;
         do {
-            pos = node.content.indexOf(needle);
+            var pos = node.content.indexOf(needle);
             if (pos > -1) {
                 var left = node.content.substring(0, pos);
                 var right = node.content.substring(pos + needle.length);
@@ -1132,7 +1176,7 @@ function parse_function(tree) {
             var fu = function_list()[k];
             var type = 'fu-' + fu;
             fu = '\\' + fu;
-            pos = node.content.indexOf(fu);
+            var pos = node.content.indexOf(fu);
             if (pos > -1) {
                 var pow = '';
                 var leftpart = node.content.substring(0, pos);
@@ -1203,11 +1247,11 @@ function parse_function(tree) {
 }
 
 function parse_frac(tree) {
-    needle = '\\frac§§';
+    const needle = '\\frac§§';
     withEachLeaf(tree, function (node) {
         var stop = false;
         do {
-            pos = node.content.indexOf(needle);
+            let pos = node.content.indexOf(needle);
             if (pos > -1) {
                 var left = node.content.substring(0, pos);
                 var right = node.content.substring(pos + needle.length);
@@ -1242,11 +1286,11 @@ function parse_frac(tree) {
 }
 
 function parse_textcolor(tree) {
-    needle = '\\textcolor§§';
+    const needle = '\\textcolor§§';
     withEachLeaf(tree, function (node) {
         var stop = false;
         do {
-            pos = node.content.indexOf(needle);
+            let pos = node.content.indexOf(needle);
             if (pos > -1) {
                 var left = node.content.substring(0, pos);
                 var right = node.content.substring(pos + needle.length);
@@ -1286,7 +1330,7 @@ function parse_textcolor(tree) {
 }
 
 function greek_list() {
-    result = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta"];
+    let result = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta"];
     result = result.concat(["iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi"]);
     result = result.concat(["rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega"]);
     result = result.concat(["varepsilon", "vartheta", "varkappa", "varpi", "varrho", "varsigma", "varphi"]);
@@ -1375,7 +1419,7 @@ function parse_mixed_numbers(tree) {
                     //TODO try/catch
                     if (nom.type == 'number' && denom.type == 'number') {
                         isMixedNumber = true;
-                        mixed_num = create_node('mixed_number', '', tree);
+                        let mixed_num = create_node('mixed_number', '', tree);
                         // leaf node has one child less and is parent of mixed_num
                         node.content = node.content.substr(1);
                         node.children.shift();
@@ -1420,7 +1464,7 @@ function unify_sub_or_power(tree, power) {
                 }
                 // console.log(leftpart + ' | ' + base + needle + ' | ' + rest + ' left_count=' + left_count);
                 if (base !== '§') {
-                    new_node = create_node('leaf', base, tree);
+                    let new_node = create_node('leaf', base, tree);
                     new_node.parent = node.id;
                     node.children.splice(left_count, 0, new_node.id);
                 }
@@ -1752,7 +1796,7 @@ function val(node, tree) {
         }
         if (node.type == 'fu-log') {
             // console.log(ch0 + ' ^ ' + ch1);
-            node.value = Math.log(Number(ch1))/Math.log(Number(ch0));
+            node.value = Math.log(Number(ch1)) / Math.log(Number(ch0));
         }
         if (node.type.startsWith('fu-') && node.content == 'power') {
             var fu = node.type.substr(3)
@@ -1847,7 +1891,7 @@ function fillWithValues(tree_var, list) {
     var var_value_list = [];
     // console.clear();
     // console.log('fill leafs & greek with random values');
-    hasValue = true;
+    let hasValue = true;
     tree_var.withEachNode = function (node) {
         if (node.type == 'integral') hasValue = false;
         if (node.type == 'lim') hasValue = false;
@@ -1997,5 +2041,8 @@ function checkScientificNotation(texstring) {
     }
     // console.log(mantissa + '|' + left_ok + '|' + exponent + '|' + right_ok);
     isScientific = (left_ok && right_ok);
-    return {isScientific: isScientific, repl: repl};
+    return {
+        isScientific: isScientific,
+        repl: repl
+    };
 }

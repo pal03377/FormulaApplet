@@ -1,4 +1,5 @@
 // editor.js
+"use strict";
 console.log('editor.js');
 
 function prepend(after_prepend) {
@@ -30,6 +31,7 @@ function prepend(after_prepend) {
       ed.after(unitbuttons);
       ed.after('<button type="button" class="tr de sif problemeditor" id="set-input-d">Eingabe-Feld setzen</button><button type="button" class="tr en sif problemeditor" id="set-input-e">Set input field</button>');
       var prepend_uses = $('.prepend_uses#p_u');
+      var license_link;
       if (isWiki) {
         license_link = 'https://github.com/gro58/FormulaApplet/blob/master/js/lib/ToDo.md';
       } else {

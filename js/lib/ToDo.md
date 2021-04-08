@@ -16,6 +16,7 @@
 * OOP
 * try/catch
 * Tests (https://developer.mozilla.org/en-US/docs/Web/API/console/assert)
+* Test using tree2tex.js
 * Tests using browsers like FireFox, IE, Edge, and using OS like Linux, Android, iOS
 
 ## Nice to have

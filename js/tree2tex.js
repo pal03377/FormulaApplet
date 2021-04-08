@@ -1,3 +1,6 @@
+// tree2tex.js
+"use strict"; 
+
 function tree2TEX(tree) {
     var depth = 0;
     return recurse(tree.root);

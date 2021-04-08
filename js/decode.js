@@ -1,4 +1,6 @@
 // This is file decode.js
+"use strict"
+
 var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 var codes_0to9 = 'eighqDNYAL';
 var n = characters.length;
