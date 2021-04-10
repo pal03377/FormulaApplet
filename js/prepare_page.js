@@ -236,7 +236,7 @@ function make_auto_unitstring(mf) {
     var middle = rest.substring(1, temp[2]);
     var right = rest.substr(temp[2] + 1);
     // console.log(left + '|' + middle + '|' + right);
-    var sci = checkScientificNotation(left);
+    var sci = checkScientificNotation(left).isScientific;
     if (sci == true && middle.length > 0) {
       // expand the unit tag at the right side
       var new_latex = left + unit_tag + middle + right + '}';
@@ -254,7 +254,7 @@ function make_auto_unitstring(mf) {
     var beginning = '';
     for (var i = str.length; i >= 0; i--) {
       beginning = str.substr(0, i);
-      var sci = checkScientificNotation(beginning);
+      var sci = checkScientificNotation(beginning).isScientific;
       // console.log(beginning + ' sci=' + sci);
       if (sci == true) {
         i = -1;

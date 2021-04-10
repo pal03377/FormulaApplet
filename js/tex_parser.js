@@ -2280,5 +2280,5 @@ function checkScientificNotation(texstring) {
     }
     // console.log(mantissa + '|' + left_ok + '|' + exponent + '|' + right_ok);
     isScientific = (left_ok && right_ok);
-    return isScientific;
+    return {isScientific: isScientific, mantissa: mantissa, exponent: exponent};
 }
