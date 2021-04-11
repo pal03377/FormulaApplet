@@ -6,6 +6,7 @@
 
 // old filename: parse_brackets5.part1.js
 
+"use strict";
 // node-Konstruktor
 function node() {
     this.id = -1;
