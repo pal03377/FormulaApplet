@@ -88,7 +88,9 @@ keys['function'] = [
         ['degree', '°'],
         ['minute', '\''],
         ['second', '\'\''],
-        ['set_unit', 'Unit', '#set_unit'],
+        ['set_unit', '<span class="tr de kunit">Einheit</span><span class="tr en kunit">Unit</span>', '#set_unit'],
+        // ['set_unit-en', 'Unit', '#set_unit'],
+        // ['set_unit-de', 'Einheit', '#set_unit'],
         ['pi', '&pi;', '\\pi ']
     ],
     // row 1
@@ -100,8 +102,8 @@ keys['function'] = [
         ['abs', '\u2502\u2b1a\u2502', '| |'],
         ['subscript', '\u2b1a<sub style="font-size: 85%">\u2b1a</sub>'],
         // ['nth_root', nth_root, '#nthroot'],
-        ['space', 'Space', '\\ '],
-        ['erase_unit', 'Clear<br>Unit', '#erase_unit'],
+        ['space', '<span class="tr de kspace">Leer</span><span class="tr en kspace">Space</span>', '\\ '],
+        ['erase_unit', '<span class="tr de kclru">Einheit<br>l&ouml;schen</span><span class="tr en kclru">Clear<br>Unit</span>', '#erase_unit'],
         ['infinity', '&infin;', '\\infinity ']
     ],
     // row 2
@@ -427,6 +429,12 @@ function create_table(table_id) {
             if (key[0].startsWith('smallgap')) {
                 cl += ' smallgap';
             }
+            // if (key[0].startsWith('set_unit-')) {
+            //     lang= key[0].substr(9,2);
+            //     console.log('key lang=' + lang);
+            //     cl = 'tr ' + lang + ' kunit ' + cl;
+            //     console.log(cl);
+            // }
             result += '<td class="' + cl + '" cmd="';
             result += key[2] + '">' + key[1] + '</td>\r\n';
             // console.log('vkbd-' + key[0] + ' ' + key[1] + ' cmd-' + key[2]);

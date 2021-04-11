@@ -1,58 +1,51 @@
 # *ToDo* #
 
 ## Coding
-* <del>Comment console.logs</del>
-* \Ohm -> \Omega
+* <del>Update files of directory 'development' according to changes (/lib, /css)</del>
+* Serious bug in tex_parser.php: $ in TEX string, doubling of TEX string
 * Render \cdot as times(cross) if lang=en
-* Rende , as . if lang=en
-* <del>www.formelapplet.de (bootstrap) shall use glue.js too</del>
-*<del> unit=auto causes bugs with cursor movement.</del>
-* <del>exp(x) = e^x</del>
+* Render , as . if lang=en
 * e for Exponent interferes with e for Euler's number.
-* <del>"Missing cursor" bug at www.formelapplet.de. gf09 is ok.</del>
 * Move smaller parts of code (e.g. problem editor) into separate file
     + Divide prepare_page into smaller parts
     * prepare_page needs vkbd
     * vkbd needs hammer
     * Divide tex_parser into smaller parts
+* use strict
+* documentation.js
 * OOP
 * try/catch
-* Tests
+* Tests (https://developer.mozilla.org/en-US/docs/Web/API/console/assert)
+* Tests using browsers like FireFox, IE, Edge, and using OS like Linux, Android, iOS
 
 ## Nice to have
 * Transfer this list (ToDo.md) to Issues (GitHub)
 * Integral, Limit (VKBD)
-* Triviale Lösungen sperren
+* Block trivial solutions
 * condition = ...
-* Naturkonstanten c, e,..
+* Natural constants like e, c,...
 * Node, modules
 * Contact Karl Kirst
 * Hammer as jQuery plugin
 * (TypeScript)
 * (Legacy: decode Java Applet Parameters)
-* MediaWiki WYSIWYG Editor (expectet to be difficult)
+* MediaWiki WYSIWYG Editor (expected to be difficult)
 * asinh, acosh, atanh
 * Complex Numbers
 * Vectors
-* Check after pressing Enter
+* Check only after pressing Enter
 ## Online
-* MediaWiki Extension 'FormulaApplet' neu anlegen, FormulaApplet.php, FormulaApplet.body.php, /i18n
-* (Verwendung von formelapplet.zum.de klären -> Jan Böhme/UweSchützenmeister)
+* Create new MediaWiki Extension named 'FormulaApplet', containing FormulaApplet.php, FormulaApplet.body.php, /i18n
+* <del>Verwendung von formelapplet.zum.de klären -> Jan Böhme/UweSchützenmeister</del>
 ## GitHub
 * github gf09 private -> public
-* Problem Editor (or better at www.formelapplet.de?)
+* <del>Problem Editor (or better at www.formelapplet.de?)</del> (HowTo missing)
 * GitHub Wiki?
-* Meaning of different jsfiles
+* Meaning of different js files
 * Instuction: Install with PHP
 * License (2nd)
 * ToDo (this file)
-* <del>simple examples</del>
-## GIT Cheat sheet
-* Terminal, wechseln nach e:\gut\gf09
-* git status
-* git log --graph --decorate
-* git remote show origin
-
+## [GIT Cheat Sheet](../../git-cheat.php "Spickzettel für GIT")
 ## www.formelapplet.de
 * Problem Editor
 * GWK

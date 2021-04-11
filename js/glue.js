@@ -42,10 +42,13 @@ tasks['bootstrapcss'] = new task('https://maxcdn.bootstrapcdn.com/bootstrap/4.5.
 tasks['bootstrapcss'].fallback = css_bootstrapPath + 'bootstrap.min.css';
 // without fallback
 tasks['tex_parser'] = new task(jsPath + 'tex_parser.js');
+tasks['tree_canvas'] = new task(jsPath + 'tree_canvas.js');
+tasks['tree2tex'] = new task(jsPath + 'tree2tex.js');
 tasks['vkbd'] = new task(jsPath + 'vkbd.js');
 tasks['decode'] = new task(jsPath + 'decode.js');
 tasks['translate'] = new task(jsPath + 'translate.js');
 tasks['prepare_page'] = new task(jsPath + 'prepare_page.js');
+tasks['editor'] = new task(jsPath + 'editor.js');
 tasks['gf09css'] = new task(cssPath + 'gf09.css');
 tasks['vkbdcss'] = new task(cssPath + 'vkbd.css');
 tasks['tablecss'] = new task(cssPath + 'table.css');
@@ -64,7 +67,7 @@ for (var i = 0; i < keys.length; i++) {
 //     tasks[taskname].name = taskname;
 // })
 
-jq = new task("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
+var jq = new task("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
 jq.fallback = libPath + "jquery-3.4.1.min.js";
 jq.name = 'jq';
 var try_counter_limit = 50;
@@ -84,11 +87,12 @@ if (window.jQuery) {
 }
 // Done with jQuery.
 
-function jquery_timeout(){
+function jquery_timeout() {
     console.log('Load of jQuery: timeout. Stop of loading');
 }
 
 var try_counter = 0;
+
 function waitfor_jquery(cont) {
     //TODO replace by use of script.onerror
     // console.log( 'window.jQuery =' + window.jQuery);
@@ -108,14 +112,19 @@ function waitfor_jquery(cont) {
     }
 }
 
-function OK_Func(ev, task) {
-    var message = task.name + ' - Success loading ';
-    if(task.name !== 'jq'){
+function OK_Func(ev, task, isFallback) {
+    var message = task.name + ' - Success loading ' + task.source;
+    if (isFallback) {
+        console.log(tasks[task.name]);
+        // message = task.name + ' - Success loading fallback - ' + tasks[task.name].fallback;
+        message = task.name + ' - Success loading fallback';
+    }
+    if (task.name !== 'jq') {
         number_of_loaded_libs++;
-        message += '#=' + number_of_loaded_libs;
+        message += ' (' + number_of_loaded_libs + ')';
     }
     console.log(message);
-     task.state = 'OK';
+    task.state = 'OK';
 }
 
 // ***************************** load CSS or JS *********************************** 
@@ -146,10 +155,10 @@ function appendScriptOrStyleSheet(task, isFallback) {
     // There are several events for cross browser compatibility.
     // https://www.w3schools.com/tags/ev_onload.asp
     elem.onreadystatechange = function (ev) {
-        OK_Func(ev, task);
+        OK_Func(ev, task, isFallback);
     };
     elem.onload = function (ev) {
-        OK_Func(ev, task);
+        OK_Func(ev, task, isFallback);
     };
     elem.onerror = function (ev) {
         // console.log(ev);
@@ -209,11 +218,11 @@ function load_libs() {
         task.state = 'pending';
         appendScriptOrStyleSheetWithFallback(task);
     });
-    waitfor_num_of_libs_then_do(prepare_pg);
+    waitfor_num_of_libs_then_do(check_if_editor);
 }
 
 function prepare_pg() {
-    waitfor_mathquill_if_in_liblist_and_then_do(function () {
+   waitfor_mathquill_if_in_liblist_and_then_do(function () {
         //console.log('MathQuill ready (2)');
         // if (typeof prepare_page_exists !== 'undefined') {
         if (typeof prepare_page !== 'undefined') {
@@ -228,6 +237,25 @@ function prepare_pg() {
             //console.log('init undefined');
         }
     })
+}
+
+function check_if_editor() {
+    console.log('check_if_editor');
+    var editor = false;
+    $(".formula_applet").each(function () {
+        var id = $(this).attr('id').toLowerCase();
+        // console.log(id);
+        if (id == 'editor') {
+            editor = true;
+        }
+    });
+    if (editor) {
+        var editor_task = tasks['editor'];
+        appendScriptOrStyleSheet(editor_task, false);
+        waitfor_editor(prepare_pg);
+    } else {
+        prepare_pg();
+    };
 }
 
 // used in prepare_pg
@@ -252,4 +280,53 @@ function waitfor_mathquill_and_if_ready_then_do(mq_ready2) {
         //console.log('MathQuill ready (1)');
         mq_ready2();
     }
+}
+
+function waitfor_hammer(hammer_ready) {
+    if ((typeof Hammer) === "undefined") {
+        console.log('waiting for Hammer...');
+        setTimeout(function () {
+            waitfor_hammer(hammer_ready)
+        }, 50);
+    } else {
+        console.log('Hammer ready......');
+        hammer_ready();
+    }
+}
+
+function waitfor_editor(editor_ready) {
+    if ((typeof prepend) === "undefined") {
+        console.log('waiting for editor...');
+        setTimeout(function () {
+            waitfor_editor(editor_ready)
+        }, 50);
+    } else {
+        console.log('editor ready......');
+        editor_ready();
+    }
+}
+
+function makeDraggable(object) {
+    // dragElement(document.getElementById("vkbd"));
+    // https://hammerjs.github.io/getting-started/
+    var mc = new Hammer(object);
+
+    var left_temp = 1;
+    var top_temp = 1;
+    var left_start = 1;
+    var top_start = 1;
+    mc.on("panstart panmove", function (ev) {
+        if (ev.type == 'panstart') {
+            left_start = object.offsetLeft;
+            top_start = object.offsetTop;
+            left_temp = left_start;
+            top_temp = top_start;
+        }
+        if (ev.type == 'panmove') {
+            left_temp = left_start + ev.deltaX;
+            top_temp = top_start + ev.deltaY;
+            object.style.left = left_temp + 'px';
+            object.style.top = top_temp + 'px';
+        }
+    });
 }

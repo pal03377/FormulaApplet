@@ -57,7 +57,8 @@ do {
 
 <script>    
     var isWiki = false;
-    var liblist=<?php echo $liblist; ?>;
+    var liblist_string=<?php echo $liblist; ?>;
+    var liblist = liblist_string.split(' ');
     // var gf09_path = "<!-- ?php echo $gf09; ? -->" + "/gf09/";
     // console.log('Header: gf09_path=' + gf09_path);
     var gf09_path = "<?php echo $gf09; ?>";

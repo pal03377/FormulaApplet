@@ -1,5 +1,5 @@
 <?php $title = 'Sample Tasks'; $header='<span class="tr de samples">Aufgaben-Beispiele</span><span class="tr en samples">Sample Tasks</span>';
-$liblist = "[ 'hammer', 'decode', 'translate', 'prepare_page', 'mathquill', 'tex_parser', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss']";
+$liblist = "'hammer decode translate prepare_page mathquill tex_parser mathquillcss gf09css vkbd vkbdcss'";
 $prefix="./"; 
 include_once( $prefix . 'header.php' ); 
 ?>
@@ -7,8 +7,8 @@ include_once( $prefix . 'header.php' );
 <script>
 function init(){
   // console.log('init... (empty)');
-  initTranslation();
-}
+  // initTranslation();
+ }
 </script>
 
 <!-- </head> -->
@@ -19,7 +19,10 @@ function init(){
 <h2 class='tr en later'>for later use in MediaWiki</h2>
 <!-- <p><a href='https://github.com/gro58/gf09/blob/master/js/lib/ToDo.md'>ToDo</a> (github)</p>
 <p><a href='./js/lib/ToDo.md'>ToDo</a> (local file)</p> -->
-<p><a href='./todo.php'>ToDo</a></p>
+<p><a href='./development/development.php'>Development</a></p>
+<p><a href='./tests/tests.php'>Tests</a></p>
+<p><a href='./sample_task_and_parse.php'>sample_task_and_parse</a></p>
+<p><a href='./todo.php'>ToDo</a> <a href='./git-cheat.php'>GIT Cheat Sheet</a></p>
 
 <p class="formula_applet" id="no_res">\int^x_{3} t^2\ \mathrm{dt} = \frac{x^3}{3} - 9</p> Integral.<br />
 <p class="formula_applet" id="no_bnd">\int_2^5\ {\sin} x\ \mathrm{d}x</p><br>
@@ -28,11 +31,12 @@ function init(){
 <p class="formula_applet" id="definition_set" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} = {{result}}</p><span class='padding'><span class='tr en oneone'>One variable, one definition set.</span><span class='tr de oneone'>Eine Variable, eine Definitionsmenge.</span></span><br />
 <!-- <p class="formula_applet" id="definition_set_more_than_numofvar" def="x > 0 && y < 5">\frac{\sqrt{x^3}}{\sqrt{x}} = {{result}}</p><span class='padding'><span class='tr en moredef'>Number of definition sets exceeds number of variables.</span><span class='tr de moredef'>Mehr Definitionsmengen als Variablen.</span></span><br /> -->
 <!-- <p class="formula_applet" id="definition_set_less_than_numofvar" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} + y \cdot z = {{result}}</p><span class='padding'><span class='tr en morevars'>Number of variables exceeds number of definition sets.</span><span class='tr de morevars'>Mehr Variablen als Definitionsmengen.</span></span><br /> -->
-<p class="formula_applet" id="light-house" mode="physics" data-b64='gOmkT'>s=\sqrt{ h^2 + {{result}} }</p><br />
+<p class="formula_applet" id="light-house" data-b64='gOmkT'>s=\sqrt{ h^2 + {{result}} }</p><br />
 <!-- <p class="formula_applet" id="binom_01">(2u + 7v)^2 = {{result}}</p><br /> -->
-<p class="formula_applet" id="binom_02" mode = 'physics'>(2u + 7v)^2 = 4u^2 + 28uv + {{result}}</p><br />
-<p class="formula_applet" id="fraction" unit=auto>\frac{13t^2 - 5t}{t} = {{result}}</p><br />
-<p class="formula_applet" id="BliBlaBlu" data-b64="N2gMy">17x+4x={{result}}</p><br />
+<p class="formula_applet" id="binom_02">(2u + 7v)^2 = 4u^2 + 28uv + {{result}}</p><br />
+<!-- <p class="formula_applet" id="fraction" unit=auto>\frac{13t^2 - 5t}{t} = {{result}}</p><br /> -->
+<p class="formula_applet" id="fraction">\frac{13t^2 - 5t}{t} = {{result}}</p><br />
+<p class="formula_applet" id="multof_x" data-b64="N2gMy">17x+4x={{result}}</p><br />
 <p class="formula_applet" id="CheckIfEqual">{{result}} = 0</p><br />
 <!-- <p class="formula_applet" id="CheckIfTrue">{{result}}</p><br /> -->
 <hr>

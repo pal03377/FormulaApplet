@@ -1,6 +1,6 @@
 <?php 
   $title='Formula Applet (gf09) ';
-  $liblist = "[ 'gf09css', 'translate' ]";
+  $liblist = "'gf09css translate'";
 ?>
 <?php $prefix="./"; include_once( $prefix . 'header.php' ); ?>
 <!-- <meta http-equiv="refresh" content="1; URL=./hiltrud.php"> -->
@@ -17,6 +17,7 @@
     <p><a href='sample_task.php'>Sample task</a> part 1 - for later use in MediaWiki</p>
     <p><a href='sample_task2.php'>Sample task</a> part 2 - for later use in MediaWiki</p>
     <p><a href='problem_editor.php'>Problem Editor</a> for later use in MediaWiki</p>
+    <!-- <p><a href='tex_parse_only_one.php'>parse only one</a></p> -->
     <p><a href='todo.php'>ToDo</a></p>
     <hr>
     <p><a href='./development/development.php'>Development</a></p>
