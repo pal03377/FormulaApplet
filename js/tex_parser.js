@@ -1997,5 +1997,9 @@ function checkScientificNotation(texstring) {
     }
     // console.log(mantissa + '|' + left_ok + '|' + exponent + '|' + right_ok);
     isScientific = (left_ok && right_ok);
+<<<<<<< HEAD
+    return {isScientific: isScientific, mantissa: mantissa, exponent: exponent};
+=======
     return {isScientific: isScientific, repl: repl};
+>>>>>>> 031ab7062a52d950cd891b4721f08c32036efd9f
 }
