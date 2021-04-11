@@ -1,11 +1,15 @@
-var squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
-var nth_root = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
-var left = ['left', '<span style="font-size: 130%">\u25c5</span>', '#Left'];
-var right = ['right', '<span style="font-size: 130%">\u25bb</span>', '#Right'];
+// vkbd.js
+// vkbd = Virtual KeyBoarD
+"use strict";
+
+const squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
+const nth_root = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
+const left = ['left', '<span style="font-size: 130%">\u25c5</span>', '#Left'];
+const right = ['right', '<span style="font-size: 130%">\u25bb</span>', '#Right'];
 // ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
-var enter = ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', '#Enter'];
-var backspace = ['backspace', '\u232B', '#Backspace'];
-var poweroften =     ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>', '10^'];
+const enter = ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', '#Enter'];
+const backspace = ['backspace', '\u232B', '#Backspace'];
+const poweroften =     ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>', '10^'];
 
 var keys = [];
 keys['mixed'] = [

@@ -1,4 +1,5 @@
 // This is prepare_page.js
+"use strict";
 
 var prepare_page_exists = true;
 var default_precision = 0.000001;
@@ -217,14 +218,8 @@ function make_auto_unitstring(mf) {
     var middle = rest.substring(1, bracket.right_pos);
     var right = rest.substr(bracket.right_pos + 1);
     // console.log(left + '|' + middle + '|' + right);
-<<<<<<< HEAD
     var sci = checkScientificNotation(left).isScientific;
     if (sci == true && middle.length > 0) {
-=======
-    var csn = checkScientificNotation(left);
-    // checkScientificNotation(arg) does not change arg
-    if (csn.isScientific == true && middle.length > 0) {
->>>>>>> 031ab7062a52d950cd891b4721f08c32036efd9f
       // expand the unit tag at the right side
       var new_latex = left + unit_tag + middle + right + '}';
       var mf_latex_for_parser = csn.repl + unit_tag + middle + right + '}';
@@ -242,13 +237,9 @@ function make_auto_unitstring(mf) {
     var beginning = '';
     for (var i = str.length; i >= 0; i--) {
       beginning = str.substr(0, i);
-<<<<<<< HEAD
       var sci = checkScientificNotation(beginning).isScientific;
-=======
-      var csn = checkScientificNotation(beginning);
->>>>>>> 031ab7062a52d950cd891b4721f08c32036efd9f
       // console.log(beginning + ' sci=' + sci);
-      if (csn.isScientific == true) {
+      if (sci == true) {
         i = -1;
       }
     }

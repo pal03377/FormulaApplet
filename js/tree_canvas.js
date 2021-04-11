@@ -1,7 +1,11 @@
 // tree_canvas.js
-console.log('Here is tree_canvas.js');
-// output to canvas
+"use strict";
 
+console.log('Here is tree_canvas.js');
+
+var myTree;
+
+// output to canvas
 function paint_tree(tree, canvas, message) {
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = "#ffffdf";
@@ -22,10 +26,10 @@ function paint_tree_callback(currentNode, xa, ya, x, y, ctx, tree) {
         var yf = 40;
         var xt = ctx.canvas.width / 2;
         var yt = 30;
-        xxa = xa * xf + xt;
-        yya = ya * yf + yt;
-        xx = x * xf + xt;
-        yy = y * yf + yt - 5;
+        let xxa = xa * xf + xt;
+        let yya = ya * yf + yt;
+        let xx = x * xf + xt;
+        let yy = y * yf + yt - 5;
         //console.log(xxa + ' ' + yya + ' ' + xx + ' ' + yy);
         ctx.beginPath();
         ctx.moveTo(xxa, yya);
@@ -70,31 +74,35 @@ function paint_tree_recurse(currentNode, nodelist, xa, ya, x, y, ctx, factor, tr
     }
 };
 
-function canvasclick_singlestep(){
+function canvasclick_singlestep() {
     var parse_result = parsetree_by_index(myTree);
     var message = parse_result.message;
     console.log(message);
-    end_parse = parse_result.end_parse;
-    paint_tree(myTree, tree_canv, message);
-    // console.log('***' + message);
-    //  for(var i=0; i <7; i++){
-    //   console.log('node ' + i + ': ' + myTree.nodelist[i].type + ' ' + myTree.nodelist[i].content);
+    var end_parse = parse_result.end_parse;
+    // try {
+        paint_tree(myTree, tree_canv, message);
+        // console.log('***' + message);
+        //  for(var i=0; i <7; i++){
+        //   console.log('node ' + i + ': ' + myTree.nodelist[i].type + ' ' + myTree.nodelist[i].content);
+        // }
+        if (end_parse) {
+            fillWithValues(myTree, true, []);
+            var hasValue = myTree.hasValue;
+            paint_tree(myTree, tree_canv, 'filWithRandomValues');
+            if (hasValue) {
+                var dummy = val(myTree.root, myTree);
+            } else {
+                console.log('tree not evaluable');
+            }
+        }
+    // } catch {
+    //     console.log('paint_tree failed');
     // }
-    if(end_parse){
-        fillWithValues(myTree, true, []);
-        var hasValue = myTree.hasValue;
-        paint_tree(myTree, tree_canv, 'filWithRandomValues');
-      if (hasValue){
-          var dummy = val(myTree.root, myTree);
-      } else {
-          console.log('tree not evaluable');
-      }
-    }
-  }
-  
-  function canvasclick_quick(){
+}
+
+function canvasclick_quick() {
     console.log('canvasclick_quick');
-    do{
+    do {
         var parse_result = parsetree_by_index(myTree);
         var end_parse = parse_result.end_parse;
     } while (end_parse == false)
@@ -103,5 +111,4 @@ function canvasclick_singlestep(){
     paint_tree(myTree, tree_canv, message);
     //fillWithValues(myTree, true, []);
     var dummy = value(myTree);
-  }
-  
+}

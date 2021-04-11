@@ -1,6 +1,7 @@
 // This is glue.js 
 // This filename is referred to in D:\Users\privat\Documents\xampp_gf09_wiki\htdocs\wiki\extensions\FormulaApplet\extension.json
 // and in D:\Users\privat\Laufwerk_E\gut\gf09\header.php
+"use strict";
 
 if (typeof gf09_path == 'undefined') {
     console.log('gf09_path undefined. This should not happen because it is defined in header.php or FormulaApplet.body.php');

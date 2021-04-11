@@ -1,4 +1,6 @@
 // translate.js
+"use strict";
+
 function switchTo(lang) {
   $('.tr').each(function () {
     // console.log('hide');
