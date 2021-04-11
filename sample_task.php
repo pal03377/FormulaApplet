@@ -21,7 +21,7 @@ function init(){
 <p><a href='./js/lib/ToDo.md'>ToDo</a> (local file)</p> -->
 <p><a href='./development/development.php'>Development</a></p>
 <p><a href='./tests/tests.php'>Tests</a></p>
-<p><a href='./sample_task_and_parse.php'>sample_task_and_parse</a></p>
+<p><a href='./development/sample_task_and_parse.php'>sample_task_and_parse</a></p>
 <p><a href='./todo.php'>ToDo</a> <a href='./git-cheat.php'>GIT Cheat Sheet</a></p>
 
 <p class="formula_applet" id="no_res">\int^x_{3} t^2\ \mathrm{dt} = \frac{x^3}{3} - 9</p> Integral.<br />

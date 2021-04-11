@@ -2,7 +2,7 @@
 
 ## Coding
 * <del>Update files of directory 'development' according to changes (/lib, /css)</del>
-* Serious bug in tex_parser.php: $ in TEX string, doubling of TEX string
+* <del>Serious bug in tex_parser.php: $ in TEX string, doubling of TEX string</del>
 * Render \cdot as times(cross) if lang=en
 * Render , as . if lang=en
 * e for Exponent interferes with e for Euler's number.
@@ -11,7 +11,8 @@
     * prepare_page needs vkbd
     * vkbd needs hammer
     * Divide tex_parser into smaller parts
-* use strict
+* <del>use strict</del>
+  * broken: sample_task.php, sample_task_and_parse.php, tex_parser.php
 * documentation.js
 * OOP
 * try/catch
