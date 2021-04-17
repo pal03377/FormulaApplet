@@ -17,6 +17,7 @@ function tree2TEX(tree) {
         }
 
         var done = false;
+        var result = '';
         if (number_of_childs === 0) {
             // leaf, num, text
             if (node.type.startsWith('greek')) {

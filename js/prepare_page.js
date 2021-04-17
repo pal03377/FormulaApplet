@@ -169,7 +169,7 @@ function fillWithRandomValAndCheckDefSets(tree_var, ds_list) {
     var numberOfTries = 0;
     do {
       numberOfTries++;
-      var tree2 = tree();
+      var tree2 = new tree();
       tree2 = JSON.parse(rememberTree);
       // console.log('restore');
       fillWithValues(tree2);
@@ -388,8 +388,8 @@ function mathQuillify() {
         activeMathfieldIndex = FApp.index;
       } else {
         var mf_container = MQ.StaticMath(FAList[index].formula_applet);
-        mf_latex_for_parser = mf_container.latex();
-        myTree = new tree();
+        var mf_latex_for_parser = mf_container.latex();
+        var myTree = new tree();
         myTree.leaf.content = mf_latex_for_parser;
       }
 
