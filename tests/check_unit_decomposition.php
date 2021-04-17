@@ -1,0 +1,111 @@
+<?php
+$title = 'Check Unit Decomposition';
+// $liblist = "'tex_parser mathquill mathquillcss gf09css translate hammer vkbd tree_canvas tree2tex'";
+$liblist = "'tex_parser mathquill mathquillcss gf09css translate hammer vkbd tree_canvas'";
+$prefix="../"; 
+include_once( $prefix . 'header.php' );
+?>
+
+<!-- <script src="./js/lib/tex_parser.js"></script> -->
+<!-- <link href="./css/gf09.css" rel="stylesheet"> -->
+
+<body>
+  <h1><?php echo $title; ?></h1>
+  <h2> 'insert unit' button is broken</h2>
+  <p>MathQuill: <span id="editable-math"></span></p>
+ <textarea id="latex" style="width:80%;vertical-align:top">3,5\unit{\frac{km}{min}} </textarea><br />
+ <button id="unit" class='button'>Insert Unit</button>
+ <hr>
+  <textarea id="tree2TEX" style="width:80%;vertical-align:top" class="formula_applet">tex2</textarea>
+  <canvas id="treecanvas" width="1200" height="600" style="
+border: 1px solid #000000;
+position: fixed;
+right: 30px;
+top: 30px;
+transform: scale(1.05);
+background-color: #ffffdf !important;">
+</canvas>
+
+  <script>
+
+  // waitfor_mathquill_and_if_ready_then_do( init );
+  // init();
+
+  function init(){
+    console.log( 'init' );
+    initTranslation();
+    vkbd_init();
+    var eMath = $('#editable-math')[0]; latexSource = $('#latex'), tree2tex = $('#tree2TEX');
+    var MQ = MathQuill.getInterface(2);
+    mf = MQ.MathField(eMath, {handlers:{
+        edit: function(){
+          //mf -> latexSource
+        latexSource.val(mf.latex());
+        tree_output();
+      }
+    }});
+    mf.latex(latexSource.val());
+
+    latexSource.bind('keydown keypress', function() {
+    var oldtext = latexSource.val();
+    setTimeout(function() {
+      var newtext = latexSource.val();
+       //delete spaces
+       newtext = newtext.replace(/\\\s/g, '');
+      if(newtext !== oldtext) {
+        //latexSource -> mf
+        mf.latex(newtext);
+      }
+    });
+  });
+  unit_button = $('#unit');
+  unit_button.click( function() {
+      console.log('unit_button event');
+      var temp = mf.latex();
+      temp +='\\textcolor{blue}{}';
+      mf.latex(temp);
+   });
+}
+
+</script>
+// divide into two scripts
+
+<script type='module'>
+import {tree2TEX} from '../js/tree2tex.js';
+var canvas = document.getElementById("treecanvas");
+
+function tree_output(){
+   var myTree = parse(latexSource.val());
+   paint_tree(myTree, canvas, 'TEX tree');
+   var tex_1 = latexSource.val();
+   var tex_2 = tree2TEX(myTree);
+   tree2tex.val(tex_2);
+   // quick and dirty \min hack
+   var temp = tex_1.replace(/\\cdot/g, '\\cdot ');
+   temp = temp.replace(/\\cdot  /g, '\\cdot ');
+   tex_1 = temp.replace(/\\min/g, 'min');
+   var temp = tex_2.replace(/\\cdot/g, '\\cdot ');
+   temp = temp.replace(/\\cdot  /g, '\\cdot ');
+   tex_2 = temp.replace(/\\min/g, 'min');
+  // console.log(tex_1);
+  //  console.log(tex_2);
+   var equal = (tex_1 == tex_2);
+   console.log('equal=' + equal);
+    if (equal){
+        $(tree2tex).removeClass('isNotEqual').addClass('isEqual');
+    } else {
+        $(tree2tex).removeClass('isEqual').addClass('isNotEqual');
+    }
+
+  // var link = document.createElement("link");
+  // link.type = "text/css";
+  // link.rel = "stylesheet";
+  // link.href = "./js/lib/formula_applet.css";
+  // document.getElementsByTagName("head")[0].appendChild(link);
+
+ }
+
+</script>
+
+<?php include_once ($prefix . 'uses.php');?>
+<?php include_once ($prefix . 'footer.php');?>

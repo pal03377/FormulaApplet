@@ -19,6 +19,7 @@
 * Tests (https://developer.mozilla.org/en-US/docs/Web/API/console/assert)
 * Test using tree2tex.js
 * Tests using browsers like FireFox, IE, Edge, and using OS like Linux, Android, iOS
+* Use https://github.com/requirejs/i18n
 
 ## Nice to have
 * Transfer this list (ToDo.md) to Issues (GitHub)

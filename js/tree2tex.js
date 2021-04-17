@@ -183,3 +183,5 @@ function tree2TEX(tree) {
         return result;
     }
 }
+
+export { tree2TEX };
