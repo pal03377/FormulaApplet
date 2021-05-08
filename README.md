@@ -6,4 +6,4 @@
 * FormulaApplet is open source. It is written in JavaScript and uses some open source libraries.
 * FormulaApplet is the successor of Formel-Applet (Java, closed source).
 * [ToDo list](./md/ToDo.md) for FormulaApplet
-* [Formula Applet wiki](https://github.com/gro58/FormulaApplet/wiki)
+* [FormulaApplet wiki](https://github.com/gro58/FormulaApplet/wiki)
