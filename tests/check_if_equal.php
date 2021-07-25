@@ -15,7 +15,7 @@ include_once( $prefix . 'header.php' );
     var MQ = MathQuill.getInterface(2);
     var mathField = new Array();
     var out = '';
-    var myTree = new tree();
+    var myTree = new fa_tree();
 
     // Parse from LaTeX ...
     var link = document.createElement("link");

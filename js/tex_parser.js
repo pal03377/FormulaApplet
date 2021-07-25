@@ -120,7 +120,7 @@ function create_node(type, content, tree) {
     }
 }
 
-class tree {
+class fa_tree {
     constructor() {
         this.list_of_free = [];
         this.nodelist = [];
@@ -142,7 +142,7 @@ class tree {
 };
 
 function copy(myTree) {
-    var result = new tree();
+    var result = new fa_tree();
     for (let key in myTree) {
         result[key] = myTree[key];
     }
@@ -745,7 +745,7 @@ function parsetree_by_index(tree) {
 }
 
 function parse(texstring) {
-    var myTree = new tree();
+    var myTree = new fa_tree();
     myTree.leaf.content = texstring;
     // console.log('Start parsing......');
     var end_parse = false;

@@ -3,90 +3,102 @@
 // and in D:\Users\privat\Laufwerk_E\gut\gf09\header.php
 "use strict";
 
-if (typeof gf09_path == 'undefined') {
-    console.log('gf09_path undefined. This should not happen because it is defined in header.php or FormulaApplet.body.php');
-}
-var jsPath = gf09_path + 'js/';
-var js_bootstrapPath = gf09_path + 'js_bootstrap/';
-var libPath = jsPath + 'lib/';
-var cssPath = gf09_path + 'css/';
-var css_bootstrapPath = gf09_path + 'css_bootstrap/';
-console.log('gf09_path=' + gf09_path + ' jsPath=' + jsPath + ' libPath=' + libPath + '  cssPath=' + cssPath);
-
-if (typeof liblist === 'undefined') {
-    // default for wiki
-    var liblist = ['mathquill', 'prepare_page', 'tex_parser', 'decode', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss', 'hammer', 'translate'];
-}
-
-function task(source) {
-    this.name = 'unknown';
-    this.source = source;
-    this.fallback = null;
-    this.state = 'unused'; //delete?
-}
-
-// var jQuery_url = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
-// var jQuery_fallback = libPath + "jquery-3.4.1.min.js";
-var tasks = {};
-tasks['mathquillcss'] = new task(libPath + 'mathquill-0.10.1/mathquill.css');
-tasks['mathquillcss'].fallback = 'https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css';
-tasks['mathquill'] = new task(libPath + 'mathquill-0.10.1/mathquill.min.js');
-tasks['mathquill'].fallback = 'https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js';
-tasks['algebrite'] = new task('http://algebrite.org/dist/1.2.0/algebrite.bundle-for-browser.js');
-tasks['algebrite'].fallback = libPath + 'Algebrite/dist/algebrite.bundle-for-browser.js';
-tasks['kas'] = new task(libPath + 'KAS/KAS_loader.js');
-tasks['hammer'] = new task(libPath + 'hammer.js');
-tasks['hammer'].fallback = 'https://hammerjs.github.io/dist/hammer.js';
-tasks['bootstrap'] = new task('https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js');
-tasks['bootstrap'].fallback = js_bootstrapPath + 'bootstrap.min.js';
-tasks['bootstrapcss'] = new task('https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
-tasks['bootstrapcss'].fallback = css_bootstrapPath + 'bootstrap.min.css';
-// without fallback
-tasks['tex_parser'] = new task(jsPath + 'tex_parser.js');
-tasks['tree_canvas'] = new task(jsPath + 'tree_canvas.js');
-tasks['tree2tex'] = new task(jsPath + 'tree2tex.js');
-tasks['vkbd'] = new task(jsPath + 'vkbd.js');
-tasks['decode'] = new task(jsPath + 'decode.js');
-tasks['translate'] = new task(jsPath + 'translate.js');
-tasks['prepare_page'] = new task(jsPath + 'prepare_page.js');
-tasks['editor'] = new task(jsPath + 'editor.js');
-tasks['gf09css'] = new task(cssPath + 'gf09.css');
-tasks['vkbdcss'] = new task(cssPath + 'vkbd.css');
-tasks['tablecss'] = new task(cssPath + 'table.css');
-tasks['bootstrapcss'] = new task(css_bootstrapPath + 'bootstrap.css');
-tasks['collapse_help'] = new task(js_bootstrapPath + 'bootstrap.collapse_helper.js');
-tasks['popper'] = new task('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js');
-
-var keys = Object.keys(tasks);
-for (var i = 0; i < keys.length; i++) {
-    var taskname = keys[i];
-    tasks[taskname].name = taskname;
-}
-
-// .forEach causes error 'foeEach is not a function' - maybe typescript error
-// liblist.forEach(function (taskname) {
-//     tasks[taskname].name = taskname;
-// })
-
-var jq = new task("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
-jq.fallback = libPath + "jquery-3.4.1.min.js";
-jq.name = 'jq';
-var try_counter_limit = 50;
-// do not add jq to tasks[]!
-
-// start loading of jQuery (if necessary)
-if (window.jQuery) {
-    // jQuery is already there.
-    console.log('jQuery version (Wiki) = ' + $.fn.jquery);
-    load_libs();
+if (typeof glueloader_counter == 'undefined') {
+    var glueloader_counter = 0;
 } else {
-    // Start to load jQuery 
-    appendScriptOrStyleSheetWithFallback(jq);
-    // and wait until loaded
-    var try_counter = 0;
-    waitfor_jquery(load_libs);
+    glueloader_counter++;
 }
-// Done with jQuery.
+console.log('glueloader_counter = ' + glueloader_counter);
+
+if (glueloader_counter == 0) {
+    if (typeof gf09_path == 'undefined') {
+        console.log('gf09_path undefined. This should not happen because it is defined in header.php or FormulaApplet.body.php');
+        var gf09_path = './h5p-formulaapplet/';
+        console.log('gf09_path = ' + gf09_path);
+        console.log('Quick and dirty hack for h5p-standalone');
+    }
+    var jsPath = gf09_path + 'js/';
+    var js_bootstrapPath = gf09_path + 'js_bootstrap/';
+    var libPath = jsPath + 'lib/';
+    var cssPath = gf09_path + 'css/';
+    var css_bootstrapPath = gf09_path + 'css_bootstrap/';
+    console.log('gf09_path=' + gf09_path + ' jsPath=' + jsPath + ' libPath=' + libPath + '  cssPath=' + cssPath);
+
+    if (typeof liblist === 'undefined') {
+        // default for wiki
+        var liblist = ['mathquill', 'prepare_page', 'tex_parser', 'decode', 'mathquillcss', 'gf09css', 'vkbd', 'vkbdcss', 'hammer', 'translate'];
+    }
+
+    function task(source) {
+        this.name = 'unknown';
+        this.source = source;
+        this.fallback = null;
+        this.state = 'unused'; //delete?
+    }
+
+    // var jQuery_url = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
+    // var jQuery_fallback = libPath + "jquery-3.4.1.min.js";
+    var tasks = {};
+    tasks['mathquillcss'] = new task(libPath + 'mathquill-0.10.1/mathquill.css');
+    tasks['mathquillcss'].fallback = 'https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css';
+    tasks['mathquill'] = new task(libPath + 'mathquill-0.10.1/mathquill.min.js');
+    tasks['mathquill'].fallback = 'https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js';
+    tasks['algebrite'] = new task('http://algebrite.org/dist/1.2.0/algebrite.bundle-for-browser.js');
+    tasks['algebrite'].fallback = libPath + 'Algebrite/dist/algebrite.bundle-for-browser.js';
+    tasks['kas'] = new task(libPath + 'KAS/KAS_loader.js');
+    tasks['hammer'] = new task(libPath + 'hammer.js');
+    tasks['hammer'].fallback = 'https://hammerjs.github.io/dist/hammer.js';
+    tasks['bootstrap'] = new task('https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js');
+    tasks['bootstrap'].fallback = js_bootstrapPath + 'bootstrap.min.js';
+    tasks['bootstrapcss'] = new task('https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+    tasks['bootstrapcss'].fallback = css_bootstrapPath + 'bootstrap.min.css';
+    // without fallback
+    tasks['tex_parser'] = new task(jsPath + 'tex_parser.js');
+    tasks['tree_canvas'] = new task(jsPath + 'tree_canvas.js');
+    tasks['tree2tex'] = new task(jsPath + 'tree2tex.js');
+    tasks['vkbd'] = new task(jsPath + 'vkbd.js');
+    tasks['decode'] = new task(jsPath + 'decode.js');
+    tasks['translate'] = new task(jsPath + 'translate.js');
+    tasks['prepare_page'] = new task(jsPath + 'prepare_page.js');
+    tasks['editor'] = new task(jsPath + 'editor.js');
+    tasks['gf09css'] = new task(cssPath + 'gf09.css');
+    tasks['vkbdcss'] = new task(cssPath + 'vkbd.css');
+    tasks['tablecss'] = new task(cssPath + 'table.css');
+    tasks['bootstrapcss'] = new task(css_bootstrapPath + 'bootstrap.css');
+    tasks['collapse_help'] = new task(js_bootstrapPath + 'bootstrap.collapse_helper.js');
+    tasks['popper'] = new task('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js');
+
+    var keys = Object.keys(tasks);
+    for (var i = 0; i < keys.length; i++) {
+        var taskname = keys[i];
+        tasks[taskname].name = taskname;
+    }
+
+    // .forEach causes error 'foeEach is not a function' - maybe typescript error
+    // liblist.forEach(function (taskname) {
+    //     tasks[taskname].name = taskname;
+    // })
+
+    var jq = new task("https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js");
+    jq.fallback = libPath + "jquery-3.4.1.min.js";
+    jq.name = 'jq';
+    var try_counter_limit = 50;
+    // do not add jq to tasks[]!
+
+    // start loading of jQuery (if necessary)
+    if (window.jQuery) {
+        // jQuery is already there.
+        console.log('jQuery version (Wiki) = ' + $.fn.jquery);
+        load_libs();
+    } else {
+        // Start to load jQuery 
+        appendScriptOrStyleSheetWithFallback(jq);
+        // and wait until loaded
+        var try_counter = 0;
+        waitfor_jquery(load_libs);
+    }
+    // Done with jQuery.
+}
 
 function jquery_timeout() {
     console.log('Load of jQuery: timeout. Stop of loading');
@@ -223,19 +235,19 @@ function load_libs() {
 }
 
 function prepare_pg() {
-   waitfor_mathquill_if_in_liblist_and_then_do(function () {
+    waitfor_mathquill_if_in_liblist_and_then_do(function () {
         //console.log('MathQuill ready (2)');
         // if (typeof prepare_page_exists !== 'undefined') {
         if (typeof prepare_page !== 'undefined') {
-            //console.log('calling prepare_page...');
+            console.log('calling prepare_page...');
             prepare_page();
         } else {
-            //console.log('prepare_page undefined');
+            console.log('prepare_page undefined');
         }
         if (typeof init !== 'undefined') {
             init();
         } else {
-            //console.log('init undefined');
+            console.log('init undefined');
         }
     })
 }
@@ -244,7 +256,7 @@ function check_if_editor() {
     console.log('check_if_editor');
     var editor = false;
     $(".formula_applet").each(function () {
-        try{
+        try {
             var id = $(this).attr('id').toLowerCase();
             // console.log(id);
             if (id == 'editor') {

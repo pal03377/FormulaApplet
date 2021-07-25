@@ -510,9 +510,6 @@ function mathQuillify() {
       // *** no editor ***
       console.log('use MQ.StaticMath');
       MQ.StaticMath(this);
-	  } catch(error){
-		console.log('Error using MQ.StaticMath: ' + error);
-	  }
       if (FApp.hasResultField) {
         if ($(this).attr('data-b64') !== undefined) {
           FApp.hasSolution = true;

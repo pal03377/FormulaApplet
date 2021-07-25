@@ -4,6 +4,7 @@
     // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+    
         // {
         //     "name": "Launch Chrome with file",
         //     "request": "launch",
@@ -11,6 +12,13 @@
         //      "file": "${workspaceFolder}"
         // },
         
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "H5P Standalone - Launch Chrome from Wamp",
+            "url": "http://localhost/h5p-standalone/",
+            "webRoot": "${workspaceFolder}",
+        },
         {
             "type": "chrome",
             "request": "launch",
