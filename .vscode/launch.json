@@ -23,7 +23,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome from XAMPP",
-            "url": "http://localhost:8080/gf09/sample_task_and_parse.php",
+            "url": "http://localhost:8080/gf09/sample_task.php",
             "webRoot": "${workspaceFolder}",
         },
         {
