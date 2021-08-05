@@ -31,6 +31,7 @@ cause preloaded JavaScript being loaded twice or more.
 * Transfer this list (ToDo.md) to Issues (GitHub)
 * Integral, Limit (VKBD)
 * Block trivial solutions
+* Random parameters for varying problems
 * condition = ...
 * Natural constants like e, c,...
 * Node, modules
