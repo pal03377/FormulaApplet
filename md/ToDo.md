@@ -3,11 +3,11 @@
 ## FormulaApplet as a H5P package
 * Investigate if two or more H5P FormulaApplets in one Page (Drupal development)
 cause preloaded JavaScript being loaded twice or more.
-* use subject/observer pattern for VKBD/FormulaApplet.
+* Use subject/observer pattern for VKBD/FormulaApplet.
 * Alternative: use jQuery (custom events)
-* use revealing module pattern
+* Use revealing module pattern
 * Exercise how to deal with other H5P packages (math, physics)
-* use apps.zum.de and unterrichten.zum.de 
+* Use apps.zum.de and unterrichten.zum.de 
 ## Coding
 * Render \cdot as times(cross) if lang=en
 * Render , as . if lang=en
