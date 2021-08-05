@@ -28,11 +28,23 @@ class FAPP {
   }
 }
 
-// prepare_page() is called by glue.js
 function prepare_page() {
+  if (typeof prepare_page_counter == 'undefined') {
+    var prepare_page_counter = 0;
+  } else {
+    prepare_page_counter++;
+  }
+  console.log('prepare_page_counter = ' + prepare_page_counter);
+  if (prepare_page_counter == 0) {
+    do_prepare_page();
+  }
+}
+
+// prepare_page() is called by glue.js
+function do_prepare_page() {
   // dirty hack
   if (typeof (isWiki) === 'undefined') {
-    if(typeof mw !== 'undefined'){
+    if (typeof mw !== 'undefined') {
       isWiki = true;
     } else {
       isWiki = false;
@@ -270,7 +282,7 @@ function make_auto_unitstring(mf) {
 }
 
 function editHandler(index) {
-  // console.log('called editHandler: ' + index + ' active=' + editHandlerActive);
+  console.log('called editHandler: ' + index + ' active=' + editHandlerActive);
   // console.log(FAList[index]);
   if (editHandlerActive == true) {
     var fa = $(".formula_applet")[index];
@@ -334,6 +346,7 @@ function sanitizePrecision(prec) {
 }
 
 function mathQuillify_debug() {
+  console.log('mathQuillify()');
   $(".formula_applet").each(function () {
     console.log(this);
   });
@@ -344,24 +357,27 @@ function mathQuillify() {
   console.log('mathQuillify()');
   MQ = MathQuill.getInterface(2);
   vkbd_init();
-  $(".formula_applet").each(function () {
+  $(".formula_applet:not(.mq-math-mode)").each(function () {
     var temp = (this.innerHTML);
     this.inner_ori = temp;
     this.innerHTML = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
   });
-  $(".formula_applet").each(function () {
+  // }
+
+  // function mathQuillify_rest() {
+  $(".formula_applet:not(.mq-math-mode)").each(function () {
     var temp = (this.innerHTML);
     temp = temp.replace(/\\Ohm/g, '\\Omega');
     temp = temp.replace(/\\mathrm/g, '');
     this.innerHTML = temp.replace(/\\unit{/g, '\\textcolor{blue}{');
     this.replaced = temp;
-    // console.log('replaced=' + this.innerHTML);
+    console.log('replaced=' + this.innerHTML);
   });
 
   $(".formula_applet").each(function () {
     var FApp = new FAPP();
     FApp.hasResultField = (this.innerHTML.indexOf('\\MathQuillMathField{}') >= 0);
-    var index = $(".formula_applet").index(this);
+    var index = $(".formula_applet:not(.mq-math-mode)").index(this);
     FApp.index = index;
     FApp.id = $(this).attr('id') // name of formula_applet
     var isEditor = (FApp.id.toLowerCase() == 'editor');
@@ -426,6 +442,7 @@ function mathQuillify() {
     })
     FAList[index] = FApp;
 
+    console.log('isEditor=' + isEditor);
     if (isEditor) {
       // *** editor ***
       //console.log('init editor');
@@ -508,12 +525,14 @@ function mathQuillify() {
     } else {
       //******************
       // *** no editor ***
-      console.log('use MQ.StaticMath');
-    try{
-      MQ.StaticMath(this);
-	  } catch(error){
-		  console.log('Error using MQ.StaticMath: ' + error);
-	  }
+      try {
+           MQ.StaticMath(this);
+       } catch (err) {
+        console.error('Error using MQ.StaticMath: ' + err);
+        console.trace();
+      }
+      console.log('after mathquillifying:');
+      console.log(this);
       if (FApp.hasResultField) {
         if ($(this).attr('data-b64') !== undefined) {
           FApp.hasSolution = true;
@@ -522,12 +541,14 @@ function mathQuillify() {
         } else {
           FApp.hasSolution = false;
         };
-         console.log('formula_applet=');
-         console.log(this);
+        console.log('formula_applet=');
+        console.log(this);
         var mqEditableField = $(this).find('.mq-editable-field')[0];
-         console.log('mqEditableField=' + mqEditableField);
+        console.log('mqEditableField=');
+        console.log(mqEditableField);
         var mf = MQ.MathField(mqEditableField, {});
-         console.log('mf=' + mf);
+        console.log('mf=');
+        console.log(mf);
         mf.config({
           handlers: {
             edit: function () {
