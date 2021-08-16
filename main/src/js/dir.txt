@@ -1,0 +1,22 @@
+ Datentr„ger in Laufwerk E: ist DATA
+ Volumeseriennummer: C66E-84A3
+
+ Verzeichnis von E:\gut\gf09\js
+
+07.05.2021  18:06    <DIR>          .
+07.05.2021  18:06    <DIR>          ..
+07.05.2021  15:39    <DIR>          lib
+17.04.2021  18:12             9.598 decode.js
+07.05.2021  18:06                 0 dir.txt
+17.04.2021  18:12             3.432 editor.js
+17.04.2021  18:12               134 extensionUrl.js
+17.04.2021  18:12            11.764 glue.js
+21.01.2021  23:06               111 mklink.txt
+17.04.2021  18:12            30.429 prepare_page.js
+17.04.2021  18:12            76.387 tex_parser.js
+17.04.2021  18:12             4.244 translate.js
+17.04.2021  18:12             3.747 tree_canvas.js
+17.04.2021  20:44             6.972 tree2tex.js
+17.04.2021  18:12            19.915 vkbd.js
+              12 Datei(en),        166.733 Bytes
+               3 Verzeichnis(se), 219.102.932.992 Bytes frei

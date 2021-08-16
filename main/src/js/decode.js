@@ -1,3 +1,4 @@
+// This is file decode.js
 "use strict"
 
 var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
@@ -42,32 +43,6 @@ function random_swap(p, q, n) {
     var i = Math.floor(Math.random() * n);
     var j = Math.floor(Math.random() * n);
     swap(p, q, i, j);
-}
-
-function create_permutation() {
-    var temp = init_permutation(n)
-    var p = temp[0];
-    var q = temp[1];
-    for (var i = 0; i < 50 * n; i++) {
-        random_swap(p, q, n);
-    }
-    return [p, q];
-}
-
-function create_permutations() {
-    var text = '';
-    for (var num_perm = 0; num_perm < 10; num_perm++) {
-        var temp = create_permutation();
-        text += 'perm[0][' + num_perm + ']='
-        text += JSON.stringify(temp[0]) + ';\r\n';
-        text += 'perm[1][' + num_perm + ']='
-        text += JSON.stringify(temp[1]) + ';\r\n';
-    }
-    //console.log(text);
-    var out = $('textarea#permutations');
-    if (out.length > 0) {
-        out.text(text);
-    }
 }
 
 // perm[enc_dec][num_of_perm][index]
