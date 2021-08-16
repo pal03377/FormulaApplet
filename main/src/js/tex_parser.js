@@ -336,7 +336,7 @@ function find_leftmost_bracket(content) {
     return [left_pos, bra_kind];
 }
 
-function find_corresponding_right_bracket(content, bra) {
+export function find_corresponding_right_bracket(content, bra) {
     var rightbra = '';
     //    console.log('look for ' + bra + ' in ' + content);
     var pos = ['(', '[', '{', '|', '\\left(', '\\left[', '\\left\\{', '\\left|'].indexOf(bra);
