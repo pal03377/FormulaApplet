@@ -4,6 +4,7 @@ import { encode, decode } from "./decode.js";
 import { prepend } from "./editor.js";
 import parse, { fa_tree, find_corresponding_right_bracket, evaluateTree, fillWithValues, checkScientificNotation } from "./tex_parser.js";
 import { initTranslation } from "./translate.js";
+import virtualKeyboard_init, { virtualKeyboard_show } from "./virtual_keyboard.js";
 
 var default_precision = 0.000001;
 var activeMathfieldIndex = 0;
@@ -58,14 +59,14 @@ function do_prepare_page() {
   $("img.mod").remove();
   ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
   $('button.keyb_button').on('mousedown', function (ev) {
-    vkbd_show();
+    virtualKeyboard_show();
     $("button.keyb_button").removeClass('selected');
   });
   ($('<img class="mod">')).insertAfter($(".formula_applet"));
   $(document).ready(function () {
     console.log('Document ready. Calling mathquillify...');
     mathQuillify();
-    //inittranslation after mathQuillify which evokes vkbd_init
+    //inittranslation after mathQuillify which evokes virtualKeyboard_init
     if (typeof initTranslation !== 'undefined') {
       initTranslation();
     }
@@ -342,7 +343,7 @@ function sanitizePrecision(prec) {
 function mathQuillify() {
   console.log('mathQuillify()');
   MQ = MathQuill.getInterface(2);
-  vkbd_init();
+  virtualKeyboard_init();
   $(".formula_applet:not(.mq-math-mode)").each(function () {
     var temp = (this.innerHTML);
     this.inner_ori = temp;
@@ -396,7 +397,7 @@ function mathQuillify() {
         $(".formula_applet").removeClass('selected');
         $(this).addClass('selected');
         $("button.keyb_button").removeClass('selected');
-        if ($('#vkbd').css('display') == 'none') {
+        if ($('#virtualKeyboard').css('display') == 'none') {
           $(this).nextAll("button.keyb_button:first").addClass('selected');
         }
         activeMathfieldIndex = FApp.index;
@@ -551,7 +552,7 @@ function mathQuillify() {
       FApp.hammer = new Hammer(mqEditableField);
       FApp.hammer.on("doubletap", function (ev) {
         //console.log(index + ' ' + ev.type);
-        vkbd_show();
+        virtualKeyboard_show();
       });
       FApp.hammer.on("press", function (ev) {
         //console.log(index + ' ' + ev.type);

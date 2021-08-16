@@ -1,4 +1,4 @@
-div#vkbd{
+div#virtualKeyboard{
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -8,16 +8,16 @@ div#vkbd{
 	border-radius: 10px;
 }
 
-#vkbd table{
+#virtualKeyboard table{
 	display: none;
 	/* width: calc(100% +120px); */
 }
 
-#vkbd table#table_mixed{
+#virtualKeyboard table#table_mixed{
 	display: table;
 }
 
-.vkbd_button {
+.virtualKeyboard_button {
 	background-color: darkkhaki;
 	width: 60px;
 	min-width: 50px;
@@ -33,11 +33,11 @@ div#vkbd{
 	cursor: pointer;
 }
 
-.vkbd_button:active {
+.virtualKeyboard_button:active {
 	background-color: blue;
 }
 
-.vkbd_button.smallgap {
+.virtualKeyboard_button.smallgap {
 	width: 10px;
 	background-color: transparent;
 	border: 0px;
@@ -45,23 +45,23 @@ div#vkbd{
 	cursor: move;
 }
 
-.vkbd-shift {
+.virtualKeyboard-shift {
 	color:navy;
 }
 
-.vkbd-backspace {
+.virtualKeyboard-backspace {
 	background-color: firebrick;
 }
 
-.vkbd-backspace:active {
+.virtualKeyboard-backspace:active {
 	background-color: greenyellow;
 }
 
-.vkbd_button.vkbd-unit{
+.virtualKeyboard_button.virtualKeyboard-unit{
 	font-size: 120%;
 }
 
-.vkbd_button.vkbd-clear_unit{
+.virtualKeyboard_button.virtualKeyboard-clear_unit{
 	font-size: 120%;
 }
 
@@ -69,49 +69,49 @@ div#output tbody {
 	margin: 15px;
 }
 
-#vkbd {
+#virtualKeyboard {
 	position: absolute;
 	z-index: 9;
 	cursor: move;
 }
 
-#table_abc .vkbd-row1 .vkbd_button {
+#table_abc .virtualKeyboard-row1 .virtualKeyboard_button {
 	position: relative;
 	left: 20px;
 }
-#table_abc .vkbd-row2 .vkbd_button {
+#table_abc .virtualKeyboard-row2 .virtualKeyboard_button {
 	position: relative;
 	left: 40px;
 }
-#table_abc_caps .vkbd-row1 .vkbd_button {
+#table_abc_caps .virtualKeyboard-row1 .virtualKeyboard_button {
 	position: relative;
 	left: 20px;
 }
-#table_abc_caps .vkbd-row2 .vkbd_button {
+#table_abc_caps .virtualKeyboard-row2 .virtualKeyboard_button {
 	position: relative;
 	left: 40px;
 }
-#table_greek .vkbd-row1 .vkbd_button {
+#table_greek .virtualKeyboard-row1 .virtualKeyboard_button {
 	position: relative;
 	left: 20px;
 }
-#table_greek .vkbd-row2 .vkbd_button {
+#table_greek .virtualKeyboard-row2 .virtualKeyboard_button {
 	position: relative;
 	left: 40px;
 }
-#table_greek_caps .vkbd-row1 .vkbd_button {
+#table_greek_caps .virtualKeyboard-row1 .virtualKeyboard_button {
 	position: relative;
 	left: 20px;
 }
-#table_greek_caps .vkbd-row2 .vkbd_button {
+#table_greek_caps .virtualKeyboard-row2 .virtualKeyboard_button {
 	position: relative;
 	left: 40px;
 }
-/* #vkbd table#table_abc{
+/* #virtualKeyboard table#table_abc{
 	padding-right: 20px;
 } */
 
-#vkbd_header {
+#virtualKeyboard_header {
 	height: 20px;
 	background-color: darkolivegreen;
 	cursor: move;
@@ -121,14 +121,14 @@ div#output tbody {
 }
 
 /* Style the tab */
-.vkbd_tab {
+.virtualKeyboard_tab {
 	overflow: hidden;
 	border: none;
 	background-color: transparent;
 }
 
 /* Style the buttons inside the tab */
-.vkbd_tab button {
+.virtualKeyboard_tab button {
 	background-color: #d0d0d0;
 	float: left;
 	left: 20px;
@@ -143,7 +143,7 @@ div#output tbody {
 }
 
 /* Change background color of buttons on hover */
-.vkbd_tab button:hover {
+.virtualKeyboard_tab button:hover {
 	background-color: #80f080;
 	color: rgba(0, 0, 255)
 }
@@ -166,7 +166,7 @@ button#button-table_off {
 }
 
 /* Create an active/current tablink class */
-/* .vkbd_tab button.active {
+/* .virtualKeyboard_tab button.active {
 	background-color:  darkkhaki;
 	color: red;
 } */

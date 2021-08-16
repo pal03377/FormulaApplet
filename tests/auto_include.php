@@ -1,4 +1,4 @@
-<!-- load vkbd after hammer -->
+<!-- load virtualKeyboard after hammer -->
 <?php $title = 'Auto Include using import/export';
 $liblist = "'translate'";
 $prefix="../"; 

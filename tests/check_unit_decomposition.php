@@ -1,7 +1,7 @@
 <?php
 $title = 'Check Unit Decomposition';
-// $liblist = "'tex_parser mathquill mathquillcss gf09css translate hammer vkbd tree_canvas tree2tex'";
-$liblist = "'tex_parser mathquill mathquillcss gf09css translate hammer vkbd tree_canvas'";
+// $liblist = "'tex_parser mathquill mathquillcss gf09css translate hammer virtualKeyboard tree_canvas tree2tex'";
+$liblist = "'tex_parser mathquill mathquillcss gf09css translate hammer virtualKeyboard tree_canvas'";
 $prefix="../"; 
 include_once( $prefix . 'header.php' );
 ?>
@@ -34,7 +34,7 @@ background-color: #ffffdf !important;">
   function init(){
     console.log( 'init' );
     initTranslation();
-    vkbd_init();
+    virtualKeyboard_init();
     var eMath = $('#editable-math')[0]; latexSource = $('#latex'), tree2tex = $('#tree2TEX');
     var MQ = MathQuill.getInterface(2);
     mf = MQ.MathField(eMath, {handlers:{

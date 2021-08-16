@@ -1,5 +1,5 @@
 <?php $title = 'Problem Editor';  $header='<span class="tr de problemeditor">Aufgaben-Editor</span><span class="tr en problemeditor">Problem Editor</span>';
-$liblist = "'hammer decode prepare_page mathquill tex_parser mathquillcss gf09css translate vkbd vkbdcss'";
+$liblist = "'hammer decode prepare_page mathquill tex_parser mathquillcss gf09css translate virtualKeyboard virtualKeyboardcss'";
 $prefix="./"; 
 include_once( $prefix . 'header.php' );
 ?>

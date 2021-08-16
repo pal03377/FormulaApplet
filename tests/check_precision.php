@@ -1,5 +1,5 @@
 <?php $title = 'Check precision';
-$liblist = "'hammer decode translate prepare_page mathquill tex_parser mathquillcss gf09css vkbd vkbdcss'";
+$liblist = "'hammer decode translate prepare_page mathquill tex_parser mathquillcss gf09css virtualKeyboard virtualKeyboardcss'";
 $prefix="../"; 
 include_once( $prefix . 'header.php' );
 ?>

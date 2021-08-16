@@ -1,6 +1,6 @@
-<!-- load vkbd after hammer -->
-<?php $title = 'Test Page - hammer/VKBD';
-$liblist = "'hammer vkbd vkbdcss gf09css translate'";
+<!-- load virtualKeyboard after hammer -->
+<?php $title = 'Test Page - hammer/virtualKeyboard';
+$liblist = "'hammer virtualKeyboard virtualKeyboardcss gf09css translate'";
 $prefix="../"; 
 include_once( $prefix . 'header.php' );
 ?>
@@ -10,16 +10,16 @@ include_once( $prefix . 'header.php' );
 
 <script>
 
-function waitfor_vkbd(vkbd_ready) {
+function waitfor_virtualKeyboard(virtualKeyboard_ready) {
 	// console.log( typeof MathQuill );
-	if ((typeof vkbdLoaded) === "undefined") {
-		console.log('waiting for VKBD...');
+	if ((typeof virtualKeyboardLoaded) === "undefined") {
+		console.log('waiting for virtualKeyboard...');
 		setTimeout(function () {
-			waitfor_vkbd(vkbd_ready)
+			waitfor_virtualKeyboard(virtualKeyboard_ready)
 		}, 50);
 	} else {
-		console.log('VKBD ready......');
-		vkbd_ready();
+		console.log('virtualKeyboard ready......');
+		virtualKeyboard_ready();
 	}
 }
 
@@ -35,19 +35,19 @@ function waitfor_hammer(hammer_ready) {
 	}
 }
 
-// first hammer, then vkbd, then init
+// first hammer, then virtualKeyboard, then init
 waitfor_hammer( wfvi() );
 
 function wfvi(){
 	console.log('wfvi');
-	waitfor_vkbd( init );
+	waitfor_virtualKeyboard( init );
 }
 
 function init(){
-	// get_vkbd() is defined in vkbd.js
+	// get_virtualKeyboard() is defined in virtualKeyboard.js
 	initTranslation();
-    $('#keyboard').html(get_vkbd());
-	vkbd_bind_events();
+    $('#keyboard').html(get_virtualKeyboard());
+	virtualKeyboard_bind_events();
 	keyboardActivate('mixed');
 }
 

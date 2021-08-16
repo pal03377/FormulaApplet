@@ -1,4 +1,3 @@
-// vkbd = Virtual KeyBoarD
 "use strict";
 
 import { keyboardEvent } from "./prepare_page.js";
@@ -10,7 +9,7 @@ const right = ['right', '<span style="font-size: 130%">\u25bb</span>', '#Right']
 // ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
 const enter = ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', '#Enter'];
 const backspace = ['backspace', '\u232B', '#Backspace'];
-const poweroften =     ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>', '10^'];
+const poweroften = ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>', '10^'];
 
 var keys = [];
 keys['mixed'] = [
@@ -377,11 +376,11 @@ keys['greek_caps'] = [
     ]
 ]
 
-function get_vkbd() {
-    var result = '<div id="vkbd">\r\n';
-    result += '  <div id="vkbd_header">Move</div>\r\n';
+function get_virtualKeyboard() {
+    var result = '<div id="virtualKeyboard">\r\n';
+    result += '  <div id="virtualKeyboard_header">Move</div>\r\n';
     // create tabs
-    result += '  <div class="vkbd_tab"\r\n>';
+    result += '  <div class="virtualKeyboard_tab"\r\n>';
     result += '      <button class="tablinks" id="button-table_mixed" onclick="tabClick(event, \'mixed\')">123&radic;+-&nbsp;&nbsp;&nbsp;</button>\r\n';
     result += '      <button class="tablinks" id="button-table_function" onclick="tabClick(event, \'function\')">&nbsp;f(x)&nbsp;</button>\r\n';
     result += '      <button class="tablinks" id="button-table_abc" onclick="tabClick(event, \'abc\')">abc</button>\r\n';
@@ -409,8 +408,8 @@ function create_table(table_id) {
     result += '<tbody>\r\n';
     for (var row_number = 0; row_number < keys[table_id].length; row_number++) {
         var keylist = keys[table_id][row_number];
-        result += '<tr class="vkbd-row' + row_number + '">\r\n';
-        // console.log( '<tr class="vkbd-row' + row_number + '">\r\n' );
+        result += '<tr class="virtualKeyboard-row' + row_number + '">\r\n';
+        // console.log( '<tr class="virtualKeyboard-row' + row_number + '">\r\n' );
         // result += '<tr>\r\n';
         for (var keyindex = 0; keyindex < keylist.length; keyindex++) {
             var key = keylist[keyindex];
@@ -430,7 +429,7 @@ function create_table(table_id) {
                     key[2] = key[0];
                 }
             }
-            var cl = 'vkbd_button vkbd-' + key[0];
+            var cl = 'virtualKeyboard_button virtualKeyboard-' + key[0];
             if (key[0].startsWith('smallgap')) {
                 cl += ' smallgap';
             }
@@ -442,7 +441,7 @@ function create_table(table_id) {
             // }
             result += '<td class="' + cl + '" cmd="';
             result += key[2] + '">' + key[1] + '</td>\r\n';
-            // console.log('vkbd-' + key[0] + ' ' + key[1] + ' cmd-' + key[2]);
+            // console.log('virtualKeyboard-' + key[0] + ' ' + key[1] + ' cmd-' + key[2]);
         }
         result += '</tr>\r\n';
         // console.log(row);
@@ -452,23 +451,23 @@ function create_table(table_id) {
     return result;
 }
 
-function vkbd_bind_events() {
-    //console.log('Init vkbd');
-    $(".vkbd_button").mousedown(function (ev) {
+function virtualKeyboard_bind_events() {
+    //console.log('Init virtualKeyboard');
+    $(".virtualKeyboard_button").mousedown(function (ev) {
         ev.preventDefault();
         var cmd = clickEvent(ev);
         keyboardEvent_0(cmd);
     });
     // also children and grandchildren and...
-    $(".vkbd_button").find().mousedown(function (ev) {
+    $(".virtualKeyboard_button").find().mousedown(function (ev) {
         ev.preventDefault();
         var cmd = clickEvent(ev);
         keyboardEvent_0(cmd);
     });
-    // dragElement(document.getElementById("vkbd"));
-    var vkbdElement = document.getElementById('vkbd');
+    // dragElement(document.getElementById("virtualKeyboard"));
+    var virtualKeyboardElement = document.getElementById('virtualKeyboard');
     // https://hammerjs.github.io/getting-started/
-    var mc = new Hammer(vkbdElement);
+    var mc = new Hammer(virtualKeyboardElement);
 
     var left_temp = 1;
     var top_temp = 1;
@@ -476,16 +475,16 @@ function vkbd_bind_events() {
     var top_start = 1;
     mc.on("panstart panmove", function (ev) {
         if (ev.type == 'panstart') {
-            left_start = vkbdElement.offsetLeft;
-            top_start = vkbdElement.offsetTop;
+            left_start = virtualKeyboardElement.offsetLeft;
+            top_start = virtualKeyboardElement.offsetTop;
             left_temp = left_start;
             top_temp = top_start;
         }
         if (ev.type == 'panmove') {
             left_temp = left_start + ev.deltaX;
             top_temp = top_start + ev.deltaY;
-            vkbdElement.style.left = left_temp + 'px';
-            vkbdElement.style.top = top_temp + 'px';
+            virtualKeyboardElement.style.left = left_temp + 'px';
+            virtualKeyboardElement.style.top = top_temp + 'px';
         }
     });
     var scale_temp = 1;
@@ -503,7 +502,7 @@ function vkbd_bind_events() {
             scale_temp = scale_start * ev.scale;
             var scalecommand = "translate(-50%, -50%) scale(" + scale_temp + ")";
             //console.log(scalecommand);
-            $("#vkbd").css("transform", scalecommand);
+            $("#virtualKeyboard").css("transform", scalecommand);
         }
     });
 
@@ -511,7 +510,7 @@ function vkbd_bind_events() {
         //console.log(ev);
         var cmd = $(ev.target).attr('cmd');
         if (typeof cmd == 'undefined') {
-            var temp = $(ev.target).parents().filter('.vkbd_button');
+            var temp = $(ev.target).parents().filter('.virtualKeyboard_button');
             cmd = $(temp).attr('cmd');
         }
         //console.log(cmd);
@@ -568,12 +567,12 @@ var activeKeyboard = 'dummy';
 
 function keyboardActivate(keyboard_id) {
     // console.log(keyboard_id);
-    $('.vkbd_tab button').removeClass("selected");
+    $('.virtualKeyboard_tab button').removeClass("selected");
     switch (keyboard_id) {
         case 'abc':
         case 'abc_caps':
         case 'abc_capslock':
-            $('.vkbd_tab button#button-table_abc').addClass("selected");
+            $('.virtualKeyboard_tab button#button-table_abc').addClass("selected");
             var buttontext = 'abc'
             if (keyboard_id == 'abc_caps') {
                 buttontext = 'ABC';
@@ -581,12 +580,12 @@ function keyboardActivate(keyboard_id) {
             if (keyboard_id == 'abc_capslock') {
                 buttontext = '[ABC]';
             }
-            $('.vkbd_tab button#button-table_abc').text(buttontext);
+            $('.virtualKeyboard_tab button#button-table_abc').text(buttontext);
             break;
         case 'greek':
         case 'greek_caps':
         case 'greek_capslock':
-            $('.vkbd_tab button#button-table_greek').addClass("selected");
+            $('.virtualKeyboard_tab button#button-table_greek').addClass("selected");
             var buttontext = '\u03b1\u03b2\u03b3'
             if (keyboard_id == 'greek_caps') {
                 buttontext = '\u0391\u0392\u0393';
@@ -594,15 +593,15 @@ function keyboardActivate(keyboard_id) {
             if (keyboard_id == 'greek_capslock') {
                 buttontext = '[\u0391\u0392\u0393]';
             }
-            $('.vkbd_tab button#button-table_greek').text(buttontext);
+            $('.virtualKeyboard_tab button#button-table_greek').text(buttontext);
             break;
         case 'off':
-            vkbd_hide();
+            virtualKeyboard_hide();
             break;
         default:
-            $('.vkbd_tab button#button-table_' + keyboard_id).addClass("selected");
+            $('.virtualKeyboard_tab button#button-table_' + keyboard_id).addClass("selected");
     }
-    $('#vkbd table').css("display", "none");
+    $('#virtualKeyboard table').css("display", "none");
     var temp = keyboard_id;
     if (keyboard_id == 'abc_capslock') {
         temp = 'abc_caps';
@@ -610,11 +609,12 @@ function keyboardActivate(keyboard_id) {
     if (keyboard_id == 'greek_capslock') {
         temp = 'greek_caps';
     }
-    $('#vkbd table#table_' + temp).css("display", "table");
+    $('#virtualKeyboard table#table_' + temp).css("display", "table");
     activeKeyboard = keyboard_id;
 }
 
 // tabs for the different keyboards
+// TODO: needs to be available for onlick of the buttons somehow
 function tabClick(ev, keyboard_id) {
     switch (keyboard_id) {
         case 'abc':
@@ -636,12 +636,12 @@ function tabClick(ev, keyboard_id) {
         default:
             activeKeyboard = keyboard_id;
     }
-    $('#vkbd table').css("display", "none");
-    $('#vkbd table#table_' + activeKeyboard).css("display", "table");
+    $('#virtualKeyboard table').css("display", "none");
+    $('#virtualKeyboard table#table_' + activeKeyboard).css("display", "table");
     keyboardActivate(activeKeyboard);
 }
 
-function vkbd_init() {
+export default function virtualKeyboard_init() {
     var kb = $('#keyboard')[0];
     // console.log('kb=' + kb);
     if (typeof kb == 'undefined') {
@@ -649,22 +649,20 @@ function vkbd_init() {
         kb.id = 'keyboard';
         document.body.appendChild(kb);
     }
-    $('#keyboard').html(get_vkbd());
-    vkbd_bind_events();
+    $('#keyboard').html(get_virtualKeyboard());
+    virtualKeyboard_bind_events();
     keyboardActivate('mixed');
-    vkbd_hide();
+    virtualKeyboard_hide();
 }
 
-function vkbd_hide() {
-    $('#vkbd').css("display", "none");
+function virtualKeyboard_hide() {
+    $('#virtualKeyboard').css("display", "none");
     $('.formula_applet.selected').nextAll("button.keyb_button:first").addClass('selected');
 }
 
-function vkbd_show() {
-    $('#vkbd').css("display", "table");
-    $('#vkbd table').css("display", "none");
+export function virtualKeyboard_show() {
+    $('#virtualKeyboard').css("display", "table");
+    $('#virtualKeyboard table').css("display", "none");
     keyboardActivate('mixed');
-    $('#vkbd table#table_' + activeKeyboard).css("display", "table");
+    $('#virtualKeyboard table#table_' + activeKeyboard).css("display", "table");
 }
-
-var vkbdLoaded = true;
