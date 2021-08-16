@@ -9,6 +9,8 @@ cause preloaded JavaScript being loaded twice or more.
 * Exercise how to deal with other H5P packages (math, physics)
 * Use apps.zum.de and unterrichten.zum.de 
 ## Coding
+* Use JSDoc https://jsdoc.app/
+* Use ESLint https://eslint.org/
 * Render \cdot as times(cross) if lang=en
 * Render , as . if lang=en
 * e for Exponent interferes with e for Euler's number.
