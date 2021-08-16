@@ -9,22 +9,24 @@ var FAList = [];
 var new_fa_id = 'x8rT3dkkS';
 var result_mode = '';
 var editHandlerActive = true;
-class FAPP {
-  constructor() {
-    this.index = '';
-    this.id = '';
-    this.formula_applet = '';
-    this.hasSolution = 'undefined';
-    this.solution = '';
-    this.mqEditableField = '';
-    this.mathField = '';
-    this.hammer = '';
-    this.definitionset_list = [];
-    this.precision = default_precision;
-    this.hasResultField = true;
-    this.unit_auto = false;
-    this.inner_ori = '';
-    this.replaced = '';
+if (typeof FAPP == 'undefined') {
+  var FAPP = class {
+    constructor() {
+      this.index = '';
+      this.id = '';
+      this.formula_applet = '';
+      this.hasSolution = 'undefined';
+      this.solution = '';
+      this.mqEditableField = '';
+      this.mathField = '';
+      this.hammer = '';
+      this.definitionset_list = [];
+      this.precision = default_precision;
+      this.hasResultField = true;
+      this.unit_auto = false;
+      this.inner_ori = '';
+      this.replaced = '';
+    }
   }
 }
 
@@ -526,8 +528,8 @@ function mathQuillify() {
       //******************
       // *** no editor ***
       try {
-           MQ.StaticMath(this);
-       } catch (err) {
+        MQ.StaticMath(this);
+      } catch (err) {
         console.error('Error using MQ.StaticMath: ' + err);
         console.trace();
       }
@@ -917,7 +919,7 @@ function makeid(length) {
 }
 
 function createReplacement(latexstring) {
-  const separators = '∀µ∉ö∋∐∔∝∤∮∱∸∺∽≀';
+  var separators = '∀µ∉ö∋∐∔∝∤∮∱∸∺∽≀';
   var i = 0;
   sep = '';
   do {

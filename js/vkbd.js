@@ -2,14 +2,14 @@
 // vkbd = Virtual KeyBoarD
 "use strict";
 
-const squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
-const nth_root = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
-const left = ['left', '<span style="font-size: 130%">\u25c5</span>', '#Left'];
-const right = ['right', '<span style="font-size: 130%">\u25bb</span>', '#Right'];
+var squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
+var nth_root = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
+var left = ['left', '<span style="font-size: 130%">\u25c5</span>', '#Left'];
+var right = ['right', '<span style="font-size: 130%">\u25bb</span>', '#Right'];
 // ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
-const enter = ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', '#Enter'];
-const backspace = ['backspace', '\u232B', '#Backspace'];
-const poweroften =     ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>', '10^'];
+var enter = ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', '#Enter'];
+var backspace = ['backspace', '\u232B', '#Backspace'];
+var poweroften =     ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>', '10^'];
 
 var keys = [];
 keys['mixed'] = [
@@ -418,7 +418,7 @@ function create_table(table_id) {
             }
             if (typeof key[2] == 'undefined') {
                 if (table_id == 'greek' || table_id == 'greek_caps') {
-                    const ignore = '0_1_2_3_4_5_6_7_8_9_shift_';
+                    var ignore = '0_1_2_3_4_5_6_7_8_9_shift_';
                     if (ignore.indexOf(key[0] + '_') < 0) {
                         key[2] = '\\' + key[0] + ' ';
                         // console.log('done ' + key[2] + '*');
