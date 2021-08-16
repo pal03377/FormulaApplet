@@ -1,4 +1,3 @@
-// translate.js
 "use strict";
 
 function switchTo(lang) {
@@ -64,7 +63,7 @@ function switchTo(lang) {
 //     console.log('window.on.load');
 document.TranslationIsInitiated = false;
 
-function initTranslation() {
+export function initTranslation() {
   if (typeof document.TranslationIsInitiated == 'undefined') {
     document.TranslationIsInitiated = false;
   }
@@ -136,15 +135,3 @@ function getCookie(cookie_name) {
   }
   return "";
 }
-
-//   function checkCookie() {
-//     var user = getCookie("username");
-//     if (user != "") {
-//       alert("Welcome again " + user);
-//     } else {
-//       user = prompt("Please enter your name:", "");
-//       if (user != "" && user != null) {
-//         setCookie("username", user, 365);
-//       }
-//     }
-//   }
