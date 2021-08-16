@@ -1,6 +1,7 @@
 // "use strict";
 
 import { encode, decode } from "./decode.js";
+import { prepend } from "./editor.js";
 
 var default_precision = 0.000001;
 var activeMathfieldIndex = 0;
