@@ -46,15 +46,6 @@ export default function prepare_page() {
 
 // prepare_page() is called by glue.js
 function do_prepare_page() {
-  // dirty hack
-  if (typeof (isWiki) === 'undefined') {
-    if (typeof mw !== 'undefined') {
-      isWiki = true;
-    } else {
-      isWiki = false;
-    }
-  }
-  console.log('isWiki=' + isWiki);
   // waits for MathQuill to load
   $("img.mod").remove();
   ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
@@ -844,7 +835,6 @@ function erase_class(latex) {
 
 function show_editor_results(parts) {
   var result = '<p class="formula_applet"';
-  var wikiresult = '<f_app';
   // console.log(new_fa_id);
   var common_result = ' id="' + new_fa_id;
   if (result_mode == 'manu') {
@@ -856,33 +846,13 @@ function show_editor_results(parts) {
   common_result += parts[2];
   common_result = common_result.replace(/\\textcolor{blue}{/g, '\\unit{');
   result += common_result + '</p>';
-  wikiresult += common_result + '</f_app>';
 
   $('#output-code-1').text(parts[1]);
   $('#output-code-2').text(result);
   $('#output-code-3').text(wikiresult);
   var out = $('textarea#wiki-text');
   if (out.length > 0) {
-    // var iw = 'isWiki='+isWiki +  String.fromCharCode(13, 10);
-    // out.text(iw + wikiresult + String.fromCharCode(13, 10) + String.fromCharCode(13, 10) + result);
-    var isw = get_isWiki_from_URL();
-    // console.log('isw=' + isw);
-    if (isWiki || isw) {
-      out.text(wikiresult);
-    } else {
-      out.text(result);
-    }
-  }
-}
-
-function get_isWiki_from_URL() {
-  var url = new URL(document.location.href);
-  // console.log(url);
-  var iw = url.searchParams.get('isWiki');
-  if (iw == 'true') {
-    return true;
-  } else {
-    return false;
+    out.text(result);
   }
 }
 

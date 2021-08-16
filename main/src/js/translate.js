@@ -67,7 +67,6 @@ export function initTranslation() {
   if (typeof document.TranslationIsInitiated == 'undefined') {
     document.TranslationIsInitiated = false;
   }
-  if (isWiki) {}
   // backup of display attribute
 
   if (document.TranslationIsInitiated == false) {
@@ -95,14 +94,7 @@ export function initTranslation() {
 
     // get current lang
     var lang = null;
-    if (isWiki) {
-      lang = mw.config.get('wgUserLanguage');
-      // console.log('wikiLang=' + lang);
-    } else {
-      // let url = new URL(document.location.href);
-      // lang = url.searchParams.get('lang');
-      lang = getCookie('lang');
-    }
+    lang = getCookie('lang');
     if (lang == null || lang == '') {
       lang = 'de'; //default
     }

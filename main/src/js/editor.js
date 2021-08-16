@@ -29,12 +29,7 @@ export function prepend(after_prepend) {
     ed.after(unitbuttons);
     ed.after('<button type="button" class="tr de sif problemeditor" id="set-input-d">Eingabe-Feld setzen</button><button type="button" class="tr en sif problemeditor" id="set-input-e">Set input field</button>');
     var prepend_uses = $('.prepend_uses#p_u');
-    var license_link;
-    if (isWiki) {
-      license_link = 'https://github.com/gro58/FormulaApplet/blob/master/js/lib/ToDo.md';
-    } else {
-      license_link = 'license.php';
-    }
+    var license_link = 'https://github.com/gro58/FormulaApplet/blob/master/js/lib/ToDo.md';
     prepend_uses.after('<p><span class="tr de uses">Das Formel-Applet benutzt die Bibliotheken jQuery, MathQuill und Hammer. </span><span class="tr en uses">FormulaApplet uses jQuery, MathQuill, and Hammer. </span><a href="' + license_link + '" class="tr de moreinfo">Weitere Informationen...</a><a href="' + license_link + '" class="tr en moreinfo">More info...</a></p>');
   }
   after_prepend();
