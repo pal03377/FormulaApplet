@@ -1,5 +1,7 @@
 // "use strict";
 
+import $ from "jquery";
+
 import { encode, decode } from "./decode.js";
 import { prepend } from "./editor.js";
 import parse, { fa_tree, find_corresponding_right_bracket, evaluateTree, fillWithValues, checkScientificNotation } from "./tex_parser.js";
