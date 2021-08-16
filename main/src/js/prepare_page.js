@@ -29,7 +29,7 @@ class FAPP {
   }
 }
 
-function prepare_page() {
+export default function prepare_page() {
   if (typeof prepare_page_counter == 'undefined') {
     var prepare_page_counter = 0;
   } else {
@@ -87,13 +87,7 @@ function do_prepare_page() {
   });
 }
 
-// function isAndr() cannot be moved to glue.js because
-// glue.js is executed but not stored at test.mathebuch-online.de/wiki
-function isAndr() {
-  return (navigator.userAgent.toUpperCase().indexOf('ANDROID') !== -1);
-}
-
-function keyboardEvent(cmd) {
+export function keyboardEvent(cmd) {
   var FApp = FAList[activeMathfieldIndex];
   var mf = FApp.mathField;
 
@@ -176,7 +170,6 @@ function check_if_equality(id, equ, ds_list) {
 function fillWithRandomValAndCheckDefSets(tree_var, ds_list) {
   // console.log('save');
   var rememberTree = JSON.stringify(tree_var);
-  var temp = '';
   if (ds_list.length == 0) {
     fillWithValues(tree_var);
     return tree_var;
@@ -286,7 +279,6 @@ function editHandler(index) {
   console.log('called editHandler: ' + index + ' active=' + editHandlerActive);
   // console.log(FAList[index]);
   if (editHandlerActive == true) {
-    var fa = $(".formula_applet")[index];
     var mf = FAList[index].mathField;
     var mf_container = MQ.StaticMath(FAList[index].formula_applet);
     var solution = FAList[index].solution;
@@ -317,7 +309,6 @@ function editHandler(index) {
     } else {
       // see sample_task_and_parse.php
       try {
-        var dummy = document.getElementById('output_2').innerHTML;
         document.getElementById('output_2').innerHTML = mf_latex_for_parser;
         editHandlerDebug(mf_latex_for_parser);
       } catch {
@@ -346,14 +337,6 @@ function sanitizePrecision(prec) {
   return prec;
 }
 
-function mathQuillify_debug() {
-  console.log('mathQuillify()');
-  $(".formula_applet").each(function () {
-    console.log(this);
-  });
-}
-
-
 function mathQuillify() {
   console.log('mathQuillify()');
   MQ = MathQuill.getInterface(2);
@@ -363,9 +346,7 @@ function mathQuillify() {
     this.inner_ori = temp;
     this.innerHTML = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
   });
-  // }
 
-  // function mathQuillify_rest() {
   $(".formula_applet:not(.mq-math-mode)").each(function () {
     var temp = (this.innerHTML);
     temp = temp.replace(/\\Ohm/g, '\\Omega');
@@ -425,13 +406,11 @@ function mathQuillify() {
       }
 
       try {
-        var dummy = document.getElementById('output_1').innerHTML;
         document.getElementById('output_1').innerHTML = this.inner_ori + ' hasSolution=' + FApp.hasSolution;
       } catch {
         console.log(this.inner_ori + ' hasSolution=' + FApp.hasSolution);
       }
       try {
-        var dummy = document.getElementById('output_2').innerHTML;
         document.getElementById('output_2').innerHTML = this.replaced + ' unit_auto=' + FApp.unit_auto;
         var replace_back = this.replaced;
         replace_back = replace_back.replace(/\\unit{/g, '\\textcolor{blue}{');
@@ -932,13 +911,4 @@ function createReplacement(latexstring) {
     }
   } while (cont)
   return sep;
-}
-
-function testcreateReplacement() {
-  console.log('replacement=' + createReplacement('test'));
-  console.log('replacement=' + createReplacement('leider∀µ∉ö∋∐∔∝∤∮∱∸∺∽≀verloren'));
-  console.log('replacement=' + createReplacement('b∀µ∉ö∋∐∝∤∮∱∸∺∽≀'));
-  console.log('replacement=' + createReplacement('∀µ∉ö∋∐∔∝∤∮∱∸m∽≀'));
-  console.log('replacement=' + createReplacement('∉∀µ ö∋∐∔∤∮∱∸∺∽≀knurr∝'));
-  console.log('replacement=' + createReplacement('∀aµ∉öb∋∐∔∝c∤d∱∸∺∽≀'));
 }

@@ -1,6 +1,7 @@
-// vkbd.js
 // vkbd = Virtual KeyBoarD
 "use strict";
+
+import { keyboardEvent } from "./prepare_page.js";
 
 const squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
 const nth_root = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
@@ -551,7 +552,7 @@ function keyboardEvent_0(cmd) {
         }
     } else {
         // will be overwritten in *.php files
-        keyboardEvent(cmd); //defined in prepare_page
+        keyboardEvent(cmd);
         // switch back
         if (activeKeyboard == 'abc_caps') {
             activeKeyboard = 'abc';
