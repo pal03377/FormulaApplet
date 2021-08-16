@@ -1,0 +1,25 @@
+{
+  "name": "formelapplet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gro58/FormulaApplet.git"
+  },
+  "keywords": [
+    "formelapplet"
+  ],
+  "author": "gro58",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gro58/FormulaApplet/issues"
+  },
+  "homepage": "https://github.com/gro58/FormulaApplet#readme",
+  "devDependencies": {
+    "rollup": "^2.56.2"
+  }
+}
