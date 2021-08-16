@@ -1,7 +1,7 @@
-// This is prepare_page.js
 // "use strict";
 
-var prepare_page_exists = true;
+import { encode, decode } from "./decode.js";
+
 var default_precision = 0.000001;
 var activeMathfieldIndex = 0;
 var MQ = '';

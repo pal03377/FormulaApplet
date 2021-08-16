@@ -3,47 +3,6 @@
 
 var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 var codes_0to9 = 'eighqDNYAL';
-var n = characters.length;
-
-// generate permutations
-function init_permutation(n) {
-    var p = [];
-    var q = [];
-    for (var i = 0; i < n; i++) {
-        p[i] = i;
-        q[i] = i;
-    }
-    return [p, q];
-}
-
-/**
- * This function swaps p[i] and p[j] and
- * also q[ii] and q[jj] of the inverse q of p.<br>
- * Example: i = 3 and j = 7. p[3] = 11 and p[7] = 2
- * Then q[11] = 3 and q[2] = 7<br>
- * After swap of p ii = p[3] = 2 and jj = p[7] = 11.
- * After swap of q q[2] = 3 and q[11] = 7 
- * @param p Array of integers
- * @param q Array of integers
- * @param i integer, j integer
- * @returns {} Arrays p and q .
- */
-function swap(p, q, i, j) {
-    var h = p[i];
-    p[i] = p[j];
-    p[j] = h;
-    var ii = p[i];
-    var jj = p[j];
-    h = q[ii];
-    q[ii] = q[jj];
-    q[jj] = h;
-}
-
-function random_swap(p, q, n) {
-    var i = Math.floor(Math.random() * n);
-    var j = Math.floor(Math.random() * n);
-    swap(p, q, i, j);
-}
 
 // perm[enc_dec][num_of_perm][index]
 // enc_dec = 0 for encoding =1 for decoding
@@ -117,7 +76,7 @@ function decodeUnicode(str) {
 var oldText;
 var oldN;
 
-function encode(text) {
+export function encode(text) {
     // console.log(oldText, text);
     if (oldText == text) {
         var n = oldN; // do not change n
@@ -130,7 +89,7 @@ function encode(text) {
     return codes_0to9[n] + encode_decode_string(0, n, h);
 }
 
-function decode(text) {
+export function decode(text) {
     var n = codes_0to9.indexOf(text.substr(0, 1));
     var h = encode_decode_string(1, n, text.substr(1));
     var result = decodeUnicode(h);
