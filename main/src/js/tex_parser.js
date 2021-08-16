@@ -1,20 +1,17 @@
-/** tex_parser.js
- * 
+/** 
  * Contains old code from nodefactory.js (GRO)
  * Code for traversing: 
  * https://code.tutsplus.com/articles/data-structures-with-javascript-tree--cms-23393 **/
 
-// old filename: parse_brackets5.part1.js
-
 "use strict";
-// node-Konstruktor
+// Klasse als Funktion in JS
 function node() {
     this.id = -1;
     this.parent = 0;
     this.children = [];
     this.type = 'space';
     this.content = '';
-    this.comes_from = 1; //above
+    this.comes_from = 1; // above - TODO: andere Richtungen hier notieren
     this.way_back = false;
     this.value = 'u';
 }
@@ -120,7 +117,7 @@ function create_node(type, content, tree) {
     }
 }
 
-class fa_tree {
+export class fa_tree {
     constructor() {
         this.list_of_free = [];
         this.nodelist = [];
@@ -140,14 +137,6 @@ class fa_tree {
         this.variable_value_list = [];
     }
 };
-
-function copy(myTree) {
-    var result = new fa_tree();
-    for (let key in myTree) {
-        result[key] = myTree[key];
-    }
-    return result;
-}
 
 function withEachNode(tree, f) {
     var i = 0;
@@ -180,7 +169,7 @@ function withEachLeafOrGreek(tree, f) {
     })
 }
 
-function isInUnit(tree, node) {
+export function isInUnit(tree, node) {
     var result = false;
     var stop = false;
     do {
@@ -226,37 +215,6 @@ node.prototype.isRightmostChild = function (nodelist) {
         var rightmost = siblings[siblings.length - 1];
         var isRightmost = (this.id === rightmost);
         return isRightmost;
-    }
-};
-var traverseDepthFirstWithPrefix = function (prefix, callback, nodelist) {
-    (function recurse(currentNode) {
-        prefix(currentNode);
-        for (var i = 0, length = currentNode.children.length; i < length; i++) {
-            recurse(nodelist[currentNode.children[i]]);
-        }
-        callback(currentNode);
-    })(nodelist[0]);
-};
-var traverseDepthFirst = function (callback, nodelist) {
-    (function recurse(currentNode) {
-        for (var i = 0, length = currentNode.children.length; i < length; i++) {
-            recurse(nodelist[currentNode.children[i]]);
-        }
-        callback(currentNode);
-    })(nodelist[0]);
-};
-var traverseRootFirst = function (callback, nodelist) {
-    (function recurse(currentNode) {
-        callback(currentNode);
-        for (var i = 0, length = currentNode.children.length; i < length; i++) {
-            recurse(nodelist[currentNode.children[i]]);
-        }
-    })(nodelist[0]);
-};
-var traverseSimple = function (callback, nodelist) {
-    for (var i = 0; i < nodelist.length; i++) {
-        var node = nodelist[i];
-        callback(node);
     }
 };
 
@@ -604,8 +562,7 @@ let parsetree_counter = {
     }
 }
 
-function parsetree_by_index(tree) {
-    // counter++;
+export function parsetree_by_index(tree) {
     parsetree_counter.inc();
     var end_parse = false;
     // console.log('switch to ' + parsetree_counter.getCounter());
@@ -744,7 +701,7 @@ function parsetree_by_index(tree) {
     return {message: message, end_parse: end_parse};
 }
 
-function parse(texstring) {
+export default function parse(texstring) {
     var myTree = new fa_tree();
     myTree.leaf.content = texstring;
     // console.log('Start parsing......');
@@ -1668,13 +1625,13 @@ function check_children(tree) {
     }
 }
 
-function value(tree) {
+export function value(tree) {
     fillWithValues(tree);
     // temp = {temp.hasValue, temp.variable_value_list}
     return evaluateTree(tree);
 }
 
-function evaluateTree(filledTree) {
+export function evaluateTree(filledTree) {
     // temp = {temp.hasValue, temp.variable_value_list}
     // var hasValue = temp[0];
     // var hasValue = temp.hasValue;
@@ -1687,7 +1644,7 @@ function evaluateTree(filledTree) {
     }
 }
 
-function val(node, tree) {
+function val(node, tree) { // TODO: different name, too similar to function value?
     //recursive
     var children = node.children;
     var num_of_childs = children.length;
@@ -1846,7 +1803,7 @@ function trigonometry(fu, arg) {
     return result;
 }
 
-function fillWithValues(tree_var, list) {
+export function fillWithValues(tree_var, list) {
     var random = (arguments.length == 1);
     // random = true: fillWithRandomValues
     // random = false: fill with values of variable_value_list
@@ -1941,7 +1898,7 @@ function fillWithValues(tree_var, list) {
     tree_var.variable_value_list = var_value_list;
 }
 
-function checkScientificNotation(texstring) {
+export function checkScientificNotation(texstring) {
     var isScientific = false;
     // var regex =  RegExp('\\.?', 'g');
     var repl = texstring.replace(".", ",");

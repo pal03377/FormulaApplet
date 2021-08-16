@@ -1,7 +1,5 @@
-// tree_canvas.js
 "use strict";
-
-console.log('Here is tree_canvas.js');
+import { isInUnit, parsetree_by_index, value, val, fillWithValues } from "./tex_parser.js";
 
 var myTree;
 
