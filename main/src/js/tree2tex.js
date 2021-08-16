@@ -1,7 +1,7 @@
-// tree2tex.js
 "use strict"; 
+// not needed for actual lib?
 
-function tree2TEX(tree) {
+export function tree2TEX(tree) {
     var depth = 0;
     return recurse(tree.root);
 
@@ -183,5 +183,3 @@ function tree2TEX(tree) {
         return result;
     }
 }
-
-export { tree2TEX };
