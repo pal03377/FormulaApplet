@@ -218,7 +218,6 @@ function findLeftBracket(content, bra) {
     var braKind = 'nothing';
     var pos = content.indexOf(long);
     var masked = content;
-    //    console.log('Start searching ' + bra + ' in ' + masked);
     if (pos >= 0) {
         minPos = pos;
         braKind = long;
@@ -258,7 +257,6 @@ function findLeftBracket(content, bra) {
             }
         }
     }
-    //    console.log('Result for ' + bra + ': Found ' + braKind + ' at ' + minPos);
     return [minPos, braKind];
 }
 
@@ -441,9 +439,6 @@ function removeOperators(tree, kindOfOperators) {
                 // number of § markers
                 var leftcount = (leftpart.match(/§/g) || []).length;
                 var rightcount = (rightpart.match(/§/g) || []).length;
-                //                console.log('leftpart=' + leftpart + ' leftcount=' + leftcount);
-                //                console.log('rightpart=' + rightpart + ' rightcount=' + rightcount);
-                //                console.log('# of children=' + node.children.length || 0);
                 var check = ((leftcount + rightcount) === node.children.length);
                 if (node.type.startsWith('definite')) {
                     // children[0] = lowerBoundary, children[1] = upperBoundary
@@ -488,9 +483,6 @@ function removeOperators(tree, kindOfOperators) {
                 }
                 var siblings = tree.nodelist[node.parent].children;
                 var position = siblings.indexOf(node.id);
-                //            console.log('position=' + position);
-                //            console.log('siblings[position]=' + siblings[position]);
-                //            console.log('node.id=' + node.id);
 
                 // Upper connection: connect new node operator with former parent of node
                 tree.nodelist[node.parent].children[position] = operator.id;
@@ -688,7 +680,6 @@ function deleteSpaceAndRemoveBackslash(text) {
     temp = temp.replace(/\\cdot  /g, '\\cdot '); // two spaces -> one space
    
     // temp = temp.replace(/\\Ohm/g, '\\Omega'); // transform unit Ohm to greek Omega. Done in preparePage.js
-    //console.log(temp);
     return temp;
 }
 
@@ -830,8 +821,7 @@ function unifySubExponent(tree) {
                     //     newNode.parent = node.id;
                     //     node.children.splice(leftCount, 0, newNode.id);
                     //     // for (var i = 0; i < node.children.length; i++) {
-                    //     //     console.log(i, node.children[i], tree.nodelist[node.children[i]].content);
-                    //     // }
+                    //                    //     // }
                     // }
                     // Now in any case predecessor equals '§'. 
                     // Number of § in leftpart+predecessor is one higher al old leftCount
@@ -842,7 +832,6 @@ function unifySubExponent(tree) {
                         newNode.parent = node.id;
                         node.children.splice(leftCount, 0, newNode.id);
                         // for (var i = 0; i < node.children.length; i++) {
-                        //     console.log(i, node.children[i], tree.nodelist[node.children[i]].content);
                         // }
                     }
                     node.content = leftpart + needle + '§' + rest;
@@ -1059,7 +1048,6 @@ function parseFunction(tree) {
 
                         for (var i = leftCount + 1; i <= leftCount + rightCount; i++) {
                             var id = node.children[i];
-                            //console.log('i=' + i + ' id=' + id + ' ' + tree.nodelist[id]);
                             arg.children.push(id);
                             tree.nodelist[id].parent = arg.id;
                         }
@@ -1480,7 +1468,6 @@ export function evaluateTree(filledTree) {
     if (filledTree.hasValue) {
         return val(filledTree.root, filledTree);
     } else {
-        //console.log('tree not evaluable');
         return undefined;
     }
 }

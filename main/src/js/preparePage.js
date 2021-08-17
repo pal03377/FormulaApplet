@@ -48,7 +48,6 @@ export default async function preparePage() {
   initTranslation();
 
   $('body').on('click', function (ev) {
-    //console.log('body click');
     $(".formula_applet").removeClass('selected');
     $("button.keyb_button").removeClass('selected');
   });
@@ -68,7 +67,6 @@ export function keyboardEvent(cmd) {
   var mf = FApp.mathField;
 
   if (typeof mf !== 'undefined') {
-    //console.log(cmd);
     var endsWithSpace = false;
     if ((cmd.substr(cmd.length - 1)) == ' ') {
       endsWithSpace = true;
@@ -208,7 +206,6 @@ function makeAutoUnitstring(mf) {
       mf.keystroke('Left');
       editHandlerActive = true;
     } else {
-      //console.log('Do not expand.');
     }
   } else {
     // maybe create unit tag
@@ -344,7 +341,6 @@ async function mathQuillify() {
       prec = element.attr('prec');
     }
     prec = sanitizePrecision(prec);
-    //console.log(FApp.id + ' precision=' + prec);
     FApp.precision = prec;
     FApp.formulaApplet = domElem;
 
@@ -385,7 +381,6 @@ async function mathQuillify() {
     console.log('isEditor=' + isEditor);
     if (isEditor) {
       // *** editor ***
-      //console.log('init editor');
       prepend(function () {
         // initTranslation()
       });
@@ -421,7 +416,6 @@ async function mathQuillify() {
       });
       $('#random-id-d, #random-id-e').on('mousedown', ev => {
         ev.preventDefault();
-        //console.log('random-id');
         var rId = makeid(8);
         document.getElementById('fa_name').value = rId;
         newFaId = rId;
@@ -430,7 +424,6 @@ async function mathQuillify() {
 
       $('#fa_name').on('input', ev => {
         var fa_name = ev.target.value;
-        //console.log('fa_name=' + fa_name);
         // avoid XSS
         fa_name = fa_name.replace(/</g, '');
         fa_name = fa_name.replace(/>/g, '');
@@ -454,7 +447,6 @@ async function mathQuillify() {
           $('span.mq-class.inputfield').prop('contentEditable', 'true');
           showEditorResults(editorEditHandler(editorMf.latex()));
         }
-        //console.log(resultMode);
       });
       $('#random-id-d').mousedown();
       // $('input[type="radio"]#manu').click();
@@ -580,9 +572,7 @@ function getSelection(mf, eraseClass) {
 }
 
 function setInput() {
-  //console.log('setInput');
   var temp = getSelection(editorMf, true);
-  //console.log(temp);
   var preSelected = temp[0];
   var selected = temp[1];
   var postSelected = temp[2];
@@ -604,15 +594,12 @@ function getPositionOfUnitTags(latex, unitTag) {
   do {
     pos = latex.indexOf(unitTag, pos);
     if (pos >= 0) {
-      //  console.log(pos);
       var rest = latex.substr(pos + unitTag.length - 1);
-      //  console.log(rest);
       var bracket = findCorrespondingRightBracket(rest, '{');
       var posRightBracket = pos + unitTag.length + bracket.rightPos;
       startOfUnitTags.push(pos);
       endOfUnitTags.push(posRightBracket);
       //posRightBracket points to char right of the right bracket
-      //  console.log(latex.substr(pos, unitTag.length + bracket.rightPos)); // should log \textcolor{blue}{...}
       pos++;
     }
   } while (pos >= 0)
@@ -648,7 +635,6 @@ function setUnit() {
       pattern[k] = '#';
     }
   }
-  //  console.log(pattern.join('')); // join: transform from array to string
   // inspect selection start
   for (var i = 0; i < startOfUnitTags.length; i++) {
     if (startOfUnitTags[i] < start && start <= endOfUnitTags[i]) {

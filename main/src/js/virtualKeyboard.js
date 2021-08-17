@@ -441,7 +441,6 @@ function createTable(tableId) {
 }
 
 function virtualKeyboard_bind_events() {
-    //console.log('Init virtualKeyboard');
     $(".virtualKeyboardButton").mousedown(function (ev) {
         ev.preventDefault();
         var cmd = clickEvent(ev);
@@ -490,7 +489,6 @@ function virtualKeyboard_bind_events() {
         if (ev.type == 'pinch') {
             scaleTemp = scaleStart * ev.scale;
             var scalecommand = "translate(-50%, -50%) scale(" + scaleTemp + ")";
-            //console.log(scalecommand);
             $("#virtualKeyboard").css("transform", scalecommand);
         }
     });
