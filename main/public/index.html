@@ -5,26 +5,48 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Formelapplet</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='global.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/gf09.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/vkbd.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/table.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='MathQuill/mathquill.css'>
     <script src='build/bundle.js'></script>
 </head>
 <body>
 
-    <p class="formula_applet" id="no_res">\int^x_{3} t^2\ \mathrm{dt} = \frac{x^3}{3} - 9</p> Integral.<br />
-    <p class="formula_applet" id="no_bnd">\int_2^5\ {\sin} x\ \mathrm{d}x</p><br>
-    <p class="formula_applet" id="no_xay">sin^2 \alpha + cos^2\alpha = 1</p> No result field {{...}} necessary.<br />
-    <p class="formula_applet" id="inv862a" mode=physics>3,5 \unit{kWh} = {{result}} \unit{MJ}</p> (12,6MJ)<br />
-    <p class="formula_applet" id="definition_set" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} = {{result}}</p><span class='padding'><span class='tr en oneone'>One variable, one definition set.</span><span class='tr de oneone'>Eine Variable, eine Definitionsmenge.</span></span><br />
-    <!-- <p class="formula_applet" id="definition_set_more_than_numofvar" def="x > 0 && y < 5">\frac{\sqrt{x^3}}{\sqrt{x}} = {{result}}</p><span class='padding'><span class='tr en moredef'>Number of definition sets exceeds number of variables.</span><span class='tr de moredef'>Mehr Definitionsmengen als Variablen.</span></span><br /> -->
-    <!-- <p class="formula_applet" id="definition_set_less_than_numofvar" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} + y \cdot z = {{result}}</p><span class='padding'><span class='tr en morevars'>Number of variables exceeds number of definition sets.</span><span class='tr de morevars'>Mehr Variablen als Definitionsmengen.</span></span><br /> -->
-    <p class="formula_applet" id="light-house" data-b64='gOmkT'>s=\sqrt{ h^2 + {{result}} }</p><br />
-    <!-- <p class="formula_applet" id="binom_01">(2u + 7v)^2 = {{result}}</p><br /> -->
-    <p class="formula_applet" id="binom_02">(2u + 7v)^2 = 4u^2 + 28uv + {{result}}</p><br />
-    <!-- <p class="formula_applet" id="fraction" unit=auto>\frac{13t^2 - 5t}{t} = {{result}}</p><br /> -->
-    <p class="formula_applet" id="fraction">\frac{13t^2 - 5t}{t} = {{result}}</p><br />
-    <p class="formula_applet" id="multof_x" data-b64="N2gMy">17x+4x={{result}}</p><br />
-    <p class="formula_applet" id="CheckIfEqual">{{result}} = 0</p><br />
-    <!-- <p class="formula_applet" id="CheckIfTrue">{{result}}</p><br /> -->
+    <h2 class='tr de math'>Algebra</h2>
+    <h2 class='tr en math'>Algebra</h2>
+    <p class="formula_applet" id="light-house" data-b64='gOmkT'>(h+r)^2 = s^2 + r^2\ \Rightarrow\ s=\sqrt{ h^2 + {{result}} }</p> (s&gt;0)<br />
+    <span class="tr de sol5">Lösung: </span><span class="tr en sol5">Solution: </span><p class="formula_applet solution" id="s-light-house">2hr</p>
+    <hr>
+    <h2 class='tr de inte'>Integralrechnung</h2>
+    <h2 class='tr en inte'>Integral calculus</h2>
+    <p class="formula_applet" style="font-size:18pt; padding:10px" id="int_sin" data-b64="N2zCC">\int_{0}^{\pi}\sin\left(x\right)dx = {{result}}</p><br />
+    <span class="tr de sol1">Lösung: </span><span class="tr en sol1">Solution: </span><p class="formula_applet solution" id="s-int_sin">2</p>
+    </div>
+    <div class="col-sm-4">
+    <h2 class='tr de exam-yt'>Trigonometrie</h2>
+    <h2 class='tr en exam-yt'>Trigonometry</h2>
+    <p class="formula_applet" id="addth">\sin\left(x+y\right)=\sin\left(x\right)\cdot\cos\left(y\right)+{{result}}</p><br>
+    <span class="tr de sol4">Lösung: </span><span class="tr en sol4">Solution: </span><p class="formula_applet solution" id="s-addth1">\cos\left(x\right)\cdot\sin\left(y\right)</p><span class="tr de or3">&nbsp;oder&nbsp;</span>
+    <span class="tr en or3"> or </span><p class="formula_applet solution" id="s-addth2">\cos x \cdot\sin y </p><hr>
+    <p class="formula_applet" id="sin90">\sin\left(\alpha+ 90°\right)={{result}}</p><br>
+    <span class="tr de sol5">Lösung: </span><span class="tr en sol5">Solution: </span><p class="formula_applet solution" id="s-sin90">\cos\left(\alpha\right)</p><span class="tr de or4">&nbsp;oder&nbsp;</span>
+    <span class="tr en or4"> or </span><p class="formula_applet solution" id="s-sin90-2">\cos\alpha</p>
+    <hr>
+    <p class="formula_applet" id="sinpih">\sin\left(x+ \frac{\pi}{2}\right)={{result}}</p><br>
+    <span class="tr de sol6">Lösung: </span><span class="tr en sol6">Solution: </span><p class="formula_applet solution" id="s-sinpih">\cos\left(x\right)</p>
+    </div>
+    <div class="col-sm-4">
+      <h2 class='tr de phy'>Physik</h2>
+      <h2 class='tr en phy'>Physics</h2>
+      <div class="tr de ekin">Welche kinetische Energie E<sub>kin</sub> hat ein Körper der Masse <p class="formula_applet solution" id="mass">m = 60\unit{kg}</p> und der
+      Geschwindigkeit <p class="formula_applet solution" id="speed">v = 72 \unit{\frac{km}{h}}</p>?</div>
+      <div class="tr en ekin">What is the kinetic energy E<sub>kin</sub> of a body of mass <p class="formula_applet solution" id="mass">m = 60\unit{kg}</p> and 
+      speed <p class="formula_applet solution" id="speed">v = 72 \unit{\frac{km}{h}}</p>?</div>
+      <div><p class="formula_applet" id="ener" unit="auto" data-b64="iYO+E6sT16s2udsZcwb+M6rTZwbyR7433">E_{kin}={{result}}</p></div>
+      <div><span class="tr de sol7">Lösung: </span><span class="tr en sol7">Solution: </span>
+      <p class="formula_applet solution" id="s-ener">12\unit{kJ}=12k\unit{Nm}=12000\unit{J}=12000\unit{\frac{kg\cdot m^2}{s^2}}=0,012\unit{MJ}</p></div>
+    </div>
 
 </body>
 </html>
