@@ -199,8 +199,6 @@ function makeAutoUnitstring(mf) {
       // expand the unit tag at the right side
       var newLatex = left + unitTag + middle + right + '}';
       var mfLatexForParser = csn.repl + unitTag + middle + right + '}';
-      console.log('newLatex=' + newLatex);
-      console.log('mfLatexForParser=' + mfLatexForParser);
       editHandlerActive = false;
       mf.latex(newLatex);
       mf.keystroke('Left');
@@ -222,8 +220,6 @@ function makeAutoUnitstring(mf) {
       if (rest.length > 0) {
         var newLatex = beginning + unitTag + rest + '}';
         var mfLatexForParser = csn.repl + unitTag + rest + '}';
-        console.log('newLatex=' + newLatex);
-        console.log('mfLatexForParser=' + mfLatexForParser);
         editHandlerActive = false;
         mf.latex(newLatex);
         mf.keystroke('Left');
@@ -237,7 +233,7 @@ function makeAutoUnitstring(mf) {
 }
 
 function editHandler(index) {
-  console.log('called editHandler: ' + index + ' active=' + editHandlerActive);
+  console.debug('called editHandler: ' + index + ' active=' + editHandlerActive);
   if (editHandlerActive == true) {
     var mf = FAList[index].mathField;
     var mfContainer = MQ.StaticMath(FAList[index].formulaApplet);
@@ -263,10 +259,7 @@ function editHandler(index) {
       checkIfEquality(id, mfContainer.latex(), dsList);
       // mfLatexForParser = mfContainer.latex();
     }
-    if (typeof editHandlerDebug == 'undefined') {
-      console.log('editHandlerDebug() is undefined');
-    } else {
-      // see sample_task_and_parse.php
+    if (editHandlerDebug) {
       try {
         document.getElementById('output_2').innerHTML = mfLatexForParser;
         editHandlerDebug(mfLatexForParser);
@@ -298,7 +291,7 @@ function sanitizePrecision(prec) {
 
 async function mathQuillify() {
   await domLoad;
-  console.log('mathQuillify()');
+  console.debug('mathQuillify()');
   initVirtualKeyboard();
   $(".formula_applet:not(.mq-math-mode)").each(function () {
     var temp = (this.innerHTML);
@@ -312,7 +305,6 @@ async function mathQuillify() {
     temp = temp.replace(/\\mathrm/g, '');
     this.innerHTML = temp.replace(/\\unit{/g, '\\textcolor{blue}{');
     this.replaced = temp;
-    console.log('replaced=' + this.innerHTML);
   });
 
   $(".formula_applet").each((index, domElem) => {
@@ -360,25 +352,10 @@ async function mathQuillify() {
         var myTree = new faTree();
         myTree.leaf.content = mfLatexForParser;
       }
-
-      try {
-        document.getElementById('output_1').innerHTML = domElem.innerOri + ' hasSolution=' + FApp.hasSolution;
-      } catch {
-        console.log(domElem.innerOri + ' hasSolution=' + FApp.hasSolution);
-      }
-      try {
-        document.getElementById('output_2').innerHTML = domElem.replaced + ' unitAuto=' + FApp.unitAuto;
-        var replaceBack = domElem.replaced;
-        replaceBack = replaceBack.replace(/\\unit{/g, '\\textcolor{blue}{');
-        replaceBack = replaceBack.replace(/\\MathQuillMathField{}/g, '?');
-        editHandlerDebug(replaceBack);
-      } catch {
-        console.log(domElem.replaced + ' unitAuto=' + FApp.unitAuto);
-      }
     })
     FAList[index] = FApp;
 
-    console.log('isEditor=' + isEditor);
+    console.debug('isEditor=' + isEditor);
     if (isEditor) {
       // *** editor ***
       prepend(function () {
@@ -460,8 +437,6 @@ async function mathQuillify() {
         console.error('Error using MQ.StaticMath: ' + err);
         console.trace();
       }
-      console.log('after mathquillifying:');
-      console.log(domElem);
       if (FApp.hasResultField) {
         if (element.attr('data-b64') !== undefined) {
           FApp.hasSolution = true;
@@ -470,14 +445,8 @@ async function mathQuillify() {
         } else {
           FApp.hasSolution = false;
         };
-        console.log('formulaApplet=');
-        console.log(domElem);
         var mqEditableField = element.find('.mq-editable-field')[0];
-        console.log('mqEditableField=');
-        console.log(mqEditableField);
         var mf = MQ.MathField(mqEditableField, {});
-        console.log('mf=');
-        console.log(mf);
         mf.config({
           handlers: {
             edit: () => {
@@ -559,12 +528,12 @@ function getSelection(mf, eraseClass) {
     // and delete postSelected from end of erased
     var check = erased.substr(0, preSelected.length);
     if (check !== preSelected) {
-      console.log('Something went wrong with replacement of input field');
+      console.error('Something went wrong with replacement of input field', check, preSelected);
     }
     erased = erased.substring(preSelected.length);
     check = erased.substring(erased.length - postSelected.length);
     if (check !== postSelected) {
-      console.log('Something went wrong with replacement of input field');
+      console.error('Something went wrong with replacement of input field', check, postSelected);
     }
     selected = erased.substring(0, erased.length - postSelected.length);
     return [preSelected, selected, postSelected, ori];
@@ -726,8 +695,8 @@ function separateClass(latex, classTag) {
     // rest starts with {
     var bracket = findCorrespondingRightBracket(rest, '{');
     // bracket = [leftPos, bra.length, rightPos, rightbra.length]
-    if (bracket.leftPos !== 0 || bracket.bra_length !== 1 || bracket.rightBracketLength !== 1) {
-      console.log('Something went wront at separateClass()');
+    if (bracket.leftPos !== 0 || bracket.bracketLength !== 1 || bracket.rightBracketLength !== 1) {
+      console.error('Something went wront at separateClass()', bracket);
     }
     tag = rest.substring(1, bracket.rightPos);
     afterTag = rest.substring(bracket.rightPos + 1);

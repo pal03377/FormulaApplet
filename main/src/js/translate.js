@@ -17,7 +17,7 @@ let translationIsInitiated = false;
 export function initTranslation() {
   if (!translationIsInitiated) {
     // backup of display attribute
-    console.log('initTranslation()');
+    console.debug('initTranslation()');
     $('.tr').each(function () {
       var disp = $(this).css('display');
       $(this).attr('data-disp', disp);

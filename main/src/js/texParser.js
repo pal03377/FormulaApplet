@@ -46,7 +46,7 @@ node.prototype.addBracket = function (tree) {
     var bra = temp[1];
     bracket = findCorrespondingRightBracket(this.content, bra);
     var leftPos2 = bracket.leftPos;
-    var bra_len = bracket.bra_length;
+    var bra_len = bracket.bracketLength;
     var rightPos = bracket.rightPos;
     var rightbra_len = bracket.rightBracketLength;
     // this should not happen
@@ -79,15 +79,10 @@ node.prototype.addBracket = function (tree) {
 
 node.prototype.debug = function () {
     var text = this.id + ': parent=' + this.parent;
-    // var text = this.id;
     text += ' children=' + this.children;
     text += ' type=' + this.type;
     text += ' content=' + this.content;
-    // text += ' rightmost=' + this.isRightmostChild(nodelist);
-    if (this.type.startsWith('leaf')) {} else {
-        // text = '';
-    }
-    console.log(text);
+    console.debug(text);
     return text;
 };
 
@@ -367,7 +362,7 @@ export function findCorrespondingRightBracket(content, bra) {
         }
         mass[i] = sum;
     }
-    return {leftPos: leftPos, bra_length: bra.length, rightPos: rightPos, rightBracketLength: rightbra.length};
+    return {leftPos: leftPos, bracketLength: bra.length, rightPos: rightPos, rightBracketLength: rightbra.length};
 }
 
 function removeOperators(tree, kindOfOperators) {
@@ -446,7 +441,7 @@ function removeOperators(tree, kindOfOperators) {
                 }
                 if (check === false) {
                     ///throw('(remove operators) Wrong number of bracket markers');
-                    console.log('(remove operators) Wrong number of bracket markers');
+                    console.warn('(remove operators) Wrong number of bracket markers');
                 }
                 var rememberchildren = node.children;
                 if (leftcount > 0) {
@@ -760,7 +755,7 @@ function makeDegreeUnit(text) {
                         // var test = gaps[index] + number[index] + degree[index];
                         break;
                     default:
-                        console.log('Error in texParser makeDegreeUnit');
+                        console.error('Error in texParser makeDegreeUnit');
                 }
             } else { // result == null
                 stop = true;
@@ -1293,7 +1288,7 @@ function parseSubPower(tree, power) {
                 }
             }
             if (middlepart !== needle) {
-                console.log('Error in parseSubPower: ' + needle + ' not found');
+                console.error('Error in parseSubPower: ' + needle + ' not found');
             }
             var newNode = createNode(type, '', tree);
             newNode.parent = node.id;
@@ -1671,7 +1666,7 @@ export function fillWithValues(treeVar, list) {
                     } else {
                         var value = list[content];
                         if (typeof value == 'undefined') {
-                            console.log('Variable in definition set but not in applet: ' + content);
+                            console.error('Variable in definition set but not in applet: ' + content);
                             stop = true;
                             i ++;
                             hasValue = false;
