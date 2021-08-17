@@ -1,12 +1,11 @@
-// This is file decode.js
-"use strict"
+"use strict";
 
 var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-var codes_0to9 = 'eighqDNYAL';
+var codes0to9 = 'eighqDNYAL';
 
-// perm[enc_dec][num_of_perm][index]
-// enc_dec = 0 for encoding =1 for decoding
-// num_of_perm = number of permutation, 0 to 9. You can choose one of ten permutations
+// perm[encDec][numOfPerm][index]
+// encDec = 0 for encoding =1 for decoding
+// numOfPerm = number of permutation, 0 to 9. You can choose one of ten permutations
 var perm = [];
 perm[0] = [];
 perm[1] = [];
@@ -32,18 +31,19 @@ perm[1][8] = [21, 44, 2, 31, 62, 33, 8, 53, 59, 60, 35, 22, 58, 25, 49, 30, 32, 
 perm[0][9] = [53, 64, 29, 11, 26, 0, 20, 21, 48, 19, 5, 60, 14, 59, 4, 61, 58, 9, 44, 63, 3, 49, 33, 22, 2, 35, 31, 18, 28, 41, 40, 50, 7, 46, 34, 56, 24, 32, 13, 42, 30, 45, 47, 54, 15, 38, 8, 16, 12, 23, 52, 51, 39, 17, 62, 36, 25, 1, 37, 10, 57, 6, 43, 55, 27];
 perm[1][9] = [5, 57, 24, 20, 14, 10, 61, 32, 46, 17, 59, 3, 48, 38, 12, 44, 47, 53, 27, 9, 6, 7, 23, 49, 36, 56, 4, 64, 28, 2, 40, 26, 37, 22, 34, 25, 55, 58, 45, 52, 30, 29, 39, 62, 18, 41, 33, 42, 8, 21, 31, 51, 50, 0, 43, 63, 35, 60, 16, 13, 11, 15, 54, 19, 1];
 
-function encode_decode_char(enc_dec, num_of_perm, char) {
-    var code_1 = characters.indexOf(char);
-    var code_2 = perm[enc_dec][num_of_perm][code_1];
-    var result = characters[code_2];
+function encodeDecodeChar(encDec, numOfPerm, char) {
+    var code1 = characters.indexOf(char);
+    var code2 = perm[encDec][numOfPerm][code1];
+    var code2 = perm[encDec][numOfPerm][code1];
+    var result = characters[code2];
     return result;
 }
 
-function encode_decode_string(enc_dec, num_of_perm, str) {
+function encodeDecodeString(encDec, numOfPerm, str) {
     var result = '';
     var len = str.length;
     for (var i = 0; i < len; i++) {
-        result += encode_decode_char(enc_dec, num_of_perm, str[i]);
+        result += encodeDecodeChar(encDec, numOfPerm, str[i]);
     }
     return result;
 }
@@ -82,12 +82,12 @@ export function encode(text) {
     var h = encodeUnicode(text);
     oldText = text;
     oldN = n;
-    return codes_0to9[n] + encode_decode_string(0, n, h);
+    return codes0to9[n] + encodeDecodeString(0, n, h);
 }
 
 export function decode(text) {
-    var n = codes_0to9.indexOf(text.substr(0, 1));
-    var h = encode_decode_string(1, n, text.substr(1));
+    var n = codes0to9.indexOf(text.substr(0, 1));
+    var h = encodeDecodeString(1, n, text.substr(1));
     var result = decodeUnicode(h);
     return result;
 }
