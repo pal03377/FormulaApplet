@@ -2,6 +2,7 @@
 
 import $ from "jquery";
 import MQ from "./lib/mathquillWrapper.js";
+import { domLoad } from "./dom.js";
 
 import { encode, decode } from "./decode.js";
 import { prepend } from "./editor.js";
@@ -23,7 +24,7 @@ class FAPP {
     this.hasSolution = 'undefined';
     this.solution = '';
     this.mqEditableField = '';
-    this.mathField = '';
+    this.mathField = { latex: () => "" }; // TODO: why is this needed?
     this.hammer = '';
     this.definitionset_list = [];
     this.precision = default_precision;
@@ -34,21 +35,8 @@ class FAPP {
   }
 }
 
-export default function prepare_page() {
-  if (typeof prepare_page_counter == 'undefined') {
-    var prepare_page_counter = 0;
-  } else {
-    prepare_page_counter++;
-  }
-  console.log('prepare_page_counter = ' + prepare_page_counter);
-  if (prepare_page_counter == 0) {
-    do_prepare_page();
-  }
-}
-
-// prepare_page() is called by glue.js
-function do_prepare_page() {
-  // waits for MathQuill to load
+export default async function prepare_page() {
+  await domLoad;
   $("img.mod").remove();
   ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
   $('button.keyb_button').on('mousedown', function (ev) {
@@ -275,6 +263,7 @@ function editHandler(index) {
   console.log('called editHandler: ' + index + ' active=' + editHandlerActive);
   // console.log(FAList[index]);
   if (editHandlerActive == true) {
+    console.log(FAList, FAList[index])
     var mf = FAList[index].mathField;
     var mf_container = MQ.StaticMath(FAList[index].formula_applet);
     var solution = FAList[index].solution;
