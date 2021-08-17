@@ -1,6 +1,7 @@
 // "use strict";
 
 import $ from "jquery";
+import Hammer from "@egjs/hammerjs";
 import MQ from "./lib/mathquillWrapper.js";
 import { domLoad } from "./dom.js";
 
@@ -257,15 +258,6 @@ function editHandler(index) {
       checkIfEqual(id, mfLatexForParser, solution, dsList);
     } else {
       checkIfEquality(id, mfContainer.latex(), dsList);
-      // mfLatexForParser = mfContainer.latex();
-    }
-    if (editHandlerDebug) {
-      try {
-        document.getElementById('output_2').innerHTML = mfLatexForParser;
-        editHandlerDebug(mfLatexForParser);
-      } catch {
-        console.log('no output_2');
-      }
     }
   }
 };

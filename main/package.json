@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.15.0",
-    "hammerjs": "^2.0.8",
+    "@egjs/hammerjs": "^2.0.17",
     "jquery": "^3.6.0"
   }
 }
