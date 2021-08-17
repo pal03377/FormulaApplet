@@ -1,5 +1,7 @@
 "use strict";
 
+import $ from "jquery";
+import Hammer from "hammerjs";
 import { keyboardEvent } from "./prepare_page.js";
 
 const squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';

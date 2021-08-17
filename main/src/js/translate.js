@@ -1,5 +1,7 @@
 "use strict";
 
+import $ from "jquery";
+
 function switchTo(lang) {
   $('.tr').each(function () {
     // console.log('hide');
