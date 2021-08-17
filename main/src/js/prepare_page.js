@@ -1,6 +1,7 @@
 // "use strict";
 
 import $ from "jquery";
+import MQ from "./MathQuill.js";
 
 import { encode, decode } from "./decode.js";
 import { prepend } from "./editor.js";
@@ -10,7 +11,6 @@ import virtualKeyboard_init, { virtualKeyboard_show } from "./virtual_keyboard.j
 
 var default_precision = 0.000001;
 var activeMathfieldIndex = 0;
-var MQ = '';
 var FAList = [];
 var new_fa_id = 'x8rT3dkkS';
 var result_mode = '';
@@ -335,7 +335,6 @@ function sanitizePrecision(prec) {
 
 function mathQuillify() {
   console.log('mathQuillify()');
-  MQ = MathQuill.getInterface(2);
   virtualKeyboard_init();
   $(".formula_applet:not(.mq-math-mode)").each(function () {
     var temp = (this.innerHTML);
@@ -427,7 +426,6 @@ function mathQuillify() {
       });
       // make whole mathFieldSpan editable
       var mathFieldSpan = document.getElementById('math-field');
-      MQ = MathQuill.getInterface(2);
       editor_mf = MQ.MathField(mathFieldSpan, {
         spaceBehavesLikeTab: true, // configurable
         handlers: {
