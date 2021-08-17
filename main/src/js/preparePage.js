@@ -8,7 +8,7 @@ import { encode, decode } from "./decode.js";
 import { prepend } from "./editor.js";
 import parse, { faTree, findCorrespondingRightBracket, evaluateTree, fillWithValues, checkScientificNotation } from "./texParser.js";
 import { initTranslation } from "./translate.js";
-import initVirtualKeyboard, { showVirtualKeyboard } from "./virtual_keyboard.js";
+import initVirtualKeyboard, { showVirtualKeyboard } from "./virtualKeyboard.js";
 
 var defaultPrecision = 0.000001;
 var activeMathfieldIndex = 0;
