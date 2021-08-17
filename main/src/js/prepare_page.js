@@ -24,7 +24,7 @@ class FAPP {
     this.hasSolution = 'undefined';
     this.solution = '';
     this.mqEditableField = '';
-    this.mathField = { latex: () => "" }; // TODO: why is this needed?
+    this.mathField = "";
     this.hammer = '';
     this.definitionset_list = [];
     this.precision = default_precision;
@@ -261,9 +261,8 @@ function make_auto_unitstring(mf) {
 
 function editHandler(index) {
   console.log('called editHandler: ' + index + ' active=' + editHandlerActive);
-  // console.log(FAList[index]);
   if (editHandlerActive == true) {
-    console.log(FAList, FAList[index])
+    console.log(FAList, FAList[index], index)
     var mf = FAList[index].mathField;
     var mf_container = MQ.StaticMath(FAList[index].formula_applet);
     var solution = FAList[index].solution;
@@ -322,7 +321,8 @@ function sanitizePrecision(prec) {
   return prec;
 }
 
-function mathQuillify() {
+async function mathQuillify() {
+  await domLoad;
   console.log('mathQuillify()');
   virtualKeyboard_init();
   $(".formula_applet:not(.mq-math-mode)").each(function () {
@@ -340,46 +340,46 @@ function mathQuillify() {
     console.log('replaced=' + this.innerHTML);
   });
 
-  $(".formula_applet").each(function () {
+  $(".formula_applet").each((index, domElem) => {
+    let element = $(domElem);
     var FApp = new FAPP();
-    FApp.hasResultField = (this.innerHTML.indexOf('\\MathQuillMathField{}') >= 0);
-    var index = $(".formula_applet:not(.mq-math-mode)").index(this);
+    FApp.hasResultField = (element.html().indexOf('\\MathQuillMathField{}') >= 0);
     FApp.index = index;
-    FApp.id = $(this).attr('id') // name of formula_applet
+    FApp.id = element.attr('id') // name of formula_applet
     var isEditor = (FApp.id.toLowerCase() == 'editor');
     if (isEditor) {
       FApp.hasResultField = true;
     }
     // console.log('§§§ ' + this.innerHTML + ' ' + FApp.hasResultField);
-    var def = $(this).attr('def');
+    var def = element.attr('def');
     if (typeof def !== 'undefined') {
       FApp.definitionset_list = unify_definitionsets(def);
     }
-    var unit_attr = $(this).attr('unit');
+    var unit_attr = element.attr('unit');
     var unit_auto = (typeof unit_attr !== 'undefined' && unit_attr == 'auto');
-    var mode_attr = $(this).attr('mode');
+    var mode_attr = element.attr('mode');
     var mode_physics = (typeof mode_attr !== 'undefined' && mode_attr == 'physics');
     FApp.unit_auto = unit_auto || mode_physics;
     // console.info(`${FApp.id} unit_auto=${FApp.unit_auto}`);
 
-    var prec = $(this).attr('precision');
+    var prec = element.attr('precision');
     if (typeof prec !== 'undefined') {
-      prec = $(this).attr('prec');
+      prec = element.attr('prec');
     }
     // console.log(prec);
     prec = sanitizePrecision(prec);
     //console.log(FApp.id + ' precision=' + prec);
     FApp.precision = prec;
-    FApp.formula_applet = this;
+    FApp.formula_applet = domElem;
 
-    $(this).click(function (ev) {
+    element.click(ev => {
       if (FApp.hasResultField) {
         ev.stopPropagation(); //avoid body click
         $(".formula_applet").removeClass('selected');
-        $(this).addClass('selected');
+        element.addClass('selected');
         $("button.keyb_button").removeClass('selected');
         if ($('#virtualKeyboard').css('display') == 'none') {
-          $(this).nextAll("button.keyb_button:first").addClass('selected');
+          element.nextAll("button.keyb_button:first").addClass('selected');
         }
         activeMathfieldIndex = FApp.index;
       } else {
@@ -390,21 +390,22 @@ function mathQuillify() {
       }
 
       try {
-        document.getElementById('output_1').innerHTML = this.inner_ori + ' hasSolution=' + FApp.hasSolution;
+        document.getElementById('output_1').innerHTML = elemeng.get().inner_ori + ' hasSolution=' + FApp.hasSolution;
       } catch {
-        console.log(this.inner_ori + ' hasSolution=' + FApp.hasSolution);
+        console.log(domElem.inner_ori + ' hasSolution=' + FApp.hasSolution);
       }
       try {
-        document.getElementById('output_2').innerHTML = this.replaced + ' unit_auto=' + FApp.unit_auto;
-        var replace_back = this.replaced;
+        document.getElementById('output_2').innerHTML = domElem.replaced + ' unit_auto=' + FApp.unit_auto;
+        var replace_back = domElem.replaced;
         replace_back = replace_back.replace(/\\unit{/g, '\\textcolor{blue}{');
         replace_back = replace_back.replace(/\\MathQuillMathField{}/g, '?');
         editHandlerDebug(replace_back);
       } catch {
-        console.log(this.replaced + ' unit_auto=' + FApp.unit_auto);
+        console.log(domElem.replaced + ' unit_auto=' + FApp.unit_auto);
       }
     })
     FAList[index] = FApp;
+    console.log("FAList", FAList, index);
 
     console.log('isEditor=' + isEditor);
     if (isEditor) {
@@ -427,23 +428,23 @@ function mathQuillify() {
 
       var mqEditableField = $('#editor').find('.mq-editable-field')[0];
       // adjust events
-      $('#set-input-d, #set-input-e').on('mousedown', function (ev) {
+      $('#set-input-d, #set-input-e').on('mousedown', ev => {
         ev.preventDefault();
         set_input();
       });
-      $('#set-unit-d').on('mousedown', function (ev) {
+      $('#set-unit-d').on('mousedown', ev => {
         ev.preventDefault();
         set_unit();
       });
-      $('#set-unit-e, #set-unit-e').on('mousedown', function (ev) {
+      $('#set-unit-e, #set-unit-e').on('mousedown', ev => {
         ev.preventDefault();
         set_unit();
       });
-      $('#erase-unit-d, #erase-unit-e').on('mousedown', function (ev) {
+      $('#erase-unit-d, #erase-unit-e').on('mousedown', ev => {
         ev.preventDefault();
         erase_unit();
       });
-      $('#random-id-d, #random-id-e').on('mousedown', function (ev) {
+      $('#random-id-d, #random-id-e').on('mousedown', ev => {
         ev.preventDefault();
         //console.log('random-id');
         var r_id = makeid(8);
@@ -453,7 +454,7 @@ function mathQuillify() {
         show_editor_results(editor_edithandler(editor_mf.latex()));
       });
 
-      $('#fa_name').on('input', function (ev) {
+      $('#fa_name').on('input', ev => {
         var fa_name = ev.target.value;
         //console.log('fa_name=' + fa_name);
         // avoid XSS
@@ -470,7 +471,7 @@ function mathQuillify() {
         }
       });
 
-      $('input[type="radio"]').on('click', function (ev) {
+      $('input[type="radio"]').on('click', ev => {
         result_mode = ev.target.id;
         if (result_mode == 'auto') {
           $('span.mq-class.inputfield').prop('contentEditable', 'false');
@@ -489,24 +490,24 @@ function mathQuillify() {
       //******************
       // *** no editor ***
       try {
-           MQ.StaticMath(this);
+           MQ.StaticMath(domElem);
        } catch (err) {
         console.error('Error using MQ.StaticMath: ' + err);
         console.trace();
       }
       console.log('after mathquillifying:');
-      console.log(this);
+      console.log(domElem);
       if (FApp.hasResultField) {
-        if ($(this).attr('data-b64') !== undefined) {
+        if (element.attr('data-b64') !== undefined) {
           FApp.hasSolution = true;
-          var zip = $(this).attr('data-b64');
+          var zip = element.attr('data-b64');
           FAList[index].solution = decode(zip);
         } else {
           FApp.hasSolution = false;
         };
         console.log('formula_applet=');
-        console.log(this);
-        var mqEditableField = $(this).find('.mq-editable-field')[0];
+        console.log(domElem);
+        var mqEditableField = element.find('.mq-editable-field')[0];
         console.log('mqEditableField=');
         console.log(mqEditableField);
         var mf = MQ.MathField(mqEditableField, {});
@@ -514,12 +515,12 @@ function mathQuillify() {
         console.log(mf);
         mf.config({
           handlers: {
-            edit: function () {
+            edit: () => {
               mqEditableField.focus();
               // console.log('edit ' + index);
               editHandler(index);
             },
-            enter: function () {
+            enter: () => {
               editHandler(index);
             },
           }
@@ -538,6 +539,7 @@ function mathQuillify() {
         //console.log(index + ' ' + ev.type);
       });
     }
+    index ++;
   });
 }
 
