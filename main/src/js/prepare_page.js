@@ -44,14 +44,8 @@ export default async function prepare_page() {
     $("button.keyb_button").removeClass('selected');
   });
   ($('<img class="mod">')).insertAfter($(".formula_applet"));
-  $(document).ready(function () {
-    console.log('Document ready. Calling mathquillify...');
-    mathQuillify();
-    //inittranslation after mathQuillify which evokes virtualKeyboard_init
-    if (typeof initTranslation !== 'undefined') {
-      initTranslation();
-    }
-  })
+  mathQuillify();
+  initTranslation();
 
   $('body').on('click', function (ev) {
     //console.log('body click');
@@ -404,7 +398,6 @@ async function mathQuillify() {
       }
     })
     FAList[index] = FApp;
-    console.log("FAList", FAList, index);
 
     console.log('isEditor=' + isEditor);
     if (isEditor) {

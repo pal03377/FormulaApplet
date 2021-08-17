@@ -1,84 +1,27 @@
 "use strict";
 
 import $ from "jquery";
+import { domLoad } from "./dom.js";
 
-function switchTo(lang) {
-  $('.tr').each(function () {
-    // console.log('hide');
-    // console.log(this);
-    $(this).css('display', 'none');
-  })
-  $('.tr.de').each(function () {
-    var tr_de_key = $(this).attr('class');
-    var clamp = '';
-    // example: tr_de_key = 'xyz tr de blibla blu'
-    var pos = tr_de_key.indexOf('tr de ');
-    if (pos >= 0) {
-      var rest = tr_de_key.substr(pos + 6) + ' ';
-      // example: rest = 'blibla blu '
-      pos = rest.indexOf(' ');
-      if (pos >= 0) {
-        clamp = rest.substr(0, pos);
-        // example: clamp = 'blibla'
-      }
-    }
-    // error -> clamp='';
-
-    // if (defaultkey.length > 5) {
-    //   var targetkey = '.' + defaultkey.substr(0, 2) + '.' + lang + '.' + defaultkey.substr(6);
-    if (clamp.length > 0) {
-      var targetkey = '.tr.' + lang + '.' + clamp;
-      // example: if lang='en' then targetkey = '.tr.en.blibla' 
-      // targetkey = targetkey.replace(' ', '.');
-      var target = $(targetkey);
-    } else {
-      target = this;
-    }
-    // restore display attribute
-    var disp = $(target).attr('data-disp');
-    // console.log(targetkey + ' show as ' + disp);
-    $(target).css('display', disp);
-  })
+async function switchTo(lang) {
+  await domLoad;
+  $(".tr").css("display", "none");
+  $(".tr." + lang).css("display", "initial");
 
   // save lang
   setCookie('lang', lang, 7);
-  // update_all_more_less();
-
-  // $('a').each(function () {
-  //   // console.log(this.href);
-  //   let h = this.href;
-  //   let split = h.split('?');
-  //   // if (split[1] > 0){
-  //   // preserve other params?
-  //   // }
-  //   let new_href = split[0] + '?lang=' + lang;
-  //   // console.log(h + ' -> ' + new_href);
-  //   this.href = new_href;
-  // });
-
 }
 
-//default
-//$(window).on('load', function(){
-//  initTranslation();
-//});
-//     console.log('window.on.load');
-document.TranslationIsInitiated = false;
+let translationIsInitiated = false;
 
 export function initTranslation() {
-  if (typeof document.TranslationIsInitiated == 'undefined') {
-    document.TranslationIsInitiated = false;
-  }
-  // backup of display attribute
-
-  if (document.TranslationIsInitiated == false) {
+  if (!translationIsInitiated) {
+    // backup of display attribute
     console.log('initTranslation()');
     $('.tr').each(function () {
       var disp = $(this).css('display');
       $(this).attr('data-disp', disp);
       $(this).css('display', 'none');
-      // console.log(this);
-      // console.log(disp);
     })
 
     // click event for language buttons
@@ -95,15 +38,10 @@ export function initTranslation() {
     });
 
     // get current lang
-    var lang = null;
-    lang = getCookie('lang');
-    if (lang == null || lang == '') {
-      lang = 'de'; //default
-    }
+    var lang = getCookie('lang') || "de";
     console.log('switch to lang: ' + lang);
-    $('#' + lang).click().blur();
     switchTo(lang);
-    document.TranslationIsInitiated = true;
+    translationIsInitiated = true;
   }
 };
 
