@@ -1,23 +1,24 @@
-// "use strict";
+"use strict";
 
 import $ from "jquery";
 import Hammer from "@egjs/hammerjs";
 import MQ from "./lib/mathquillWrapper.js";
 import { domLoad } from "./dom.js";
 
+import config from "./config.json";
+
 import { encode, decode } from "./decode.js";
-import { prepend } from "./editor.js";
-import parse, { faTree, findCorrespondingRightBracket, evaluateTree, fillWithValues, checkScientificNotation } from "./texParser.js";
+import { initEditor } from "./editor.js";
+import parse, { FaTree, findCorrespondingRightBracket, evaluateTree, fillWithValues, checkScientificNotation } from "./texParser.js";
 import { initTranslation } from "./translate.js";
 import initVirtualKeyboard, { showVirtualKeyboard } from "./virtualKeyboard.js";
 
-var defaultPrecision = 0.000001;
 var activeMathfieldIndex = 0;
 var FAList = [];
 var newFaId = 'x8rT3dkkS';
 var resultMode = '';
 var editHandlerActive = true;
-class FAPP {
+class FApp {
   constructor() {
     this.index = '';
     this.id = '';
@@ -28,7 +29,7 @@ class FAPP {
     this.mathField = "";
     this.hammer = '';
     this.definitionsetList = [];
-    this.precision = defaultPrecision;
+    this.precision = config.defaultPrecision;
     this.hasResultField = true;
     this.unitAuto = false;
     this.innerOri = '';
@@ -64,8 +65,8 @@ export default async function preparePage() {
 }
 
 export function keyboardEvent(cmd) {
-  var FApp = FAList[activeMathfieldIndex];
-  var mf = FApp.mathField;
+  var fApp = FAList[activeMathfieldIndex];
+  var mf = fApp.mathField;
 
   if (typeof mf !== 'undefined') {
     var endsWithSpace = false;
@@ -86,7 +87,7 @@ export function keyboardEvent(cmd) {
       } else if (cmd == 'nthroot') {
         nthroot();
       } else if (cmd == 'square') {
-        mf.keystroke("Up");
+        mf.keystroke('Up');
         mf.typedtext('2');
       } else {
         mf.keystroke(cmd);
@@ -131,8 +132,8 @@ function checkIfEquality(id, equ, dsList) {
   myTree = fillWithRandomValAndCheckDefSets(myTree, dsList);
   var almostOne = evaluateTree(myTree);
   var dif = Math.abs(almostOne - 1);
-  var FApp = getFAppFromId(id);
-  var precision = FApp.precision;
+  var fApp = getFAppFromId(id);
+  var precision = fApp.precision;
   if (dif < precision) {
     $('#' + id).removeClass('mod_wrong').addClass('mod_ok');
   } else {
@@ -147,12 +148,11 @@ function fillWithRandomValAndCheckDefSets(treeVar, dsList) {
     return treeVar;
   } else {
     // start watchdog
+    var success = false;
     var start = new Date();
-    var success = true;
-    var numberOfTries = 0;
-    do {
-      numberOfTries++;
-      var tree2 = new faTree();
+    var timePassedMilliseconds = 0;
+    while (!success && timePassedMilliseconds < 2000) {
+      var tree2 = new FaTree();
       tree2 = JSON.parse(rememberTree);
       fillWithValues(tree2);
       var variableValueList = tree2.variableValueList;
@@ -162,18 +162,16 @@ function fillWithRandomValAndCheckDefSets(treeVar, dsList) {
         fillWithValues(definitionset, variableValueList);
         var value = evaluateTree(definitionset);
         success = ((value > 0) || typeof value == 'undefined');
-        if (success == false) {
+        if (!success) {
           // short circuit
           i = dsList.length;
           // restore leafs with value = undefined
         }
       }
       var now = new Date();
-      var timePassed = now.getTime() - start.getTime();
-      // in milliseconds
+      timePassedMilliseconds = now.getTime() - start.getTime();
     }
-    while (success == false && timePassed < 2000);
-    if (success == true) {
+    if (success) {
     } else {
       tree2.hasValue = false;
       tree2.variableValueList = [];
@@ -196,7 +194,7 @@ function makeAutoUnitstring(mf) {
     var middle = rest.substring(1, bracket.rightPos);
     var right = rest.substr(bracket.rightPos + 1);
     var sci = checkScientificNotation(left).isScientific;
-    if (sci == true && middle.length > 0) {
+    if (sci && middle.length > 0) {
       // expand the unit tag at the right side
       var newLatex = left + unitTag + middle + right + '}';
       var mfLatexForParser = csn.repl + unitTag + middle + right + '}';
@@ -204,7 +202,6 @@ function makeAutoUnitstring(mf) {
       mf.latex(newLatex);
       mf.keystroke('Left');
       editHandlerActive = true;
-    } else {
     }
   } else {
     // maybe create unit tag
@@ -212,8 +209,8 @@ function makeAutoUnitstring(mf) {
     for (var i = str.length; i >= 0; i--) {
       beginning = str.substr(0, i);
       var sci = checkScientificNotation(beginning).isScientific;
-      if (sci == true) {
-        i = -1;
+      if (sci) {
+        break;
       }
     }
     if (beginning.length > 0) {
@@ -226,8 +223,6 @@ function makeAutoUnitstring(mf) {
         mf.keystroke('Left');
         editHandlerActive = true;
       }
-    } else {
-      // do nothing
     }
   }
   return mfLatexForParser;
@@ -253,7 +248,6 @@ function editHandler(index) {
       mfLatexForParser = makeAutoUnitstring(mf);
     }
 
-    // the following part: auto_unit does not matter
     if (hasSolution) {
       checkIfEqual(id, mfLatexForParser, solution, dsList);
     } else {
@@ -262,14 +256,14 @@ function editHandler(index) {
   }
 };
 
-var editorMf = '';
+var editorMf;
 
 function sanitizePrecision(prec) {
   if (typeof prec == 'undefined') {
-    prec = defaultPrecision;
+    prec = config.defaultPrecision;
   } else {
     prec = prec.replace(/,/g, '.');
-    var endsWithPercent = (prec.substr(prec.length - 1) == '%');
+    var endsWithPercent = prec[prec.length - 1] === '%';
     if (endsWithPercent) {
       prec = prec.substring(0, prec.length - 1);
     }
@@ -286,7 +280,7 @@ async function mathQuillify() {
   console.debug('mathQuillify()');
   initVirtualKeyboard();
   $(".formula_applet:not(.mq-math-mode)").each(function () {
-    var temp = (this.innerHTML);
+    var temp = this.innerHTML;
     this.innerOri = temp;
     this.innerHTML = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
   });
@@ -299,62 +293,60 @@ async function mathQuillify() {
     this.replaced = temp;
   });
 
-  $(".formula_applet").each((index, domElem) => {
+  $(".formula_applet").each(async (index, domElem) => {
     let element = $(domElem);
-    var FApp = new FAPP();
-    FApp.hasResultField = (element.html().indexOf('\\MathQuillMathField{}') >= 0);
-    FApp.index = index;
-    FApp.id = element.attr('id') // name of formulaApplet
-    var isEditor = (FApp.id.toLowerCase() == 'editor');
+    var fApp = new FApp();
+    fApp.hasResultField = (element.html().indexOf('\\MathQuillMathField{}') >= 0);
+    fApp.index = index;
+    fApp.id = element.attr('id') // name of formulaApplet
+    var isEditor = (fApp.id.toLowerCase() == 'editor');
     if (isEditor) {
-      FApp.hasResultField = true;
+      fApp.hasResultField = true;
     }
     var def = element.attr('def');
     if (typeof def !== 'undefined') {
-      FApp.definitionsetList = unifyDefinitions(def);
+      fApp.definitionsetList = unifyDefinitions(def);
     }
     var unitAttr = element.attr('unit');
     var unitAuto = (typeof unitAttr !== 'undefined' && unitAttr == 'auto');
     var modeAttr = element.attr('mode');
     var modePhysics = (typeof modeAttr !== 'undefined' && modeAttr == 'physics');
-    FApp.unitAuto = unitAuto || modePhysics;
-    // console.info(`${FApp.id} unitAuto=${FApp.unitAuto}`);
+    fApp.unitAuto = unitAuto || modePhysics;
 
     var prec = element.attr('precision');
     if (typeof prec !== 'undefined') {
       prec = element.attr('prec');
     }
     prec = sanitizePrecision(prec);
-    FApp.precision = prec;
-    FApp.formulaApplet = domElem;
+    fApp.precision = prec;
+    fApp.formulaApplet = domElem;
 
     element.click(ev => {
-      if (FApp.hasResultField) {
-        ev.stopPropagation(); //avoid body click
+      if (fApp.hasResultField) {
+        ev.stopPropagation(); // avoid body click
         $(".formula_applet").removeClass('selected');
         element.addClass('selected');
         $("button.keyb_button").removeClass('selected');
         if ($('#virtualKeyboard').css('display') == 'none') {
           element.nextAll("button.keyb_button:first").addClass('selected');
         }
-        activeMathfieldIndex = FApp.index;
+        activeMathfieldIndex = fApp.index;
       } else {
         var mfContainer = MQ.StaticMath(FAList[index].formulaApplet);
         var mfLatexForParser = mfContainer.latex();
-        var myTree = new faTree();
+        var myTree = new FaTree();
         myTree.leaf.content = mfLatexForParser;
       }
     })
-    FAList[index] = FApp;
+    FAList[index] = fApp;
 
     console.debug('isEditor=' + isEditor);
     if (isEditor) {
       // *** editor ***
-      prepend(function () {
-        // initTranslation()
-      });
+      await initEditor();
       // make whole mathFieldSpan editable
       var mathFieldSpan = document.getElementById('math-field');
+      if (!mathFieldSpan) throw new Error("Cannot find math-field. The math editor must provide one.");
       editorMf = MQ.MathField(mathFieldSpan, {
         spaceBehavesLikeTab: true, // configurable
         handlers: {
@@ -363,7 +355,7 @@ async function mathQuillify() {
           }
         }
       });
-      FApp.mathField = editorMf;
+      fApp.mathField = editorMf;
 
       var mqEditableField = $('#editor').find('.mq-editable-field')[0];
       // adjust events
@@ -429,13 +421,13 @@ async function mathQuillify() {
         console.error('Error using MQ.StaticMath: ' + err);
         console.trace();
       }
-      if (FApp.hasResultField) {
+      if (fApp.hasResultField) {
         if (element.attr('data-b64') !== undefined) {
-          FApp.hasSolution = true;
+          fApp.hasSolution = true;
           var zip = element.attr('data-b64');
           FAList[index].solution = decode(zip);
         } else {
-          FApp.hasSolution = false;
+          fApp.hasSolution = false;
         };
         var mqEditableField = element.find('.mq-editable-field')[0];
         var mf = MQ.MathField(mqEditableField, {});
@@ -450,13 +442,13 @@ async function mathQuillify() {
             },
           }
         });
-        FApp.mathField = mf;
+        fApp.mathField = mf;
       }
     }
-    if (FApp.hasResultField) {
-      FApp.mqEditableField = mqEditableField;
-      FApp.hammer = new Hammer(mqEditableField);
-      FApp.hammer.on("doubletap", function (ev) {
+    if (fApp.hasResultField) {
+      fApp.mqEditableField = mqEditableField;
+      fApp.hammer = new Hammer(mqEditableField);
+      fApp.hammer.on("doubletap", function (ev) {
         showVirtualKeyboard();
       });
     }
@@ -492,11 +484,11 @@ function unifyDefinitions(def) {
   return dsList;
 }
 
-function getSelection(mf, eraseClass) {
+function getSelection(mf, erase) {
   // typof mf = mathField
   var ori = mf.latex();
   var erased = ori;
-  if (eraseClass) {
+  if (erase) {
     erased = eraseClass(ori);
   }
   var replacement = createReplacement(ori);
@@ -506,7 +498,7 @@ function getSelection(mf, eraseClass) {
     mf.typedText(replacement);
     // erase class{inputfield}
     var replacedAndErased = mf.latex();
-    if (eraseClass) {
+    if (erase) {
       replacedAndErased = eraseClass(replacedAndErased);
     }
     var preSelected = '?';
@@ -727,7 +719,6 @@ function showEditorResults(parts) {
 
   $('#output-code-1').text(parts[1]);
   $('#output-code-2').text(result);
-  $('#output-code-3').text(wikiresult);
   var out = $('textarea#wiki-text');
   if (out.length > 0) {
     out.text(result);

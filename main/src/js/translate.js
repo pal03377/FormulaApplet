@@ -14,15 +14,16 @@ async function switchTo(lang) {
 
 let translationIsInitiated = false;
 
-export function initTranslation() {
+export async function reloadTranslation() {
+  var lang = getCookie('lang') || 'de';
+  console.log('switch to lang: ' + lang);
+  await switchTo(lang);
+}
+
+export async function initTranslation() {
   if (!translationIsInitiated) {
     // backup of display attribute
     console.debug('initTranslation()');
-    $('.tr').each(function () {
-      var disp = $(this).css('display');
-      $(this).attr('data-disp', disp);
-      $(this).css('display', 'none');
-    })
 
     // click event for language buttons
     $(function () {
@@ -35,11 +36,8 @@ export function initTranslation() {
       });
     });
 
-    // get current lang
-    var lang = getCookie('lang') || 'de';
-    console.log('switch to lang: ' + lang);
-    switchTo(lang);
     translationIsInitiated = true;
+    await reloadTranslation();
   }
 };
 

@@ -1,6 +1,11 @@
 "use strict";
 
-export function prepend(after_prepend) {
+import $ from "jquery";
+import { domLoad } from "./dom.js";
+import { reloadTranslation } from "./translate.js";
+
+export async function initEditor() {
+  await domLoad;
   var before = $('div#ed_before');
   if (before.length == 0) {
     var ed = $('.formula_applet#editor');
@@ -31,6 +36,6 @@ export function prepend(after_prepend) {
     var license_link = 'https://github.com/gro58/FormulaApplet/blob/master/js/lib/ToDo.md';
     prepend_uses.after('<p><span class="tr de uses">Das Formel-Applet benutzt die Bibliotheken jQuery, MathQuill und Hammer. </span><span class="tr en uses">FormulaApplet uses jQuery, MathQuill, and Hammer. </span><a href="' + license_link + '" class="tr de moreinfo">Weitere Informationen...</a><a href="' + license_link + '" class="tr en moreinfo">More info...</a></p>');
   }
-  after_prepend();
+  await reloadTranslation();
 }
   

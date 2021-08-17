@@ -107,7 +107,7 @@ function createNode(type, content, tree) {
     }
 }
 
-export class faTree {
+export class FaTree {
     constructor() {
         this.listOfFree = [];
         this.nodelist = [];
@@ -651,7 +651,7 @@ export function parseTreeByIndex(tree) {
 }
 
 export default function parse(texstring) {
-    var myTree = new faTree();
+    var myTree = new FaTree();
     myTree.leaf.content = texstring;
     var endParse = false;
     parseTreeCounter.setCounter(0);
@@ -1759,5 +1759,5 @@ export function checkScientificNotation(texstring) {
         rightOk = true;
     }
     isScientific = (leftOk && rightOk);
-    return {isScientific: isScientific, mantissa: mantissa, exponent: exponent};
+    return { isScientific, mantissa, exponent };
 }

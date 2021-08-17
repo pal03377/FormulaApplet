@@ -1,7 +1,7 @@
 "use strict";
 
-var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-var codes0to9 = 'eighqDNYAL';
+const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+const codes0to9 = 'eighqDNYAL';
 
 // perm[encDec][numOfPerm][index]
 // encDec = 0 for encoding =1 for decoding
@@ -60,7 +60,8 @@ function encodeUnicode(str) {
     return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
         function toSolidBytes(match, p1) {
             return String.fromCharCode('0x' + p1);
-        }));
+        })
+    );
 }
 
 function decodeUnicode(str) {
