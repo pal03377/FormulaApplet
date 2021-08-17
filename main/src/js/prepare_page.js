@@ -21,7 +21,7 @@ class FAPP {
     this.index = '';
     this.id = '';
     this.formula_applet = '';
-    this.hasSolution = 'undefined';
+    this.hasSolution = undefined;
     this.solution = '';
     this.mqEditableField = '';
     this.mathField = "";
@@ -262,7 +262,6 @@ function make_auto_unitstring(mf) {
 function editHandler(index) {
   console.log('called editHandler: ' + index + ' active=' + editHandlerActive);
   if (editHandlerActive == true) {
-    console.log(FAList, FAList[index], index)
     var mf = FAList[index].mathField;
     var mf_container = MQ.StaticMath(FAList[index].formula_applet);
     var solution = FAList[index].solution;
