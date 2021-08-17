@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "rollup -c -w",
-    "build": "rollup -c",
+    "start": "cross-env PRODUCTION=\"false\" rollup -c -w",
+    "build": "cross-env PRODUCTION=\"true\" rollup -c",
     "public": "sirv public --port 5000"
   },
   "repository": {
@@ -27,6 +27,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-replace": "^3.0.0",
+    "cross-env": "^7.0.3",
     "rollup": "^2.56.2",
     "rollup-plugin-livereload": "^2.0.5",
     "rollup-plugin-node-builtins": "^2.1.2",
