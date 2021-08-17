@@ -484,7 +484,8 @@ function unifyDefinitions(def) {
   return dsList;
 }
 
-function getSelection(mf, erase) {
+function getSelection(mf, options) {
+  var erase = options.erase || false;
   // typof mf = mathField
   var ori = mf.latex();
   var erased = ori;
@@ -525,7 +526,7 @@ function getSelection(mf, erase) {
 }
 
 function setInput() {
-  var temp = getSelection(editorMf, true);
+  var temp = getSelection(editorMf, { erase: true });
   var preSelected = temp[0];
   var selected = temp[1];
   var postSelected = temp[2];
@@ -553,7 +554,7 @@ function getPositionOfUnitTags(latex, unitTag) {
       startOfUnitTags.push(pos);
       endOfUnitTags.push(posRightBracket);
       //posRightBracket points to char right of the right bracket
-      pos++;
+      pos ++;
     }
   } while (pos >= 0)
   return {
@@ -566,7 +567,7 @@ function setUnit() {
   var unitTag = '\\textcolor{blue}{';
   var mf = FAList[activeMathfieldIndex].mathField;
   // erase class inputfield = false
-  var temp = getSelection(mf, false);
+  var temp = getSelection(mf, { erase: false });
   var preSelected = temp[0];
   var selected = temp[1];
   var postSelected = temp[2];
@@ -643,7 +644,7 @@ function setUnit() {
 function eraseUnit() {
   var unitTag = '\\textcolor{blue}{';
   var mf = FAList[activeMathfieldIndex].mathField;
-  var temp = getSelection(mf, false);
+  var temp = getSelection(mf, { erase: false });
   var ori = temp[3];
   // get position of unittags
   var posn = getPositionOfUnitTags(ori, unitTag);
@@ -746,7 +747,7 @@ function createReplacement(latexstring) {
     var sep = separators[i];
     var found = (latexstring.indexOf(sep) > -1);
     var cont = found;
-    i++;
+    i ++;
     if (i > separators.length) {
       cont = false;
       sep = 'no replacement char found';

@@ -14,32 +14,6 @@ function node() {
     this.value = 'u';
 }
 
-node.prototype.insertMeOver = function (insertPointId, leaf, nodelist) {
-    // insertMeOver <-> JAVA: void InsertUnodeOverCursor(Node u)
-    // this (me) <-> JAVA: Node u
-    // insertPoint <-> JAVA: Node Cursor
-    var insertPoint = nodelist[insertPointId];
-    if (this.children.length === 0) {
-        this.children.length = 2;
-        // do nothing
-    }
-    if (this.children.length >= 1) {
-        // kindof me = unode. parameter leaf not necessary
-        var parent = nodelist[insertPoint.parent];
-        // parent.children[insertPoint.position] = this.id;
-    }
-    this.parent = insertPoint.parent;
-    if (this.children.length === 1) {
-        this.children = [insertPointId];
-    }
-    if (this.children.length === 2) {
-        this.children = [insertPointId, leaf.id];
-    }
-    insertPoint.parent = this.id;
-    nodelist[insertPointId] = insertPoint;
-    return 'ok';
-};
-
 node.prototype.addBracket = function (tree) {
     var temp = findLeftmostBracket(this.content);
     var leftPos = temp[0];

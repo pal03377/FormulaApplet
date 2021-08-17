@@ -365,7 +365,7 @@ keys['greek_caps'] = [
     ]
 ]
 
-function get_virtualKeyboard() {
+function getVirtualKeyboard() {
     let result = document.createElement("div");
     result.id = "virtualKeyboard";
     let header = document.createElement("div");
@@ -404,10 +404,10 @@ function createTable(tableId) {
     result.id = "table_" + tableId;
     let tbody = document.createElement("tbody");
     result.append(tbody);
-    for (let row_number = 0; row_number < keys[tableId].length; row_number ++) {
-        var keylist = keys[tableId][row_number];
+    for (let rowNumber = 0; rowNumber < keys[tableId].length; rowNumber ++) {
+        var keylist = keys[tableId][rowNumber];
         let tr = document.createElement("tr");
-        tr.classList.add("virtualKeyboard-row" + row_number);
+        tr.classList.add("virtualKeyboard-row" + rowNumber);
         tbody.append(tr);
         for (var keyindex = 0; keyindex < keylist.length; keyindex++) {
             var key = keylist[keyindex];
@@ -440,7 +440,7 @@ function createTable(tableId) {
     return result;
 }
 
-function virtualKeyboard_bind_events() {
+function virtualKeyboardBindEvents() {
     $(".virtualKeyboardButton").mousedown(function (ev) {
         ev.preventDefault();
         var cmd = clickEvent(ev);
@@ -579,7 +579,7 @@ function keyboardActivate(keyboardId) {
             $('.virtualKeyboard_tab button#button-table_greek').text(buttontext);
             break;
         case 'off':
-            virtualKeyboard_hide();
+            hideVirtualKeyboard();
             break;
         default:
             $('.virtualKeyboard_tab button#button-table_' + keyboardId).addClass("selected");
@@ -628,15 +628,15 @@ export default function initVirtualKeyboard() {
     if (typeof kb == 'undefined') {
         kb = document.createElement('div');
         kb.id = 'keyboard';
-        kb.append(get_virtualKeyboard());
+        kb.append(getVirtualKeyboard());
         document.body.appendChild(kb);
     }
-    virtualKeyboard_bind_events();
+    virtualKeyboardBindEvents();
     keyboardActivate('mixed');
-    virtualKeyboard_hide();
+    hideVirtualKeyboard();
 }
 
-function virtualKeyboard_hide() {
+function hideVirtualKeyboard() {
     $('#virtualKeyboard').css('display', 'none');
     $('.formula_applet.selected').nextAll("button.keyb_button:first").addClass('selected');
 }
