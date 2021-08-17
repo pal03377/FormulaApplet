@@ -552,7 +552,6 @@ function keyboardEvent0(cmd) {
 var activeKeyboard = 'dummy';
 
 function keyboardActivate(keyboardId) {
-    // console.log(keyboardId);
     $('.virtualKeyboard_tab button').removeClass("selected");
     switch (keyboardId) {
         case 'abc':

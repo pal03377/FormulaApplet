@@ -2,7 +2,6 @@
 
 export function prepend(after_prepend) {
   var before = $('div#ed_before');
-  // console.log('before.length=' + before.length);
   if (before.length == 0) {
     var ed = $('.formula_applet#editor');
     ed.before('<p id="mode_select">');

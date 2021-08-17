@@ -55,8 +55,6 @@ export default async function preparePage() {
 
   $('body').on('keyup', function (ev) {
     var key = ev.originalEvent.key;
-    // console.log(ev);
-    // console.log(kev.key, kev.metaKey, kev.ctrlKey);
     if (key == 'Tab') {
       var fa = $(ev.target).parents('.formula_applet');
       var id = $(fa).attr('id');
@@ -125,7 +123,6 @@ function getFAppFromId(id) {
 }
 
 function checkIfEqual(id, a, b, dsList) {
-  // console.log(a + ' ?=? ' + b);
   var equ = a + '=' + b;
   checkIfEquality(id, equ, dsList);
 }
@@ -135,7 +132,6 @@ function checkIfEquality(id, equ, dsList) {
   myTree = fillWithRandomValAndCheckDefSets(myTree, dsList);
   var almostOne = evaluateTree(myTree);
   var dif = Math.abs(almostOne - 1);
-  // console.log('dif=' + dif);
   var FApp = getFAppFromId(id);
   var precision = FApp.precision;
   if (dif < precision) {
@@ -146,7 +142,6 @@ function checkIfEquality(id, equ, dsList) {
 }
 
 function fillWithRandomValAndCheckDefSets(treeVar, dsList) {
-  // console.log('save');
   var rememberTree = JSON.stringify(treeVar);
   if (dsList.length == 0) {
     fillWithValues(treeVar);
@@ -160,10 +155,8 @@ function fillWithRandomValAndCheckDefSets(treeVar, dsList) {
       numberOfTries++;
       var tree2 = new faTree();
       tree2 = JSON.parse(rememberTree);
-      // console.log('restore');
       fillWithValues(tree2);
       var variableValueList = tree2.variableValueList;
-      // console.log('fill');
       // CheckDefinitionSets
       for (var i = 0; i < dsList.length; i++) {
         var definitionset = parse(dsList[i]);
@@ -181,9 +174,7 @@ function fillWithRandomValAndCheckDefSets(treeVar, dsList) {
       // in milliseconds
     }
     while (success == false && timePassed < 2000);
-    // console.log('numberOfTries=' + numberOfTries);
     if (success == true) {
-      // console.log('filled with success. Time= ' + timePassed);
     } else {
       tree2.hasValue = false;
       tree2.variableValueList = [];
@@ -196,7 +187,6 @@ function makeAutoUnitstring(mf) {
   // mf = MathField
   var str = mf.latex();
   var mfLatexForParser = str;
-  // console.log('makeAutoUnitstring ' + str);
   var unitTag = '\\textcolor{blue}{';
   var pos = str.indexOf(unitTag);
   if (pos >= 0) {
@@ -206,7 +196,6 @@ function makeAutoUnitstring(mf) {
     var bracket = findCorrespondingRightBracket(rest, '{');
     var middle = rest.substring(1, bracket.rightPos);
     var right = rest.substr(bracket.rightPos + 1);
-    // console.log(left + '|' + middle + '|' + right);
     var sci = checkScientificNotation(left).isScientific;
     if (sci == true && middle.length > 0) {
       // expand the unit tag at the right side
@@ -227,16 +216,13 @@ function makeAutoUnitstring(mf) {
     for (var i = str.length; i >= 0; i--) {
       beginning = str.substr(0, i);
       var sci = checkScientificNotation(beginning).isScientific;
-      // console.log(beginning + ' sci=' + sci);
       if (sci == true) {
         i = -1;
       }
     }
     if (beginning.length > 0) {
       var rest = str.substr(beginning.length);
-      // console.log(beginning + '|' + rest);
       if (rest.length > 0) {
-        // console.log('Make unit of ' + rest);
         var newLatex = beginning + unitTag + rest + '}';
         var mfLatexForParser = csn.repl + unitTag + rest + '}';
         console.log('newLatex=' + newLatex);
@@ -263,7 +249,6 @@ function editHandler(index) {
     var unitAuto = FAList[index].unitAuto;
     var id = FAList[index].id; // name of formulaApplet
     var dsList = FAList[index].definitionsetList;
-    // console.log(mf.latex() + ' unitAuto=' + unitAuto);
     var mfLatexForParser = '';
     if (hasSolution) {
       mfLatexForParser = mf.latex();
@@ -343,7 +328,6 @@ async function mathQuillify() {
     if (isEditor) {
       FApp.hasResultField = true;
     }
-    // console.log('§§§ ' + this.innerHTML + ' ' + FApp.hasResultField);
     var def = element.attr('def');
     if (typeof def !== 'undefined') {
       FApp.definitionsetList = unifyDefinitions(def);
@@ -359,7 +343,6 @@ async function mathQuillify() {
     if (typeof prec !== 'undefined') {
       prec = element.attr('prec');
     }
-    // console.log(prec);
     prec = sanitizePrecision(prec);
     //console.log(FApp.id + ' precision=' + prec);
     FApp.precision = prec;
@@ -440,7 +423,6 @@ async function mathQuillify() {
         ev.preventDefault();
         //console.log('random-id');
         var rId = makeid(8);
-        // console.log(rId);
         document.getElementById('fa_name').value = rId;
         newFaId = rId;
         showEditorResults(editorEditHandler(editorMf.latex()));
@@ -456,7 +438,6 @@ async function mathQuillify() {
         fa_name = fa_name.replace(/'/g, '');
         fa_name = fa_name.replace(/&/g, '');
         fa_name = fa_name.replace(/ /g, '_');
-        // console.log(fa_name);
         if (4 <= fa_name.length && fa_name.length <= 20) {
           newFaId = fa_name;
           showEditorResults(editorEditHandler(editorMf.latex()));
@@ -509,7 +490,6 @@ async function mathQuillify() {
           handlers: {
             edit: () => {
               mqEditableField.focus();
-              // console.log('edit ' + index);
               editHandler(index);
             },
             enter: () => {
@@ -532,10 +512,8 @@ async function mathQuillify() {
 }
 
 function unifyDefinitions(def) {
-  // console.log(def);
   def = def.replace(/\s/g, "");
   def = def.replace(/\&&/g, "&");
-  // console.log(def);
   var dsList = def.split("&");
   for (var i = 0; i < dsList.length; i++) {
     var ds = dsList[i];
@@ -556,23 +534,18 @@ function unifyDefinitions(def) {
         result = temp[1] + '-' + temp[0];
       }
     }
-    // console.log(i + ' ' + result);
     dsList[i] = result;
-    // console.log(dsList[i]);
   }
   return dsList;
 }
 
 function getSelection(mf, eraseClass) {
   // typof mf = mathField
-  // console.log(mf);
   var ori = mf.latex();
-  // console.log('ori=' + ori);
   var erased = ori;
   if (eraseClass) {
     erased = eraseClass(ori);
   }
-  // console.log(erased);
   var replacement = createReplacement(ori);
   if (ori.indexOf(replacement) == -1) {
     // replacement has to be done before erase of class{...
@@ -602,8 +575,6 @@ function getSelection(mf, eraseClass) {
       console.log('Something went wrong with replacement of input field');
     }
     selected = erased.substring(0, erased.length - postSelected.length);
-    // console.log('selected=' + selected);
-    // console.log('selected.length=' + selected.length);
     return [preSelected, selected, postSelected, ori];
   }
 }
@@ -618,11 +589,9 @@ function setInput() {
   var ori = temp[3];
   if (selected.length > 0) {
     var newLatex = preSelected + '\\class{inputfield}{' + selected + '}' + postSelected;
-    // console.log(newLatex);
     editorMf.latex(newLatex);
   } else {
     ori = ori.replace('class{', '\\class{inputfield}{');
-    // console.log(ori);
     editorMf.latex(ori);
   }
 }
@@ -655,7 +624,6 @@ function getPositionOfUnitTags(latex, unitTag) {
 
 function setUnit() {
   var unitTag = '\\textcolor{blue}{';
-  // console.log('activeMathfieldIndex=' + activeMathfieldIndex);
   var mf = FAList[activeMathfieldIndex].mathField;
   // erase class inputfield = false
   var temp = getSelection(mf, false);
@@ -666,8 +634,6 @@ function setUnit() {
 
   var start = preSelected.length;
   var end = start + selected.length;
-  // console.log(ori);
-  // console.log('selection from ' + start + ' to ' + end);
   var selectpattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
   for (var k = start; k < end; k++) {
     selectpattern[k] = 's';
@@ -678,12 +644,10 @@ function setUnit() {
   var endOfUnitTags = posn.eofUnitTags;
   var pattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
   for (var i = 0; i < startOfUnitTags.length; i++) {
-    // console.log(startOfUnitTags[i] + '->' + endOfUnitTags[i]);
     for (var k = startOfUnitTags[i]; k < endOfUnitTags[i]; k++) {
       pattern[k] = '#';
     }
   }
-  // console.log(selectpattern.join('')); // join: transform from array to string
   //  console.log(pattern.join('')); // join: transform from array to string
   // inspect selection start
   for (var i = 0; i < startOfUnitTags.length; i++) {
@@ -708,7 +672,6 @@ function setUnit() {
   for (var k = start; k < end; k++) {
     selectpattern[k] = 's';
   }
-  // console.log(selectpattern.join('')); // join: transform from array to string
 
   // delete unittags inside selection
   var ori_array = ori.split('');
@@ -720,9 +683,7 @@ function setUnit() {
       ori_array[endOfUnitTags[i] - 1] = '§';
     }
   }
-  // console.log(ori);
   ori = ori_array.join('');
-  // console.log(ori); // join: transform from array to string
 
   if (selected.length > 0) {
     // new calculation necessary
@@ -733,22 +694,17 @@ function setUnit() {
     // newLatex = newLatex.replace(/\xA7/g, '');
     newLatex = newLatex.replace(/§/g, '');
     newLatex = newLatex.replace('class{', '\\class{inputfield}{');
-    // console.log(newLatex);
     mf.latex(newLatex);
   } else {
     ori = ori.replace('class{', '\\class{inputfield}{');
-    // console.log(ori);
     mf.latex(ori);
   }
 }
 
 function eraseUnit() {
   var unitTag = '\\textcolor{blue}{';
-  // console.log('erase-unit');
-  // console.log('activeMathfieldIndex=' + activeMathfieldIndex);
   var mf = FAList[activeMathfieldIndex].mathField;
   var temp = getSelection(mf, false);
-  // console.log(temp[0] + '::' + temp[1] + '::' + temp[2]);
   var ori = temp[3];
   // get position of unittags
   var posn = getPositionOfUnitTags(ori, unitTag);
@@ -766,9 +722,7 @@ function eraseUnit() {
       ori_array[endOfUnitTags[i] - 1] = '§';
     }
   }
-  // console.log(ori);
   ori = ori_array.join('');
-  // console.log(ori); // join: transform from array to string
   ori = ori.replace(/§/g, '');
   ori = ori.replace('class{', '\\class{inputfield}{');
   // restore selection-checked mf
@@ -796,7 +750,6 @@ function separateClass(latex, classTag) {
     tag = '';
     afterTag = latex;
   }
-  // console.log([before_tag, tag, afterTag]);
   return [before_tag, tag, afterTag];
 }
 
@@ -814,7 +767,6 @@ function eraseClass(latex) {
 
 function showEditorResults(parts) {
   var result = '<p class="formula_applet"';
-  // console.log(newFaId);
   var common_result = ' id="' + newFaId;
   if (resultMode == 'manu') {
     common_result += '" data-b64="' + encode(parts[1]);

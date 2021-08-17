@@ -21,7 +21,6 @@ node.prototype.insertMeOver = function (insertPointId, leaf, nodelist) {
     var insertPoint = nodelist[insertPointId];
     if (this.children.length === 0) {
         this.children.length = 2;
-        // console.log('Insert me (leaf) over insertpoint is not possible.');
         // do nothing
     }
     if (this.children.length >= 1) {
@@ -46,7 +45,6 @@ node.prototype.addBracket = function (tree) {
     var leftPos = temp[0];
     var bra = temp[1];
     bracket = findCorrespondingRightBracket(this.content, bra);
-    // console.log(bracket);
     var leftPos2 = bracket.leftPos;
     var bra_len = bracket.bra_length;
     var rightPos = bracket.rightPos;
@@ -110,7 +108,6 @@ function createNode(type, content, tree) {
         temp.type = type;
         temp.content = content;
         temp.children = [];
-        // console.log('recycling ' + lastFree);
         return temp;
     }
 }
@@ -189,11 +186,8 @@ function deleteSingleNodes(tree) {
     // nodes with type='free' may not be deleted a second time
     withEachNode(tree, function (node) {
         if (node.content === '§' && node.children.length === 1 && node.type !== 'free') {
-            // console.log('found single § node at ' + node.id);
             var siblings = tree.nodelist[node.parent].children;
             var position = siblings.indexOf(node.id);
-            // console.log('position=' + position);
-            // console.log('siblings[position]=' + siblings[position]);
             // short circuit
             siblings[position] = node.children[0];
             tree.nodelist[node.children[0]].parent = node.parent;
@@ -201,7 +195,6 @@ function deleteSingleNodes(tree) {
             tree.listOfFree.push(node.id);
         }
     });
-    // console.log('list of free=' + tree.listOfFree);
     return tree.listOfFree;
 }
 
@@ -233,13 +226,10 @@ function findLeftBracket(content, bra) {
         var stop = false;
         pos = -1;
         do {
-            // console.log(masked);
             var pos = masked.indexOf(long, pos + 1);
-            // console.log('found ' + long + ' at ' + pos);
             if (pos === -1) {
                 stop = true;
             } else {
-                // console.log('found ' + long + ' at ' + pos);
                 if (pos > 0) {
                     var part1 = masked.substring(0, pos - 1);
                 } else {
@@ -251,7 +241,6 @@ function findLeftBracket(content, bra) {
                 }
                 var part3 = masked.substring(pos + long.length);
                 masked = part1 + part2 + part3;
-                // console.log('masked:' + masked);
             }
         } while (stop === false);
     }
@@ -559,7 +548,6 @@ export function parseTreeByIndex(tree) {
             message = 'delete spaces and remove backslash at \min';
             // console.clear();
             tree.leaf.content = deleteSpaceAndRemoveBackslash(tree.leaf.content);
-            // console.log(tree.leaf.content)
             tree.leaf.content = makeDegreeUnit(tree.leaf.content);
             break;
         case 2:
@@ -699,7 +687,6 @@ function deleteSpaceAndRemoveBackslash(text) {
     temp = temp.replace(/\\cdot/g, '\\cdot '); // no space -> one space, but one space -> two spaces
     temp = temp.replace(/\\cdot  /g, '\\cdot '); // two spaces -> one space
    
-    // console.log('temp=' + temp);
     // temp = temp.replace(/\\Ohm/g, '\\Omega'); // transform unit Ohm to greek Omega. Done in preparePage.js
     //console.log(temp);
     return temp;
@@ -711,7 +698,6 @@ function makeDegreeUnit(text) {
     // https://regex101.com/ online regex tester
     var regex = RegExp('((\\d+(\\.|\\,))?\\d+)([°\'↟]+)', 'g');
     // regex matches for example .45° 3,89' 17.5↟
-    // console.log(regex);
     let result;
     let lastlastIndex = 0;
     let separator = '∱';
@@ -722,7 +708,6 @@ function makeDegreeUnit(text) {
     var stop = false;
     do {
         if ((result = regex.exec(text)) !== null) {
-            // console.log(result);
             var gap = text.substring(lastlastIndex, result.index);
             if (gap !== "") {
                 gaps.push(separator);
@@ -745,9 +730,7 @@ function makeDegreeUnit(text) {
     degree.push('');
 
     var unitchain = degree.join('') + separator;
-    // console.log(unitchain);
 
-    // console.log(gaps, number);
 
     var regex2 = []
     regex2.push(RegExp("∱°'↟∱", 'g'));
@@ -809,7 +792,6 @@ function makeDegreeUnit(text) {
     var temp = textWithBracketsAndPlus.replace(/'/g, unit + "'}");
     temp = temp.replace(/°/g, unit + "°}");
     temp = temp.replace(/↟/g, unit + "''}");
-    // console.log('makeDegreeUnit has result ' + temp);
     return temp;
 }
 
@@ -832,7 +814,6 @@ function unifySubExponent(tree) {
             var stop = false;
             var start = 0;
             do {
-                // console.log('parsing ' + node.content + ' with ' + needle);
                 var pos = node.content.indexOf(needle, start);
                 if (pos < 0) {
                     stop = true;
@@ -843,7 +824,6 @@ function unifySubExponent(tree) {
                     var rest = node.content.substr(pos + 2);
                     // var predecessor = node.content.substr(pos - 1, 1);
                     var exponentOrSubScript = node.content.substr(pos + 1, 1);
-                    // console.log(leftpart + ' | ' + needle + exponentOrSubScript + ' | ' + rest + ' leftCount=' + leftCount);
 
                     // if (predecessor !== '§') {
                     //     newNode = createNode('leaf', predecessor, tree);
@@ -954,13 +934,10 @@ function parseRadix(tree, nthroot) {
                 if (nthroot === true) {
                     var newcontent = left + '§' + right;
                     // node has one § less! 
-                    // console.log('new=' + newcontent);
                     node.content = newcontent;
                     //check
                     var test = tree.nodelist[node.children[radIndex]].type;
-                    // console.log(test + ' should be bracket-[');
                     test = tree.nodelist[node.children[radIndex + 1]].type;
-                    // console.log(test + ' should be bracket-{');
                     var radix = createNode('nthroot', '', tree);
                     // link radix
                     radix.parent = node.id;
@@ -973,10 +950,8 @@ function parseRadix(tree, nthroot) {
                     node.children.splice(radIndex + 1, 1);
                 } else {
                     var newcontent = left + '§' + right;
-                    // console.log('new=' + newcontent);
                     //check
                     var test = tree.nodelist[node.children[radIndex]].type;
-                    // console.log(test + ' should be bracket-{');
                     node.content = newcontent;
                     var radix = createNode('sqrt', '', tree);
                     // link radix
@@ -1057,15 +1032,12 @@ function parseFunction(tree) {
                 var fuNode = createNode(type, '', tree);
                 // link node <-> fuNode
                 fuNode.parent = node.id;
-                // console.log('leftCount=' + leftCount + ' id=' + node.id + ' children=' + node.children);
                 var remember = node.children[leftCount] || 0;
-                // console.log('remember=' + remember);
                 node.children[leftCount] = fuNode.id;
                 if (rest.startsWith('^§')) {
                     //fu-power
                     fuNode.content = 'power';
                     rest = rest.substring(2);
-                    // console.log('found ' + fu + '^§ (power) at ' + node.id + ' rest=' + rest);
                     var arg = createNode('leaf', rest, tree);
                     fuNode.children[0] = remember;
                     tree.nodelist[remember].parent = fuNode.id;
@@ -1085,16 +1057,13 @@ function parseFunction(tree) {
                         //fuNode.children[0] = remember;
                         fuNode.children[0] = arg.id;
 
-                        // console.log('node=' + node.content + ' rightCount=' + rightCount + ' rest=' + rest);
                         for (var i = leftCount + 1; i <= leftCount + rightCount; i++) {
                             var id = node.children[i];
                             //console.log('i=' + i + ' id=' + id + ' ' + tree.nodelist[id]);
                             arg.children.push(id);
                             tree.nodelist[id].parent = arg.id;
                         }
-                        // console.log('node.children=' + node.children);
                         node.children.splice(leftCount, rightCount);
-                        // console.log('node.children=' + node.children);
 
                         //tree.nodelist[remember].parent = fuNode.id;
                         //arg.children[0] = remember;
@@ -1386,7 +1355,6 @@ function parseFactors(tree) {
                 // try to separate rightmost (youngest) character
                 var left = content.substr(0, content.length - 1);
                 var right = content.substr(content.length - 1);
-                // console.log(left + ':' + right);
                 if (decomposeUnit(left)[0] == true) { //left is Unit
                     if (decomposeUnit(right)[0] == true) { // right isUnit
                         node.content = left + "*" + right;
@@ -1491,7 +1459,6 @@ function unit2value(unitname) {
     valueOf["'"] = valueOf["°"] / 60;
     valueOf["K"] = valueOf["Kelvin"];
     valueOf["dag"] = 10 * valueOf["g"];
-    // console.log(valueOf);
     var result = valueOf[unitname];
     if (typeof result == 'undefined') {
         result = 'u';
@@ -1511,7 +1478,6 @@ export function evaluateTree(filledTree) {
     // var hasValue = temp[0];
     // var hasValue = temp.hasValue;
     if (filledTree.hasValue) {
-        // console.log(temp[1]);
         return val(filledTree.root, filledTree);
     } else {
         //console.log('tree not evaluable');
@@ -1552,7 +1518,6 @@ function val(node, tree) { // TODO: different name, too similar to function valu
         } else {
             if (node.type.startsWith('fu-')) {
                 var fu = node.type.substr(3)
-                // console.log('fu=' + fu);
                 node.value = trigonometry(fu, arg);
             }
         }
@@ -1676,7 +1641,6 @@ export function fillWithValues(treeVar, list) {
     // random = false: fill with values of variableValueList
     var valueList = [];
     // console.clear();
-    // console.log('fill leafs & greek with random values');
     var hasValue = true;
     treeVar.withEachNode = function (node) {
         if (node.type == 'integral') hasValue = false;
@@ -1717,10 +1681,8 @@ export function fillWithValues(treeVar, list) {
                         var u1 = 2 * Math.PI * Math.random();
                         var u2 = -2 * Math.log(Math.random());
                         var value = 1000 * Math.cos(u1) * Math.sqrt(u2);
-                        // console.log('found ' + content + ' value=' + value);
                     } else {
                         var value = list[content];
-                        // console.log('found in list ' + content + ' value=' + value);
                         if (typeof value == 'undefined') {
                             console.log('Variable in definition set but not in applet: ' + content);
                             stop = true;
@@ -1763,7 +1725,6 @@ export function checkScientificNotation(texstring) {
     repl = repl.replace("E", "*10^");
     repl = repl.replace("\\cdot", "*");
     repl = repl.replace(/\\ /g, '');
-    // console.log('repl=' + repl);
     // accept 'almost scientific' strings like 23, 23,4* 23,4*10^ 
     if (repl.endsWith(',')) {
         repl = repl.substr(0, repl.length - 1);
