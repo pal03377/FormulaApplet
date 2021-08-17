@@ -1,8 +1,7 @@
 # *ToDo* #
 
 ## FormulaApplet as a H5P package
-* Investigate if two or more H5P FormulaApplets in one Page (Drupal development)
-cause preloaded JavaScript being loaded twice or more.
+* Investigate if two or more H5P FormulaApplets in one Page (Drupal development) cause preloaded JavaScript being loaded twice or more.
 * Use subject/observer pattern for virtualKeyboard/FormulaApplet.
 * Alternative: use jQuery (custom events)
 * Use revealing module pattern
@@ -69,4 +68,3 @@ cause preloaded JavaScript being loaded twice or more.
 * <del>Link: wiki.formelapplet.de</del>
 * Community 
 * Support
-   
