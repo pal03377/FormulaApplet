@@ -2,13 +2,12 @@
 
 import $ from "jquery";
 import Hammer from "hammerjs";
-import { keyboardEvent } from "./prepare_page.js";
+import { keyboardEvent } from "./preparePage.js";
 
 const squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
-const nth_root = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
+const nthRoot = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
 const left = ['left', '<span style="font-size: 130%">\u25c5</span>', '#Left'];
 const right = ['right', '<span style="font-size: 130%">\u25bb</span>', '#Right'];
-// ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
 const enter = ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', '#Enter'];
 const backspace = ['backspace', '\u232B', '#Backspace'];
 const poweroften = ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>', '10^'];
@@ -48,8 +47,8 @@ keys['mixed'] = [
         poweroften,
         ['lg', 'lg', 'lg('],
         ['power', '\u2b1a<sup>\u2b1a</sup>', '^'],
-         ['nth_root', nth_root, '#nthroot'],
-         ['smallgap-2', '', ''],
+        ['nthRoot', nthRoot, '#nthroot'],
+        ['smallgap-2', '', ''],
         ['1'],
         ['2'],
         ['3'],
@@ -72,18 +71,6 @@ keys['mixed'] = [
     ]
 ]
 
-// obsolete
-// ['exp', 'e<sup><small>\u2b1a</small></sup>'],
-// ['power', '\u2b1a<sup>\u2b1a</sup>', '&nbsp;^&nbsp;'],
-// ['nth_root', '<sup id="sup_root">\u2b1a</sup>' + squareroot],
-// ['nth_root', '\u221a', '\\nthroot'],
-// ['up', '\uffea'],
-// ['up', '↑'],
-// ['backspace', '⇐', 'backspace']
-// ['left', '←'],
-// ['right', '→'],
-// ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
-
 keys['function'] = [
     // row 0
     [
@@ -94,9 +81,9 @@ keys['function'] = [
         ['degree', '°'],
         ['minute', '\''],
         ['second', '\'\''],
-        ['set_unit', '<span class="tr de kunit">Einheit</span><span class="tr en kunit">Unit</span>', '#set_unit'],
-        // ['set_unit-en', 'Unit', '#set_unit'],
-        // ['set_unit-de', 'Einheit', '#set_unit'],
+        ['setUnit', '<span class="tr de kunit">Einheit</span><span class="tr en kunit">Unit</span>', '#setUnit'],
+        // ['setUnit-en', 'Unit', '#setUnit'],
+        // ['setUnit-de', 'Einheit', '#setUnit'],
         ['pi', '&pi;', '\\pi ']
     ],
     // row 1
@@ -107,9 +94,9 @@ keys['function'] = [
         ['smallgap-1', '', ''],
         ['abs', '\u2502\u2b1a\u2502', '| |'],
         ['subscript', '\u2b1a<sub style="font-size: 85%">\u2b1a</sub>'],
-        // ['nth_root', nth_root, '#nthroot'],
+        // ['nthRoot', nthRoot, '#nthroot'],
         ['space', '<span class="tr de kspace">Leer</span><span class="tr en kspace">Space</span>', '\\ '],
-        ['erase_unit', '<span class="tr de kclru">Einheit<br>l&ouml;schen</span><span class="tr en kclru">Clear<br>Unit</span>', '#erase_unit'],
+        ['eraseUnit', '<span class="tr de kclru">Einheit<br>l&ouml;schen</span><span class="tr en kclru">Clear<br>Unit</span>', '#eraseUnit'],
         ['infinity', '&infin;', '\\infinity ']
     ],
     // row 2
@@ -406,19 +393,19 @@ function get_virtualKeyboard() {
     result.append(tabs);
 
     for (let tabId of ["abc", "abc_caps", "mixed", "function", "greek", "greek_caps"]) {
-        result.append(create_table(tabId));
+        result.append(createTable(tabId));
     }
     
     return result;
 }
 
-function create_table(table_id) {
+function createTable(tableId) {
     let result = document.createElement("table");
-    result.id = "table_" + table_id;
+    result.id = "table_" + tableId;
     let tbody = document.createElement("tbody");
     result.append(tbody);
-    for (let row_number = 0; row_number < keys[table_id].length; row_number ++) {
-        var keylist = keys[table_id][row_number];
+    for (let row_number = 0; row_number < keys[tableId].length; row_number ++) {
+        var keylist = keys[tableId][row_number];
         let tr = document.createElement("tr");
         tr.classList.add("virtualKeyboard-row" + row_number);
         tbody.append(tr);
@@ -428,11 +415,10 @@ function create_table(table_id) {
                 key[1] = key[0];
             }
             if (typeof key[2] == 'undefined') {
-                if (table_id == 'greek' || table_id == 'greek_caps') {
+                if (tableId == 'greek' || tableId == 'greek_caps') {
                     const ignore = '0_1_2_3_4_5_6_7_8_9_shift_';
                     if (ignore.indexOf(key[0] + '_') < 0) {
                         key[2] = '\\' + key[0] + ' ';
-                        // console.log('done ' + key[2] + '*');
                     } else {
                         key[2] = key[0];
                     }
@@ -441,7 +427,7 @@ function create_table(table_id) {
                 }
             }
             let td = document.createElement("td");
-            td.classList.add("virtualKeyboard_button");
+            td.classList.add("virtualKeyboardButton");
             td.classList.add("virtualKeyboard-" + key[0]);
             if (key[0].startsWith('smallgap')) {
                 td.classList.add("smallgap");
@@ -456,73 +442,71 @@ function create_table(table_id) {
 
 function virtualKeyboard_bind_events() {
     //console.log('Init virtualKeyboard');
-    $(".virtualKeyboard_button").mousedown(function (ev) {
+    $(".virtualKeyboardButton").mousedown(function (ev) {
         ev.preventDefault();
         var cmd = clickEvent(ev);
-        keyboardEvent_0(cmd);
+        keyboardEvent0(cmd);
     });
     // also children and grandchildren and...
-    $(".virtualKeyboard_button").find().mousedown(function (ev) {
+    $(".virtualKeyboardButton").find().mousedown(function (ev) {
         ev.preventDefault();
         var cmd = clickEvent(ev);
-        keyboardEvent_0(cmd);
+        keyboardEvent0(cmd);
     });
     // dragElement(document.getElementById("virtualKeyboard"));
     var virtualKeyboardElement = document.getElementById('virtualKeyboard');
     // https://hammerjs.github.io/getting-started/
     var mc = new Hammer(virtualKeyboardElement);
 
-    var left_temp = 1;
-    var top_temp = 1;
-    var left_start = 1;
-    var top_start = 1;
+    var leftTemp = 1;
+    var topTemp = 1;
+    var leftStart = 1;
+    var topStart = 1;
     mc.on("panstart panmove", function (ev) {
         if (ev.type == 'panstart') {
-            left_start = virtualKeyboardElement.offsetLeft;
-            top_start = virtualKeyboardElement.offsetTop;
-            left_temp = left_start;
-            top_temp = top_start;
+            leftStart = virtualKeyboardElement.offsetLeft;
+            topStart = virtualKeyboardElement.offsetTop;
+            leftTemp = leftStart;
+            topTemp = topStart;
         }
         if (ev.type == 'panmove') {
-            left_temp = left_start + ev.deltaX;
-            top_temp = top_start + ev.deltaY;
-            virtualKeyboardElement.style.left = left_temp + 'px';
-            virtualKeyboardElement.style.top = top_temp + 'px';
+            leftTemp = leftStart + ev.deltaX;
+            topTemp = topStart + ev.deltaY;
+            virtualKeyboardElement.style.left = leftTemp + 'px';
+            virtualKeyboardElement.style.top = topTemp + 'px';
         }
     });
-    var scale_temp = 1;
-    var scale_start = 1;
+    var scaleTemp = 1;
+    var scaleStart = 1;
     mc.get('pinch').set({
         enable: true
     });
 
     mc.on('pinch pinchstart', function (ev) {
         if (ev.type == 'pinchstart') {
-            // start with scale_temp of the last pinch
-            scale_start = scale_temp;
+            // start with scaleTemp of the last pinch
+            scaleStart = scaleTemp;
         }
         if (ev.type == 'pinch') {
-            scale_temp = scale_start * ev.scale;
-            var scalecommand = "translate(-50%, -50%) scale(" + scale_temp + ")";
+            scaleTemp = scaleStart * ev.scale;
+            var scalecommand = "translate(-50%, -50%) scale(" + scaleTemp + ")";
             //console.log(scalecommand);
             $("#virtualKeyboard").css("transform", scalecommand);
         }
     });
 
     function clickEvent(ev) {
-        //console.log(ev);
         var cmd = $(ev.target).attr('cmd');
         if (typeof cmd == 'undefined') {
-            var temp = $(ev.target).parents().filter('.virtualKeyboard_button');
+            var temp = $(ev.target).parents().filter('.virtualKeyboardButton');
             cmd = $(temp).attr('cmd');
         }
-        //console.log(cmd);
         // $('#output').text(cmd);
         return cmd;
     }
 }
 
-function keyboardEvent_0(cmd) {
+function keyboardEvent0(cmd) {
     if (cmd.toLowerCase() == 'shift') {
         switch (activeKeyboard) {
             case 'abc':
@@ -553,7 +537,6 @@ function keyboardEvent_0(cmd) {
 
         }
     } else {
-        // will be overwritten in *.php files
         keyboardEvent(cmd);
         // switch back
         if (activeKeyboard == 'abc_caps') {
@@ -568,19 +551,19 @@ function keyboardEvent_0(cmd) {
 
 var activeKeyboard = 'dummy';
 
-function keyboardActivate(keyboard_id) {
-    // console.log(keyboard_id);
+function keyboardActivate(keyboardId) {
+    // console.log(keyboardId);
     $('.virtualKeyboard_tab button').removeClass("selected");
-    switch (keyboard_id) {
+    switch (keyboardId) {
         case 'abc':
         case 'abc_caps':
         case 'abc_capslock':
             $('.virtualKeyboard_tab button#button-table_abc').addClass("selected");
             var buttontext = 'abc'
-            if (keyboard_id == 'abc_caps') {
+            if (keyboardId == 'abc_caps') {
                 buttontext = 'ABC';
             }
-            if (keyboard_id == 'abc_capslock') {
+            if (keyboardId == 'abc_capslock') {
                 buttontext = '[ABC]';
             }
             $('.virtualKeyboard_tab button#button-table_abc').text(buttontext);
@@ -590,10 +573,10 @@ function keyboardActivate(keyboard_id) {
         case 'greek_capslock':
             $('.virtualKeyboard_tab button#button-table_greek').addClass("selected");
             var buttontext = '\u03b1\u03b2\u03b3'
-            if (keyboard_id == 'greek_caps') {
+            if (keyboardId == 'greek_caps') {
                 buttontext = '\u0391\u0392\u0393';
             }
-            if (keyboard_id == 'greek_capslock') {
+            if (keyboardId == 'greek_capslock') {
                 buttontext = '[\u0391\u0392\u0393]';
             }
             $('.virtualKeyboard_tab button#button-table_greek').text(buttontext);
@@ -602,54 +585,53 @@ function keyboardActivate(keyboard_id) {
             virtualKeyboard_hide();
             break;
         default:
-            $('.virtualKeyboard_tab button#button-table_' + keyboard_id).addClass("selected");
+            $('.virtualKeyboard_tab button#button-table_' + keyboardId).addClass("selected");
     }
     $('#virtualKeyboard table').css("display", "none");
-    var temp = keyboard_id;
-    if (keyboard_id == 'abc_capslock') {
+    var temp = keyboardId;
+    if (keyboardId == 'abc_capslock') {
         temp = 'abc_caps';
     }
-    if (keyboard_id == 'greek_capslock') {
+    if (keyboardId == 'greek_capslock') {
         temp = 'greek_caps';
     }
     $('#virtualKeyboard table#table_' + temp).css("display", "table");
-    activeKeyboard = keyboard_id;
+    activeKeyboard = keyboardId;
 }
 
 // tabs for the different keyboards
-function tabClick(ev, keyboard_id) {
-    switch (keyboard_id) {
+function tabClick(ev, keyboardId) {
+    switch (keyboardId) {
         case 'abc':
             // toggle abc and abc_caps
             if (activeKeyboard == 'abc') {
-                activeKeyboard = 'abc_caps'
+                activeKeyboard = 'abc_caps';
             } else {
-                activeKeyboard = 'abc'
+                activeKeyboard = 'abc';
             }
             break;
         case 'greek':
             // toggle greek and greek_caps
             if (activeKeyboard == 'greek') {
-                activeKeyboard = 'greek_caps'
+                activeKeyboard = 'greek_caps';
             } else {
-                activeKeyboard = 'greek'
+                activeKeyboard = 'greek';
             }
             break;
         default:
-            activeKeyboard = keyboard_id;
+            activeKeyboard = keyboardId;
     }
     $('#virtualKeyboard table').css("display", "none");
     $('#virtualKeyboard table#table_' + activeKeyboard).css("display", "table");
     keyboardActivate(activeKeyboard);
 }
 
-export default function virtualKeyboard_init() {
+export default function initVirtualKeyboard() {
     var kb = $('#keyboard')[0];
-    // console.log('kb=' + kb);
     if (typeof kb == 'undefined') {
         kb = document.createElement('div');
         kb.id = 'keyboard';
-        kb.append(get_virtualKeyboard())
+        kb.append(get_virtualKeyboard());
         document.body.appendChild(kb);
     }
     virtualKeyboard_bind_events();
@@ -658,13 +640,13 @@ export default function virtualKeyboard_init() {
 }
 
 function virtualKeyboard_hide() {
-    $('#virtualKeyboard').css("display", "none");
+    $('#virtualKeyboard').css('display', 'none');
     $('.formula_applet.selected').nextAll("button.keyb_button:first").addClass('selected');
 }
 
-export function virtualKeyboard_show() {
-    $('#virtualKeyboard').css("display", "table");
-    $('#virtualKeyboard table').css("display", "none");
+export function showVirtualKeyboard() {
+    $('#virtualKeyboard').css('display', 'table');
+    $('#virtualKeyboard table').css('display', 'none');
     keyboardActivate('mixed');
-    $('#virtualKeyboard table#table_' + activeKeyboard).css("display", "table");
+    $('#virtualKeyboard table#table_' + activeKeyboard).css('display', 'table');
 }

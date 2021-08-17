@@ -15,8 +15,8 @@ cause preloaded JavaScript being loaded twice or more.
 * Render , as . if lang=en
 * e for Exponent interferes with e for Euler's number.
 * Move smaller parts of code (e.g. problem editor) into separate file
-    + Divide prepare_page into smaller parts
-    * prepare_page needs virtualKeyboard
+    + Divide preparePage into smaller parts
+    * preparePage needs virtualKeyboard
     * virtualKeyboard needs hammer
     * Divide tex_parser into smaller parts
 * <del>use strict</del>

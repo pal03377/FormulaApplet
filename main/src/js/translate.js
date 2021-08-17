@@ -28,17 +28,15 @@ export function initTranslation() {
     $(function () {
       // $('.btn').button()
       $('#de').on('click', function () {
-        // console.log('de.click');
         switchTo('de');
       });
       $('#en').on('click', function () {
         switchTo('en');
-        // console.log('en.click');
       });
     });
 
     // get current lang
-    var lang = getCookie('lang') || "de";
+    var lang = getCookie('lang') || 'de';
     console.log('switch to lang: ' + lang);
     switchTo(lang);
     translationIsInitiated = true;
@@ -46,15 +44,15 @@ export function initTranslation() {
 };
 
 // https://www.w3schools.com/js/js_cookies.asp
-function setCookie(cookie_name, cookie_value, exdays) {
+function setCookie(cookieName, cookieValue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
   var expires = "expires=" + d.toUTCString();
-  document.cookie = cookie_name + "=" + cookie_value + ";" + expires + ";path=/";
+  document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
 }
 
-function getCookie(cookie_name) {
-  var name = cookie_name + "=";
+function getCookie(cookieName) {
+  var name = cookieName + "=";
   var ca = document.cookie.split(';');
   for (var i = 0; i < ca.length; i++) {
     var c = ca[i];

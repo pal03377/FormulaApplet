@@ -17,7 +17,7 @@ div#virtualKeyboard{
 	display: table;
 }
 
-.virtualKeyboard_button {
+.virtualKeyboardButton {
 	background-color: darkkhaki;
 	width: 60px;
 	min-width: 50px;
@@ -33,11 +33,11 @@ div#virtualKeyboard{
 	cursor: pointer;
 }
 
-.virtualKeyboard_button:active {
+.virtualKeyboardButton:active {
 	background-color: blue;
 }
 
-.virtualKeyboard_button.smallgap {
+.virtualKeyboardButton.smallgap {
 	width: 10px;
 	background-color: transparent;
 	border: 0px;
@@ -57,11 +57,11 @@ div#virtualKeyboard{
 	background-color: greenyellow;
 }
 
-.virtualKeyboard_button.virtualKeyboard-unit{
+.virtualKeyboardButton.virtualKeyboard-unit{
 	font-size: 120%;
 }
 
-.virtualKeyboard_button.virtualKeyboard-clear_unit{
+.virtualKeyboardButton.virtualKeyboard-clear_unit{
 	font-size: 120%;
 }
 
@@ -75,35 +75,35 @@ div#output tbody {
 	cursor: move;
 }
 
-#table_abc .virtualKeyboard-row1 .virtualKeyboard_button {
+#table_abc .virtualKeyboard-row1 .virtualKeyboardButton {
 	position: relative;
 	left: 20px;
 }
-#table_abc .virtualKeyboard-row2 .virtualKeyboard_button {
+#table_abc .virtualKeyboard-row2 .virtualKeyboardButton {
 	position: relative;
 	left: 40px;
 }
-#table_abc_caps .virtualKeyboard-row1 .virtualKeyboard_button {
+#table_abc_caps .virtualKeyboard-row1 .virtualKeyboardButton {
 	position: relative;
 	left: 20px;
 }
-#table_abc_caps .virtualKeyboard-row2 .virtualKeyboard_button {
+#table_abc_caps .virtualKeyboard-row2 .virtualKeyboardButton {
 	position: relative;
 	left: 40px;
 }
-#table_greek .virtualKeyboard-row1 .virtualKeyboard_button {
+#table_greek .virtualKeyboard-row1 .virtualKeyboardButton {
 	position: relative;
 	left: 20px;
 }
-#table_greek .virtualKeyboard-row2 .virtualKeyboard_button {
+#table_greek .virtualKeyboard-row2 .virtualKeyboardButton {
 	position: relative;
 	left: 40px;
 }
-#table_greek_caps .virtualKeyboard-row1 .virtualKeyboard_button {
+#table_greek_caps .virtualKeyboard-row1 .virtualKeyboardButton {
 	position: relative;
 	left: 20px;
 }
-#table_greek_caps .virtualKeyboard-row2 .virtualKeyboard_button {
+#table_greek_caps .virtualKeyboard-row2 .virtualKeyboardButton {
 	position: relative;
 	left: 40px;
 }

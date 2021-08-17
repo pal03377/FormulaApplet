@@ -6,19 +6,17 @@ export function tree2TEX(tree) {
     return recurse(tree.root);
 
     function recurse(node) {
-        var number_of_childs = (node.children || []).length;
-        // console.log('children=' + node.children);
-        // console.log(depth + ' type ' + node.type + ' content ' + node.content + 'num_of_childs=' + number_of_childs);
-        depth++;
+        var numberOfChildren = (node.children || []).length;
+        depth ++;
         var res = [];
-        for (var i = 0; i < number_of_childs; i++) {
+        for (var i = 0; i < numberOfChildren; i++) {
             var child = tree.nodelist[node.children[i]];
             res[i] = recurse(child);
         }
 
         var done = false;
         var result = '';
-        if (number_of_childs === 0) {
+        if (numberOfChildren === 0) {
             // leaf, num, text
             if (node.type.startsWith('greek')) {
                 result = '\\' + node.content;
@@ -27,7 +25,7 @@ export function tree2TEX(tree) {
             }
             done = true;
         }
-        if (number_of_childs === 1) {
+        if (numberOfChildren === 1) {
             if (node.type.startsWith('root')) {
                 result = res[0];
                 done = true;
@@ -81,16 +79,14 @@ export function tree2TEX(tree) {
                 result = res[0];
             }
         }
-        if (number_of_childs >= 2) {
+        if (numberOfChildren >= 2) {
             if (node.type.startsWith('plusminus') || node.type.startsWith('timesdivided') || node.type.startsWith('*')) {
                 result = res[0];
                 result += node.content;
                 result += res[1];
                 if (node.type.startsWith('timesdivided')) {
-                    // console.log('before ' + result);
                     var temp = result.replace(/\\cdot/g, '\\cdot ');
                     result = temp.replace(/\\cdot  /g, '\\cdot ');
-                    // console.log('after  ' + result);
                 }
                 done = true;
             }
@@ -117,7 +113,6 @@ export function tree2TEX(tree) {
                 result = '\\' + fu + '^';
                 result += res[0];
                 result += res[1];
-                // console.log('fu-power: ' + result);
                 done = true;
             }
             if ((!done) && node.type.startsWith('nthroot')) {
@@ -132,12 +127,10 @@ export function tree2TEX(tree) {
                 result += res[1];
                 done = true;
             }
-            // if ((!done) && node.type.startsWith('fu-lim')) {
             if (node.type.startsWith('fu-lim')) {
                 result = '\\lim_';
                 result += res[0];
                 result += res[1];
-                // console.log('lim: ' + result);
                 done = true;
             }
             if (node.type.startsWith('integral')) {
@@ -150,7 +143,6 @@ export function tree2TEX(tree) {
                 if (typeof (r3) !== 'undefined') {
                     result += r3;
                 }
-                // console.log('integral=' + result);
                 done = true;
             }
         }
@@ -163,23 +155,18 @@ export function tree2TEX(tree) {
             do {
                 pos = temp.indexOf('§');
                 if (pos > -1) {
-                    // console.log(node.id + ' ' + temp + ' ' + count + ' from ' + node.children);
                     var left = temp.substring(0, pos);
                     var right = temp.substring(pos + 1);
                     var middle = res[count];
-                    // console.log(left + '::' + middle + '::' + right);
                     temp = left;
                     temp += middle;
                     temp += right;
-                    count++;
+                    count ++;
                 }
             } while (pos > -1)
             result = temp;
         }
-        // console.log('result ' + result);
-        depth--;
-        // console.log(node.id + '-----------------------'.slice(0, 2 * depth) + result);
-        // console.log('(' + depth + ') ' + result);
+        depth --;
         return result;
     }
 }

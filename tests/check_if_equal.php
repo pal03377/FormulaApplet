@@ -82,7 +82,7 @@ include_once( $prefix . 'header.php' );
     }
       
     document.getElementById('output').innerHTML = out ;
-    parsetree_counter.setCounter(0);
+    parseTreeCounter.setCounter(0);
   };
 
 };
