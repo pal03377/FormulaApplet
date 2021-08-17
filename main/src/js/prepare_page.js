@@ -1,7 +1,7 @@
 // "use strict";
 
 import $ from "jquery";
-import MQ from "./MathQuill.js";
+import MQ from "./lib/mathquillWrapper.js";
 
 import { encode, decode } from "./decode.js";
 import { prepend } from "./editor.js";

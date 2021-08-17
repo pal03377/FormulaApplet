@@ -6,18 +6,17 @@
  * Mozilla Public License, v. 2.0. If a copy of the MPL
  * was not distributed with this file, You can obtain
  * one at http://mozilla.org/MPL/2.0/.
+ * 
+ * This file was modified by Paul Schwind to work with a JS bundler.
  */
 
-(function() {
+import jQuery from "jquery";
 
-var jQuery = window.jQuery,
-  undefined,
+var undefined, 
   mqCmdId = 'mathquill-command-id',
   mqBlockId = 'mathquill-block-id',
   min = Math.min,
   max = Math.max;
-
-if (!jQuery) throw 'MathQuill requires jQuery 1.5.2+ to be loaded first';
 
 function noop() {}
 
@@ -1178,13 +1177,6 @@ function getInterface(v) {
 
   return MQ;
 }
-
-MathQuill.noConflict = function() {
-  window.MathQuill = origMathQuill;
-  return MathQuill;
-};
-var origMathQuill = window.MathQuill;
-window.MathQuill = MathQuill;
 
 function RootBlockMixin(_) {
   var names = 'moveOutOf deleteOutOf selectOutOf upOutOf downOutOf'.split(' ');
@@ -5259,4 +5251,4 @@ for (var key in MQ1) (function(key, val) {
   else MathQuill[key] = val;
 }(key, MQ1[key]));
 
-}());
+export default MathQuill;
