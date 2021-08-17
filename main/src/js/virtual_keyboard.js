@@ -379,40 +379,49 @@ keys['greek_caps'] = [
 ]
 
 function get_virtualKeyboard() {
-    var result = '<div id="virtualKeyboard">\r\n';
-    result += '  <div id="virtualKeyboard_header">Move</div>\r\n';
-    // create tabs
-    result += '  <div class="virtualKeyboard_tab"\r\n>';
-    result += '      <button class="tablinks" id="button-table_mixed" onclick="tabClick(event, \'mixed\')">123&radic;+-&nbsp;&nbsp;&nbsp;</button>\r\n';
-    result += '      <button class="tablinks" id="button-table_function" onclick="tabClick(event, \'function\')">&nbsp;f(x)&nbsp;</button>\r\n';
-    result += '      <button class="tablinks" id="button-table_abc" onclick="tabClick(event, \'abc\')">abc</button>\r\n';
-    // result += '      <button class="tablinks" id="button-table_abc_caps" onclick="tabClick(event, \'abc_caps\')">ABC</button>\r\n';
-    result += '      <button class="tablinks" id="button-table_greek" onclick="tabClick(event, \'greek\')">\u03b1\u03b2\u03b3</button>\r\n';
-    // result += '      <button class="tablinks" id="button-table_greek_caps" onclick="tabClick(event, \'greek_caps\')">&Alpha;&Beta;&Gamma;</button>\r\n';
-    // https://en.wikipedia.org/wiki/X_mark
-    // result += '      <button class="tablinks" id="button-table_off" onclick="tabClick(event, \'off\')">&nbsp;\u2716&nbsp;\u274C</button>\r\n';
-    // result += '      <button class="tablinks" id="button-table_off" onclick="tabClick(event, \'off\')">&nbsp;\u274C&nbsp;</button>\r\n';
-    result += '      <button class="tablinks" id="button-table_off" onclick="tabClick(event, \'off\')">&nbsp;\u2716</button>\r\n'; // alternative \u2715
-    result += '  </div>\r\n';
+    let result = document.createElement("div");
+    result.id = "virtualKeyboard";
+    let header = document.createElement("div");
+    header.id = "virtualKeyboard_header";
+    header.innerText = "Move";
+    result.append(header);
+    let tabs = document.createElement("div");
+    tabs.id = "virtualKeyboard_tab";
+    tabs.classList.add("virtualKeyboard_tab");
+    const tabButtons = {
+        "mixed": "123&radic;+-&nbsp;&nbsp;&nbsp;", 
+        "function": "&nbsp;f(x)&nbsp;", 
+        "abc": "abc", 
+        "greek": "\u03b1\u03b2\u03b3", 
+        "off": "&nbsp;\u2716"
+    };
+    for (let tabId of Object.keys(tabButtons)) {
+        let button = document.createElement("button");
+        button.classList.add("tablinks");
+        button.id = "button-table_" + tabId;
+        button.onclick = evt => tabClick(evt, tabId);
+        button.innerHTML = tabButtons[tabId];
+        tabs.append(button);
+    }
+    result.append(tabs);
 
-    result += create_table('abc');
-    result += create_table('abc_caps');
-    result += create_table('mixed');
-    result += create_table('function');
-    result += create_table('greek');
-    result += create_table('greek_caps');
-    result += '</div>\r\n';
+    for (let tabId of ["abc", "abc_caps", "mixed", "function", "greek", "greek_caps"]) {
+        result.append(create_table(tabId));
+    }
+    
     return result;
 }
 
 function create_table(table_id) {
-    var result = '<table id="table_' + table_id + '">\r\n';
-    result += '<tbody>\r\n';
-    for (var row_number = 0; row_number < keys[table_id].length; row_number++) {
+    let result = document.createElement("table");
+    result.id = "table_" + table_id;
+    let tbody = document.createElement("tbody");
+    result.append(tbody);
+    for (let row_number = 0; row_number < keys[table_id].length; row_number ++) {
         var keylist = keys[table_id][row_number];
-        result += '<tr class="virtualKeyboard-row' + row_number + '">\r\n';
-        // console.log( '<tr class="virtualKeyboard-row' + row_number + '">\r\n' );
-        // result += '<tr>\r\n';
+        let tr = document.createElement("tr");
+        tr.classList.add("virtualKeyboard-row" + row_number);
+        tbody.append(tr);
         for (var keyindex = 0; keyindex < keylist.length; keyindex++) {
             var key = keylist[keyindex];
             if (typeof key[1] == 'undefined') {
@@ -431,25 +440,17 @@ function create_table(table_id) {
                     key[2] = key[0];
                 }
             }
-            var cl = 'virtualKeyboard_button virtualKeyboard-' + key[0];
+            let td = document.createElement("td");
+            td.classList.add("virtualKeyboard_button");
+            td.classList.add("virtualKeyboard-" + key[0]);
             if (key[0].startsWith('smallgap')) {
-                cl += ' smallgap';
+                td.classList.add("smallgap");
             }
-            // if (key[0].startsWith('set_unit-')) {
-            //     lang= key[0].substr(9,2);
-            //     console.log('key lang=' + lang);
-            //     cl = 'tr ' + lang + ' kunit ' + cl;
-            //     console.log(cl);
-            // }
-            result += '<td class="' + cl + '" cmd="';
-            result += key[2] + '">' + key[1] + '</td>\r\n';
-            // console.log('virtualKeyboard-' + key[0] + ' ' + key[1] + ' cmd-' + key[2]);
+            td.setAttribute("cmd", key[2]);
+            td.innerHTML = key[1];
+            tr.append(td);
         }
-        result += '</tr>\r\n';
-        // console.log(row);
     }
-    result += '</tbody>\r\n';
-    result += '</table>\r\n';
     return result;
 }
 
@@ -616,7 +617,6 @@ function keyboardActivate(keyboard_id) {
 }
 
 // tabs for the different keyboards
-// TODO: needs to be available for onlick of the buttons somehow
 function tabClick(ev, keyboard_id) {
     switch (keyboard_id) {
         case 'abc':
@@ -649,9 +649,9 @@ export default function virtualKeyboard_init() {
     if (typeof kb == 'undefined') {
         kb = document.createElement('div');
         kb.id = 'keyboard';
+        kb.append(get_virtualKeyboard())
         document.body.appendChild(kb);
     }
-    $('#keyboard').html(get_virtualKeyboard());
     virtualKeyboard_bind_events();
     keyboardActivate('mixed');
     virtualKeyboard_hide();
