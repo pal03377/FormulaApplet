@@ -1,15 +1,5 @@
 "use strict";
 
-<<<<<<< HEAD:js/vkbd.js
-var squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
-var nth_root = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
-var left = ['left', '<span style="font-size: 130%">\u25c5</span>', '#Left'];
-var right = ['right', '<span style="font-size: 130%">\u25bb</span>', '#Right'];
-// ['enter2', '<span style="font-size: 170%; color:green">\u21b5</span>', 'enter'],
-var enter = ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', '#Enter'];
-var backspace = ['backspace', '\u232B', '#Backspace'];
-var poweroften =     ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>', '10^'];
-=======
 import $ from "jquery";
 import Hammer from "@egjs/hammerjs";
 import { keyboardEvent } from "./preparePage.js";
@@ -21,7 +11,6 @@ const right = ['right', '<span style="font-size: 130%">\u25bb</span>', '#Right']
 const enter = ['enter', '<span style="font-size: 150%; color:green">\u23ce</span>', '#Enter'];
 const backspace = ['backspace', '\u232B', '#Backspace'];
 const poweroften = ['power_of_ten', '10<sup style="font-size: 85%">\u2b1a</sup>', '10^'];
->>>>>>> 5e71768f70a96963c5acf1085b25830ec7924ff2:main/src/js/virtualKeyboard.js
 
 var keys = [];
 keys['mixed'] = [
@@ -426,13 +415,8 @@ function createTable(tableId) {
                 key[1] = key[0];
             }
             if (typeof key[2] == 'undefined') {
-<<<<<<< HEAD:js/vkbd.js
-                if (table_id == 'greek' || table_id == 'greek_caps') {
-                    var ignore = '0_1_2_3_4_5_6_7_8_9_shift_';
-=======
                 if (tableId == 'greek' || tableId == 'greek_caps') {
                     const ignore = '0_1_2_3_4_5_6_7_8_9_shift_';
->>>>>>> 5e71768f70a96963c5acf1085b25830ec7924ff2:main/src/js/virtualKeyboard.js
                     if (ignore.indexOf(key[0] + '_') < 0) {
                         key[2] = '\\' + key[0] + ' ';
                     } else {
