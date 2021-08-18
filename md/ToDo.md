@@ -1,21 +1,22 @@
 # *ToDo* #
 
 ## FormulaApplet as a H5P package
-* Investigate if two or more H5P FormulaApplets in one Page (Drupal development)
-cause preloaded JavaScript being loaded twice or more.
-* use subject/observer pattern for VKBD/FormulaApplet.
+* Investigate if two or more H5P FormulaApplets in one Page (Drupal development) cause preloaded JavaScript being loaded twice or more.
+* Use subject/observer pattern for virtualKeyboard/FormulaApplet.
 * Alternative: use jQuery (custom events)
-* use revealing module pattern
+* Use revealing module pattern
 * Exercise how to deal with other H5P packages (math, physics)
-* use apps.zum.de and unterrichten.zum.de 
+* Use apps.zum.de and unterrichten.zum.de 
 ## Coding
+* Use JSDoc https://jsdoc.app/
+* Use ESLint https://eslint.org/
 * Render \cdot as times(cross) if lang=en
 * Render , as . if lang=en
 * e for Exponent interferes with e for Euler's number.
 * Move smaller parts of code (e.g. problem editor) into separate file
-    + Divide prepare_page into smaller parts
-    * prepare_page needs vkbd
-    * vkbd needs hammer
+    + Divide preparePage into smaller parts
+    * preparePage needs virtualKeyboard
+    * virtualKeyboard needs hammer
     * Divide tex_parser into smaller parts
 * <del>use strict</del>
   * broken: sample_task.php, sample_task_and_parse.php, tex_parser.php
@@ -29,7 +30,7 @@ cause preloaded JavaScript being loaded twice or more.
 
 ## Nice to have
 * Transfer this list (ToDo.md) to Issues (GitHub)
-* Integral, Limit (VKBD)
+* Integral, Limit (virtualKeyboard)
 * Block trivial solutions
 * Random parameters for varying problems
 * condition = ...
@@ -67,4 +68,3 @@ cause preloaded JavaScript being loaded twice or more.
 * <del>Link: wiki.formelapplet.de</del>
 * Community 
 * Support
-   

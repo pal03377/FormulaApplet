@@ -1,2 +1,0 @@
-cmd mit Admin-Rechten
-mklink /D D:\Users\privat\Laufwerk_E\gut\gf09_filesystem_version\gf09\js E:\gut\gf09\js\
