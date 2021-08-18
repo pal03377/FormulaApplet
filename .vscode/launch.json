@@ -11,12 +11,12 @@
         "url": "http://localhost:5000",
         "webRoot": "${workspaceFolder}"
     },
-        {
-            "type": "pwa-chrome",
-            "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}"
-        }
+    {   
+        "name": "Chrome classic (XAMPP)",
+        "type": "pwa-chrome",
+        "request": "launch",
+        "url": "http://localhost:8080/gf09/main/public/index.html",
+        "webRoot": "${workspaceFolder}"
+    }
     ]
 }

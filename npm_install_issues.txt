@@ -1,0 +1,18 @@
+PS E:\gut\gf09\main> npm install
+npm WARN npm npm does not support Node.js v16.5.0
+npm WARN npm You should probably upgrade to a newer version of node as we
+npm WARN npm can't make any promises that npm will work with this version.
+npm WARN npm Supported releases of Node.js are the latest release of 6, 8, 9, 10, 11, 12, 13.
+npm WARN npm You can find the latest version at https://nodejs.org/
+npm WARN formelapplet@1.0.0 No description
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@2.3.2 (node_modules\fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@2.3.2: wanted {"os":"darwin","arch":"any"} (current: {"os":"win32","arch":"x64"})
+
+audited 243 packages in 4.947s
+
+8 packages are looking for funding
+  run `npm fund` for details
+
+found 3 vulnerabilities (2 moderate, 1 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+  
