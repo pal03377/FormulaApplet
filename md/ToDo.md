@@ -46,6 +46,7 @@
 * Complex Numbers
 * Vectors
 * Check only after pressing Enter
+* GeoGebra as a H5P package
 ## Online
 * Create new MediaWiki Extension named 'FormulaApplet', containing FormulaApplet.php, FormulaApplet.body.php, /i18n
 * <del>Verwendung von formelapplet.zum.de klären -> Jan Böhme/UweSchützenmeister</del>
