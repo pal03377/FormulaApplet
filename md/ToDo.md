@@ -27,6 +27,7 @@
 * Test using tree2tex.js
 * Tests using browsers like FireFox, IE, Edge, and using OS like Linux, Android, iOS
 * <del>Use https://github.com/requirejs/i18n</del> -> use import/export, rollup
+* ESlint wants 'sourceType: module-' for JS files containing import/export
 
 ## Nice to have
 * Transfer this list (ToDo.md) to Issues (GitHub)
