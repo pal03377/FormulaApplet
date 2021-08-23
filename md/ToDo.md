@@ -8,8 +8,9 @@
 * Exercise how to deal with other H5P packages (math, physics)
 * Use apps.zum.de and unterrichten.zum.de 
 ## Coding
-* Use JSDoc https://jsdoc.app/
+* Use JSDoc https://jsdoc.app/ and/or doxywizard or documentation.js
 * Use ESLint https://eslint.org/
+* enable debugging in Visual Studio Code
 * Render \cdot as times(cross) if lang=en
 * Render , as . if lang=en
 * e for Exponent interferes with e for Euler's number.
@@ -20,13 +21,13 @@
     * Divide tex_parser into smaller parts
 * <del>use strict</del>
   * broken: sample_task.php, sample_task_and_parse.php, tex_parser.php
-* documentation.js
 * OOP
 * try/catch
-* Tests (https://developer.mozilla.org/en-US/docs/Web/API/console/assert)
+* Tests (https://developer.mozilla.org/en-US/docs/Web/API/console/assert), unit tests
 * Test using tree2tex.js
 * Tests using browsers like FireFox, IE, Edge, and using OS like Linux, Android, iOS
-* Use https://github.com/requirejs/i18n
+* <del>Use https://github.com/requirejs/i18n</del> -> use import/export, rollup
+* ESlint wants 'sourceType: module-' for JS files containing import/export
 
 ## Nice to have
 * Transfer this list (ToDo.md) to Issues (GitHub)
@@ -45,6 +46,7 @@
 * Complex Numbers
 * Vectors
 * Check only after pressing Enter
+* GeoGebra as a H5P package
 ## Online
 * Create new MediaWiki Extension named 'FormulaApplet', containing FormulaApplet.php, FormulaApplet.body.php, /i18n
 * <del>Verwendung von formelapplet.zum.de klären -> Jan Böhme/UweSchützenmeister</del>
