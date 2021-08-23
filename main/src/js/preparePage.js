@@ -41,7 +41,7 @@ export default async function preparePage() {
   await domLoad;
   $("img.mod").remove();
   ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
-  $('button.keyb_button').on('mousedown', function (ev) {
+  $('button.keyb_button').on('mousedown', function () {
     showVirtualKeyboard();
     $("button.keyb_button").removeClass('selected');
   });
@@ -49,7 +49,7 @@ export default async function preparePage() {
   mathQuillify();
   initTranslation();
 
-  $('body').on('click', function (ev) {
+  $('body').on('click', function () {
     $(".formula_applet").removeClass('selected');
     $("button.keyb_button").removeClass('selected');
   });
@@ -58,7 +58,7 @@ export default async function preparePage() {
     var key = ev.originalEvent.key;
     if (key == 'Tab') {
       var fa = $(ev.target).parents('.formula_applet');
-      var id = $(fa).attr('id');
+      // var id = $(fa).attr('id');
       fa.click();
     }
   });
@@ -171,8 +171,7 @@ function fillWithRandomValAndCheckDefSets(treeVar, dsList) {
       var now = new Date();
       timePassedMilliseconds = now.getTime() - start.getTime();
     }
-    if (success) {
-    } else {
+    if (!success) {
       tree2.hasValue = false;
       tree2.variableValueList = [];
     }
@@ -197,7 +196,7 @@ function makeAutoUnitstring(mf) {
     if (sci && middle.length > 0) {
       // expand the unit tag at the right side
       var newLatex = left + unitTag + middle + right + '}';
-      var mfLatexForParser = csn.repl + unitTag + middle + right + '}';
+      mfLatexForParser = csn.repl + unitTag + middle + right + '}';
       editHandlerActive = false;
       mf.latex(newLatex);
       mf.keystroke('Left');
@@ -208,16 +207,16 @@ function makeAutoUnitstring(mf) {
     var beginning = '';
     for (var i = str.length; i >= 0; i--) {
       beginning = str.substr(0, i);
-      var sci = checkScientificNotation(beginning).isScientific;
+      sci = checkScientificNotation(beginning).isScientific;
       if (sci) {
         break;
       }
     }
     if (beginning.length > 0) {
-      var rest = str.substr(beginning.length);
+      rest = str.substr(beginning.length);
       if (rest.length > 0) {
-        var newLatex = beginning + unitTag + rest + '}';
-        var mfLatexForParser = csn.repl + unitTag + rest + '}';
+        newLatex = beginning + unitTag + rest + '}';
+        mfLatexForParser = csn.repl + unitTag + rest + '}';
         editHandlerActive = false;
         mf.latex(newLatex);
         mf.keystroke('Left');
@@ -254,7 +253,7 @@ function editHandler(index) {
       checkIfEquality(id, mfContainer.latex(), dsList);
     }
   }
-};
+}
 
 var editorMf;
 
@@ -428,8 +427,8 @@ async function mathQuillify() {
           FAList[index].solution = decode(zip);
         } else {
           fApp.hasSolution = false;
-        };
-        var mqEditableField = element.find('.mq-editable-field')[0];
+        }
+        mqEditableField = element.find('.mq-editable-field')[0];
         var mf = MQ.MathField(mqEditableField, {});
         mf.config({
           handlers: {
@@ -448,7 +447,7 @@ async function mathQuillify() {
     if (fApp.hasResultField) {
       fApp.mqEditableField = mqEditableField;
       fApp.hammer = new Hammer(mqEditableField);
-      fApp.hammer.on("doubletap", function (ev) {
+      fApp.hammer.on("doubletap", function () {
         showVirtualKeyboard();
       });
     }
@@ -458,13 +457,14 @@ async function mathQuillify() {
 
 function unifyDefinitions(def) {
   def = def.replace(/\s/g, "");
-  def = def.replace(/\&&/g, "&");
+  def = def.replace(/&&/g, "&");
   var dsList = def.split("&");
   for (var i = 0; i < dsList.length; i++) {
     var ds = dsList[i];
     var result = '';
+    var temp;
     if (ds.indexOf('>') > -1) {
-      var temp = ds.split('>');
+      temp = ds.split('>');
       if (temp[1] == '0') {
         result = temp[0];
       } else {
@@ -472,7 +472,7 @@ function unifyDefinitions(def) {
       }
     }
     if (ds.indexOf('<') > -1) {
-      var temp = ds.split('<');
+      temp = ds.split('<');
       if (temp[0] == '0') {
         result = temp[1];
       } else {
@@ -485,7 +485,8 @@ function unifyDefinitions(def) {
 }
 
 function getSelection(mf, options) {
-  var erase = options.erase || false;
+  // if options.erase is undefined, erase defaults to false
+  var erase = options.erase||false;
   // typof mf = mathField
   var ori = mf.latex();
   var erased = ori;
@@ -564,6 +565,7 @@ function getPositionOfUnitTags(latex, unitTag) {
 }
 
 function setUnit() {
+  var i, k;
   var unitTag = '\\textcolor{blue}{';
   var mf = FAList[activeMathfieldIndex].mathField;
   // erase class inputfield = false
@@ -576,7 +578,7 @@ function setUnit() {
   var start = preSelected.length;
   var end = start + selected.length;
   var selectpattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
-  for (var k = start; k < end; k++) {
+  for (k = start; k < end; k++) {
     selectpattern[k] = 's';
   }
 
@@ -584,13 +586,13 @@ function setUnit() {
   var startOfUnitTags = posn.sofUnitTags;
   var endOfUnitTags = posn.eofUnitTags;
   var pattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
-  for (var i = 0; i < startOfUnitTags.length; i++) {
-    for (var k = startOfUnitTags[i]; k < endOfUnitTags[i]; k++) {
+  for (i = 0; i < startOfUnitTags.length; i++) {
+    for (k = startOfUnitTags[i]; k < endOfUnitTags[i]; k++) {
       pattern[k] = '#';
     }
   }
   // inspect selection start
-  for (var i = 0; i < startOfUnitTags.length; i++) {
+  for (i = 0; i < startOfUnitTags.length; i++) {
     if (startOfUnitTags[i] < start && start <= endOfUnitTags[i]) {
       // move start leftwards
       start = startOfUnitTags[i];
@@ -599,7 +601,7 @@ function setUnit() {
     }
   }
   // inspect selection end
-  for (var i = 0; i < startOfUnitTags.length; i++) {
+  for (i = 0; i < startOfUnitTags.length; i++) {
     if (startOfUnitTags[i] <= end && end <= endOfUnitTags[i]) {
       // move end rightwards
       end = endOfUnitTags[i];
@@ -608,16 +610,16 @@ function setUnit() {
     }
   }
   // debug
-  var selectpattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
-  for (var k = start; k < end; k++) {
+  selectpattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
+  for (k = start; k < end; k++) {
     selectpattern[k] = 's';
   }
 
   // delete unittags inside selection
   var ori_array = ori.split('');
-  for (var i = 0; i < startOfUnitTags.length; i++) {
+  for (i = 0; i < startOfUnitTags.length; i++) {
     if (start <= startOfUnitTags[i] && endOfUnitTags[i] <= end) {
-      for (var k = startOfUnitTags[i]; k < startOfUnitTags[i] + unitTag.length; k++) {
+      for (k = startOfUnitTags[i]; k < startOfUnitTags[i] + unitTag.length; k++) {
         ori_array[k] = '§';
       }
       ori_array[endOfUnitTags[i] - 1] = '§';

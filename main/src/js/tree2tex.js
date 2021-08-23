@@ -2,6 +2,7 @@
 // not needed for actual lib?
 
 export function tree2TEX(tree) {
+    // eslint-disable-next-line no-unused-vars
     var depth = 0;
     return recurse(tree.root);
 
@@ -62,13 +63,13 @@ export function tree2TEX(tree) {
                 var insert_space = true;
                 if (child.type.startsWith('bracket')) {
                     insert_space = false
-                };
+                }
                 if (child.content.startsWith(' ')) {
                     insert_space = false
-                };
+                }
                 if (child.type.startsWith('greek')) {
                     insert_space = false
-                };
+                }
                 if (insert_space) {
                     result += ' ';
                 }
@@ -148,9 +149,9 @@ export function tree2TEX(tree) {
         }
         if (done === false) {
             // handle bracket childs (maybe 1 or 2 or even more)
-            var pos = -1;
+            pos = -1;
             var count = 0;
-            var temp = node.content;
+            temp = node.content;
             // Do not change node.content. Use temp instead.
             do {
                 pos = temp.indexOf('§');

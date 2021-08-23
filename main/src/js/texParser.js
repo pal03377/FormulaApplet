@@ -114,7 +114,7 @@ function withEachNode(tree, f) {
         if (i === tree.nodelist.length) {
             stop = true;
         }
-    } while (stop === false);
+    } while (stop === false)
 }
 
 function withEachLeaf(tree, f) {
@@ -1653,7 +1653,7 @@ export function fillWithValues(treeVar, list) {
                                 if (node.content == content) {
                                     node.value = value;
                                 }
-                                if (node.content == '\pi') {
+                                if (node.content == '\\pi') {
                                     node.value = Math.PI;
                                     value = Math.PI;
                                 }

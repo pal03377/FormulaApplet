@@ -34,7 +34,6 @@ perm[1][9] = [5, 57, 24, 20, 14, 10, 61, 32, 46, 17, 59, 3, 48, 38, 12, 44, 47, 
 function encodeDecodeChar(encDec, numOfPerm, char) {
     var code1 = characters.indexOf(char);
     var code2 = perm[encDec][numOfPerm][code1];
-    var code2 = perm[encDec][numOfPerm][code1];
     var result = characters[code2];
     return result;
 }
@@ -75,10 +74,11 @@ var oldText;
 var oldN;
 
 export function encode(text) {
+    var n;
     if (oldText == text) {
-        var n = oldN; // do not change n
+        n = oldN; // do not change n
     } else {
-        var n = Math.floor(Math.random() * 10);
+        n = Math.floor(Math.random() * 10);
     }
     var h = encodeUnicode(text);
     oldText = text;
