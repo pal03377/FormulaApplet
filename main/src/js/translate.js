@@ -39,7 +39,7 @@ export async function initTranslation() {
     translationIsInitiated = true;
     await reloadTranslation();
   }
-};
+}
 
 // https://www.w3schools.com/js/js_cookies.asp
 function setCookie(cookieName, cookieValue, exdays) {
