@@ -3,15 +3,32 @@
 import $ from "jquery";
 import Hammer from "@egjs/hammerjs";
 import MQ from "./lib/mathquillWrapper.js";
-import { domLoad } from "./dom.js";
+import {
+  domLoad
+} from "./dom.js";
 
 import config from "./config.json";
 
-import { encode, decode } from "./decode.js";
-import { initEditor } from "./editor.js";
-import parse, { FaTree, findCorrespondingRightBracket, evaluateTree, fillWithValues, checkScientificNotation } from "./texParser.js";
-import { initTranslation } from "./translate.js";
-import initVirtualKeyboard, { showVirtualKeyboard } from "./virtualKeyboard.js";
+import {
+  encode,
+  decode
+} from "./decode.js";
+import {
+  initEditor
+} from "./editor.js";
+import parse, {
+  FaTree,
+  findCorrespondingRightBracket,
+  evaluateTree,
+  fillWithValues,
+  checkScientificNotation
+} from "./texParser.js";
+import {
+  initTranslation
+} from "./translate.js";
+import initVirtualKeyboard, {
+  showVirtualKeyboard
+} from "./virtualKeyboard.js";
 
 var activeMathfieldIndex = 0;
 var FAList = [];
@@ -45,7 +62,6 @@ export default async function preparePage() {
     showVirtualKeyboard();
     $("button.keyb_button").removeClass('selected');
   });
-  ($('<img class="mod">')).insertAfter($(".formula_applet"));
   mathQuillify();
   initTranslation();
 
@@ -64,7 +80,7 @@ export default async function preparePage() {
   });
 }
 
-export function keyboardEvent(cmd) {
+function keyboardEvent(cmd) {
   var fApp = FAList[activeMathfieldIndex];
   var mf = fApp.mathField;
 
@@ -128,6 +144,7 @@ function checkIfEqual(id, a, b, dsList) {
 }
 
 function checkIfEquality(id, equ, dsList) {
+  console.log(equ);
   var myTree = parse(equ);
   myTree = fillWithRandomValAndCheckDefSets(myTree, dsList);
   var almostOne = evaluateTree(myTree);
@@ -228,7 +245,7 @@ function makeAutoUnitstring(mf) {
 }
 
 function editHandler(index) {
-  console.debug('called editHandler: ' + index + ' active=' + editHandlerActive);
+  // console.debug('called editHandler: ' + index + ' active=' + editHandlerActive);
   if (editHandlerActive == true) {
     var mf = FAList[index].mathField;
     var mfContainer = MQ.StaticMath(FAList[index].formulaApplet);
@@ -324,7 +341,11 @@ async function mathQuillify() {
       if (fApp.hasResultField) {
         ev.stopPropagation(); // avoid body click
         $(".formula_applet").removeClass('selected');
+        $(".formula_applet").off('customKeyboardEvent');
         element.addClass('selected');
+        element.on('customKeyboardEvent', function (evnt, cmd) {
+          keyboardEvent(cmd);
+        });
         $("button.keyb_button").removeClass('selected');
         if ($('#virtualKeyboard').css('display') == 'none') {
           element.nextAll("button.keyb_button:first").addClass('selected');
@@ -339,7 +360,7 @@ async function mathQuillify() {
     })
     FAList[index] = fApp;
 
-    console.debug('isEditor=' + isEditor);
+    // console.debug('isEditor=' + isEditor);
     if (isEditor) {
       // *** editor ***
       await initEditor();
@@ -415,8 +436,8 @@ async function mathQuillify() {
       //******************
       // *** no editor ***
       try {
-           MQ.StaticMath(domElem);
-       } catch (err) {
+        MQ.StaticMath(domElem);
+      } catch (err) {
         console.error('Error using MQ.StaticMath: ' + err);
         console.trace();
       }
@@ -434,10 +455,11 @@ async function mathQuillify() {
           handlers: {
             edit: () => {
               mqEditableField.focus();
-              editHandler(index);
+              // editHandler(index) does not work because index may have changed until handler is called;
+              editHandler(fApp.index);
             },
             enter: () => {
-              editHandler(index);
+              editHandler(fApp.index);
             },
           }
         });
@@ -451,8 +473,9 @@ async function mathQuillify() {
         showVirtualKeyboard();
       });
     }
-    index ++;
+    index++;
   });
+  ($('<img class="mod">')).insertAfter($(".formula_applet.mq-math-mode:not(.solution)"));
 }
 
 function unifyDefinitions(def) {
@@ -486,7 +509,7 @@ function unifyDefinitions(def) {
 
 function getSelection(mf, options) {
   // if options.erase is undefined, erase defaults to false
-  var erase = options.erase||false;
+  var erase = options.erase || false;
   // typof mf = mathField
   var ori = mf.latex();
   var erased = ori;
@@ -527,7 +550,9 @@ function getSelection(mf, options) {
 }
 
 function setInput() {
-  var temp = getSelection(editorMf, { erase: true });
+  var temp = getSelection(editorMf, {
+    erase: true
+  });
   var preSelected = temp[0];
   var selected = temp[1];
   var postSelected = temp[2];
@@ -555,7 +580,7 @@ function getPositionOfUnitTags(latex, unitTag) {
       startOfUnitTags.push(pos);
       endOfUnitTags.push(posRightBracket);
       //posRightBracket points to char right of the right bracket
-      pos ++;
+      pos++;
     }
   } while (pos >= 0)
   return {
@@ -569,7 +594,9 @@ function setUnit() {
   var unitTag = '\\textcolor{blue}{';
   var mf = FAList[activeMathfieldIndex].mathField;
   // erase class inputfield = false
-  var temp = getSelection(mf, { erase: false });
+  var temp = getSelection(mf, {
+    erase: false
+  });
   var preSelected = temp[0];
   var selected = temp[1];
   var postSelected = temp[2];
@@ -646,7 +673,9 @@ function setUnit() {
 function eraseUnit() {
   var unitTag = '\\textcolor{blue}{';
   var mf = FAList[activeMathfieldIndex].mathField;
-  var temp = getSelection(mf, { erase: false });
+  var temp = getSelection(mf, {
+    erase: false
+  });
   var ori = temp[3];
   // get position of unittags
   var posn = getPositionOfUnitTags(ori, unitTag);
@@ -749,7 +778,7 @@ function createReplacement(latexstring) {
     var sep = separators[i];
     var found = (latexstring.indexOf(sep) > -1);
     var cont = found;
-    i ++;
+    i++;
     if (i > separators.length) {
       cont = false;
       sep = 'no replacement char found';
