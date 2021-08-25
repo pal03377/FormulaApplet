@@ -491,7 +491,7 @@ function removeOperators(tree, kindOfOperators) {
             }
         } while (loop == true);
     });
-    return tree.nodelist;
+    // return tree.nodelist;
 }
 
 let parseTreeCounter = {
@@ -514,8 +514,7 @@ export function parseTreeByIndex(tree) {
     parseTreeCounter.inc();
     var endParse = false;
     var message = '';
-    var result = '';
-    // var listOfFree;
+   // var listOfFree;
     switch (parseTreeCounter.getCounter()) {
         case 1:
             message = 'delete spaces and remove backslash at \\min';
@@ -525,17 +524,17 @@ export function parseTreeByIndex(tree) {
             break;
         case 2:
             message = 'parse brackets';
-            result = parseBrackets(tree);
+            parseBrackets(tree);
             break;
         case 3:
             message = 'parse equal';
-            result = removeOperators(tree, 'equal');
+            removeOperators(tree, 'equal');
             message = 'parse plusminus';
-            result = removeOperators(tree, 'plusminus');
+            removeOperators(tree, 'plusminus');
             break;
         case 4:
             message = 'parse timesdivided';
-            result = removeOperators(tree, 'timesdivided');
+            removeOperators(tree, 'timesdivided');
             break;
         case 5:
             message = 'unify subscript and exponent (part 1)';
@@ -903,14 +902,14 @@ function parseRadix(tree, nthroot) {
                 var right = node.content.substring(pos + needle.length);
                 var radIndex = (left.match(/§/g) || []).length;
                 // if there is no § in left, then radIndex = 0
-                var newcontent, test, radix;
+                var newcontent, radix;
                 if (nthroot === true) {
                     newcontent = left + '§' + right;
                     // node has one § less! 
                     node.content = newcontent;
                     //check
-                    test = tree.nodelist[node.children[radIndex]].type;
-                    test = tree.nodelist[node.children[radIndex + 1]].type;
+                    // test = tree.nodelist[node.children[radIndex]].type;
+                    // test = tree.nodelist[node.children[radIndex + 1]].type;
                     radix = createNode('nthroot', '', tree);
                     // link radix
                     radix.parent = node.id;
@@ -924,7 +923,7 @@ function parseRadix(tree, nthroot) {
                 } else {
                     newcontent = left + '§' + right;
                     //check
-                    test = tree.nodelist[node.children[radIndex]].type;
+                    // test = tree.nodelist[node.children[radIndex]].type;
                     node.content = newcontent;
                     radix = createNode('sqrt', '', tree);
                     // link radix
@@ -1100,7 +1099,7 @@ function parseTextColor(tree) {
             // node has one § less! 
             node.content = left + '§' + right;
             var bracket = tree.nodelist[node.children[unit_index]];
-            var test = tree.nodelist[node.children[unit_index + 1]].type;
+            // var test = tree.nodelist[node.children[unit_index + 1]].type;
             //check
             // fetch the color
             var colornode = tree.nodelist[bracket.children[0]];
@@ -1183,7 +1182,6 @@ function parseNumbers(tree) {
 function parseMixedNumbers(tree) {
     withEachLeaf(tree, function (node) {
         var content = node.content.trim();
-        var isMixedNumber = false;
         if (content.startsWith('§§')) {
             var child0 = tree.nodelist[node.children[0]];
             if (child0.type == 'number') {
@@ -1199,7 +1197,6 @@ function parseMixedNumbers(tree) {
                     }
                     // TODO: try/catch
                     if (nom.type == 'number' && denom.type == 'number') {
-                        isMixedNumber = true;
                         var mixedNum = createNode('mixedNumber', '', tree);
                         // leaf node has one child less and is parent of mixedNum
                         node.content = node.content.substr(1);

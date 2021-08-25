@@ -1,7 +1,7 @@
 {
   "name": "formelapplet",
   "version": "1.0.0",
-  "description": "",
+  "description": "lets you create math or physics exercises on HTML pages or in Wikis",
   "main": "src/index.js",
   "scripts": {
     "start": "cross-env PRODUCTION=\"false\" rollup -c -w",
@@ -38,6 +38,7 @@
   "dependencies": {
     "@babel/core": "^7.15.0",
     "@egjs/hammerjs": "^2.0.17",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "bl": ">=1.2.3"
   }
 }
