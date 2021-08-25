@@ -658,8 +658,9 @@ function deleteSpaceAndRemoveBackslash(text) {
     var temp = text.replace(/\\\s/g, '');
     temp = temp.replace(/\\min/g, 'min');
     temp = temp.replace(/\\max/g, 'max');
+    // unify spaces after \\cdot
     temp = temp.replace(/\\cdot/g, '\\cdot '); // no space -> one space, but one space -> two spaces
-    temp = temp.replace(/\\cdot  /g, '\\cdot '); // two spaces -> one space
+    temp = temp.replace(/\\cdot {2}/g, '\\cdot '); // two spaces -> one space
 
     // temp = temp.replace(/\\Ohm/g, '\\Omega'); // transform unit Ohm to greek Omega. Done in preparePage.js
     return temp;
@@ -1058,6 +1059,7 @@ function parseFunction(tree) {
 function parseFrac(tree) {
     const needle = '\\frac§§';
     withEachLeaf(tree, function (node) {
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             var pos = node.content.indexOf(needle);
             if (pos <= -1) break;
@@ -1089,6 +1091,7 @@ function parseFrac(tree) {
 function parseTextColor(tree) {
     const needle = '\\textcolor§§';
     withEachLeaf(tree, function (node) {
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             var pos = node.content.indexOf(needle);
             if (pos <= -1) break;
@@ -1258,6 +1261,7 @@ function parseSubPower(tree, power) {
     }
     withEachLeaf(tree, function (node) {
         var pos = -1;
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             pos = node.content.indexOf(needle);
             if (pos <= -1) break;
