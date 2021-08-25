@@ -3,9 +3,7 @@
 import $ from "jquery";
 import Hammer from "@egjs/hammerjs";
 import MQ from "./lib/mathquillWrapper.js";
-import {
-  domLoad
-} from "./dom.js";
+import { domLoad } from "./dom.js";
 
 import config from "./config.json";
 
