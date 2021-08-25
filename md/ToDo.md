@@ -2,14 +2,14 @@
 
 ## FormulaApplet as a H5P package
 * Investigate if two or more H5P FormulaApplets in one Page (Drupal development) cause preloaded JavaScript being loaded twice or more.
-* Use subject/observer pattern for virtualKeyboard/FormulaApplet.
-* Alternative: use jQuery (custom events)
+* <del>Use subject/observer pattern for virtualKeyboard/FormulaApplet.</del>
+* <del>Alternative: use jQuery (custom events)</del> Done!
 * Use revealing module pattern
 * Exercise how to deal with other H5P packages (math, physics)
 * Use apps.zum.de and unterrichten.zum.de 
 ## Coding
 * Use JSDoc https://jsdoc.app/ and/or doxywizard or documentation.js
-* Use ESLint https://eslint.org/
+* <del>Use ESLint https://eslint.org/</del> Done!
 * enable debugging in Visual Studio Code
 * Render \cdot as times(cross) if lang=en
 * Render , as . if lang=en
@@ -19,8 +19,7 @@
     * preparePage needs virtualKeyboard
     * virtualKeyboard needs hammer
     * Divide tex_parser into smaller parts
-* <del>use strict</del>
-  * broken: sample_task.php, sample_task_and_parse.php, tex_parser.php
+* <del>use strict</del> Done!
 * OOP
 * try/catch
 * Tests (https://developer.mozilla.org/en-US/docs/Web/API/console/assert), unit tests
