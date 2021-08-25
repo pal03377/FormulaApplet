@@ -211,7 +211,8 @@ function makeAutoUnitstring(mf) {
     if (sci && middle.length > 0) {
       // expand the unit tag at the right side
       var newLatex = left + unitTag + middle + right + '}';
-      mfLatexForParser = csn.repl + unitTag + middle + right + '}';
+      // mfLatexForParser = csn.repl + unitTag + middle + right + '}';
+      mfLatexForParser = left + unitTag + middle + right + '}';
       editHandlerActive = false;
       mf.latex(newLatex);
       mf.keystroke('Left');
@@ -231,7 +232,8 @@ function makeAutoUnitstring(mf) {
       rest = str.substr(beginning.length);
       if (rest.length > 0) {
         newLatex = beginning + unitTag + rest + '}';
-        mfLatexForParser = csn.repl + unitTag + rest + '}';
+        // mfLatexForParser = csn.repl + unitTag + rest + '}';
+        mfLatexForParser = beginning + unitTag + rest + '}';
         editHandlerActive = false;
         mf.latex(newLatex);
         mf.keystroke('Left');
