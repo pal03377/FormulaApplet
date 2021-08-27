@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "lets you create math or physics exercises on HTML pages or in Wikis",
   "main": "src/index.js",
+
   "scripts": {
     "start": "cross-env PRODUCTION=\"false\" rollup -c -w",
     "build": "cross-env PRODUCTION=\"true\" rollup -c",
-    "public": "sirv public --port 5000"
+    "public": "sirv public --port 5000",
+    "doc": "jsdoc -d docs --configure jsconf.json src/js/preparePage.js"
   },
   "repository": {
     "type": "git",

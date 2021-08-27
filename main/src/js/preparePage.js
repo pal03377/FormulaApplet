@@ -480,6 +480,21 @@ async function mathQuillify() {
   ($('<img class="mod">')).insertAfter($(".formula_applet.mq-math-mode:not(.solution)"));
 }
 
+$(document).on('mathquillifyEvent', function(){
+  mathQuillify();
+});
+
+
+$(document).on('preparePageEvent', function(){
+  preparePage();
+});
+
+/**
+ * @this unifyDefinitions(def) decomposes a definition string into a list of definitions
+ * 
+ * @param {string} def 
+ * @returns {array} dsList
+ */
 function unifyDefinitions(def) {
   def = def.replace(/\s/g, "");
   def = def.replace(/&&/g, "&");

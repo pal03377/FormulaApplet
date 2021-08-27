@@ -7,7 +7,7 @@ Algebrite_files/
 js/lib/Algebrite/
 js/lib/ToDo.pdf
 node_modules/
-doc/
+doc*/
 Doxyfile
 version*.txt
 

@@ -34,10 +34,11 @@ export function tree2TEX(tree) {
             if (node.type.startsWith('bracket')) {
                 result = node.type.substring(8);
                 var pos = ['(', '[', '{', '\\left(', '\\left[', '\\left\\{'].indexOf(result);
+                var rightbra;
                 if (pos === -1) {
-                    var rightbra = 'no corresponding bracket found error';
+                    rightbra = 'no corresponding bracket found error';
                 } else {
-                    var rightbra = [')', ']', '}', '\\right)', '\\right]', '\\right\\}'][pos];
+                    rightbra = [')', ']', '}', '\\right)', '\\right]', '\\right\\}'][pos];
                 }
                 result += res[0];
                 result += rightbra;
@@ -58,7 +59,7 @@ export function tree2TEX(tree) {
             if (node.type.startsWith('fu-')) {
                 result = '\\';
                 result += node.type.substr(3);
-                var child = tree.nodelist[node.children[0]];
+                child = tree.nodelist[node.children[0]];
                 // \tanxy -> \tan xy
                 var insert_space = true;
                 if (child.type.startsWith('bracket')) {
@@ -87,7 +88,7 @@ export function tree2TEX(tree) {
                 result += res[1];
                 if (node.type.startsWith('timesdivided')) {
                     var temp = result.replace(/\\cdot/g, '\\cdot ');
-                    result = temp.replace(/\\cdot  /g, '\\cdot ');
+                    result = temp.replace(/\\cdot {2}/g, '\\cdot ');
                 }
                 done = true;
             }
