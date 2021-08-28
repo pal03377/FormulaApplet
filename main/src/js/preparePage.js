@@ -12,14 +12,9 @@ import {
 } from "./dom.js";
 
 import config from "./config.json";
+import {prepareEditorPage, setUnit, eraseUnit} from "./editor.js";
 
-import {
-  encode,
-  decode
-} from "./decode.js";
-import {
-  initEditor
-} from "./editor.js";
+import decode from "./decode.js";
 import parse, {
   FaTree,
   findCorrespondingRightBracket,
@@ -36,8 +31,6 @@ import initVirtualKeyboard, {
 
 var activeMathfieldIndex = 0;
 var FAList = [];
-var newFaId = 'x8rT3dkkS';
-var resultMode = '';
 var editHandlerActive = true;
 class FApp {
   constructor() {
@@ -101,9 +94,9 @@ function keyboardEvent(cmd) {
       if (cmd == 'Enter') {
         editHandler(activeMathfieldIndex, 'enter');
       } else if (cmd == 'setUnit') {
-        setUnit();
+        setUnit(mf);
       } else if (cmd == 'eraseUnit') {
-        eraseUnit();
+        eraseUnit(mf);
       } else if (cmd == 'nthroot') {
         nthroot();
       } else if (cmd == 'square') {
@@ -278,8 +271,6 @@ function editHandler(index) {
   }
 }
 
-var editorMf;
-
 function sanitizePrecision(prec) {
   if (typeof prec == 'undefined') {
     prec = config.defaultPrecision;
@@ -368,76 +359,7 @@ async function mathQuillify() {
 
     // console.debug('isEditor=' + isEditor);
     if (isEditor) {
-      // *** editor ***
-      await initEditor();
-      // make whole mathFieldSpan editable
-      var mathFieldSpan = document.getElementById('math-field');
-      if (!mathFieldSpan) throw new Error("Cannot find math-field. The math editor must provide one.");
-      editorMf = MQ.MathField(mathFieldSpan, {
-        spaceBehavesLikeTab: true, // configurable
-        handlers: {
-          edit: function () { // useful event handlers
-            showEditorResults(editorEditHandler(editorMf.latex()));
-          }
-        }
-      });
-      fApp.mathField = editorMf;
-
-      var mqEditableField = $('#editor').find('.mq-editable-field')[0];
-      // adjust events
-      $('#set-input-d, #set-input-e').on('mousedown', ev => {
-        ev.preventDefault();
-        setInput();
-      });
-      $('#set-unit-d').on('mousedown', ev => {
-        ev.preventDefault();
-        setUnit();
-      });
-      $('#set-unit-e, #set-unit-e').on('mousedown', ev => {
-        ev.preventDefault();
-        setUnit();
-      });
-      $('#erase-unit-d, #erase-unit-e').on('mousedown', ev => {
-        ev.preventDefault();
-        eraseUnit();
-      });
-      $('#random-id-d, #random-id-e').on('mousedown', ev => {
-        ev.preventDefault();
-        var rId = makeid(8);
-        document.getElementById('fa_name').value = rId;
-        newFaId = rId;
-        showEditorResults(editorEditHandler(editorMf.latex()));
-      });
-
-      $('#fa_name').on('input', ev => {
-        var fa_name = ev.target.value;
-        // avoid XSS
-        fa_name = fa_name.replace(/</g, '');
-        fa_name = fa_name.replace(/>/g, '');
-        fa_name = fa_name.replace(/"/g, '');
-        fa_name = fa_name.replace(/'/g, '');
-        fa_name = fa_name.replace(/&/g, '');
-        fa_name = fa_name.replace(/ /g, '_');
-        if (4 <= fa_name.length && fa_name.length <= 20) {
-          newFaId = fa_name;
-          showEditorResults(editorEditHandler(editorMf.latex()));
-        }
-      });
-
-      $('input[type="radio"]').on('click', ev => {
-        resultMode = ev.target.id;
-        if (resultMode == 'auto') {
-          $('span.mq-class.inputfield').prop('contentEditable', 'false');
-          showEditorResults(editorEditHandler(editorMf.latex()));
-        }
-        if (resultMode == 'manu') {
-          $('span.mq-class.inputfield').prop('contentEditable', 'true');
-          showEditorResults(editorEditHandler(editorMf.latex()));
-        }
-      });
-      $('#random-id-d').mousedown();
-      // $('input[type="radio"]#manu').click();
-      $('input[type="radio"]#auto').click();
+      prepareEditorPage(fApp);
     } else {
       //******************
       // *** no editor ***
@@ -455,7 +377,7 @@ async function mathQuillify() {
         } else {
           fApp.hasSolution = false;
         }
-        mqEditableField = element.find('.mq-editable-field')[0];
+        var mqEditableField = element.find('.mq-editable-field')[0];
         var mf = MQ.MathField(mqEditableField, {});
         mf.config({
           handlers: {
@@ -529,282 +451,3 @@ function unifyDefinitions(def) {
   return dsList;
 }
 
-function getSelection(mf, options) {
-  // if options.erase is undefined, erase defaults to false
-  var erase = options.erase || false;
-  // typof mf = mathField
-  var ori = mf.latex();
-  var erased = ori;
-  if (erase) {
-    erased = eraseClass(ori);
-  }
-  var replacement = createReplacement(ori);
-  if (ori.indexOf(replacement) == -1) {
-    // replacement has to be done before erase of class{...
-    // Do replacement!
-    mf.typedText(replacement);
-    // erase class{inputfield}
-    var replacedAndErased = mf.latex();
-    if (erase) {
-      replacedAndErased = eraseClass(replacedAndErased);
-    }
-    var preSelected = '?';
-    var selected = '?';
-    var postSelected = '?';
-    var pos = replacedAndErased.indexOf(replacement);
-    preSelected = replacedAndErased.substring(0, pos);
-    // selected = replacement
-    postSelected = replacedAndErased.substring(pos + replacement.length);
-    // Delete preSelected from beginning of erased
-    // and delete postSelected from end of erased
-    var check = erased.substr(0, preSelected.length);
-    if (check !== preSelected) {
-      console.error('Something went wrong with replacement of input field', check, preSelected);
-    }
-    erased = erased.substring(preSelected.length);
-    check = erased.substring(erased.length - postSelected.length);
-    if (check !== postSelected) {
-      console.error('Something went wrong with replacement of input field', check, postSelected);
-    }
-    selected = erased.substring(0, erased.length - postSelected.length);
-    return [preSelected, selected, postSelected, ori];
-  }
-}
-
-function setInput() {
-  var temp = getSelection(editorMf, {
-    erase: true
-  });
-  var preSelected = temp[0];
-  var selected = temp[1];
-  var postSelected = temp[2];
-  var ori = temp[3];
-  if (selected.length > 0) {
-    var newLatex = preSelected + '\\class{inputfield}{' + selected + '}' + postSelected;
-    editorMf.latex(newLatex);
-  } else {
-    ori = ori.replace('class{', '\\class{inputfield}{');
-    editorMf.latex(ori);
-  }
-}
-
-function getPositionOfUnitTags(latex, unitTag) {
-  // get position of exising unit tags
-  var pos = 0;
-  var startOfUnitTags = [];
-  var endOfUnitTags = [];
-  do {
-    pos = latex.indexOf(unitTag, pos);
-    if (pos >= 0) {
-      var rest = latex.substr(pos + unitTag.length - 1);
-      var bracket = findCorrespondingRightBracket(rest, '{');
-      var posRightBracket = pos + unitTag.length + bracket.rightPos;
-      startOfUnitTags.push(pos);
-      endOfUnitTags.push(posRightBracket);
-      //posRightBracket points to char right of the right bracket
-      pos++;
-    }
-  } while (pos >= 0)
-  return {
-    sofUnitTags: startOfUnitTags,
-    eofUnitTags: endOfUnitTags
-  };
-}
-
-function setUnit() {
-  var i, k;
-  var unitTag = '\\textcolor{blue}{';
-  var mf = FAList[activeMathfieldIndex].mathField;
-  // erase class inputfield = false
-  var temp = getSelection(mf, {
-    erase: false
-  });
-  var preSelected = temp[0];
-  var selected = temp[1];
-  var postSelected = temp[2];
-  var ori = temp[3];
-
-  var start = preSelected.length;
-  var end = start + selected.length;
-  var selectpattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
-  for (k = start; k < end; k++) {
-    selectpattern[k] = 's';
-  }
-
-  var posn = getPositionOfUnitTags(ori, unitTag);
-  var startOfUnitTags = posn.sofUnitTags;
-  var endOfUnitTags = posn.eofUnitTags;
-  var pattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
-  for (i = 0; i < startOfUnitTags.length; i++) {
-    for (k = startOfUnitTags[i]; k < endOfUnitTags[i]; k++) {
-      pattern[k] = '#';
-    }
-  }
-  // inspect selection start
-  for (i = 0; i < startOfUnitTags.length; i++) {
-    if (startOfUnitTags[i] < start && start <= endOfUnitTags[i]) {
-      // move start leftwards
-      start = startOfUnitTags[i];
-      // short circuit:
-      i = startOfUnitTags.length;
-    }
-  }
-  // inspect selection end
-  for (i = 0; i < startOfUnitTags.length; i++) {
-    if (startOfUnitTags[i] <= end && end <= endOfUnitTags[i]) {
-      // move end rightwards
-      end = endOfUnitTags[i];
-      // short circuit:
-      i = startOfUnitTags.length;
-    }
-  }
-  // debug
-  selectpattern = '.'.repeat(ori.length).split(''); // split: transform from string to array
-  for (k = start; k < end; k++) {
-    selectpattern[k] = 's';
-  }
-
-  // delete unittags inside selection
-  var ori_array = ori.split('');
-  for (i = 0; i < startOfUnitTags.length; i++) {
-    if (start <= startOfUnitTags[i] && endOfUnitTags[i] <= end) {
-      for (k = startOfUnitTags[i]; k < startOfUnitTags[i] + unitTag.length; k++) {
-        ori_array[k] = '§';
-      }
-      ori_array[endOfUnitTags[i] - 1] = '§';
-    }
-  }
-  ori = ori_array.join('');
-
-  if (selected.length > 0) {
-    // new calculation necessary
-    preSelected = ori.substring(0, start);
-    selected = ori.substring(start, end);
-    postSelected = ori.substring(end);
-    var newLatex = preSelected + unitTag + selected + '}' + postSelected;
-    // newLatex = newLatex.replace(/\xA7/g, '');
-    newLatex = newLatex.replace(/§/g, '');
-    newLatex = newLatex.replace('class{', '\\class{inputfield}{');
-    mf.latex(newLatex);
-  } else {
-    ori = ori.replace('class{', '\\class{inputfield}{');
-    mf.latex(ori);
-  }
-}
-
-function eraseUnit() {
-  var unitTag = '\\textcolor{blue}{';
-  var mf = FAList[activeMathfieldIndex].mathField;
-  var temp = getSelection(mf, {
-    erase: false
-  });
-  var ori = temp[3];
-  // get position of unittags
-  var posn = getPositionOfUnitTags(ori, unitTag);
-  var startOfUnitTags = posn.sofUnitTags;
-  var endOfUnitTags = posn.eofUnitTags;
-
-  // delete unittag outside cursor (or left boundary of selection)
-  var cursorpos = temp[0].length;
-  var ori_array = ori.split('');
-  for (var i = 0; i < startOfUnitTags.length; i++) {
-    if (startOfUnitTags[i] <= cursorpos && cursorpos <= endOfUnitTags[i]) {
-      for (var k = startOfUnitTags[i]; k < startOfUnitTags[i] + unitTag.length; k++) {
-        ori_array[k] = '§';
-      }
-      ori_array[endOfUnitTags[i] - 1] = '§';
-    }
-  }
-  ori = ori_array.join('');
-  ori = ori.replace(/§/g, '');
-  ori = ori.replace('class{', '\\class{inputfield}{');
-  // restore selection-checked mf
-  mf.latex(ori);
-}
-
-function separateClass(latex, classTag) {
-  var before_tag = '';
-  var tag = '';
-  var afterTag = '';
-  var pos = latex.indexOf(classTag); //)
-  if (pos > -1) {
-    before_tag = latex.substring(0, pos);
-    var rest = latex.substring(pos + classTag.length - 1);
-    // rest starts with {
-    var bracket = findCorrespondingRightBracket(rest, '{');
-    // bracket = [leftPos, bra.length, rightPos, rightbra.length]
-    if (bracket.leftPos !== 0 || bracket.bracketLength !== 1 || bracket.rightBracketLength !== 1) {
-      console.error('Something went wront at separateClass()', bracket);
-    }
-    tag = rest.substring(1, bracket.rightPos);
-    afterTag = rest.substring(bracket.rightPos + 1);
-  } else {
-    before_tag = '';
-    tag = '';
-    afterTag = latex;
-  }
-  return [before_tag, tag, afterTag];
-}
-
-function editorEditHandler(latex) {
-  $('#output-code-0').text(latex);
-  return separateClass(latex, 'class{');
-}
-
-function eraseClass(latex) {
-  // latex = 'abc+class{def}+ghi';
-  // temp = ['abc+', 'def', '+ghi'];
-  var temp = editorEditHandler(latex);
-  return temp[0] + temp[1] + temp[2];
-}
-
-function showEditorResults(parts) {
-  var result = '<p class="formula_applet"';
-  var common_result = ' id="' + newFaId;
-  if (resultMode == 'manu') {
-    common_result += '" data-b64="' + encode(parts[1]);
-  }
-  common_result += '">';
-  common_result += parts[0];
-  common_result += '{{result}}';
-  common_result += parts[2];
-  common_result = common_result.replace(/\\textcolor{blue}{/g, '\\unit{');
-  result += common_result + '</p>';
-
-  $('#output-code-1').text(parts[1]);
-  $('#output-code-2').text(result);
-  var out = $('textarea#wiki-text');
-  if (out.length > 0) {
-    out.text(result);
-  }
-}
-
-function makeid(length) {
-  var result = '';
-  // var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_+-!%_+-!%_+-!%';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_+-!%';
-  var numOfChars = characters.length;
-  for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * numOfChars));
-
-  }
-  // result = '"' + result + '"';
-  return result;
-}
-
-function createReplacement(latexstring) {
-  const separators = '∀µ∉ö∋∐∔∝∤∮∱∸∺∽≀';
-  var i = 0;
-  sep = '';
-  do {
-    var sep = separators[i];
-    var found = (latexstring.indexOf(sep) > -1);
-    var cont = found;
-    i++;
-    if (i > separators.length) {
-      cont = false;
-      sep = 'no replacement char found';
-    }
-  } while (cont)
-  return sep;
-}
