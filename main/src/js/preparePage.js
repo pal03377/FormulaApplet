@@ -1,5 +1,9 @@
 "use strict";
 
+/** JSDoc documentation
+ * [JSDoc]{@link https://jsdoc.app/index.html} Documentation
+ */
+
 import $ from "jquery";
 import Hammer from "@egjs/hammerjs";
 import MQ from "./lib/mathquillWrapper.js";
@@ -490,10 +494,11 @@ $(document).on('preparePageEvent', function(){
 });
 
 /**
- * @this unifyDefinitions(def) decomposes a definition string into a list of definitions
+ * decomposes a definition string into a list of definitions
  * 
- * @param {string} def 
- * @returns {array} dsList
+ * @param {string} def definition sets, composed with & or &&
+ * @returns {string[]} array of string expressions with condition to be positive
+ * @example def="x > 0 && y < 5" returns ["x", "5-y"], meaning x > 0 and 5-y > 0
  */
 function unifyDefinitions(def) {
   def = def.replace(/\s/g, "");

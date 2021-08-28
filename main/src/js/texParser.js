@@ -651,6 +651,17 @@ export default function parse(texstring) {
     return myTree;
 }
 
+/**
+ * deletes spaces and removes backslashes before 'min' or 'max'<br>
+* 
+ * @param {string} text latex string to be parsed 
+ * @returns {string} beautified latex string
+ * @example text = 'abc  def' returns 'abc def'
+ * @example A backslash \ has to be escaped as \\ in regex expressions and javascript strings
+ * @example text = '\min' returns 'min'
+ * @example text = '\cdot' (no trailing space) returns '\cdot ' (1 space)
+ * @example text = '\cdot  ' (2 spaces) returns '\cdot ' (1 space)
+  */
 function deleteSpaceAndRemoveBackslash(text) {
     // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
     // http://www.javascripter.net/faq/backslashinregularexpressions.htm

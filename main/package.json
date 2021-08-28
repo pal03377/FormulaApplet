@@ -8,7 +8,7 @@
     "start": "cross-env PRODUCTION=\"false\" rollup -c -w",
     "build": "cross-env PRODUCTION=\"true\" rollup -c",
     "public": "sirv public --port 5000",
-    "doc": "jsdoc -d docs --configure jsconf.json src/js/preparePage.js"
+    "doc": "jsdoc -d docs --configure jsconf.json src/js/"
   },
   "repository": {
     "type": "git",
