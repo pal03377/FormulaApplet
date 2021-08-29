@@ -1,14 +1,10 @@
 "use strict";
 
 import $ from "jquery";
-import {
-  domLoad
-} from "./dom.js";
-import {
-  reloadTranslation
-} from "./translate.js";
+import { domLoad } from "./dom.js";
+import { reloadTranslation } from "./translate.js";
 import encode from "./decode.js";
-import findCorrespondingRightBracket from "./texParser.js";
+import {findCorrespondingRightBracket} from "./texParser.js";
 import MQ from "./lib/mathquillWrapper.js";
 var newFaId = newFaId || 'x8rT3dkkS';
 

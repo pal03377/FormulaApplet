@@ -1,7 +1,9 @@
 /** 
- * Contains old code from nodefactory.js (GRO)
  * Code for traversing: 
- * https://code.tutsplus.com/articles/data-structures-with-javascript-tree--cms-23393 **/
+ * https://code.tutsplus.com/articles/data-structures-with-javascript-tree--cms-23393 
+ * https://www.geeksforgeeks.org/what-is-export-default-in-javascript/
+ * **/
+
 
 "use strict";
 // Klasse als Funktion in JS

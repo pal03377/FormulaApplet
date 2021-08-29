@@ -396,10 +396,14 @@ async function mathQuillify() {
     }
     if (fApp.hasResultField) {
       fApp.mqEditableField = mqEditableField;
-      fApp.hammer = new Hammer(mqEditableField);
-      fApp.hammer.on("doubletap", function () {
-        showVirtualKeyboard();
-      });
+      try {
+        fApp.hammer = new Hammer(mqEditableField);
+        fApp.hammer.on("doubletap", function () {
+          showVirtualKeyboard();
+        });
+    } catch (error) {
+        console.error('Hammer error: ' + error);
+      }
     }
     index++;
   });
