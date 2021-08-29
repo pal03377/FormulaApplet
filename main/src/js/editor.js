@@ -1,10 +1,18 @@
 "use strict";
 
 import $ from "jquery";
-import { domLoad } from "./dom.js";
-import { reloadTranslation } from "./translate.js";
-import encode from "./decode.js";
-import {findCorrespondingRightBracket} from "./texParser.js";
+import {
+  domLoad
+} from "./dom.js";
+import {
+  reloadTranslation
+} from "./translate.js";
+import {
+  encode
+} from "./decode.js";
+import {
+  findCorrespondingRightBracket
+} from "./texParser.js";
 import MQ from "./lib/mathquillWrapper.js";
 var newFaId = newFaId || 'x8rT3dkkS';
 
@@ -28,7 +36,6 @@ export async function initEditor() {
     $('p#input_id').append('  <label class="tr de idfa" for="fa_name">Id des Formel-Applets (4 bis 20 Zeichen)</label><label class="tr en idfa" for="fa_name">Id of Formula Applet (4 to 20 characters)</label>');
     $('p#input_id').append('  <input type="text" id="fa_name" name="fa_bla_name" required minlength="4" maxlength="20" size="10">');
     $('p#input_id').append('  <button type="button" class="tr de mfxi problemeditor" id="random-id-d">Zufalls-ID</button><button type="button" class="tr en mfxi problemeditor" id="random-id-e">Random ID</button>');
-    // ed.after('<p id="output-code-3"></p>');
     ed.after('<hr /><textarea id="wiki-text" rows=4 cols=150></textarea>');
     var unitbuttons = '<button type="button" class="tr de peri problemeditor" id="set-unit-d">Einheit</button>';
     unitbuttons += '<button type="button" class="tr en peri problemeditor" id="set-unit-e">Unit</button>';
@@ -43,79 +50,80 @@ export async function initEditor() {
   await reloadTranslation();
 }
 
-export async function prepareEditorPage(fApp){
-      // *** editor ***
-      await initEditor();
-      // make whole mathFieldSpan editable
-      var resultMode = '';
-      var mathFieldSpan = document.getElementById('math-field');
-      if (!mathFieldSpan) throw new Error("Cannot find math-field. The math editor must provide one.");
-      var editorMf = MQ.MathField(mathFieldSpan, {
-        spaceBehavesLikeTab: true, // configurable
-        handlers: {
-          edit: function () { // useful event handlers
-            showEditorResults(editorEditHandler(editorMf.latex()));
-          }
-        }
-      });
-      fApp.mathField = editorMf;
-
-      // DELETE var mqEditableField = $('#editor').find('.mq-editable-field')[0];
-      // adjust events
-      $('#set-input-d, #set-input-e').on('mousedown', ev => {
-        ev.preventDefault();
-        setInput(editorMf);
-      });
-      $('#set-unit-d').on('mousedown', ev => {
-        ev.preventDefault();
-        setUnit(editorMf);
-      });
-      $('#set-unit-e, #set-unit-e').on('mousedown', ev => {
-        ev.preventDefault();
-        setUnit(editorMf);
-      });
-      $('#erase-unit-d, #erase-unit-e').on('mousedown', ev => {
-        ev.preventDefault();
-        eraseUnit(editorMf);
-      });
-      $('#random-id-d, #random-id-e').on('mousedown', ev => {
-        ev.preventDefault();
-        var rId = makeid(8);
-        document.getElementById('fa_name').value = rId;
-        newFaId = rId;
-        showEditorResults(editorEditHandler(editorMf.latex()));
-      });
-
-      $('#fa_name').on('input', ev => {
-        var fa_name = ev.target.value;
-        // avoid XSS
-        fa_name = fa_name.replace(/</g, '');
-        fa_name = fa_name.replace(/>/g, '');
-        fa_name = fa_name.replace(/"/g, '');
-        fa_name = fa_name.replace(/'/g, '');
-        fa_name = fa_name.replace(/&/g, '');
-        fa_name = fa_name.replace(/ /g, '_');
-        if (4 <= fa_name.length && fa_name.length <= 20) {
-          newFaId = fa_name;
-          showEditorResults(editorEditHandler(editorMf.latex()));
-        }
-      });
-
-      $('input[type="radio"]').on('click', ev => {
-        resultMode = ev.target.id;
-        if (resultMode == 'auto') {
-          $('span.mq-class.inputfield').prop('contentEditable', 'false');
-          showEditorResults(editorEditHandler(editorMf.latex()));
-        }
-        if (resultMode == 'manu') {
-          $('span.mq-class.inputfield').prop('contentEditable', 'true');
-          showEditorResults(editorEditHandler(editorMf.latex()));
-        }
-      });
-      $('#random-id-d').mousedown();
-      // $('input[type="radio"]#manu').click();
-      $('input[type="radio"]#auto').click();
+export async function prepareEditorPage(fApp) {
+  // *** editor ***
+  await initEditor();
+  // make whole mathFieldSpan editable
+  var mathFieldSpan = document.getElementById('math-field');
+  if (!mathFieldSpan) throw new Error("Cannot find math-field. The math editor must provide one.");
+  var editorMf = MQ.MathField(mathFieldSpan, {
+    spaceBehavesLikeTab: true, // configurable
+    handlers: {
+      edit: function () { // useful event handlers
+        refreshResult(editorMf.latex())
+      }
     }
+  });
+  fApp.mathField = editorMf;
+
+  // DELETE var mqEditableField = $('#editor').find('.mq-editable-field')[0];
+  // adjust events
+  $('#set-input-d, #set-input-e').on('mousedown', ev => {
+    ev.preventDefault();
+    setInput(editorMf);
+  });
+  $('#set-unit-d').on('mousedown', ev => {
+    ev.preventDefault();
+    setUnit(editorMf);
+  });
+  $('#set-unit-e, #set-unit-e').on('mousedown', ev => {
+    ev.preventDefault();
+    setUnit(editorMf);
+  });
+  $('#erase-unit-d, #erase-unit-e').on('mousedown', ev => {
+    ev.preventDefault();
+    eraseUnit(editorMf);
+  });
+  $('#random-id-d, #random-id-e').on('mousedown', ev => {
+    ev.preventDefault();
+    var rId = makeid(8);
+    document.getElementById('fa_name').value = rId;
+    newFaId = rId;
+    refreshResult(editorMf.latex())
+  });
+
+  $('#fa_name').on('input', ev => {
+    var fa_name = ev.target.value;
+    // avoid XSS
+    fa_name = fa_name.replace(/</g, '');
+    fa_name = fa_name.replace(/>/g, '');
+    fa_name = fa_name.replace(/"/g, '');
+    fa_name = fa_name.replace(/'/g, '');
+    fa_name = fa_name.replace(/&/g, '');
+    fa_name = fa_name.replace(/ /g, '_');
+    if (4 <= fa_name.length && fa_name.length <= 20) {
+      newFaId = fa_name;
+      refreshResult(editorMf.latex())
+    }
+  });
+
+  $('input[type="radio"]').on('click', ev => {
+    var resultMode = ev.target.id;
+    if (resultMode == 'auto') {
+      $('p#editor span.mq-class.inputfield').prop('contentEditable', 'false');
+      autoMode.set(true);
+      refreshResult(editorMf.latex())
+    }
+    if (resultMode == 'manu') {
+      $('p#editor span.mq-class.inputfield').prop('contentEditable', 'true');
+      autoMode.set(false);
+      refreshResult(editorMf.latex())
+    }
+  });
+  $('#random-id-d').mousedown();
+  // $('input[type="radio"]#manu').click();
+  $('input[type="radio"]#auto').click();
+}
 
 function getSelection(mf, options) {
   // if options.erase is undefined, erase defaults to false
@@ -155,11 +163,18 @@ function getSelection(mf, options) {
       console.error('Something went wrong with replacement of input field', check, postSelected);
     }
     selected = erased.substring(0, erased.length - postSelected.length);
-    return [preSelected, selected, postSelected, ori];
+    var result = [preSelected, selected, postSelected, ori];
+    console.log('selection: ' + result);
+    return result;
   }
 }
 
 function setInput(editorMf) {
+  var latex = editorMf.latex();
+  // console.log(latex);
+  // latex = eraseClass(latex);
+  // console.log(latex);
+  // editorMf.latex(latex);
   var temp = getSelection(editorMf, {
     erase: true
   });
@@ -310,58 +325,80 @@ export function eraseUnit(fApp) {
   mf.latex(ori);
 }
 
-function separateClass(latex, classTag) {
-  var before_tag = '';
-  var tag = '';
-  var afterTag = '';
-  var pos = latex.indexOf(classTag); //)
+/**
+ * 
+ * @param {string} latex string containing latex
+ * @returns {object} containing three string pieces: before, tag, after
+ * @example result = separateClass("bli\\class{bla}{blu}", then
+ * @example result.before = "bli", result.tag = "bla", result.after = "{blu}"
+ * @example result = separateClass("stringwithoutclasstag"), then
+ * @example result.before = "", result.tag = "", result.after = "stringwithoutclasstag"
+ */
+function separateClass(latex) {
+  var beforeTag, tag, afterTag;
+  var classTag = '\\class{inputfield}{';
+  var pos = latex.indexOf(classTag);
   if (pos > -1) {
-    before_tag = latex.substring(0, pos);
+    beforeTag = latex.substring(0, pos);
     var rest = latex.substring(pos + classTag.length - 1);
     // rest starts with {
     var bracket = findCorrespondingRightBracket(rest, '{');
-    // bracket = [leftPos, bra.length, rightPos, rightbra.length]
     if (bracket.leftPos !== 0 || bracket.bracketLength !== 1 || bracket.rightBracketLength !== 1) {
       console.error('Something went wront at separateClass()', bracket);
     }
     tag = rest.substring(1, bracket.rightPos);
     afterTag = rest.substring(bracket.rightPos + 1);
   } else {
-    before_tag = '';
+    beforeTag = '';
     tag = '';
     afterTag = latex;
   }
-  return [before_tag, tag, afterTag];
-}
-
-function editorEditHandler(latex) {
-  $('#output-code-0').text(latex);
-  return separateClass(latex, 'class{');
+  var result = {
+    before: beforeTag,
+    tag: tag,
+    after: afterTag
+  };
+  return result;
 }
 
 function eraseClass(latex) {
   // latex = 'abc+class{def}+ghi';
   // temp = ['abc+', 'def', '+ghi'];
-  var temp = editorEditHandler(latex);
-  return temp[0] + temp[1] + temp[2];
+  var temp = separateClass(latex);
+  return temp.before + temp.tag + temp.after;
+}
+
+const autoMode={
+  auto : true,
+  set : function(truefalse){this.auto = truefalse},
+  get : function(){return this.auto}
+}
+
+function refreshResult(latex){
+  console.log(latex);
+  showEditorResults(separateClass(latex));
 }
 
 function showEditorResults(parts) {
   var result = '<p class="formula_applet"';
-  var resultMode = '';
+  // var editable = $('p#editor span.mq-class.inputfield').prop('contentEditable');
+  var resultMode;
+  if (autoMode.get()) {
+    resultMode = 'auto';
+  } else {
+    resultMode = 'manu';
+  }
   var common_result = ' id="' + newFaId;
   if (resultMode == 'manu') {
-    common_result += '" data-b64="' + encode(parts[1]);
+    common_result += '" data-b64="' + encode(parts.tag);
   }
   common_result += '">';
-  common_result += parts[0];
+  common_result += parts.before;
   common_result += '{{result}}';
-  common_result += parts[2];
+  common_result += parts.after;
   common_result = common_result.replace(/\\textcolor{blue}{/g, '\\unit{');
   result += common_result + '</p>';
 
-  $('#output-code-1').text(parts[1]);
-  $('#output-code-2').text(result);
   var out = $('textarea#wiki-text');
   if (out.length > 0) {
     out.text(result);
