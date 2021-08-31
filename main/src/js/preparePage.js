@@ -357,8 +357,9 @@ async function mathQuillify() {
     })
     FAList[index] = fApp;
 
-    // console.debug('isEditor=' + isEditor);
+    console.debug('isEditor=' + isEditor);
     if (isEditor) {
+      console.log(fApp);
       prepareEditorPage(fApp);
     } else {
       //******************
@@ -402,7 +403,7 @@ async function mathQuillify() {
           showVirtualKeyboard();
         });
     } catch (error) {
-        console.error('Hammer error: ' + error);
+        console.info('Hammer error: ' + error);
       }
     }
     index++;

@@ -72,12 +72,13 @@ export async function prepareEditorPage(fApp) {
     ev.preventDefault();
     setInput(editorMf);
   });
-  $('#set-unit-d').on('mousedown', ev => {
+  // $('#set-unit-d').on('mousedown', ev => {
+  //   ev.preventDefault();
+  //   setUnit(editorMf);
+  // });
+  $('#set-unit-d, #set-unit-e').on('mousedown', ev => {
     ev.preventDefault();
-    setUnit(editorMf);
-  });
-  $('#set-unit-e, #set-unit-e').on('mousedown', ev => {
-    ev.preventDefault();
+    console.log(editorMf);
     setUnit(editorMf);
   });
   $('#erase-unit-d, #erase-unit-e').on('mousedown', ev => {
@@ -170,7 +171,7 @@ function getSelection(mf, options) {
 }
 
 function setInput(editorMf) {
-  var latex = editorMf.latex();
+  // var latex = editorMf.latex();
   // console.log(latex);
   // latex = eraseClass(latex);
   // console.log(latex);
@@ -214,10 +215,9 @@ function getPositionOfUnitTags(latex, unitTag) {
   };
 }
 
-export function setUnit(fApp) {
+export function setUnit(mf) {
   var i, k;
   var unitTag = '\\textcolor{blue}{';
-  var mf = fApp.mathField;
   // erase class inputfield = false
   var temp = getSelection(mf, {
     erase: false
@@ -287,17 +287,22 @@ export function setUnit(fApp) {
     var newLatex = preSelected + unitTag + selected + '}' + postSelected;
     // newLatex = newLatex.replace(/\xA7/g, '');
     newLatex = newLatex.replace(/§/g, '');
-    newLatex = newLatex.replace('class{', '\\class{inputfield}{');
-    mf.latex(newLatex);
+    mf.latex(sanitizeInputfieldTag(newLatex));
   } else {
-    ori = ori.replace('class{', '\\class{inputfield}{');
-    mf.latex(ori);
+    mf.latex(sanitizeInputfieldTag(ori));
   }
 }
 
-export function eraseUnit(fApp) {
+function sanitizeInputfieldTag(latex){
+  // first make shorter
+  var result = latex.replace('\\class{inputfield}{','\\class{');
+  // then make longer again
+  result = result.replace('\\class{','\\class{inputfield}{');
+  return result;
+}
+
+export function eraseUnit(mf) {
   var unitTag = '\\textcolor{blue}{';
-  var mf = fApp.mathField;
   var temp = getSelection(mf, {
     erase: false
   });
@@ -320,21 +325,20 @@ export function eraseUnit(fApp) {
   }
   ori = ori_array.join('');
   ori = ori.replace(/§/g, '');
-  ori = ori.replace('class{', '\\class{inputfield}{');
   // restore selection-checked mf
-  mf.latex(ori);
+  mf.latex(sanitizeInputfieldTag(ori));
 }
 
 /**
  * 
- * @param {string} latex string containing latex
- * @returns {object} containing three string pieces: before, tag, after
- * @example result = separateClass("bli\\class{bla}{blu}", then
- * @example result.before = "bli", result.tag = "bla", result.after = "{blu}"
- * @example result = separateClass("stringwithoutclasstag"), then
- * @example result.before = "", result.tag = "", result.after = "stringwithoutclasstag"
+ * @param {string} latex string containing latex code
+ * @returns {object} object consisting of three strings: before, tag, after
+ * @example result = separateInputfield("bli\\class{inputfield}{bla}blu"), then
+ * @example result.before = "bli", result.tag = "bla", result.after = "blu"
+ * @example result = separateInputfield("stringwithoutrinputfield"), then
+ * @example result.before = "", result.tag = "", result.after = "stringwithoutrinputfield"
  */
-function separateClass(latex) {
+function separateInputfield(latex) {
   var beforeTag, tag, afterTag;
   var classTag = '\\class{inputfield}{';
   var pos = latex.indexOf(classTag);
@@ -344,7 +348,7 @@ function separateClass(latex) {
     // rest starts with {
     var bracket = findCorrespondingRightBracket(rest, '{');
     if (bracket.leftPos !== 0 || bracket.bracketLength !== 1 || bracket.rightBracketLength !== 1) {
-      console.error('Something went wront at separateClass()', bracket);
+      console.error('Something went wront at separateInputfield()', bracket);
     }
     tag = rest.substring(1, bracket.rightPos);
     afterTag = rest.substring(bracket.rightPos + 1);
@@ -364,19 +368,23 @@ function separateClass(latex) {
 function eraseClass(latex) {
   // latex = 'abc+class{def}+ghi';
   // temp = ['abc+', 'def', '+ghi'];
-  var temp = separateClass(latex);
+  var temp = separateInputfield(latex);
   return temp.before + temp.tag + temp.after;
 }
 
-const autoMode={
-  auto : true,
-  set : function(truefalse){this.auto = truefalse},
-  get : function(){return this.auto}
+const autoMode = {
+  auto: true,
+  set: function (truefalse) {
+    this.auto = truefalse
+  },
+  get: function () {
+    return this.auto
+  }
 }
 
-function refreshResult(latex){
+function refreshResult(latex) {
   console.log(latex);
-  showEditorResults(separateClass(latex));
+  showEditorResults(separateInputfield(latex));
 }
 
 function showEditorResults(parts) {
