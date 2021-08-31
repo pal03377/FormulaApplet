@@ -66,16 +66,11 @@ export async function prepareEditorPage(fApp) {
   });
   fApp.mathField = editorMf;
 
-  // DELETE var mqEditableField = $('#editor').find('.mq-editable-field')[0];
   // adjust events
   $('#set-input-d, #set-input-e').on('mousedown', ev => {
     ev.preventDefault();
     setInput(editorMf);
   });
-  // $('#set-unit-d').on('mousedown', ev => {
-  //   ev.preventDefault();
-  //   setUnit(editorMf);
-  // });
   $('#set-unit-d, #set-unit-e').on('mousedown', ev => {
     ev.preventDefault();
     console.log(editorMf);

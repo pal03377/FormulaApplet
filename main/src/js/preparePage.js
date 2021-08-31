@@ -416,7 +416,8 @@ $(document).on('mathquillifyEvent', function(){
 });
 
 
-$(document).on('preparePageEvent', function(){
+$(window).on('preparePageEvent', function(){
+  console.log('preparePageEvent received');
   preparePage();
 });
 
