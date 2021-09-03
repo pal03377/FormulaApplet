@@ -177,14 +177,13 @@ function setInput(editorMf) {
   var preSelected = temp[0];
   var selected = temp[1];
   var postSelected = temp[2];
-  var ori = temp[3];
+  var newLatex = temp[3];
   if (selected.length > 0) {
-    var newLatex = preSelected + '\\class{inputfield}{' + selected + '}' + postSelected;
-    editorMf.latex(newLatex);
+    newLatex = preSelected + '\\class{inputfield}{' + selected + '}' + postSelected;
   } else {
-    ori = ori.replace('class{', '\\class{inputfield}{');
-    editorMf.latex(ori);
+    newLatex = sanitizeInputfieldTag(newLatex);
   }
+  editorMf.latex(newLatex);
 }
 
 function getPositionOfUnitTags(latex, unitTag) {
@@ -282,10 +281,10 @@ export function setUnit(mf) {
     var newLatex = preSelected + unitTag + selected + '}' + postSelected;
     // newLatex = newLatex.replace(/\xA7/g, '');
     newLatex = newLatex.replace(/§/g, '');
-    mf.latex(sanitizeInputfieldTag(newLatex));
   } else {
-    mf.latex(sanitizeInputfieldTag(ori));
+    newLatex = ori.replace(/§/g, '');
   }
+  mf.latex(sanitizeInputfieldTag(newLatex));
 }
 
 function sanitizeInputfieldTag(latex){
