@@ -53,6 +53,7 @@ class FApp {
 
 export default async function preparePage() {
   await domLoad;
+  console.log('preparePage()');
   $("img.mod").remove();
   ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
   $('button.keyb_button').on('mousedown', function () {
@@ -410,16 +411,6 @@ async function mathQuillify() {
   });
   ($('<img class="mod">')).insertAfter($(".formula_applet.mq-math-mode:not(.solution)"));
 }
-
-$(document).on('mathquillifyEvent', function(){
-  mathQuillify();
-});
-
-
-$(window).on('preparePageEvent', function(){
-  console.log('preparePageEvent received');
-  preparePage();
-});
 
 /**
  * decomposes a definition string into a list of definitions
