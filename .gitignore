@@ -10,5 +10,7 @@ node_modules/
 doc*/
 Doxyfile
 version*.txt
+md/Paul.md
+
 
 
