@@ -86,7 +86,7 @@ export function encode(text) {
     return codes0to9[n] + encodeDecodeString(0, n, h);
 }
 
-export function decode(text) {
+export default function decode(text) {
     var n = codes0to9.indexOf(text.substr(0, 1));
     var h = encodeDecodeString(1, n, text.substr(1));
     var result = decodeUnicode(h);
