@@ -1,10 +1,10 @@
 # *ToDo* #
 
 ## FormulaApplet as a H5P package
-* Use revealing module pattern, OOP
 * Exercise how to deal with other H5P packages (math, physics)
 * Use apps.zum.de and unterrichten.zum.de 
 ## Coding
+* Use revealing module pattern, OOP
 * Use JSDoc https://jsdoc.app/ Started!
 * enable debugging in Visual Studio Code
 * Render \cdot as times(cross) if lang=en
