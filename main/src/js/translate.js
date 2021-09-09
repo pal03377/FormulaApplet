@@ -41,7 +41,14 @@ export async function initTranslation() {
   }
 }
 
-// https://www.w3schools.com/js/js_cookies.asp
+/**
+ * 
+ * @param {string} cookieName name of cookie    
+ * @param {string} cookieValue value of cookie
+ * @param {number} exdays number of days after which the cookie becomes invalid (is expiring)
+ * @see https://www.w3schools.com/js/js_cookies.asp
+ * @see getCookie
+ */
 function setCookie(cookieName, cookieValue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -49,6 +56,12 @@ function setCookie(cookieName, cookieValue, exdays) {
   document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
 }
 
+/**
+ * 
+ * @param {string} cookieName name of cookie
+ * @returns {string} value of cookie
+ * @see setCookie
+ */
 function getCookie(cookieName) {
   var name = cookieName + "=";
   var ca = document.cookie.split(';');
