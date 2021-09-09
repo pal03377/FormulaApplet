@@ -4,9 +4,9 @@ import $ from "jquery";
 import {
   domLoad
 } from "./dom.js";
-import {
-  reloadTranslation
-} from "./translate.js";
+// import {
+//   reloadTranslation
+// } from "./translate.js";
 import {
   encode
 } from "./decode.js";
@@ -47,7 +47,8 @@ export async function initEditor() {
     var license_link = 'https://github.com/gro58/FormulaApplet/blob/master/js/lib/ToDo.md';
     prepend_uses.after('<p><span class="tr de uses">Das Formel-Applet benutzt die Bibliotheken jQuery, MathQuill und Hammer. </span><span class="tr en uses">FormulaApplet uses jQuery, MathQuill, and Hammer. </span><a href="' + license_link + '" class="tr de moreinfo">Weitere Informationen...</a><a href="' + license_link + '" class="tr en moreinfo">More info...</a></p>');
   }
-  await reloadTranslation();
+  $.event.trigger("reloadTranslationEvent");
+  // await reloadTranslation();
 }
 
 export async function prepareEditorPage(fApp) {

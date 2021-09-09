@@ -12,9 +12,11 @@ import parse, {
  * @param {string } id string ('name') identifying the Formula Applet
  * @param {string} a left side of equation 
  * @param {string} b right side of equation
- * @param {*} dsList  list of definition sets to be considered
- * assembles an equation a = b from left side a uns right side b, then checks if a = b is true
- * @see checkIfEquality
+ * @param {array} dsList  list of definition sets to be considered
+ * @returns true if a = b, false if not<br>
+ * 
+ * assembles an equation a = b from left side a uns right side b, then checks if a = b is true<hr>
+  * @see checkIfEquality
  */
 export function checkIfEqual(id, a, b, dsList, precision) {
     var equ = a + '=' + b;
@@ -24,11 +26,9 @@ export function checkIfEqual(id, a, b, dsList, precision) {
 /**
  * 
  * @param {string} id string ('name') identifying the Formula Applet
- * @param {*} equ TEX string representing an equation to be chqcke
- * @param {*} dsList list of definition sets to be considered
- * adds class mod_wrong or mod_ok to applet
- * should be broke in two parts
- * equ -> boolean ok/wrong -> add class to applet
+ * @param {string} equ TEX string representing an equation to be checked
+ * @param {array} dsList array of definition sets to be considered<br>
+ * @returns true if equality holds, false if not
  * @see checkIfEqual
  */
 

@@ -14,8 +14,9 @@ async function switchTo(lang) {
 
 let translationIsInitiated = false;
 
-export async function reloadTranslation() {
-  var lang = getCookie('lang') || 'de';
+// export async function reloadTranslation() {
+async function reloadTranslation() {
+    var lang = getCookie('lang') || 'de';
   console.log('switch to lang: ' + lang);
   await switchTo(lang);
 }
@@ -34,6 +35,10 @@ export async function initTranslation() {
       $('#en').on('click', function () {
         switchTo('en');
       });
+    });
+
+    $(document).on("reloadTranslationEvent", function(){
+      reloadTranslation();
     });
 
     translationIsInitiated = true;
