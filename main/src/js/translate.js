@@ -20,7 +20,12 @@ async function reloadTranslation() {
   console.log('switch to lang: ' + lang);
   await switchTo(lang);
 }
-
+/**
+ * make buttons with id=de and id=en clickable
+ * init event handler for reloadTranslationEvent
+ * call reloadTranslation for the first time
+ * TODO getter/setter for translationIsInitiated
+ */
 export async function initTranslation() {
   if (!translationIsInitiated) {
     // backup of display attribute
