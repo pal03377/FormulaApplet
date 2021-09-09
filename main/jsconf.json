@@ -1,4 +1,12 @@
 {
-  "name": "formelapplet",
-  "description": "lets you create math or physics exercises on HTML pages or in Wikis"
+    "name": "formelapplet",
+    "description": "lets you create math or physics exercises on HTML pages or in Wikis",
+	"tags": {
+		"allowUnknownTags": true
+	},
+	"source": {
+		"include": ["src"],
+		"includePattern": ".+\\.js(doc|x)?$",
+		"excludePattern": "(^|\\/|\\\\)_"
+	}
 }

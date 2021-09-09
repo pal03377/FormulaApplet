@@ -1,10 +1,11 @@
+import $ from "jquery";
 import parse, {
     FaTree,
-    findCorrespondingRightBracket,
     evaluateTree,
-    fillWithValues,
-    checkScientificNotation
+    fillWithValues
 } from "./texParser.js";
+
+import {getFAppFromId} from "./preparePage.js";
 
 /**
  * 
@@ -15,7 +16,7 @@ import parse, {
  * assembles an equation a = b from left side a uns right side b, then checks if a = b is true
  * @see checkIfEquality
  */
-function checkIfEqual(id, a, b, dsList) {
+export function checkIfEqual(id, a, b, dsList) {
     var equ = a + '=' + b;
     checkIfEquality(id, equ, dsList);
 }

@@ -15,19 +15,21 @@ import config from "./config.json";
 import {prepareEditorPage, setUnit, eraseUnit} from "./editor.js";
 
 import decode from "./decode.js";
-import parse, {
+import {
   FaTree,
   findCorrespondingRightBracket,
-  evaluateTree,
-  fillWithValues,
-  checkScientificNotation
-} from "./texParser.js";
+  checkScientificNotation}
+   from "./texParser.js";
 import {
   initTranslation
 } from "./translate.js";
 import initVirtualKeyboard, {
   showVirtualKeyboard
 } from "./virtualKeyboard.js";
+
+import {checkIfEqual,
+  checkIfEquality
+} from "./checkIfEqual.js";
 
 var activeMathfieldIndex = 0;
 var FAList = [];
@@ -128,14 +130,13 @@ function nthroot() {
   mf.keystroke('Shift-Left');
 }
 
-function getFAppFromId(id) {
+export function getFAppFromId(id) {
   for (var i = 0; i < FAList.length; i++) {
     if (FAList[i].id == id) {
       return FAList[i];
     }
   }
 }
-
 
 function makeAutoUnitstring(mf) {
   // mf = MathField
