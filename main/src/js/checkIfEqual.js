@@ -1,11 +1,11 @@
-import $ from "jquery";
+// import $ from "jquery";
 import parse, {
     FaTree,
     evaluateTree,
     fillWithValues
 } from "./texParser.js";
 
-import {getFAppFromId} from "./preparePage.js";
+// import {getFAppFromId} from "./preparePage.js";
 
 /**
  * 
@@ -16,9 +16,9 @@ import {getFAppFromId} from "./preparePage.js";
  * assembles an equation a = b from left side a uns right side b, then checks if a = b is true
  * @see checkIfEquality
  */
-export function checkIfEqual(id, a, b, dsList) {
+export function checkIfEqual(id, a, b, dsList, precision) {
     var equ = a + '=' + b;
-    checkIfEquality(id, equ, dsList);
+    return checkIfEquality(id, equ, dsList, precision);
 }
 
 /**
@@ -32,18 +32,20 @@ export function checkIfEqual(id, a, b, dsList) {
  * @see checkIfEqual
  */
 
-function checkIfEquality(id, equ, dsList) {
+export function checkIfEquality(id, equ, dsList, precision) {
     console.log(equ);
     var myTree = parse(equ);
     myTree = fillWithRandomValAndCheckDefSets(myTree, dsList);
     var almostOne = evaluateTree(myTree);
     var dif = Math.abs(almostOne - 1);
-    var fApp = getFAppFromId(id);
-    var precision = fApp.precision;
+    // var fApp = getFAppFromId(id);
+    // var precision = fApp.precision;
     if (dif < precision) {
-        $('#' + id).removeClass('mod_wrong').addClass('mod_ok');
+        return true;
+        // $('#' + id).removeClass('mod_wrong').addClass('mod_ok');
     } else {
-        $('#' + id).removeClass('mod_ok').addClass('mod_wrong');
+        return false;
+        // $('#' + id).removeClass('mod_ok').addClass('mod_wrong');
     }
 }
 

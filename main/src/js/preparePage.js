@@ -12,14 +12,19 @@ import {
 } from "./dom.js";
 
 import config from "./config.json";
-import {prepareEditorPage, setUnit, eraseUnit} from "./editor.js";
+import {
+  prepareEditorPage,
+  setUnit,
+  eraseUnit
+} from "./editor.js";
 
 import decode from "./decode.js";
 import {
   FaTree,
   findCorrespondingRightBracket,
-  checkScientificNotation}
-   from "./texParser.js";
+  checkScientificNotation
+}
+from "./texParser.js";
 import {
   initTranslation
 } from "./translate.js";
@@ -27,7 +32,8 @@ import initVirtualKeyboard, {
   showVirtualKeyboard
 } from "./virtualKeyboard.js";
 
-import {checkIfEqual,
+import {
+  checkIfEqual,
   checkIfEquality
 } from "./checkIfEqual.js";
 
@@ -208,10 +214,18 @@ function editHandler(index) {
       mfLatexForParser = makeAutoUnitstring(mf);
     }
 
+    var precision = FAList[index].precision;
+
+    var isEqual;
     if (hasSolution) {
-      checkIfEqual(id, mfLatexForParser, solution, dsList);
+      isEqual = checkIfEqual(id, mfLatexForParser, solution, dsList, precision);
     } else {
-      checkIfEquality(id, mfContainer.latex(), dsList);
+      isEqual = checkIfEquality(id, mfContainer.latex(), dsList, precision);
+    }
+    if (isEqual) {
+      $('#' + id).removeClass('mod_wrong').addClass('mod_ok');
+    } else {
+      $('#' + id).removeClass('mod_ok').addClass('mod_wrong');
     }
   }
 }
@@ -347,7 +361,7 @@ async function mathQuillify() {
         fApp.hammer.on("doubletap", function () {
           showVirtualKeyboard();
         });
-    } catch (error) {
+      } catch (error) {
         console.info('Hammer error: ' + error);
       }
     }
@@ -391,4 +405,3 @@ function unifyDefinitions(def) {
   }
   return dsList;
 }
-
