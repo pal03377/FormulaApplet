@@ -7,7 +7,6 @@ Algebrite_files/
 js/lib/Algebrite/
 js/lib/ToDo.pdf
 node_modules/
-doc*/
 Doxyfile
 version*.txt
 md/Paul.md
