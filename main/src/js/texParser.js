@@ -83,8 +83,8 @@ function createNode(type, content, tree) {
     }
 }
 
-export class FaTree {
-    constructor() {
+// define class FaTree using function syntax
+export function FaTree() {
         this.listOfFree = [];
         this.nodelist = [];
         this.nodelist[0] = new node();
@@ -101,7 +101,6 @@ export class FaTree {
         this.root.children = [this.leaf.id];
         this.hasValue = false;
         this.variableValueList = [];
-    }
 }
 
 function withEachNode(tree, f) {

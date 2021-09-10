@@ -40,8 +40,9 @@ import {
 var activeMathfieldIndex = 0;
 var FAList = [];
 var editHandlerActive = true;
-class FApp {
-  constructor() {
+
+// define class FApp using function syntax
+function FApp() {
     this.index = '';
     this.id = '';
     this.formulaApplet = '';
@@ -56,7 +57,6 @@ class FApp {
     this.unitAuto = false;
     this.innerOri = '';
     this.replaced = '';
-  }
 }
 
 export default async function preparePage() {
