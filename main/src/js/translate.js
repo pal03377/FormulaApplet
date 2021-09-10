@@ -14,12 +14,18 @@ async function switchTo(lang) {
 
 let translationIsInitiated = false;
 
-export async function reloadTranslation() {
-  var lang = getCookie('lang') || 'de';
+// export async function reloadTranslation() {
+async function reloadTranslation() {
+    var lang = getCookie('lang') || 'de';
   console.log('switch to lang: ' + lang);
   await switchTo(lang);
 }
-
+/**
+ * make buttons with id=de and id=en clickable
+ * init event handler for reloadTranslationEvent
+ * call reloadTranslation for the first time
+ * TODO getter/setter for translationIsInitiated
+ */
 export async function initTranslation() {
   if (!translationIsInitiated) {
     // backup of display attribute
@@ -34,6 +40,10 @@ export async function initTranslation() {
       $('#en').on('click', function () {
         switchTo('en');
       });
+    });
+
+    $(document).on("reloadTranslationEvent", function(){
+      reloadTranslation();
     });
 
     translationIsInitiated = true;

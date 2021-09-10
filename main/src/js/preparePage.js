@@ -12,22 +12,30 @@ import {
 } from "./dom.js";
 
 import config from "./config.json";
-import {prepareEditorPage, setUnit, eraseUnit} from "./editor.js";
+import {
+  prepareEditorPage,
+  setUnit,
+  eraseUnit
+} from "./editor.js";
 
 import decode from "./decode.js";
-import parse, {
+import {
   FaTree,
   findCorrespondingRightBracket,
-  evaluateTree,
-  fillWithValues,
   checkScientificNotation
-} from "./texParser.js";
+}
+from "./texParser.js";
 import {
   initTranslation
 } from "./translate.js";
 import initVirtualKeyboard, {
   showVirtualKeyboard
 } from "./virtualKeyboard.js";
+
+import {
+  checkIfEqual,
+  checkIfEquality
+} from "./checkIfEqual.js";
 
 var activeMathfieldIndex = 0;
 var FAList = [];
@@ -128,69 +136,11 @@ function nthroot() {
   mf.keystroke('Shift-Left');
 }
 
-function getFAppFromId(id) {
+export function getFAppFromId(id) {
   for (var i = 0; i < FAList.length; i++) {
     if (FAList[i].id == id) {
       return FAList[i];
     }
-  }
-}
-
-function checkIfEqual(id, a, b, dsList) {
-  var equ = a + '=' + b;
-  checkIfEquality(id, equ, dsList);
-}
-
-function checkIfEquality(id, equ, dsList) {
-  console.log(equ);
-  var myTree = parse(equ);
-  myTree = fillWithRandomValAndCheckDefSets(myTree, dsList);
-  var almostOne = evaluateTree(myTree);
-  var dif = Math.abs(almostOne - 1);
-  var fApp = getFAppFromId(id);
-  var precision = fApp.precision;
-  if (dif < precision) {
-    $('#' + id).removeClass('mod_wrong').addClass('mod_ok');
-  } else {
-    $('#' + id).removeClass('mod_ok').addClass('mod_wrong');
-  }
-}
-
-function fillWithRandomValAndCheckDefSets(treeVar, dsList) {
-  var rememberTree = JSON.stringify(treeVar);
-  if (dsList.length == 0) {
-    fillWithValues(treeVar);
-    return treeVar;
-  } else {
-    // start watchdog
-    var success = false;
-    var start = new Date();
-    var timePassedMilliseconds = 0;
-    while (!success && timePassedMilliseconds < 2000) {
-      var tree2 = new FaTree();
-      tree2 = JSON.parse(rememberTree);
-      fillWithValues(tree2);
-      var variableValueList = tree2.variableValueList;
-      // CheckDefinitionSets
-      for (var i = 0; i < dsList.length; i++) {
-        var definitionset = parse(dsList[i]);
-        fillWithValues(definitionset, variableValueList);
-        var value = evaluateTree(definitionset);
-        success = ((value > 0) || typeof value == 'undefined');
-        if (!success) {
-          // short circuit
-          i = dsList.length;
-          // restore leafs with value = undefined
-        }
-      }
-      var now = new Date();
-      timePassedMilliseconds = now.getTime() - start.getTime();
-    }
-    if (!success) {
-      tree2.hasValue = false;
-      tree2.variableValueList = [];
-    }
-    return tree2;
   }
 }
 
@@ -264,10 +214,18 @@ function editHandler(index) {
       mfLatexForParser = makeAutoUnitstring(mf);
     }
 
+    var precision = FAList[index].precision;
+
+    var isEqual;
     if (hasSolution) {
-      checkIfEqual(id, mfLatexForParser, solution, dsList);
+      isEqual = checkIfEqual(id, mfLatexForParser, solution, dsList, precision);
     } else {
-      checkIfEquality(id, mfContainer.latex(), dsList);
+      isEqual = checkIfEquality(id, mfContainer.latex(), dsList, precision);
+    }
+    if (isEqual) {
+      $('#' + id).removeClass('mod_wrong').addClass('mod_ok');
+    } else {
+      $('#' + id).removeClass('mod_ok').addClass('mod_wrong');
     }
   }
 }
@@ -403,7 +361,7 @@ async function mathQuillify() {
         fApp.hammer.on("doubletap", function () {
           showVirtualKeyboard();
         });
-    } catch (error) {
+      } catch (error) {
         console.info('Hammer error: ' + error);
       }
     }
@@ -447,4 +405,3 @@ function unifyDefinitions(def) {
   }
   return dsList;
 }
-
