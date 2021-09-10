@@ -316,7 +316,7 @@ async function mathQuillify() {
     })
     FAList[index] = fApp;
 
-    console.debug('isEditor=' + isEditor);
+    // console.debug('isEditor=' + isEditor);
     if (isEditor) {
       console.log(fApp);
       prepareEditorPage(fApp);

@@ -5,29 +5,44 @@ import { domLoad } from "./dom.js";
 
 async function switchTo(lang) {
   await domLoad;
+  console.log('switch to ' + lang);
   $(".tr").css("display", "none");
   $(".tr." + lang).css("display", "initial");
-
   // save lang
   setCookie('lang', lang, 7);
 }
 
-let translationIsInitiated = false;
+/**
+ * trInit hides trVal from being a global variable
+ */
+let trInit = (function(){
+  let trVal= true;
+  return {
+    setTranslationInitiated: function(truefalse){
+      trVal = truefalse;
+    },
+    isTranslationInitiated: function(){
+      return trVal;
+    }
+  }
+})();
+
+trInit.setTranslationInitiated(true);
+console.log(trInit.isTranslationInitiated());
 
 // export async function reloadTranslation() {
 async function reloadTranslation() {
     var lang = getCookie('lang') || 'de';
-  console.log('switch to lang: ' + lang);
+  // console.log('switch to lang: ' + lang);
   await switchTo(lang);
 }
 /**
  * make buttons with id=de and id=en clickable
  * init event handler for reloadTranslationEvent
  * call reloadTranslation for the first time
- * TODO getter/setter for translationIsInitiated
  */
 export async function initTranslation() {
-  if (!translationIsInitiated) {
+  if (!trInit.translationIsInitiated) {
     // backup of display attribute
     console.debug('initTranslation()');
 
@@ -46,7 +61,7 @@ export async function initTranslation() {
       reloadTranslation();
     });
 
-    translationIsInitiated = true;
+    trInit.setTranslationInitiated(true);
     await reloadTranslation();
   }
 }

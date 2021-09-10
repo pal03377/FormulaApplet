@@ -1,0 +1,19 @@
+.h5p-formulaapplet {
+  width: 400px;
+  margin: 0 auto;
+  border: 5px solid #eec;
+  box-shadow: 2px 2px 4px #ccc;
+}
+.h5p-formulaapplet .ident {
+  width: 100%;
+  height: auto;
+}
+.h5p-formulaapplet .expression {
+  width: auto;
+  margin: 16px;
+  font-family: fantasy;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 24px;
+  text-align: center;
+}

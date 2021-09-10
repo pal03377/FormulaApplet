@@ -1,0 +1,18 @@
+{
+  "title": "Viertes Beispiel",
+  "language": "de",
+  "author": "gro",
+  "license": "CC BY",
+  "licenseVersion": "1.0",
+  "authors":[{
+    "name": "Rudolf Grossmann",
+    "role": "Author"
+  }],
+  "preloadedDependencies": [{
+    "machineName": "H5P.FormulaApplet",
+    "majorVersion": 2,
+    "minorVersion": 4 
+  }],
+  "mainLibrary": "H5P.FormulaApplet",
+  "embedTypes": ["div"]
+}
