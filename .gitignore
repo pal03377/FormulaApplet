@@ -8,6 +8,7 @@ js/lib/Algebrite/
 js/lib/ToDo.pdf
 node_modules/
 Doxyfile
+doc(doxygen)
 version*.txt
 md/Paul.md
 
