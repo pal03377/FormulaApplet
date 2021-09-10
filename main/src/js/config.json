@@ -1,5 +1,5 @@
 {
     "defaultPrecision": 0.000001,
-    "multiplicationSign": "&times",
+    "multiplicationSign": "&times;",
     "multiplicationDot": "\\cdot"
 }

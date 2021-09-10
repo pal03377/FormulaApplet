@@ -254,7 +254,8 @@ async function mathQuillify() {
   $(".formula_applet:not(.mq-math-mode)").each(function () {
     var temp = this.innerHTML;
     this.innerOri = temp;
-    this.innerHTML = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
+    temp = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
+    this.innerHTML = temp;
   });
 
   $(".formula_applet:not(.mq-math-mode)").each(function () {
@@ -263,6 +264,13 @@ async function mathQuillify() {
     temp = temp.replace(/\\mathrm/g, '');
     this.innerHTML = temp.replace(/\\unit{/g, '\\textcolor{blue}{');
     this.replaced = temp;
+  });
+
+  $(".formula_applet").each(function () {
+    var temp = this.innerHTML;
+    this.innerOri = temp;
+    temp = temp.replace(/\\cdot/g, config.multiplicationSign);
+    this.innerHTML = temp;
   });
 
   $(".formula_applet").each(async (index, domElem) => {
