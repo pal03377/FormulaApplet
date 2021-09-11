@@ -9,32 +9,31 @@ import parse, {
 
 /**
  * 
- * @param {string } id string ('name') identifying the Formula Applet
- * @param {string} a left side of equation 
- * @param {string} b right side of equation
+ * @param {string} leftside left side of equation 
+ * @param {string} rightside right side of equation
  * @param {array} dsList  list of definition sets to be considered
  * @returns true if a = b, false if not<br>
  * 
  * assembles an equation a = b from left side a uns right side b, then checks if a = b is true<hr>
   * @see checkIfEquality
  */
-export function checkIfEqual(id, a, b, dsList, precision) {
-    var equ = a + '=' + b;
-    return checkIfEquality(id, equ, dsList, precision);
+export function checkIfEqual(leftside, rightside, dsList, precision) {
+    var equation = leftside + '=' + rightside;
+    return checkIfEquality(equation, dsList, precision);
 }
 
 /**
  * 
- * @param {string} id string ('name') identifying the Formula Applet
- * @param {string} equ TEX string representing an equation to be checked
+ * @param {string} equation TEX string representing an equation to be checked
  * @param {array} dsList array of definition sets to be considered<br>
  * @returns true if equality holds, false if not
  * @see checkIfEqual
  */
 
-export function checkIfEquality(id, equ, dsList, precision) {
-    console.log(equ);
-    var myTree = parse(equ);
+export function checkIfEquality(equation, dsList, precision) {
+    var temp = equation.replace(/\\times/g, '\\cdot ');
+    console.log(temp);
+    var myTree = parse(temp);
     myTree = fillWithRandomValAndCheckDefSets(myTree, dsList);
     var almostOne = evaluateTree(myTree);
     var dif = Math.abs(almostOne - 1);

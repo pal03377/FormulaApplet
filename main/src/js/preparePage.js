@@ -213,14 +213,19 @@ function editHandler(index) {
     if (unitAuto) {
       mfLatexForParser = makeAutoUnitstring(mf);
     }
+    var temp = mf.latex();
+    temp = temp.replace(/\\cdot/g, '\\times ');
+    editHandlerActive = false;
+    mf.latex(temp);
+    editHandlerActive = true;
 
     var precision = FAList[index].precision;
 
     var isEqual;
     if (hasSolution) {
-      isEqual = checkIfEqual(id, mfLatexForParser, solution, dsList, precision);
+      isEqual = checkIfEqual(mfLatexForParser, solution, dsList, precision);
     } else {
-      isEqual = checkIfEquality(id, mfContainer.latex(), dsList, precision);
+      isEqual = checkIfEquality(mfContainer.latex(), dsList, precision);
     }
     if (isEqual) {
       $('#' + id).removeClass('mod_wrong').addClass('mod_ok');
