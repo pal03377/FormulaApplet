@@ -436,12 +436,14 @@ function refreshLanguage(lang) {
     }
     if (lang == 'de') {
       newLatex = oldLatex.replace(/\\times/g, '\\cdot');
+      newLatex = newLatex.replace(/[.]/g, ',');
     }
     if (lang == 'en') {
       newLatex = oldLatex.replace(/\\cdot/g, '\\times');
+      newLatex = newLatex.replace(/,/g, '.');
     }
     if (oldLatex !== newLatex) {
-      // console.log(oldLatex + ' -> ' + newLatex);
+      console.log(oldLatex + ' -> ' + newLatex);
       editHandlerActive = false;
       if (FApp.hasSolution) {
         mf.latex(newLatex);
