@@ -7,8 +7,8 @@
 * Use revealing module pattern, OOP
 * Use JSDoc https://jsdoc.app/ Started!
 * enable debugging in Visual Studio Code
-* Render \cdot as times(cross) if lang=en
-* Render , as . if lang=en
+* <del>Render \cdot as times(cross) if lang=en</del>
+* <del>Render , as . if lang=en</del>
 * e for Exponent interferes with e for Euler's number.
 * Move smaller parts of code (e.g. problem editor) into separate file
     * preparePage needs virtualKeyboard
@@ -35,7 +35,7 @@
 * Check only after pressing Enter
 * GeoGebra as an H5P package. Why?
 ## GitHub
-* Meaning of different js files
+* <del>Meaning of different js files</del>
 * Instruction: Install with PHP
 * License (2nd)
 * ToDo (this file)
