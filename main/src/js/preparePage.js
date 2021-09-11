@@ -26,7 +26,8 @@ import {
 }
 from "./texParser.js";
 import {
-  initTranslation
+  initTranslation,
+  rememberLanguage
 } from "./translate.js";
 import initVirtualKeyboard, {
   showVirtualKeyboard
@@ -43,20 +44,20 @@ var editHandlerActive = true;
 
 // define class FApp using function syntax
 function FApp() {
-    this.index = '';
-    this.id = '';
-    this.formulaApplet = '';
-    this.hasSolution = undefined;
-    this.solution = '';
-    this.mqEditableField = '';
-    this.mathField = "";
-    this.hammer = '';
-    this.definitionsetList = [];
-    this.precision = config.defaultPrecision;
-    this.hasResultField = true;
-    this.unitAuto = false;
-    this.innerOri = '';
-    this.replaced = '';
+  this.index = '';
+  this.id = '';
+  this.formulaApplet = '';
+  this.hasSolution = undefined;
+  this.solution = '';
+  this.mqEditableField = '';
+  this.mathField = "";
+  this.hammer = '';
+  this.definitionsetList = [];
+  this.precision = config.defaultPrecision;
+  this.hasResultField = true;
+  this.unitAuto = false;
+  this.innerOri = '';
+  this.replaced = '';
 }
 
 export default async function preparePage() {
@@ -213,11 +214,6 @@ function editHandler(index) {
     if (unitAuto) {
       mfLatexForParser = makeAutoUnitstring(mf);
     }
-    var temp = mf.latex();
-    temp = temp.replace(/\\cdot/g, '\\times ');
-    editHandlerActive = false;
-    mf.latex(temp);
-    editHandlerActive = true;
 
     var precision = FAList[index].precision;
 
@@ -417,4 +413,42 @@ function unifyDefinitions(def) {
     dsList[i] = result;
   }
   return dsList;
+}
+
+$(document).on("refreshLanguageEvent",
+  function () {
+    var lang = rememberLanguage.lang;
+    // console.log('rememberLanguage.lang=' + lang);
+    refreshLanguage(lang);
+  });
+
+function refreshLanguage(lang) {
+  for (var index = 0; index < FAList.length; index++) {
+    var FApp = FAList[index];
+    var hasSolution = FApp.hasSolution || false;
+    var oldLatex, newLatex;
+    if (hasSolution) {
+      var mf = FAList[index].mathField;
+      oldLatex = mf.latex();
+    } else {
+      var mfContainer = MQ.StaticMath(FAList[index].formulaApplet);
+      oldLatex = mfContainer.latex();
+    }
+    if (lang == 'de') {
+      newLatex = oldLatex.replace(/\\times/g, '\\cdot');
+    }
+    if (lang == 'en') {
+      newLatex = oldLatex.replace(/\\cdot/g, '\\times');
+    }
+    if (oldLatex !== newLatex) {
+      // console.log(oldLatex + ' -> ' + newLatex);
+      editHandlerActive = false;
+      if (FApp.hasSolution) {
+        mf.latex(newLatex);
+      } else {
+        mfContainer.latex(newLatex);
+      }
+      editHandlerActive = true;
+    }
+  }
 }

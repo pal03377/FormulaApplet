@@ -29,6 +29,7 @@ keys['mixed'] = [
         ['8'],
         ['9'],
         ['times', '&times;', '\\cdot '],
+        // ['times', '&times;', '\\times '],
         ['divided', '&divide;', '/']
     ],
     // row 1

@@ -1,48 +1,53 @@
 "use strict";
 
 import $ from "jquery";
-import { domLoad } from "./dom.js";
+import {
+  domLoad
+} from "./dom.js";
 
 async function switchTo(lang) {
   await domLoad;
   console.log('switch to ' + lang);
+  rememberLanguage.lang = lang;
   $(".tr").css("display", "none");
   $(".tr." + lang).css("display", "initial");
   // save lang
   setCookie('lang', lang, 7);
+  $.event.trigger("refreshLanguageEvent");
 }
 
 /**
- * trInit hides trVal from being a global variable
+ * rememberInit hides _isTranslationInitiated: no global variable
  */
-let trInit = (function(){
-  let trVal= true;
+let rememberInit = (function () {
+  let _isTranslationInitiated = true;
   return {
-    setTranslationInitiated: function(truefalse){
-      trVal = truefalse;
+    setTranslationInitiated: function (truefalse) {
+      _isTranslationInitiated = truefalse;
     },
-    isTranslationInitiated: function(){
-      return trVal;
+    isTranslationInitiated: function () {
+      return _isTranslationInitiated;
     }
   }
 })();
 
-trInit.setTranslationInitiated(true);
-console.log(trInit.isTranslationInitiated());
+rememberInit.setTranslationInitiated(true);
+console.log(rememberInit.isTranslationInitiated());
 
 // export async function reloadTranslation() {
 async function reloadTranslation() {
-    var lang = getCookie('lang') || 'de';
+  var lang = getCookie('lang') || 'de';
   // console.log('switch to lang: ' + lang);
   await switchTo(lang);
 }
+
 /**
  * make buttons with id=de and id=en clickable
  * init event handler for reloadTranslationEvent
  * call reloadTranslation for the first time
  */
 export async function initTranslation() {
-  if (!trInit.translationIsInitiated) {
+  if (!rememberInit.translationIsInitiated) {
     // backup of display attribute
     console.debug('initTranslation()');
 
@@ -57,14 +62,24 @@ export async function initTranslation() {
       });
     });
 
-    $(document).on("reloadTranslationEvent", function(){
+    $(document).on("reloadTranslationEvent", function () {
       reloadTranslation();
     });
 
-    trInit.setTranslationInitiated(true);
+    rememberInit.setTranslationInitiated(true);
     await reloadTranslation();
   }
 }
+
+/**
+ * rememberLanguage hides _lang: no global variable
+ */
+// export async function rememberLanguage() {
+//   var lang;
+//   return lang;
+// }
+
+export const rememberLanguage = {lang:"de", bli:"bla"};
 
 /**
  * 
