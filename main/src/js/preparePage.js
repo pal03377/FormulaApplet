@@ -425,32 +425,34 @@ $(document).on("refreshLanguageEvent",
 function refreshLanguage(lang) {
   for (var index = 0; index < FAList.length; index++) {
     var FApp = FAList[index];
-    var hasSolution = FApp.hasSolution || false;
-    var oldLatex, newLatex;
-    if (hasSolution) {
-      var mf = FAList[index].mathField;
-      oldLatex = mf.latex();
-    } else {
-      var mfContainer = MQ.StaticMath(FAList[index].formulaApplet);
-      oldLatex = mfContainer.latex();
-    }
-    if (lang == 'de') {
-      newLatex = oldLatex.replace(/\\times/g, '\\cdot');
-      newLatex = newLatex.replace(/[.]/g, ',');
-    }
-    if (lang == 'en') {
-      newLatex = oldLatex.replace(/\\cdot/g, '\\times');
-      newLatex = newLatex.replace(/,/g, '.');
-    }
-    if (oldLatex !== newLatex) {
-      console.log(oldLatex + ' -> ' + newLatex);
-      editHandlerActive = false;
-      if (FApp.hasSolution) {
-        mf.latex(newLatex);
+    if (FApp.id !== 'editor') {
+      var hasSolution = FApp.hasSolution || false;
+      var oldLatex, newLatex;
+      if (hasSolution) {
+        var mf = FAList[index].mathField;
+        oldLatex = mf.latex();
       } else {
-        mfContainer.latex(newLatex);
+        var mfContainer = MQ.StaticMath(FAList[index].formulaApplet);
+        oldLatex = mfContainer.latex();
       }
-      editHandlerActive = true;
+      if (lang == 'de') {
+        newLatex = oldLatex.replace(/\\times/g, '\\cdot');
+        newLatex = newLatex.replace(/[.]/g, ',');
+      }
+      if (lang == 'en') {
+        newLatex = oldLatex.replace(/\\cdot/g, '\\times');
+        newLatex = newLatex.replace(/,/g, '.');
+      }
+      if (oldLatex !== newLatex) {
+        console.log(oldLatex + ' -> ' + newLatex);
+        editHandlerActive = false;
+        if (FApp.hasSolution) {
+          mf.latex(newLatex);
+        } else {
+          mfContainer.latex(newLatex);
+        }
+        editHandlerActive = true;
+      }
     }
   }
 }

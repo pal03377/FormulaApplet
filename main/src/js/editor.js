@@ -56,6 +56,7 @@ export async function prepareEditorPage(fApp) {
   await initEditor();
   // make whole mathFieldSpan editable
   var mathFieldSpan = document.getElementById('math-field');
+  // var mathFieldSpan = $('p#editor.formula_applet');
   if (!mathFieldSpan) throw new Error("Cannot find math-field. The math editor must provide one.");
   var editorMf = MQ.MathField(mathFieldSpan, {
     spaceBehavesLikeTab: true, // configurable
@@ -66,6 +67,7 @@ export async function prepareEditorPage(fApp) {
     }
   });
   fApp.mathField = editorMf;
+  $.event.trigger("refreshLanguageEvent");
 
   // adjust events
   $('#set-input-d, #set-input-e').on('mousedown', ev => {
