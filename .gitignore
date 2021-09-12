@@ -11,6 +11,7 @@ Doxyfile
 doc(doxygen)
 version*.txt
 md/Paul.md
-
+make-zip/
+html_version/
 
 

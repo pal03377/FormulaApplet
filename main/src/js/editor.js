@@ -290,7 +290,7 @@ export function setUnit(mf) {
   mf.latex(sanitizeInputfieldTag(newLatex));
 }
 
-function sanitizeInputfieldTag(latex){
+export function sanitizeInputfieldTag(latex){
   // first make shorter
   var result = latex.replace('\\class{inputfield}{','\\class{');
   // then make longer again

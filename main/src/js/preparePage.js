@@ -15,7 +15,8 @@ import config from "./config.json";
 import {
   prepareEditorPage,
   setUnit,
-  eraseUnit
+  eraseUnit,
+  sanitizeInputfieldTag
 } from "./editor.js";
 
 import decode from "./decode.js";
@@ -443,6 +444,7 @@ function refreshLanguage(lang) {
         newLatex = oldLatex.replace(/\\cdot/g, '\\times');
         newLatex = newLatex.replace(/,/g, '.');
       }
+      newLatex = sanitizeInputfieldTag(newLatex);
       if (oldLatex !== newLatex) {
         console.log(oldLatex + ' -> ' + newLatex);
         editHandlerActive = false;
