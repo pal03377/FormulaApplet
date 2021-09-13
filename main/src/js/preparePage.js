@@ -64,7 +64,7 @@ function FApp() {
 export default async function preparePage() {
   await domLoad;
   console.log('preparePage()');
-  $("img.mod").remove();
+  $("span.mod").innerHTML = "leer";
   ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
   $('button.keyb_button').on('mousedown', function () {
     showVirtualKeyboard();
@@ -224,10 +224,16 @@ function editHandler(index) {
     } else {
       isEqual = checkIfEquality(mfContainer.latex(), dsList, precision);
     }
+    var key = '#' + id + '.formula_applet + span.mod';
+    var mod = $(key)[0];
+    console.log(mod);
+    console.log(mod.innerHTML);
     if (isEqual) {
-      $('#' + id).removeClass('mod_wrong').addClass('mod_ok');
+      $(mod).css({"color": "green", "font-size": "30pt"});
+      mod.innerHTML = "&nbsp;&#x2714;";
     } else {
-      $('#' + id).removeClass('mod_ok').addClass('mod_wrong');
+      $(mod).css({"color": "red", "font-size": "30pt"});
+      mod.innerHTML = "&nbsp;&#x21AF;";
     }
   }
 }
@@ -377,7 +383,7 @@ async function mathQuillify() {
     }
     index++;
   });
-  ($('<img class="mod">')).insertAfter($(".formula_applet.mq-math-mode:not(.solution)"));
+  ($('<span class="mod">&nbsp;mod</span>')).insertAfter($(".formula_applet.mq-math-mode:not(.solution)"));
 }
 
 /**
