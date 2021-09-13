@@ -1,6 +1,0 @@
-cmd mit Admin-Rechten
-mklink D:\Users\privat\Documents\C_Root_Entlasten\wamp64\www\drupal\sites\default\files\h5p\development\H5P.FormulaApplet-1.2\js\vkbd.js D:\Users\privat\Laufwerk_E\gut\gf09\js\vkbd.js
-mklink D:\Users\privat\Documents\C_Root_Entlasten\wamp64\www\drupal\sites\default\files\h5p\development\H5P.FormulaApplet-1.2\js\tex_parser.js D:\Users\privat\Laufwerk_E\gut\gf09\js\tex_parser.js
-mklink D:\Users\privat\Documents\C_Root_Entlasten\wamp64\www\drupal\sites\default\files\h5p\development\H5P.FormulaApplet-1.2\js\prepare_page.js D:\Users\privat\Laufwerk_E\gut\gf09\js\prepare_page.js
-mklink D:\Users\privat\Documents\C_Root_Entlasten\wamp64\www\drupal\sites\default\files\h5p\development\H5P.FormulaApplet-1.2\js\editor.js D:\Users\privat\Laufwerk_E\gut\gf09\js\editor.js
-mklink D:\Users\privat\Documents\C_Root_Entlasten\wamp64\www\drupal\sites\default\files\h5p\development\H5P.FormulaApplet-1.2\js\decode.js D:\Users\privat\Laufwerk_E\gut\gf09\js\decode.js
