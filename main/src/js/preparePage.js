@@ -64,8 +64,7 @@ function FApp() {
 export default async function preparePage() {
   await domLoad;
   console.log('preparePage()');
-  $("span.mod").innerHTML = "leer";
-  ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
+ ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
   $('button.keyb_button').on('mousedown', function () {
     showVirtualKeyboard();
     $("button.keyb_button").removeClass('selected');
@@ -383,7 +382,7 @@ async function mathQuillify() {
     }
     index++;
   });
-  ($('<span class="mod">&nbsp;mod</span>')).insertAfter($(".formula_applet.mq-math-mode:not(.solution)"));
+  ($('<span class="mod">&nbsp;</span>')).insertAfter($(".formula_applet.mq-math-mode:not(.solution)"));
 }
 
 /**
