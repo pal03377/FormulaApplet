@@ -1,5 +1,0 @@
-cmd mit Admin-Rechten
-mklink D:\Users\privat\Documents\C_Root_Entlasten\wamp64\www\drupal\sites\default\files\h5p\development\H5P.FormulaApplet-2.4\scripts\bundle.js D:\Users\privat\Laufwerk_E\gut\gf09\main\public\build\bundle.js
-mklink D:\Users\privat\Documents\C_Root_Entlasten\wamp64\www\drupal\sites\default\files\h5p\development\H5P.FormulaApplet-2.4\scripts\bundle.js.map D:\Users\privat\Laufwerk_E\gut\gf09\main\public\build\bundle.js.map
-mklink D:\Users\privat\Documents\C_Root_Entlasten\wamp64\www\drupal\sites\default\files\h5p\development\H5P.FormulaApplet-2.4\scripts\bundleLicense.js D:\Users\privat\Laufwerk_E\gut\gf09\main\public\build\bundleLicense.js
-mklink D:\Users\privat\Documents\C_Root_Entlasten\wamp64\www\drupal\sites\default\files\h5p\development\H5P.FormulaApplet-2.4\scripts\bundleLicense.js.map D:\Users\privat\Laufwerk_E\gut\gf09\main\public\build\bundleLicense.js.map

@@ -41,6 +41,7 @@ H5P.FormulaApplet = (function ($) {
     // For now using timer. Should wait for image is loaded...
     setTimeout(function () {
       self.$.trigger('resize');
+	  self.$.trigger('preparePageEvent');
     }, 2000);
   };
 
@@ -53,7 +54,7 @@ H5P.FormulaApplet = (function ($) {
 // document.getElementsByTagName('head')[0].appendChild( script );
 // H5P.jQuery("head").append( script );
 
-setTimeout(function () {
-  console.log('trigger preparePageEvent');
-  H5P.jQuery(document).trigger('preparePageEvent');
-}, 100);
+// setTimeout(function () {
+  // console.log('trigger preparePageEvent');
+  // H5P.jQuery(document).trigger('preparePageEvent');
+// }, 100);
