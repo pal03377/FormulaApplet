@@ -10,7 +10,8 @@ async function switchTo(lang) {
   console.log('switch to ' + lang);
   rememberLanguage.lang = lang;
   $(".tr").css("display", "none");
-  $(".tr." + lang).css("display", "initial");
+  // $(".tr." + lang).css("display", "initial");
+  $(".tr." + lang).css("display", "");
   // save lang
   setCookie('lang', lang, 7);
   $.event.trigger("refreshLanguageEvent");
