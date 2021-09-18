@@ -64,7 +64,7 @@ function FApp() {
 export default async function preparePage() {
   await domLoad;
   console.log('preparePage()');
- ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
+  ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
   $('button.keyb_button').on('mousedown', function () {
     showVirtualKeyboard();
     $("button.keyb_button").removeClass('selected');
@@ -228,10 +228,16 @@ function editHandler(index) {
     console.log(mod);
     console.log(mod.innerHTML);
     if (isEqual) {
-      $(mod).css({"color": "green", "font-size": "30pt"});
+      $(mod).css({
+        "color": "green",
+        "font-size": "30pt"
+      });
       mod.innerHTML = "&nbsp;&#x2714;";
     } else {
-      $(mod).css({"color": "red", "font-size": "30pt"});
+      $(mod).css({
+        "color": "red",
+        "font-size": "30pt"
+      });
       mod.innerHTML = "&nbsp;&#x21AF;";
     }
   }
@@ -286,7 +292,9 @@ async function mathQuillify() {
     fApp.hasResultField = (element.html().indexOf('\\MathQuillMathField{}') >= 0);
     fApp.index = index;
     fApp.id = element.attr('id') // name of formulaApplet
-    var isEditor = (fApp.id.toLowerCase() == 'editor');
+    // var isEditor = (fApp.id.toLowerCase() == 'editor');
+    var isEditor = element.hasClass('edit');
+    console.log(fApp.index + ' ' + fApp.id + ' isEditor=' + isEditor);
     if (isEditor) {
       fApp.hasResultField = true;
     }
@@ -333,8 +341,9 @@ async function mathQuillify() {
 
     // console.debug('isEditor=' + isEditor);
     if (isEditor) {
-      console.log(fApp);
+      // console.log(fApp);
       prepareEditorPage(fApp);
+      var mqEditableField = element.find('.mq-editable-field')[0];
     } else {
       //******************
       // *** no editor ***
@@ -372,7 +381,13 @@ async function mathQuillify() {
     if (fApp.hasResultField) {
       fApp.mqEditableField = mqEditableField;
       try {
-        fApp.hammer = new Hammer(mqEditableField);
+        // if (fApp.isEditor) {
+        //   var ham = element.find('.mq-editable-field')[0];
+        //   console.log(ham);
+        //   fApp.hammer = new Hammer(ham);
+        // } else {
+          fApp.hammer = new Hammer(fApp.mqEditableField);
+        // }
         fApp.hammer.on("doubletap", function () {
           showVirtualKeyboard();
         });
@@ -430,8 +445,8 @@ $(document).on("refreshLanguageEvent",
 
 function refreshLanguage(lang) {
   for (var index = 0; index < FAList.length; index++) {
-    var FApp = FAList[index];
-    if (FApp.id !== 'editor') {
+    var fApp = FAList[index];
+    if (! $(fApp.formulaApplet).hasClass('edit')) {
       var hasSolution = FApp.hasSolution || false;
       var oldLatex, newLatex;
       if (hasSolution) {

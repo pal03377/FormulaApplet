@@ -20,7 +20,8 @@ export async function initEditor() {
   await domLoad;
   var before = $('div#ed_before');
   if (before.length == 0) {
-    var ed = $('.formula_applet#editor');
+    // var ed = $('.formula_applet#editor');
+    var ed = $('.formula_applet.edit');
     ed.before('<p id="mode_select">');
     $('p#mode_select').append('  <h3><span class="tr en mw-headline" id="Mode">Mode</span><span class="tr de mw-headline" id="Mode">Modus</span></h3>');
     $('p#mode_select').append('  <input type="radio" id="auto" name="select_mode" checked />');
@@ -109,12 +110,14 @@ export async function prepareEditorPage(fApp) {
   $('input[type="radio"]').on('click', ev => {
     var resultMode = ev.target.id;
     if (resultMode == 'auto') {
-      $('p#editor span.mq-class.inputfield').prop('contentEditable', 'false');
+      // $('p#editor span.mq-class.inputfield').prop('contentEditable', 'false');
+      $('p.edit span.mq-class.inputfield').prop('contentEditable', 'false');
       autoMode.set(true);
       refreshResult(editorMf.latex())
     }
     if (resultMode == 'manu') {
-      $('p#editor span.mq-class.inputfield').prop('contentEditable', 'true');
+      // $('p#editor span.mq-class.inputfield').prop('contentEditable', 'true');
+      $('p.edit span.mq-class.inputfield').prop('contentEditable', 'true');
       autoMode.set(false);
       refreshResult(editorMf.latex())
     }
