@@ -61,9 +61,11 @@ function FApp() {
   this.replaced = '';
 }
 
-export default async function preparePage() {
-  await domLoad;
-  console.log('preparePage()');
+export default async function preparePage(awaitDomLoad) {
+  console.log('preparePage() await domLoad=' + awaitDomLoad);
+  if (awaitDomLoad){
+    await domLoad;
+  }
   ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
   $('button.keyb_button').on('mousedown', function () {
     showVirtualKeyboard();
