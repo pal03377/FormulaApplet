@@ -224,8 +224,6 @@ function editHandler(index) {
     }
     var key = '#' + id + '.formula_applet + span.mod';
     var mod = $(key)[0];
-    console.log(mod);
-    console.log(mod.innerHTML);
     if (isEqual) {
       $(mod).css({
         "color": "green",
@@ -293,7 +291,7 @@ async function mathQuillify() {
     fApp.id = element.attr('id') // name of formulaApplet
     // var isEditor = (fApp.id.toLowerCase() == 'editor');
     var isEditor = element.hasClass('edit');
-    console.log(fApp.index + ' ' + fApp.id + ' isEditor=' + isEditor);
+    console.log('(' + fApp.index + ') ' + fApp.id + (isEditor ? ' isEditor' : '') );
     if (isEditor) {
       fApp.hasResultField = true;
     }
@@ -340,9 +338,9 @@ async function mathQuillify() {
 
     // console.debug('isEditor=' + isEditor);
     if (isEditor) {
-      // console.log(fApp);
       prepareEditorPage(fApp);
-      var mqEditableField = element.find('.mq-editable-field')[0];
+      var mqEditableField
+      mqEditableField = element.find('.mq-editable-field')[0];
     } else {
       //******************
       // *** no editor ***
@@ -360,7 +358,7 @@ async function mathQuillify() {
         } else {
           fApp.hasSolution = false;
         }
-        var mqEditableField = element.find('.mq-editable-field')[0];
+        mqEditableField = element.find('.mq-editable-field')[0];
         var mf = MQ.MathField(mqEditableField, {});
         mf.config({
           handlers: {
@@ -380,13 +378,7 @@ async function mathQuillify() {
     if (fApp.hasResultField) {
       fApp.mqEditableField = mqEditableField;
       try {
-        // if (fApp.isEditor) {
-        //   var ham = element.find('.mq-editable-field')[0];
-        //   console.log(ham);
-        //   fApp.hammer = new Hammer(ham);
-        // } else {
         fApp.hammer = new Hammer(fApp.mqEditableField);
-        // }
         fApp.hammer.on("doubletap", function () {
           showVirtualKeyboard();
         });
@@ -438,7 +430,6 @@ function unifyDefinitions(def) {
 $(document).on("refreshLanguageEvent",
   function () {
     var lang = rememberLanguage.lang;
-    // console.log('rememberLanguage.lang=' + lang);
     refreshLanguage(lang);
   });
 
@@ -465,7 +456,7 @@ function refreshLanguage(lang) {
       }
       newLatex = sanitizeInputfieldTag(newLatex);
       if (oldLatex !== newLatex) {
-        console.log(oldLatex + ' -> ' + newLatex);
+        // console.log(oldLatex + ' -> ' + newLatex);
         editHandlerActive = false;
         if (FApp.hasSolution) {
           mf.latex(newLatex);

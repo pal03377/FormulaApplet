@@ -33,7 +33,7 @@ let rememberInit = (function () {
 })();
 
 rememberInit.setTranslationInitiated(true);
-console.log(rememberInit.isTranslationInitiated());
+// console.log(rememberInit.isTranslationInitiated());
 
 // export async function reloadTranslation() {
 async function reloadTranslation() {

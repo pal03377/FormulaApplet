@@ -59,7 +59,6 @@ export async function prepareEditorPage(fApp) {
   var mathFieldSpan = document.getElementById('math-field');
   // var mathFieldSpan = $('p#editor.formula_applet');
   if (!mathFieldSpan) throw new Error("Cannot find math-field. The math editor must provide one.");
-  console.log(mathFieldSpan);
   var editorMf = MQ.MathField(mathFieldSpan, {
     spaceBehavesLikeTab: true, // configurable
     handlers: {
@@ -78,7 +77,6 @@ export async function prepareEditorPage(fApp) {
   });
   $('#set-unit-d, #set-unit-e').on('mousedown', ev => {
     ev.preventDefault();
-    console.log(editorMf);
     setUnit(editorMf);
   });
   $('#erase-unit-d, #erase-unit-e').on('mousedown', ev => {
@@ -167,17 +165,11 @@ function getSelection(mf, options) {
     }
     selected = erased.substring(0, erased.length - postSelected.length);
     var result = [preSelected, selected, postSelected, ori];
-    console.log('selection: ' + result);
     return result;
   }
 }
 
 function setInput(editorMf) {
-  // var latex = editorMf.latex();
-  // console.log(latex);
-  // latex = eraseClass(latex);
-  // console.log(latex);
-  // editorMf.latex(latex);
   var temp = getSelection(editorMf, {
     erase: true
   });
@@ -384,7 +376,6 @@ const autoMode = {
 }
 
 function refreshResultField(latex) {
-  console.log(latex);
   showEditorResults(separateInputfield(latex));
 }
 
