@@ -59,11 +59,12 @@ export async function prepareEditorPage(fApp) {
   var mathFieldSpan = document.getElementById('math-field');
   // var mathFieldSpan = $('p#editor.formula_applet');
   if (!mathFieldSpan) throw new Error("Cannot find math-field. The math editor must provide one.");
+  console.log(mathFieldSpan);
   var editorMf = MQ.MathField(mathFieldSpan, {
     spaceBehavesLikeTab: true, // configurable
     handlers: {
       edit: function () { // useful event handlers
-        refreshResult(editorMf.latex())
+        //refreshResultField(editorMf.latex());
       }
     }
   });
@@ -89,7 +90,7 @@ export async function prepareEditorPage(fApp) {
     var rId = makeid(8);
     document.getElementById('fa_name').value = rId;
     newFaId = rId;
-    refreshResult(editorMf.latex())
+    refreshResultField(editorMf.latex())
   });
 
   $('#fa_name').on('input', ev => {
@@ -103,7 +104,7 @@ export async function prepareEditorPage(fApp) {
     fa_name = fa_name.replace(/ /g, '_');
     if (4 <= fa_name.length && fa_name.length <= 20) {
       newFaId = fa_name;
-      refreshResult(editorMf.latex())
+      refreshResultField(editorMf.latex())
     }
   });
 
@@ -113,13 +114,13 @@ export async function prepareEditorPage(fApp) {
       // $('p#editor span.mq-class.inputfield').prop('contentEditable', 'false');
       $('p.edit span.mq-class.inputfield').prop('contentEditable', 'false');
       autoMode.set(true);
-      refreshResult(editorMf.latex())
+      refreshResultField(editorMf.latex())
     }
     if (resultMode == 'manu') {
       // $('p#editor span.mq-class.inputfield').prop('contentEditable', 'true');
       $('p.edit span.mq-class.inputfield').prop('contentEditable', 'true');
       autoMode.set(false);
-      refreshResult(editorMf.latex())
+      refreshResultField(editorMf.latex())
     }
   });
   $('#random-id-d').mousedown();
@@ -293,11 +294,11 @@ export function setUnit(mf) {
   mf.latex(sanitizeInputfieldTag(newLatex));
 }
 
-export function sanitizeInputfieldTag(latex){
+export function sanitizeInputfieldTag(latex) {
   // first make shorter
-  var result = latex.replace('\\class{inputfield}{','\\class{');
+  var result = latex.replace('\\class{inputfield}{', '\\class{');
   // then make longer again
-  result = result.replace('\\class{','\\class{inputfield}{');
+  result = result.replace('\\class{', '\\class{inputfield}{');
   return result;
 }
 
@@ -382,7 +383,7 @@ const autoMode = {
   }
 }
 
-function refreshResult(latex) {
+function refreshResultField(latex) {
   console.log(latex);
   showEditorResults(separateInputfield(latex));
 }

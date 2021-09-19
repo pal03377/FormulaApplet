@@ -1,7 +1,7 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import builtins from 'rollup-plugin-node-builtins';
-import livereload from 'rollup-plugin-livereload';
+// import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import json from '@rollup/plugin-json';
 import replace from '@rollup/plugin-replace';
@@ -46,7 +46,8 @@ export default [{
 
 		// Watch the `public` directory and refresh the
 		// browser on changes when serving
-		!production && livereload("public", { port: 5001 }),
+		// temporarily disable livereload
+		// !production && livereload("public", { port: 5001 }),
 
 		// If we're building for production, minify
 		production && terser()

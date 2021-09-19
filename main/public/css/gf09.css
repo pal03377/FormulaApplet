@@ -160,3 +160,6 @@ span.mq-textcolor{
   cursor: text;
   font-family: Arial, "Times New Roman", Symbola, serif;
 } */
+.formula_applet.edit{
+	width: max-content;
+}

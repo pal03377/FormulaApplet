@@ -61,11 +61,8 @@ function FApp() {
   this.replaced = '';
 }
 
-export default async function preparePage(awaitDomLoad) {
-  console.log('preparePage() await domLoad=' + awaitDomLoad);
-  if (awaitDomLoad){
-    await domLoad;
-  }
+export default async function preparePage() {
+  await domLoad;
   ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
   $('button.keyb_button').on('mousedown', function () {
     showVirtualKeyboard();
@@ -388,7 +385,7 @@ async function mathQuillify() {
         //   console.log(ham);
         //   fApp.hammer = new Hammer(ham);
         // } else {
-          fApp.hammer = new Hammer(fApp.mqEditableField);
+        fApp.hammer = new Hammer(fApp.mqEditableField);
         // }
         fApp.hammer.on("doubletap", function () {
           showVirtualKeyboard();
@@ -448,7 +445,7 @@ $(document).on("refreshLanguageEvent",
 function refreshLanguage(lang) {
   for (var index = 0; index < FAList.length; index++) {
     var fApp = FAList[index];
-    if (! $(fApp.formulaApplet).hasClass('edit')) {
+    if (!$(fApp.formulaApplet).hasClass('edit')) {
       var hasSolution = FApp.hasSolution || false;
       var oldLatex, newLatex;
       if (hasSolution) {
