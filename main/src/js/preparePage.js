@@ -61,7 +61,7 @@ function FApp() {
   this.replaced = '';
 }
 
-export default async function preparePage() {
+export default async function preparePage(language) {
   await domLoad;
   ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
   $('button.keyb_button').on('mousedown', function () {
@@ -70,6 +70,7 @@ export default async function preparePage() {
   });
   mathQuillify();
   initTranslation();
+  console.log('language=' + language);
 
   $('body').on('click', function () {
     $(".formula_applet").removeClass('selected');

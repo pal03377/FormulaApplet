@@ -103,7 +103,7 @@ function setCookie(cookieName, cookieValue, exdays) {
  * @returns {string} value of cookie
  * @see setCookie
  */
-function getCookie(cookieName) {
+export function getCookie(cookieName) {
   var name = cookieName + "=";
   var ca = document.cookie.split(';');
   for (var i = 0; i < ca.length; i++) {
