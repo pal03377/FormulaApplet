@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
@@ -11,18 +11,62 @@
     <link rel='stylesheet' type='text/css' media='screen' href='MathQuill/mathquill.css'>
     <script src='build/bundle.js'></script>
 </head>
+
 <body>
     <p id="lang_select">
-      <input type="radio" name="lang" class="problemeditor language" id="en"></input>
-      <label for="en"><span></span>Englisch </label>
-      <br />
-      <input type="radio" name="lang" class="problemeditor language" id="de" checked></input>
-      <label for="de"><span></span>Deutsch </label>
+        <input type="radio" name="lang" class="problemeditor language" id="en"></input>
+        <label for="en"><span></span>Englisch </label>
+        <br />
+        <input type="radio" name="lang" class="problemeditor language" id="de" checked></input>
+        <label for="de"><span></span>Deutsch </label>
     </p>
+
+    <p>
+        <span class="tr en mode_select-headline" id="Mode" style="display: none;">Mode</span>
+        <span class="tr de mode_select-headline" id="Mode" style="">Modus</span>
+    </p>
+
+    <p id="mode_select">
+        <input type="radio" id="auto" name="select_mode" checked="">
+        <label for="auto">
+            <span class="tr en lse" style="display: none;">Automatic (left side of equation will be compared to right
+                side)</span>
+            <span class="tr de lse" style="">Automatisch (linke und rechte Gleichungsseite werden verglichen)</span>
+        </label>
+        <br>
+        <input type="radio" id="manu" name="select_mode">
+        <label for="auto">
+            <span class="tr en manu" style="display: none;">Manual (input will be compared with given solution)</span>
+            <span class="tr de manu" style="">Manuell (Eingabe wird mit einer vorgegeben Lösung verglichen)</span>
+        </label>
+    </p>
+
+    <p id="input_id">
+        <label class="tr de idfa" for="fa_name" style="">Id des Formel-Applets (4 bis 20 Zeichen)</label>
+        <label class="tr en idfa" for="fa_name" style="display: none;">Id of Formula Applet (4 to 20 characters)</label>
+        <input type="text" id="fa_name" name="fa_bla_name" required="" minlength="4" maxlength="20" size="10">
+        <button type="button" class="tr de mfxi problemeditor" id="random-id-d" style="">Zufalls-ID</button>
+        <button type="button" class="tr en mfxi problemeditor" id="random-id-e" style="display: none;">Random
+            ID</button>
+    </p>
+
+    <button type="button" class="tr de sif problemeditor" id="set-input-d" style="">Eingabe-Feld setzen</button>
+    <button type="button" class="tr en sif problemeditor" id="set-input-e" style="display: none;">Set input
+        field</button>
+    <button type="button" class="tr de peri problemeditor" id="set-unit-d" style="">Einheit</button>
+    <button type="button" class="tr en peri problemeditor" id="set-unit-e" style="display: none;">Unit</button>
+    <button type="button" class="tr de erau problemeditor" id="erase-unit-d" style="">Einheit löschen</button>
+    <button type="button" class="tr en erau problemeditor" id="erase-unit-e" style="display: none;">Erase Unit</button>
+    <hr>
 
     <p class="formula_applet edit" id="z59sg3e">
-      <span id="math-field">17 + 4 + a + b + c + d = \class{inputfield}{21}</span>
+        <span id="math-field">17 + 4 + j + u + h + u = \class{inputfield}{42}</span>
     </p>
+    
+    <textarea id="wiki-text" rows="4" cols="150">output</textarea>
+
+
 
 </body>
+
 </html>
