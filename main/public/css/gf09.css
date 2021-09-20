@@ -91,9 +91,11 @@ textarea#wiki-text {
 	background-color: midnightblue;
 }
 
+/*
 #lang_select input[type="radio"] {
-	/* display:none; */
+	display:none;
 }
+*/
 
 #lang_select input[type="radio"]+label {
 	color: #000;

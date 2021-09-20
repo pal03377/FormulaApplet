@@ -17,6 +17,7 @@ import MQ from "./lib/mathquillWrapper.js";
 var newFaId = newFaId || 'x8rT3dkkS';
 
 export async function initEditor() {
+  await domLoad;
   $.event.trigger("reloadTranslationEvent");
 }
 
@@ -41,7 +42,7 @@ export async function initEditor() {
 //     $('p#input_id').append('  <label class="tr de idfa" for="fa_name">Id des Formel-Applets (4 bis 20 Zeichen)</label><label class="tr en idfa" for="fa_name">Id of Formula Applet (4 to 20 characters)</label>');
 //     $('p#input_id').append('  <input type="text" id="fa_name" name="fa_bla_name" required minlength="4" maxlength="20" size="10">');
 //     $('p#input_id').append('  <button type="button" class="tr de mfxi problemeditor" id="random-id-d">Zufalls-ID</button><button type="button" class="tr en mfxi problemeditor" id="random-id-e">Random ID</button>');
-//     ed.after('<hr /><textarea id="wiki-text" rows=4 cols=150></textarea>');
+//     ed.after('<hr /><textarea id="html-output" rows=4 cols=150></textarea>');
 //     var unitbuttons = '<button type="button" class="tr de peri problemeditor" id="set-unit-d">Einheit</button>';
 //     unitbuttons += '<button type="button" class="tr en peri problemeditor" id="set-unit-e">Unit</button>';
 //     unitbuttons += '<button type="button" class="tr de erau problemeditor" id="erase-unit-d">Einheit l&ouml;schen</button>';
@@ -404,7 +405,7 @@ function showEditorResults(parts) {
   result += common_result + '</p>';
 
   // console.log(result);
-  var out = $('textarea#wiki-text');
+  var out = $('textarea#html-output');
   if (out.length > 0) {
     out.text(result);
   }
