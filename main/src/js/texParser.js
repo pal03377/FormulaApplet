@@ -58,7 +58,7 @@ node.prototype.debug = function () {
     text += ' children=' + this.children;
     text += ' type=' + this.type;
     text += ' content=' + this.content;
-    console.debug(text);
+    // console.debug(text);
     return text;
 };
 

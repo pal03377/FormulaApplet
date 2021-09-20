@@ -50,7 +50,7 @@ async function reloadTranslation() {
 export async function initTranslation() {
   if (!rememberInit.translationIsInitiated) {
     // backup of display attribute
-    console.debug('initTranslation()');
+    // console.debug('initTranslation()');
 
     // click event for language buttons
     $(function () {

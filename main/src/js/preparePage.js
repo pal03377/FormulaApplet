@@ -259,7 +259,7 @@ function sanitizePrecision(prec) {
 
 async function mathQuillify() {
   await domLoad;
-  console.debug('mathQuillify()');
+  // console.debug('mathQuillify()');
   initVirtualKeyboard();
   $(".formula_applet:not(.mq-math-mode)").each(function () {
     var temp = this.innerHTML;
@@ -291,7 +291,7 @@ async function mathQuillify() {
     fApp.id = element.attr('id') // name of formulaApplet
     // var isEditor = (fApp.id.toLowerCase() == 'editor');
     var isEditor = element.hasClass('edit');
-    console.log('(' + fApp.index + ') ' + fApp.id + (isEditor ? ' isEditor' : '') );
+    // console.log('(' + fApp.index + ') ' + fApp.id + (isEditor ? ' isEditor' : '') );
     if (isEditor) {
       fApp.hasResultField = true;
     }
