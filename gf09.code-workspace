@@ -2,6 +2,12 @@
     "folders": [
         {
             "path": "./main"
+        },
+        {
+            "path": "D:/Users/privat/Documents/C_Root_Entlasten/wamp64/www/drupal/sites/default/files/h5p/development/H5P.FormulaApplet-2.7"
+        },
+        {
+            "path": "D:/Users/privat/Documents/C_Root_Entlasten/wamp64/www/drupal/sites/default/files/h5p/development/H5PEditor.FormulaAppletEditor-1.0"
         }
     ]
 }

@@ -1,5 +1,7 @@
 import preparePage from "./js/preparePage.js";
-import {getCookie} from "./js/translate.js";
+import {
+    getCookie
+} from "./js/translate.js";
 var typeofH5P = (typeof H5P);
 if (typeofH5P == 'undefined') {
     console.info('no H5P');
