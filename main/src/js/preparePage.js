@@ -28,7 +28,7 @@ import {
 from "./texParser.js";
 import {
   initTranslation,
-  rememberLanguage
+  formulaAppletLanguage
 } from "./translate.js";
 import initVirtualKeyboard, {
   showVirtualKeyboard
@@ -61,7 +61,7 @@ function FApp() {
   this.replaced = '';
 }
 
-export default async function preparePage(language) {
+export default async function preparePage() {
   await domLoad;
   ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
   $('button.keyb_button').on('mousedown', function () {
@@ -70,8 +70,7 @@ export default async function preparePage(language) {
   });
   mathQuillify();
   initTranslation();
-  console.log('language=' + language);
-
+ 
   $('body').on('click', function () {
     $(".formula_applet").removeClass('selected');
     $("button.keyb_button").removeClass('selected');
@@ -428,13 +427,13 @@ function unifyDefinitions(def) {
   return dsList;
 }
 
-$(document).on("refreshLanguageEvent",
+$(document).on("refreshLatexEvent",
   function () {
-    var lang = rememberLanguage.lang;
-    refreshLanguage(lang);
+    var lang = formulaAppletLanguage.get();
+    refreshLatex(lang);
   });
 
-function refreshLanguage(lang) {
+function refreshLatex(lang) {
   for (var index = 0; index < FAList.length; index++) {
     var fApp = FAList[index];
     if (!$(fApp.formulaApplet).hasClass('edit')) {
@@ -455,7 +454,7 @@ function refreshLanguage(lang) {
         newLatex = oldLatex.replace(/\\cdot/g, '\\times');
         newLatex = newLatex.replace(/,/g, '.');
       }
-      newLatex = sanitizeInputfieldTag(newLatex);
+      // newLatex = sanitizeInputfieldTag(newLatex);
       if (oldLatex !== newLatex) {
         // console.log(oldLatex + ' -> ' + newLatex);
         editHandlerActive = false;

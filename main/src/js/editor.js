@@ -5,7 +5,7 @@ import {
   domLoad
 } from "./dom.js";
 // import {
-//   reloadTranslation
+//   clickLanguage
 // } from "./translate.js";
 import {
   encode
@@ -18,7 +18,7 @@ var newFaId = newFaId || 'x8rT3dkkS';
 
 export async function initEditor() {
   await domLoad;
-  $.event.trigger("reloadTranslationEvent");
+  $.event.trigger("clickLanguageEvent");
 }
 
 // export async function initEditor_backup() {
@@ -53,8 +53,8 @@ export async function initEditor() {
 //     var license_link = 'https://github.com/gro58/FormulaApplet/blob/master/js/lib/ToDo.md';
 //     prepend_uses.after('<p><span class="tr de uses">Das Formel-Applet benutzt die Bibliotheken jQuery, MathQuill und Hammer. </span><span class="tr en uses">FormulaApplet uses jQuery, MathQuill, and Hammer. </span><a href="' + license_link + '" class="tr de moreinfo">Weitere Informationen...</a><a href="' + license_link + '" class="tr en moreinfo">More info...</a></p>');
 //   }
-//   $.event.trigger("reloadTranslationEvent");
-//   // await reloadTranslation();
+//   $.event.trigger("clickLanguageEvent");
+//   // await clickLanguage();
 // }
 
 export async function prepareEditorPage(fApp) {
@@ -73,7 +73,7 @@ export async function prepareEditorPage(fApp) {
     }
   });
   fApp.mathField = editorMf;
-  $.event.trigger("refreshLanguageEvent");
+  $.event.trigger("refreshLatexEvent");
 
   // adjust events
   $('#set-input-d, #set-input-e').on('mousedown', ev => {
@@ -292,11 +292,13 @@ export function setUnit(mf) {
 }
 
 export function sanitizeInputfieldTag(latex) {
-  // first make shorter
-  var result = latex.replace('\\class{inputfield}{', '\\class{');
-  // then make longer again
-  result = result.replace('\\class{', '\\class{inputfield}{');
-  return result;
+  //if (typeof latex !== 'undefined') {
+    // first make shorter
+    var result = latex.replace('\\class{inputfield}{', '\\class{');
+    // then make longer again
+    result = result.replace('\\class{', '\\class{inputfield}{');
+    return result;
+  //}
 }
 
 export function eraseUnit(mf) {

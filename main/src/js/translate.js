@@ -8,47 +8,59 @@ import {
 async function switchTo(lang) {
   await domLoad;
   console.log('switch to ' + lang);
-  rememberLanguage.lang = lang;
+  formulaAppletLanguage.set(lang);
   $(".tr").css("display", "none");
   // $(".tr." + lang).css("display", "initial");
   $(".tr." + lang).css("display", "");
   // save lang
   setCookie('lang', lang, 7);
-  $.event.trigger("refreshLanguageEvent");
+  $.event.trigger("refreshLatexEvent");
 }
 
 /**
- * rememberInit hides _isTranslationInitiated: no global variable
+ * formulaAppletLanguage hides _isTranslationInitiated: no global variable
  */
-let rememberInit = (function () {
-  let _isTranslationInitiated = true;
+export let formulaAppletLanguage = (function () {
+  let _lang = "de";
   return {
-    setTranslationInitiated: function (truefalse) {
-      _isTranslationInitiated = truefalse;
+    set: function (lang) {
+      console.log('set lang to ' + lang);
+      _lang = lang;
     },
-    isTranslationInitiated: function () {
-      return _isTranslationInitiated;
+    get: function () {
+      console.log('get lang: ' + _lang);
+      return _lang;
     }
   }
 })();
 
-rememberInit.setTranslationInitiated(true);
-// console.log(rememberInit.isTranslationInitiated());
+var translate = {
+  init: false
+};
 
-// export async function reloadTranslation() {
-async function reloadTranslation() {
-  var lang = getCookie('lang') || 'de';
+// rememberInit.setTranslationInitiated(true);
+// initTranslation(); called by preparePage & mainLicense
+console.log('translate.init =' + translate.init);
+
+// export async function clickLanguage() {
+async function clickLanguage() {
+  // var lang = getCookie('lang') || 'de';
   // console.log('switch to lang: ' + lang);
-  await switchTo(lang);
+  // await switchTo(lang);
+  var lang = formulaAppletLanguage.get();
+  $("#" + lang).click();
 }
 
 /**
  * make buttons with id=de and id=en clickable
- * init event handler for reloadTranslationEvent
- * call reloadTranslation for the first time
+ * init event handler for clickLanguageEvent
+ * call clickLanguage for the first time
  */
 export async function initTranslation() {
-  if (!rememberInit.translationIsInitiated) {
+  // if (!rememberInit.isTranslationInitiated()) {
+  console.log('translate.init =' + translate.init);
+
+  if (!translate.init) {
     // backup of display attribute
     // console.debug('initTranslation()');
 
@@ -63,12 +75,13 @@ export async function initTranslation() {
       });
     });
 
-    $(document).on("reloadTranslationEvent", function () {
-      reloadTranslation();
+    $(document).on("clickLanguageEvent", function () {
+      clickLanguage();
     });
 
-    rememberInit.setTranslationInitiated(true);
-    await reloadTranslation();
+    // rememberInit.setTranslationInitiated(true);
+    translate.init = true;
+    await clickLanguage();
   }
 }
 
@@ -80,7 +93,9 @@ export async function initTranslation() {
 //   return lang;
 // }
 
-export const rememberLanguage = {lang:"de", bli:"bla"};
+// export var formulaAppletLanguage = {
+//   lang: "de"
+// };
 
 /**
  * 
