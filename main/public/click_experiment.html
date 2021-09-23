@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>FormulaApplet</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src='https://code.jquery.com/jquery-3.6.0.slim.min.js'></script>
+</head>
+
+<body>
+
+    <p id='out'>output</p>
+    <p id="lang_select">
+        <input type="radio" name="lang" class="problemeditor language" id="en"></input>
+        <label for="en"><span></span>Englisch </label>
+        <br />
+        <input type="radio" name="lang" class="problemeditor language" id="de"></input>
+        <label for="de"><span></span>Deutsch </label>
+    </p>
+
+    <p id="test">
+        <input type="radio" name="test" id="en2"></input>
+        <label for="en2"><span></span>send click to E</label>
+        <br />
+        <input type="radio" name="test" id="de2"></input>
+        <label for="de2"><span></span>send click to D</label>
+    </p>
+
+    <script>
+        // click event for language buttons -> translate.js
+        (function () {
+            $('#de').on('click', function (ev) {
+                console.log(ev.screenY);
+                console.log(ev.pointerId);
+                if (ev.screenY == 0) {
+                    console.log('de triggered by code');
+                } else {
+                    switchTo('de');
+                }
+            });
+            $('#en').on('click', function (ev) {
+                console.log(ev.screenY);
+                console.log(ev.pointerId);
+                if (ev.screenY == 0) {
+                    console.log('en triggered by code');
+                } else {
+                    switchTo('en');
+                }
+           });
+        })();
+
+        function switchTo(lang) {
+            document.getElementById('out').innerHTML = lang;
+            window.setTimeout(function () {
+                document.getElementById('out').innerHTML = '*';
+            }, 500);
+        }
+
+        function clickhelper(id) {
+            // console.log(id);
+            var element = document.getElementById(id);
+            element.click();
+        }
+
+        document.getElementById('en2').addEventListener('click', function (event) {
+            clickhelper('en');
+        });
+        document.getElementById('de2').addEventListener('click', function (event) {
+            clickhelper('de');
+        });
+    </script>
+
+
+
+
+
+</body>
+
+</html>
