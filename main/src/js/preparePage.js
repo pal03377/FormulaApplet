@@ -454,7 +454,7 @@ function refreshLatex(lang) {
         newLatex = oldLatex.replace(/\\cdot/g, '\\times');
         newLatex = newLatex.replace(/,/g, '.');
       }
-      // newLatex = sanitizeInputfieldTag(newLatex);
+      newLatex = sanitizeInputfieldTag(newLatex);
       if (oldLatex !== newLatex) {
         // console.log(oldLatex + ' -> ' + newLatex);
         editHandlerActive = false;

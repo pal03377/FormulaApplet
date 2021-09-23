@@ -14,6 +14,7 @@ async function switchTo(lang) {
   $(".tr." + lang).css("display", "");
   // save lang
   setCookie('lang', lang, 7);
+  // $("#" + lang)[0].prop('checked', true);
   $.event.trigger("refreshLatexEvent");
 }
 
@@ -40,15 +41,20 @@ var translate = {
 
 // rememberInit.setTranslationInitiated(true);
 // initTranslation(); called by preparePage & mainLicense
-console.log('translate.init =' + translate.init);
+// console.log('translate.init =' + translate.init);
 
 // export async function clickLanguage() {
 async function clickLanguage() {
   // var lang = getCookie('lang') || 'de';
   // console.log('switch to lang: ' + lang);
   // await switchTo(lang);
+  await domLoad;
   var lang = formulaAppletLanguage.get();
-  $("#" + lang).click();
+  var element = document.getElementById(lang);
+  console.log(element);
+  $(element).prop("checked",true).trigger("change");
+  switchTo(lang);
+  // $( 'input[name="lang"]:radio:first' ).click();
 }
 
 /**
@@ -81,6 +87,7 @@ export async function initTranslation() {
 
     // rememberInit.setTranslationInitiated(true);
     translate.init = true;
+    console.log('translate.init =' + translate.init);
     await clickLanguage();
   }
 }
