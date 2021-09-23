@@ -70,7 +70,7 @@ export default async function preparePage() {
   });
   mathQuillify();
   initTranslation();
- 
+
   $('body').on('click', function () {
     $(".formula_applet").removeClass('selected');
     $("button.keyb_button").removeClass('selected');
@@ -359,6 +359,7 @@ async function mathQuillify() {
           fApp.hasSolution = false;
         }
         mqEditableField = element.find('.mq-editable-field')[0];
+        fApp.mqEditableField = mqEditableField;
         var mf = MQ.MathField(mqEditableField, {});
         mf.config({
           handlers: {
@@ -373,17 +374,15 @@ async function mathQuillify() {
           }
         });
         fApp.mathField = mf;
-      }
-    }
-    if (fApp.hasResultField) {
-      fApp.mqEditableField = mqEditableField;
-      try {
-        fApp.hammer = new Hammer(fApp.mqEditableField);
-        fApp.hammer.on("doubletap", function () {
-          showVirtualKeyboard();
-        });
-      } catch (error) {
-        console.info('Hammer error: ' + error);
+
+        try {
+          fApp.hammer = new Hammer(mqEditableField);
+          fApp.hammer.on("doubletap", function () {
+            showVirtualKeyboard();
+          });
+        } catch (error) {
+          console.error('Hammer error: ' + error);
+        }
       }
     }
     index++;
