@@ -13,7 +13,14 @@ async function switchTo(lang) {
   // $(".tr." + lang).css("display", "initial");
   $(".tr." + lang).css("display", "");
   // save lang
+  console.log('save cookie ' + lang);
   setCookie('lang', lang, 7);
+  var element = document.getElementById(lang);
+  if (element) {
+    element.click();
+    console.log('trigger click ' + lang);
+  }
+
   // $("#" + lang)[0].prop('checked', true);
   $.event.trigger("refreshLatexEvent");
 }
@@ -43,18 +50,36 @@ var translate = {
 // initTranslation(); called by preparePage & mainLicense
 // console.log('translate.init =' + translate.init);
 
-// export async function clickLanguage() {
-async function clickLanguage() {
-  // var lang = getCookie('lang') || 'de';
-  // console.log('switch to lang: ' + lang);
-  // await switchTo(lang);
-  await domLoad;
-  var lang = formulaAppletLanguage.get();
+// // export async function clickLanguage() {
+// async function clickLanguage() {
+//   // var lang = getCookie('lang') || 'de';
+//   // console.log('switch to lang: ' + lang);
+//   // await switchTo(lang);
+//   await domLoad;
+//   var lang = formulaAppletLanguage.get();
+//   var element = document.getElementById(lang);
+//   console.log(element);
+//   $(element).prop("checked",true).trigger("change");
+//   switchTo(lang);
+//   // $( 'input[name="lang"]:radio:first' ).click();
+// }
+
+function clickListener(event){
+  var lang = this.id;
+  if(event.screenY == 0){
+    // triggered click - do nothing
+    console.log('triggered click - do nothing');
+  } else {
+    // real click
+    switchTo(lang);
+  }
+}
+
+function addClickListener(lang){
   var element = document.getElementById(lang);
-  console.log(element);
-  $(element).prop("checked",true).trigger("change");
-  switchTo(lang);
-  // $( 'input[name="lang"]:radio:first' ).click();
+  if (element) {
+    element.addEventListener('click', clickListener);      
+  }
 }
 
 /**
@@ -64,31 +89,37 @@ async function clickLanguage() {
  */
 export async function initTranslation() {
   // if (!rememberInit.isTranslationInitiated()) {
-  console.log('translate.init =' + translate.init);
-
+  
   if (!translate.init) {
+    console.log('translate.init START ');
     // backup of display attribute
     // console.debug('initTranslation()');
 
     // click event for language buttons
-    $(function () {
-      // $('.btn').button()
-      $('#de').on('click', function () {
-        switchTo('de');
-      });
-      $('#en').on('click', function () {
-        switchTo('en');
-      });
-    });
+    addClickListener('de');
+    addClickListener('en');
+    // $(function () {
+    //   // $('.btn').button()
+    //   $('#de').on('click', function () {
+    //     switchTo('de');
+    //   });
+    //   $('#en').on('click', function () {
+    //     switchTo('en');
+    //   });
+    // });
 
-    $(document).on("clickLanguageEvent", function () {
-      clickLanguage();
-    });
+    // $(document).on("clickLanguageEvent", function () {
+    //   clickLanguage();
+    // });
 
     // rememberInit.setTranslationInitiated(true);
     translate.init = true;
-    console.log('translate.init =' + translate.init);
-    await clickLanguage();
+    console.log('translate.init END');
+    // await clickLanguage();
+    var lang = formulaAppletLanguage.get();
+    switchTo(lang);
+  } else {
+    console.log('translate.init SKIPPED');
   }
 }
 

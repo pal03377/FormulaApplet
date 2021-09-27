@@ -3,11 +3,11 @@ import {
     formulaAppletLanguage,
     getCookie
 } from "./js/translate.js";
+var lang;
 var typeofH5P = (typeof H5P);
 if (typeofH5P == 'undefined') {
     console.info('no H5P');
-    var lang = getCookie('lang') || 'de';
-    formulaAppletLanguage.set(lang);
+    lang = getCookie('lang') || 'de';
     preparePage();
 } else {
     // eslint-disable-next-line no-undef
@@ -19,3 +19,6 @@ if (typeofH5P == 'undefined') {
     });
     console.info('H5P listening to preparePageEvent');
 }
+console.log('formulaAppletLanguage.set ' + lang);
+formulaAppletLanguage.set(lang);
+// This information is used by preparePage.js and translate.js/clickLanguage()
