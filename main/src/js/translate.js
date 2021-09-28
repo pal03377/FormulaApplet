@@ -10,10 +10,9 @@ async function switchTo(lang) {
   console.log('switch to ' + lang);
   formulaAppletLanguage.set(lang);
   $(".tr").css("display", "none");
-  // $(".tr." + lang).css("display", "initial");
   $(".tr." + lang).css("display", "");
   // save lang
-  console.log('save cookie ' + lang);
+  console.log('save cookie lang=' + lang);
   setCookie('lang', lang, 7);
   var element = document.getElementById(lang);
   if (element) {
@@ -21,22 +20,21 @@ async function switchTo(lang) {
     console.log('trigger click ' + lang);
   }
 
-  // $("#" + lang)[0].prop('checked', true);
   $.event.trigger("refreshLatexEvent");
 }
 
 /**
- * formulaAppletLanguage hides _isTranslationInitiated: no global variable
+ * formulaAppletLanguage hides _lang: no global variable
  */
 export let formulaAppletLanguage = (function () {
   let _lang = "de";
   return {
     set: function (lang) {
-      console.log('set lang to ' + lang);
+      // console.log('set lang to ' + lang);
       _lang = lang;
     },
     get: function () {
-      console.log('get lang: ' + _lang);
+      // console.log('get lang: ' + _lang);
       return _lang;
     }
   }
@@ -46,27 +44,9 @@ var translate = {
   init: false
 };
 
-// rememberInit.setTranslationInitiated(true);
-// initTranslation(); called by preparePage & mainLicense
-// console.log('translate.init =' + translate.init);
-
-// // export async function clickLanguage() {
-// async function clickLanguage() {
-//   // var lang = getCookie('lang') || 'de';
-//   // console.log('switch to lang: ' + lang);
-//   // await switchTo(lang);
-//   await domLoad;
-//   var lang = formulaAppletLanguage.get();
-//   var element = document.getElementById(lang);
-//   console.log(element);
-//   $(element).prop("checked",true).trigger("change");
-//   switchTo(lang);
-//   // $( 'input[name="lang"]:radio:first' ).click();
-// }
-
-function clickListener(event){
+function clickListener(event) {
   var lang = this.id;
-  if(event.screenY == 0){
+  if (event.screenY == 0) {
     // triggered click - do nothing
     console.log('triggered click - do nothing');
   } else {
@@ -75,65 +55,28 @@ function clickListener(event){
   }
 }
 
-function addClickListener(lang){
+function addClickListener(lang) {
   var element = document.getElementById(lang);
   if (element) {
-    element.addEventListener('click', clickListener);      
+    element.addEventListener('click', clickListener);
   }
 }
 
-/**
- * make buttons with id=de and id=en clickable
- * init event handler for clickLanguageEvent
- * call clickLanguage for the first time
- */
 export async function initTranslation() {
-  // if (!rememberInit.isTranslationInitiated()) {
-  
+
   if (!translate.init) {
     console.log('translate.init START ');
-    // backup of display attribute
-    // console.debug('initTranslation()');
-
-    // click event for language buttons
+    // make buttons with id=de and id=en clickable
     addClickListener('de');
     addClickListener('en');
-    // $(function () {
-    //   // $('.btn').button()
-    //   $('#de').on('click', function () {
-    //     switchTo('de');
-    //   });
-    //   $('#en').on('click', function () {
-    //     switchTo('en');
-    //   });
-    // });
-
-    // $(document).on("clickLanguageEvent", function () {
-    //   clickLanguage();
-    // });
-
-    // rememberInit.setTranslationInitiated(true);
     translate.init = true;
     console.log('translate.init END');
-    // await clickLanguage();
     var lang = formulaAppletLanguage.get();
     switchTo(lang);
   } else {
     console.log('translate.init SKIPPED');
   }
 }
-
-/**
- * rememberLanguage hides _lang: no global variable
- */
-// export async function rememberLanguage() {
-//   var lang;
-//   return lang;
-// }
-
-// export var formulaAppletLanguage = {
-//   lang: "de"
-// };
 
 /**
  * 
