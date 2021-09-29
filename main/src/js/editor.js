@@ -355,6 +355,23 @@ function refreshResultField(latex) {
 }
 
 function showEditorResults(parts) {
+  var tex = parts.before + '{{result}}' + parts.after;
+  tex = tex.replace(/\\textcolor{blue}{/g, '\\unit{');
+  // console.log('trigger formulaAppletEditEvent');
+  // $(document).trigger('formulaAppletEditEvent', {html: html_line});
+
+  // H5P
+  var element = $('div.field.field-name-TEX_expression.text input')[0];
+  console.log(element);
+  element.value = tex;
+  //html
+  var out = $('textarea#html-output');
+  if (out.length > 0) {
+    out.text(getHTML(tex, parts.tag));
+  }
+}
+
+function getHTML(tex, tag) {
   var result = '<p class="formula_applet"';
   // var editable = $('p#editor span.mq-class.inputfield').prop('contentEditable');
   var resultMode;
@@ -365,20 +382,12 @@ function showEditorResults(parts) {
   }
   var common_result = ' id="' + newFaId;
   if (resultMode == 'manu') {
-    common_result += '" data-b64="' + encode(parts.tag);
+    common_result += '" data-b64="' + encode(tag);
   }
   common_result += '">';
-  common_result += parts.before;
-  common_result += '{{result}}';
-  common_result += parts.after;
-  common_result = common_result.replace(/\\textcolor{blue}{/g, '\\unit{');
+  common_result += tex;
   result += common_result + '</p>';
-
-  // console.log(result);
-  var out = $('textarea#html-output');
-  if (out.length > 0) {
-    out.text(result);
-  }
+  return result;
 }
 
 function makeid(length) {
