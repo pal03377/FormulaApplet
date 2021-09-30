@@ -10,7 +10,7 @@ async function switchTo(lang) {
   console.log('switch to ' + lang);
   formulaAppletLanguage.set(lang);
   $(".tr").css("display", "none");
-  $(".tr." + lang).css("display", "");
+  $(".tr." + lang).css("display", "inline");
   // save lang
   console.log('save cookie lang=' + lang);
   setCookie('lang', lang, 7);

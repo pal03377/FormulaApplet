@@ -31,16 +31,19 @@ export async function prepareEditorPage(fApp) {
   var editorMf = MQ.MathField(mathFieldSpan, {
     spaceBehavesLikeTab: true, // configurable
     handlers: {
-      edit: function () { // useful event handlers
+      edit: function (mathField) { // useful event handlers
         try {
-          refreshResultField(fApp.mathField.latex());
+          var latex = mathField.latex();
+          console.log('** edithandler latex=' + latex);
+          refreshResultField(latex);
         } catch (error) {
-          console.log('ERROR in editorMf.latex(): ' + error);
+          console.log('ERROR in MQ.MathField: ' + error);
         }
       }
     }
   });
   fApp.mathField = editorMf;
+  refreshResultField(editorMf.latex());
   $.event.trigger("refreshLatexEvent");
 
   // adjust events
@@ -260,13 +263,16 @@ export function setUnit(mf) {
 }
 
 export function sanitizeInputfieldTag(latex) {
-  //if (typeof latex !== 'undefined') {
-  // first make shorter
-  var result = latex.replace('\\class{inputfield}{', '\\class{');
-  // then make longer again
-  result = result.replace('\\class{', '\\class{inputfield}{');
-  return result;
-  //}
+  var result;
+  if (typeof latex === 'undefined') {
+    result = '';
+  } else {
+    // first make shorter
+    result = latex.replace('\\class{inputfield}{', '\\class{');
+    // then make longer again
+    result = result.replace('\\class{', '\\class{inputfield}{');
+    return result;
+  }
 }
 
 export function eraseUnit(mf) {
@@ -330,12 +336,15 @@ function separateInputfield(latex) {
     tag: tag,
     after: afterTag
   };
+  console.info(latex);
+  console.info(beforeTag + ' | ' + tag + ' | ' + afterTag);
   return result;
 }
 
 function eraseClass(latex) {
-  // latex = 'abc+class{def}+ghi';
+  // latex = 'abc\\class{inputfield}{def}ghi';
   // temp = ['abc+', 'def', '+ghi'];
+  // return 'abcdefghi';
   var temp = separateInputfield(latex);
   return temp.before + temp.tag + temp.after;
 }
@@ -351,7 +360,9 @@ const autoMode = {
 }
 
 function refreshResultField(latex) {
-  showEditorResults(separateInputfield(latex));
+  console.log('refreshResultField');
+  var parts = separateInputfield(latex);
+  showEditorResults(parts);
 }
 
 function showEditorResults(parts) {
@@ -363,10 +374,12 @@ function showEditorResults(parts) {
   // H5P
   var element = $('div.field.field-name-TEX_expression.text input')[0];
   console.log(element);
-  element.value = tex;
+  if (typeof element !== 'undefined') {
+    element.value = tex;
+  }
   //html
   var out = $('textarea#html-output');
-  if (out.length > 0) {
+  if (typeof out !== 'undefined') {
     out.text(getHTML(tex, parts.tag));
   }
 }

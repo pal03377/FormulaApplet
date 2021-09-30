@@ -7,7 +7,10 @@ var lang;
 var typeofH5P = (typeof H5P);
 if (typeofH5P == 'undefined') {
     console.info('no H5P');
-    lang = getCookie('lang') || 'de';
+    lang = getCookie('lang');
+    if (lang == null || lang == 'null'){
+        lang = 'de';
+    }
     preparePage();
 } else {
     // eslint-disable-next-line no-undef
