@@ -371,13 +371,17 @@ function showEditorResults(parts) {
   // $(document).trigger('texevent');
 
   // H5P
-  var element = $('div.field.field-name-TEX_expression.text input')[0];
-  // console.log(element);
-  if (typeof element !== 'undefined') {
-    element.value = tex;
-    // element.setAttribute('value', tex);
-    console.log('trigger texevent');
-    $(document).trigger('texevent');
+  var texinput = $('div.field.field-name-TEX_expression.text input')[0];
+  // console.log(texinput);
+  if (typeof texinput !== 'undefined') {
+    texinput.value = tex;
+    texinput.dispatchEvent(new InputEvent('input', {
+      bubbles: true
+    }))
+
+    // texinput.setAttribute('value', tex);
+    // console.log('trigger texevent');
+    // $(document).trigger('texevent');
   } else {
     console.log('no TEX_expression found');
   }
