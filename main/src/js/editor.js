@@ -375,13 +375,10 @@ function showEditorResults(parts) {
   // console.log(texinput);
   if (typeof texinput !== 'undefined') {
     texinput.value = tex;
+    // trigger InputEvent
     texinput.dispatchEvent(new InputEvent('input', {
       bubbles: true
     }))
-
-    // texinput.setAttribute('value', tex);
-    // console.log('trigger texevent');
-    // $(document).trigger('texevent');
   } else {
     console.log('no TEX_expression found');
   }

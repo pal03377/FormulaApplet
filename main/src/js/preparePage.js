@@ -328,10 +328,14 @@ async function mathQuillify() {
         }
         activeMathfieldIndex = fApp.index;
       } else {
-        var mfContainer = MQ.StaticMath(FAList[index].formulaApplet);
-        var mfLatexForParser = mfContainer.latex();
-        var myTree = new FaTree();
-        myTree.leaf.content = mfLatexForParser;
+        try {
+          var mfContainer = MQ.StaticMath(FAList[index].formulaApplet);
+          var mfLatexForParser = mfContainer.latex();
+          var myTree = new FaTree();
+          myTree.leaf.content = mfLatexForParser;
+        } catch (error) {
+          console.log('ERROR ' + error);
+        }
       }
     })
     FAList[index] = fApp;
@@ -442,8 +446,12 @@ function refreshLatex(lang) {
         var mf = FAList[index].mathField;
         oldLatex = mf.latex();
       } else {
-        var mfContainer = MQ.StaticMath(FAList[index].formulaApplet);
-        oldLatex = mfContainer.latex();
+        try {
+          var mfContainer = MQ.StaticMath(FAList[index].formulaApplet);
+          oldLatex = mfContainer.latex();
+        } catch (error) {
+          console.log('ERROR ' + error);
+        }
       }
       if (lang == 'de') {
         newLatex = oldLatex.replace(/\\times/g, '\\cdot');

@@ -10,6 +10,11 @@
     <link rel='stylesheet' type='text/css' media='screen' href='css/table.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='MathQuill/mathquill.css'>
     <script src='build/bundle.js'></script>
+	<script>
+		var element = document.getElementById('de');
+		console.log(element);
+		element.click();
+	</script>
 </head>
 
 <body>
@@ -22,7 +27,7 @@
     </p>
 
     <p>
-        <span class="tr en mode_select-headline" id="Mode" style="display: none;">Mode</span>
+        <span class="tr en mode_select-headline" id="Mode" style="">Mode</span>
         <span class="tr de mode_select-headline" id="Mode" >Modus</span>
     </p>
 
@@ -64,9 +69,6 @@
     </p>
     <br>
     <textarea id="html-output" rows="4" cols="150">output</textarea>
-
-
-
 </body>
 
 </html>
