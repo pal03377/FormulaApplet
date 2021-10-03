@@ -58,7 +58,6 @@ function FApp() {
   this.hasResultField = true;
   this.unitAuto = false;
   this.innerOri = '';
-  this.replaced = '';
 }
 
 export default async function preparePage() {
@@ -68,7 +67,7 @@ export default async function preparePage() {
     showVirtualKeyboard();
     $("button.keyb_button").removeClass('selected');
   });
-  mathQuillify();
+  mathQuillify_old();
   initTranslation();
 
   $('body').on('click', function () {
@@ -257,9 +256,12 @@ function sanitizePrecision(prec) {
   return prec;
 }
 
-async function mathQuillify() {
+export async function mathQuillify(id) {
+  console.log('mathQuillify ' + id);
+}
+
+async function mathQuillify_old() {
   await domLoad;
-  // console.debug('mathQuillify()');
   initVirtualKeyboard();
   $(".formula_applet:not(.mq-math-mode)").each(function () {
     var temp = this.innerHTML;
@@ -273,7 +275,6 @@ async function mathQuillify() {
     temp = temp.replace(/\\Ohm/g, '\\Omega');
     temp = temp.replace(/\\mathrm/g, '');
     this.innerHTML = temp.replace(/\\unit{/g, '\\textcolor{blue}{');
-    this.replaced = temp;
   });
 
   $(".formula_applet").each(function () {

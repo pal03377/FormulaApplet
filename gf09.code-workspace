@@ -6,5 +6,7 @@
         {
             "path": "./h5p/development"
         }
-    ]
+    ],
+    "settings": {
+    }
 }

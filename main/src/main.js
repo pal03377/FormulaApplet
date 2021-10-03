@@ -1,14 +1,17 @@
-import preparePage from "./js/preparePage.js";
+import preparePage, {
+    mathQuillify
+} from "./js/preparePage.js";
 import {
     formulaAppletLanguage,
     getCookie
 } from "./js/translate.js";
+
 var lang;
 var typeofH5P = (typeof H5P);
 if (typeofH5P == 'undefined') {
     console.info('no H5P');
     lang = getCookie('lang');
-    if (lang == null || lang == 'null'){
+    if (lang == null || lang == 'null') {
         lang = 'de';
     }
     preparePage();
@@ -19,6 +22,10 @@ if (typeofH5P == 'undefined') {
     H5P.jQuery(document).on('preparePageEvent', function () {
         console.info('preparePageEvent received');
         preparePage();
+    });
+    // eslint-disable-next-line no-undef
+    H5P.jQuery(document).on('mathquillifyEvent', function (ev, id) {
+        mathQuillify(id);
     });
     console.info('H5P listening to preparePageEvent');
 }
