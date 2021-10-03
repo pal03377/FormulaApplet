@@ -1,6 +1,6 @@
 obsolete/
 other/
-development/
+/gut/gf09/development/
 regex_example.js
 js/lib/KAS/
 Algebrite_files/
@@ -10,7 +10,7 @@ node_modules/
 Doxyfile
 doc(doxygen)
 version*.txt
-md/Paul.md
+/gut/gf09/md/Paul.md
 make-zip/
 html_version/
 
