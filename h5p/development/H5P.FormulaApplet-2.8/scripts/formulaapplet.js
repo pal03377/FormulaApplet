@@ -54,8 +54,5 @@ H5P.FormulaApplet = (function ($) {
 function afterAppend(id) {
   // self.$.trigger('resize');
   H5P.jQuery(document).trigger('resize');
-  // console.log('afterAppend: trigger preparePageEvent');
-  // H5P.jQuery(document).trigger('preparePageEvent');
   H5P.jQuery(document).trigger('mathquillifyEvent', id);
-
 }

@@ -14,9 +14,9 @@ async function switchTo(lang) {
   // save lang
   console.log('save cookie lang=' + lang);
   setCookie('lang', lang, 7);
-  var element = document.getElementById(lang);
-  if (element) {
-    element.click();
+  var domElem = document.getElementById(lang);
+  if (domElem) {
+    domElem.click();
     console.log('trigger click ' + lang);
   }
 
@@ -55,9 +55,9 @@ function clickListener(event) {
 }
 
 function addClickListener(lang) {
-  var element = document.getElementById(lang);
-  if (element) {
-    element.addEventListener('click', clickListener);
+  var domElem = document.getElementById(lang);
+  if (domElem) {
+    domElem.addEventListener('click', clickListener);
   }
 }
 

@@ -159,6 +159,9 @@ function afterAppend(obj) {
   });
   console.log('listening to formulaappletmode change event');
 
+  H5P.jQuery('.field-name-id').css('display', 'none');
+
+
   // create 'set input field' button
   var anchor = H5P.jQuery('div.field.field-name-fa_applet.text.formulaAppletEditor');
   console.log(anchor);

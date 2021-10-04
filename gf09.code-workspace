@@ -1,10 +1,10 @@
 {
     "folders": [
         {
-            "path": "./main"
+            "path": "./h5p/development"
         },
         {
-            "path": "./h5p/development"
+            "path": "./main"
         }
     ],
     "settings": {

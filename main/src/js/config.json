@@ -1,5 +1,6 @@
 {
     "defaultPrecision": 0.000001,
-    "multiplicationSign": "&times;",
-    "multiplicationDot": "\\cdot"
+    "multiplicationCross": "&times;",
+    "multiplicationDot": "\\cdot",
+    "unit_replacement": "\\textcolor{blue}{"
 }

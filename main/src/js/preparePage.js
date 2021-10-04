@@ -41,6 +41,7 @@ import {
 
 var activeMathfieldIndex = 0;
 var FAList = [];
+var FAList2 = {};
 var editHandlerActive = true;
 
 // define class FApp using function syntax
@@ -48,7 +49,6 @@ function FApp() {
   this.index = '';
   this.id = '';
   this.formulaApplet = '';
-  this.hasSolution = undefined;
   this.solution = '';
   this.mqEditableField = '';
   this.mathField = "";
@@ -56,33 +56,39 @@ function FApp() {
   this.definitionsetList = [];
   this.precision = config.defaultPrecision;
   this.hasResultField = true;
+  this.hasSolution = undefined;
   this.unitAuto = false;
-  this.innerOri = '';
 }
 
 export default async function preparePage() {
   await domLoad;
+  console.log('preparePage');
+  // make virtual keyboard show/hide by mouseclick
+  console.log('virtual keyboard buttons');
   ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
   $('button.keyb_button').on('mousedown', function () {
     showVirtualKeyboard();
     $("button.keyb_button").removeClass('selected');
   });
-  mathQuillify_old();
-  initTranslation();
+  // mathQuillify_old();
 
+  // body click deselects all applets
   $('body').on('click', function () {
     $(".formula_applet").removeClass('selected');
     $("button.keyb_button").removeClass('selected');
   });
 
+  // make tab key work
   $('body').on('keyup', function (ev) {
     var key = ev.originalEvent.key;
     if (key == 'Tab') {
       var fa = $(ev.target).parents('.formula_applet');
       // var id = $(fa).attr('id');
-      fa.click();
+      fa.trigger('click');
     }
   });
+  initTranslation();
+  mathQuillifyAll();
 }
 
 function keyboardEvent(cmd) {
@@ -258,20 +264,159 @@ function sanitizePrecision(prec) {
 export async function mathQuillify(id) {
   await domLoad;
   // console.log('mathQuillify ' + id);
-  var element = $('#' + id + '.formula_applet:not(.mq-math-mode)')[0];
-  if (typeof element !== 'undefined'){
-    // console.log(element);
-    var temp = element.innerHTML;
-    console.log('mathQuillify ' + id + ' ' + temp);
+  var $el = $('#' + id + '.formula_applet:not(.mq-math-mode)');
+  var domElem = $el[0];
+  if (typeof domElem !== 'undefined') {
+    // console.log(domElem);
+    var temp = domElem.innerHTML;
+    temp = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
+    temp = temp.replace(/\\Ohm/g, '\\Omega');
+    temp = temp.replace(/\\mathrm/g, '');
+    temp = temp.replace(/\\unit{/g, config.unit_replacement);
+    temp = temp.replace(/\\cdot/g, config.multiplicationSign);
+    domElem.innerHTML = temp;
+
+    // create new FApp object and store in FAList 
+    var index = FAList.length;
+    var fApp = new FApp();
+    fApp.index = index;
+    fApp.hasResultField = ($el.html().indexOf('\\MathQuillMathField{}') >= 0);
+    // fApp.id = $el.attr('id') // name of formulaApplet
+    fApp.id = id // name of formulaApplet
+    fApp.formulaApplet = domElem;
+
+    var isEditor = $el.hasClass('edit');
+    if (isEditor) {
+      fApp.hasResultField = true;
+    }
+    // retrieve definitionsets
+    var def = $el.attr('def');
+    if (typeof def !== 'undefined') {
+      fApp.definitionsetList = unifyDefinitions(def);
+    }
+    // retrieve math/physics mode
+    var unitAttr = $el.attr('unit');
+    var unitAuto = (typeof unitAttr !== 'undefined' && unitAttr == 'auto');
+    var modeAttr = $el.attr('mode');
+    var modePhysics = (typeof modeAttr !== 'undefined' && modeAttr == 'physics');
+    fApp.unitAuto = unitAuto || modePhysics;
+
+    // store FApp object in FAList and take id as key
+    FAList[index] = fApp;
+    FAList2[id] = fApp;
+
+    // domElem.addEventListener('click', clickHandler);
+    $el.on('click', clickHandler);
+
+    // console.log(fApp);
+  }
+  // console.log(FAList2);
+  if (isEditor) {
+    // *** editor ***
+    prepareEditorPage(fApp);
+    var mqEditableField;
+    mqEditableField = $el.find('.mq-editable-field')[0];
+  } else {
+    // *** no editor ***
+    try {
+      MQ.StaticMath(domElem);
+    } catch (err) {
+      console.error('Error using MQ.StaticMath: ' + err);
+      console.trace();
+    }
+    if (fApp.hasResultField) {
+      if ($el.attr('data-b64') !== undefined) {
+        fApp.hasSolution = true;
+        var zip = $el.attr('data-b64');
+        FAList[index].solution = decode(zip);
+      } else {
+        fApp.hasSolution = false;
+      }
+      mqEditableField = $el.find('.mq-editable-field')[0];
+      fApp.mqEditableField = mqEditableField;
+      var mf = MQ.MathField(mqEditableField, {});
+      mf.config({
+        handlers: {
+          edit: () => {
+            mqEditableField.focus();
+            // editHandler(index) does not work because index may have changed until handler is called;
+            editHandler(fApp.index);
+          },
+          enter: () => {
+            editHandler(fApp.index);
+          },
+        }
+      });
+      fApp.mathField = mf;
+
+      // make touch sensitive
+      try {
+        fApp.hammer = new Hammer(mqEditableField);
+        fApp.hammer.on("doubletap", function () {
+          showVirtualKeyboard();
+        });
+      } catch (error) {
+        console.error('Hammer error: ' + error);
+      }
+    }
   }
 }
 
+function clickHandler(ev) {
+  try {
+    // console.log(ev);
+    // ev.target.index does not exist, so use FAList2
+    var fApp = FAList2[ev.currentTarget.id];
+    console.log(fApp);
+    if (fApp.hasResultField) {
+      ev.stopPropagation(); // avoid body click
+      // deselect all applets
+      $(".formula_applet").removeClass('selected');
+      $(".formula_applet").off('customKeyboardEvent');
+      $(ev.target).addClass('selected');
+      $(ev.target).on('customKeyboardEvent', function (_evnt, cmd) {
+        keyboardEvent(cmd);
+      });
+      $("button.keyb_button").removeClass('selected');
+      if ($('#virtualKeyboard').css('display') == 'none') {
+        // if virtual keyboard is hidden, select keyboard button
+        $(fApp).nextAll("button.keyb_button:first").addClass('selected');
+      }
+      activeMathfieldIndex = fApp.index;
+      //TODO use fApp.id instead of fApp.index
+    } else {
+      // fApp has no ResultField (static formula)
+      try {
+        var mfContainer = MQ.StaticMath(fApp.formulaApplet);
+        var mfLatexForParser = mfContainer.latex();
+        var myTree = new FaTree();
+        myTree.leaf.content = mfLatexForParser;
+      } catch (error) {
+        console.log('ERROR ' + error);
+      }
+    }
+  } catch (error) {
+    console.log('ERROR ' + error);
+  }
+
+}
+
+// eslint-disable-next-line no-unused-vars
+async function mathQuillifyAll() {
+  initVirtualKeyboard();
+  console.log('mathQuillifyAll');
+  $(".formula_applet:not(.mq-math-mode)").each(function () {
+    // console.log(this.id);
+    mathQuillify(this.id);
+  });
+}
+
+// eslint-disable-next-line no-unused-vars
 async function mathQuillify_old() {
   await domLoad;
   initVirtualKeyboard();
   $(".formula_applet:not(.mq-math-mode)").each(function () {
     var temp = this.innerHTML;
-    this.innerOri = temp;
     temp = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
     this.innerHTML = temp;
   });
@@ -285,51 +430,50 @@ async function mathQuillify_old() {
 
   $(".formula_applet").each(function () {
     var temp = this.innerHTML;
-    this.innerOri = temp;
     temp = temp.replace(/\\cdot/g, config.multiplicationSign);
     this.innerHTML = temp;
   });
 
   $(".formula_applet").each(async (index, domElem) => {
-    let element = $(domElem);
+    let $el = $(domElem);
     var fApp = new FApp();
-    fApp.hasResultField = (element.html().indexOf('\\MathQuillMathField{}') >= 0);
+    fApp.hasResultField = ($el.html().indexOf('\\MathQuillMathField{}') >= 0);
     fApp.index = index;
-    fApp.id = element.attr('id') // name of formulaApplet
-    var isEditor = element.hasClass('edit');
-     if (isEditor) {
+    fApp.id = $el.attr('id') // name of formulaApplet
+    var isEditor = $el.hasClass('edit');
+    if (isEditor) {
       fApp.hasResultField = true;
     }
-    var def = element.attr('def');
+    var def = $el.attr('def');
     if (typeof def !== 'undefined') {
       fApp.definitionsetList = unifyDefinitions(def);
     }
-    var unitAttr = element.attr('unit');
+    var unitAttr = $el.attr('unit');
     var unitAuto = (typeof unitAttr !== 'undefined' && unitAttr == 'auto');
-    var modeAttr = element.attr('mode');
+    var modeAttr = $el.attr('mode');
     var modePhysics = (typeof modeAttr !== 'undefined' && modeAttr == 'physics');
     fApp.unitAuto = unitAuto || modePhysics;
 
-    var prec = element.attr('precision');
+    var prec = $el.attr('precision');
     if (typeof prec !== 'undefined') {
-      prec = element.attr('prec');
+      prec = $el.attr('prec');
     }
     prec = sanitizePrecision(prec);
     fApp.precision = prec;
     fApp.formulaApplet = domElem;
 
-    element.click(ev => {
+    $el.click(ev => {
       if (fApp.hasResultField) {
         ev.stopPropagation(); // avoid body click
         $(".formula_applet").removeClass('selected');
         $(".formula_applet").off('customKeyboardEvent');
-        element.addClass('selected');
-        element.on('customKeyboardEvent', function (evnt, cmd) {
+        $el.addClass('selected');
+        $el.on('customKeyboardEvent', function (evnt, cmd) {
           keyboardEvent(cmd);
         });
         $("button.keyb_button").removeClass('selected');
         if ($('#virtualKeyboard').css('display') == 'none') {
-          element.nextAll("button.keyb_button:first").addClass('selected');
+          $el.nextAll("button.keyb_button:first").addClass('selected');
         }
         activeMathfieldIndex = fApp.index;
       } else {
@@ -345,10 +489,10 @@ async function mathQuillify_old() {
     })
     FAList[index] = fApp;
 
-        if (isEditor) {
+    if (isEditor) {
       prepareEditorPage(fApp);
-      var mqEditableField
-      mqEditableField = element.find('.mq-editable-field')[0];
+      var mqEditableField;
+      mqEditableField = $el.find('.mq-editable-field')[0];
     } else {
       //******************
       // *** no editor ***
@@ -359,14 +503,14 @@ async function mathQuillify_old() {
         console.trace();
       }
       if (fApp.hasResultField) {
-        if (element.attr('data-b64') !== undefined) {
+        if ($el.attr('data-b64') !== undefined) {
           fApp.hasSolution = true;
-          var zip = element.attr('data-b64');
+          var zip = $el.attr('data-b64');
           FAList[index].solution = decode(zip);
         } else {
           fApp.hasSolution = false;
         }
-        mqEditableField = element.find('.mq-editable-field')[0];
+        mqEditableField = $el.find('.mq-editable-field')[0];
         fApp.mqEditableField = mqEditableField;
         var mf = MQ.MathField(mqEditableField, {});
         mf.config({
