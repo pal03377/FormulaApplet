@@ -25,16 +25,15 @@ async function switchTo(lang) {
 
 /**
  * formulaAppletLanguage hides _lang: no global variable
+ * TODO use 
  */
 export let formulaAppletLanguage = (function () {
   let _lang = "de";
   return {
     set: function (lang) {
-      // console.log('set lang to ' + lang);
       _lang = lang;
     },
     get: function () {
-      // console.log('get lang: ' + _lang);
       return _lang;
     }
   }

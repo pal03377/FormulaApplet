@@ -372,7 +372,6 @@ function showEditorResults(parts) {
 
   // H5P
   var texinput = $('div.field.field-name-TEX_expression.text input')[0];
-  // console.log(texinput);
   if (typeof texinput !== 'undefined') {
     texinput.value = tex;
     // trigger InputEvent
@@ -380,7 +379,7 @@ function showEditorResults(parts) {
       bubbles: true
     }))
   } else {
-    console.log('no TEX_expression found');
+    console.error('no TEX_expression found');
   }
   //html
   var out = $('textarea#html-output');

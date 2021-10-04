@@ -29,6 +29,6 @@ if (typeofH5P == 'undefined') {
     });
     console.info('H5P listening to preparePageEvent');
 }
-console.log('formulaAppletLanguage.set ' + lang);
+// console.log('formulaAppletLanguage.set ' + lang);
 formulaAppletLanguage.set(lang);
 // This information is used by preparePage.js and translate.js/clickLanguage()

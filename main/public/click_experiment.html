@@ -29,8 +29,8 @@
         // click event for language buttons -> translate.js
         (function () {
             $('#de').on('click', function (ev) {
-                console.log(ev.screenY);
-                console.log(ev.pointerId);
+                // console.log(ev.screenY);
+                // console.log(ev.pointerId);
                 if (ev.screenY == 0) {
                     console.log('de triggered by code');
                 } else {
@@ -38,8 +38,8 @@
                 }
             });
             $('#en').on('click', function (ev) {
-                console.log(ev.screenY);
-                console.log(ev.pointerId);
+                // console.log(ev.screenY);
+                // console.log(ev.pointerId);
                 if (ev.screenY == 0) {
                     console.log('en triggered by code');
                 } else {
@@ -56,7 +56,6 @@
         }
 
         function clickhelper(id) {
-            // console.log(id);
             var element = document.getElementById(id);
             element.click();
         }

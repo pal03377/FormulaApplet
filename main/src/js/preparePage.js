@@ -194,7 +194,6 @@ function makeAutoUnitstring(mf) {
 }
 
 function editHandler(index) {
-  // console.debug('called editHandler: ' + index + ' active=' + editHandlerActive);
   if (editHandlerActive == true) {
     var mf = FAList[index].mathField;
     var mfContainer = MQ.StaticMath(FAList[index].formulaApplet);
@@ -258,11 +257,12 @@ function sanitizePrecision(prec) {
 
 export async function mathQuillify(id) {
   await domLoad;
-  console.log('** mathQuillify ' + id);
-  var element = $('#' + id + '.formula_applet:not(.mq-math-mode)');
+  // console.log('mathQuillify ' + id);
+  var element = $('#' + id + '.formula_applet:not(.mq-math-mode)')[0];
   if (typeof element !== 'undefined'){
+    // console.log(element);
     var temp = element.innerHTML;
-    console.log(temp);
+    console.log('mathQuillify ' + id + ' ' + temp);
   }
 }
 
@@ -296,10 +296,8 @@ async function mathQuillify_old() {
     fApp.hasResultField = (element.html().indexOf('\\MathQuillMathField{}') >= 0);
     fApp.index = index;
     fApp.id = element.attr('id') // name of formulaApplet
-    // var isEditor = (fApp.id.toLowerCase() == 'editor');
     var isEditor = element.hasClass('edit');
-    // console.log('(' + fApp.index + ') ' + fApp.id + (isEditor ? ' isEditor' : '') );
-    if (isEditor) {
+     if (isEditor) {
       fApp.hasResultField = true;
     }
     var def = element.attr('def');
@@ -347,8 +345,7 @@ async function mathQuillify_old() {
     })
     FAList[index] = fApp;
 
-    // console.debug('isEditor=' + isEditor);
-    if (isEditor) {
+        if (isEditor) {
       prepareEditorPage(fApp);
       var mqEditableField
       mqEditableField = element.find('.mq-editable-field')[0];
@@ -470,7 +467,6 @@ function refreshLatex(lang) {
       }
       newLatex = sanitizeInputfieldTag(newLatex);
       if (oldLatex !== newLatex) {
-        // console.log(oldLatex + ' -> ' + newLatex);
         editHandlerActive = false;
         if (FApp.hasSolution) {
           mf.latex(newLatex);
