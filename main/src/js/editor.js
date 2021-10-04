@@ -409,17 +409,19 @@ function getHTML(tex, tag) {
 }
 
 function makeid(length) {
-  var result = '';
-  // var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_+-!%_+-!%_+-!%';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_+-!%';
+  var result = 'fa';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-_.-_.-';
   var numOfChars = characters.length;
-  for (var i = 0; i < length; i++) {
+  for (var i = 2; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * numOfChars));
-
   }
   // result = '"' + result + '"';
   return result;
 }
+
+document.h5p_transfer = {
+  makeid
+};
 
 function createReplacement(latexstring) {
   const separators = '∀µ∉ö∋∐∔∝∤∮∱∸∺∽≀';

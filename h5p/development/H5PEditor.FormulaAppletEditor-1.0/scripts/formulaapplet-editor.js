@@ -39,12 +39,12 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     console.log(params);
     if (params.id == 'new_id') {
       var new_id = makeid(12);
-      console.log( 'new id = ' + new_id);
+      console.log('new id = ' + new_id);
       params.id = new_id;
     }
     params.TEX_expression = params.fa_applet;
-   
-  
+
+
     var html = '<p class="formula_applet edit" id="' + params.id + '"';
     if (params.formulaAppletPhysics == true) {
       html += ' mode="physics"';
@@ -55,7 +55,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     // html += '">' + params.TEX_expression + '</p>';
     html += '>';
 
-        // var html = H5PEditor.createFieldMarkup(this.field, '<p id="' + id + '" class="formula_applet edit">egal', id);
+    // var html = H5PEditor.createFieldMarkup(this.field, '<p id="' + id + '" class="formula_applet edit">egal', id);
     var fieldMarkup = H5PEditor.createFieldMarkup(this.field, html, id);
     self.$item = H5PEditor.$(fieldMarkup);
     self.$formulaApplet = self.$item.find('.formula_applet');
@@ -142,11 +142,11 @@ function afterAppend(obj) {
   }, 100);
   console.log(obj.parent.params);
 
-  if (obj.parent.params.id == 'new_id') {
-    var new_id = makeid(12);
-    console.log( 'new id = ' + new_id);
-    obj.parent.params.id = new_id;
-  }
+  // if (obj.parent.params.id == 'new_id') {
+  //   var new_id = makeid(12);
+  //   console.log( 'new id = ' + new_id);
+  //   obj.parent.params.id = new_id;
+  // }
 
   var checkbox = document.getElementById(getSelectorID('field-formulaappletphysics'));
   console.log(checkbox);
@@ -184,6 +184,18 @@ function afterAppend(obj) {
   H5P.jQuery(html).appendTo(anchor);
 }
 
+function makeid(length) {
+  var result = 'fa';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-_.-_.-';
+  var numOfChars = characters.length;
+  for (var i = 2; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * numOfChars));
+  }
+  console.log(result);
+  // result = '"' + result + '"';
+  return result;
+}
+
 function getSelectorID(selectorName) {
   var result = '';
   H5P.jQuery('select').each(function () {
@@ -202,18 +214,5 @@ function getSelectorID(selectorName) {
       }
     });
   }
-  return result;
-}
-
-function makeid(length) {
-  var result = '';
-  // var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_+-!%_+-!%_+-!%';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_+-!%';
-  var numOfChars = characters.length;
-  for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * numOfChars));
-
-  }
-  // result = '"' + result + '"';
   return result;
 }

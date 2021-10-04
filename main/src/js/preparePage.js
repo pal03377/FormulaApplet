@@ -257,7 +257,13 @@ function sanitizePrecision(prec) {
 }
 
 export async function mathQuillify(id) {
-  console.log('mathQuillify ' + id);
+  await domLoad;
+  console.log('** mathQuillify ' + id);
+  var element = $('#' + id + '.formula_applet:not(.mq-math-mode)');
+  if (typeof element !== 'undefined'){
+    var temp = element.innerHTML;
+    console.log(temp);
+  }
 }
 
 async function mathQuillify_old() {
