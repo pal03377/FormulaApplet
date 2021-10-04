@@ -2106,6 +2106,12 @@
             "string_decoder": "~0.10.x"
           }
         },
+        "semver": {
+          "version": "2.3.2",
+          "resolved": "https://registry.npmjs.org/semver/-/semver-2.3.2.tgz",
+          "integrity": "sha1-uYSPJdbPNjMwc+ye+IVtQvEjPlI=",
+          "dev": true
+        },
         "string_decoder": {
           "version": "0.10.31",
           "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz",
@@ -2613,10 +2619,9 @@
       "dev": true
     },
     "semver": {
-      "version": "2.3.2",
-      "resolved": "https://registry.npmjs.org/semver/-/semver-2.3.2.tgz",
-      "integrity": "sha1-uYSPJdbPNjMwc+ye+IVtQvEjPlI=",
-      "dev": true
+      "version": "4.3.2",
+      "resolved": "https://registry.npmjs.org/semver/-/semver-4.3.2.tgz",
+      "integrity": "sha1-x6BxWKgL7dBSNVt3DYLWZA+AO+c="
     },
     "serialize-javascript": {
       "version": "4.0.0",
