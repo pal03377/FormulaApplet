@@ -13,10 +13,8 @@ H5P.FormulaApplet = (function ($) {
     }, options);
     // Keep provided id.
     this.id = id;
-    // console.log('constructed:' + id);
-    // console.log(this);
     this.options.TEX_expression = this.options.fa_applet;
-    console.log(this.options);
+    // console.log(this.options);
   };
 
 
@@ -30,7 +28,6 @@ H5P.FormulaApplet = (function ($) {
     var self = this;
     $container.addClass("h5p-formulaapplet");
 
-    // console.log('append to container');
     var html = '<p class="formula_applet" id="' + this.options.id + '"';
     if (this.options.formulaAppletPhysics == true) {
       html += ' mode="physics"';
@@ -41,8 +38,8 @@ H5P.FormulaApplet = (function ($) {
     html += '">' + this.options.fa_applet + '</p>';
     console.log('append: ' + html);
     $container.append(html, afterAppend(this.options.id));
-    console.log('formulaAppletPhysics=' + this.options.formulaAppletPhysics);
-    console.log('formulaAppletMode=' + this.options.formulaAppletMode);
+    // console.log('formulaAppletPhysics=' + this.options.formulaAppletPhysics);
+    // console.log('formulaAppletMode=' + this.options.formulaAppletMode);
 
     this.on('buttonPressed', function (event) {
       var buttonText = event.data;
@@ -57,8 +54,8 @@ H5P.FormulaApplet = (function ($) {
 function afterAppend(id) {
   // self.$.trigger('resize');
   H5P.jQuery(document).trigger('resize');
-  console.log('afterAppend: trigger preparePageEvent');
-  H5P.jQuery(document).trigger('preparePageEvent');
+  // console.log('afterAppend: trigger preparePageEvent');
+  // H5P.jQuery(document).trigger('preparePageEvent');
   H5P.jQuery(document).trigger('mathquillifyEvent', id);
 
 }
