@@ -64,7 +64,7 @@ export default async function preparePage() {
   await domLoad;
   console.log('preparePage');
   // make virtual keyboard show/hide by mouseclick
-  console.log('virtual keyboard buttons');
+  // console.log('virtual keyboard buttons');
   ($('<button class="keyb_button">\u2328</button>')).insertAfter($(".formula_applet"));
   $('button.keyb_button').on('mousedown', function () {
     showVirtualKeyboard();
@@ -89,45 +89,6 @@ export default async function preparePage() {
   });
   initTranslation();
   mathQuillifyAll();
-}
-
-function keyboardEvent(cmd) {
-  var fApp = FAList[activeMathfieldIndex];
-  var mf = fApp.mathField;
-
-  if (typeof mf !== 'undefined') {
-    var endsWithSpace = false;
-    if ((cmd.substr(cmd.length - 1)) == ' ') {
-      endsWithSpace = true;
-      // remove space from end of cmd
-      cmd = cmd.substring(0, cmd.length - 1);
-    }
-    if (cmd.startsWith('#')) {
-      // remove # from start of cmd
-      cmd = cmd.substring(1);
-      if (cmd == 'Enter') {
-        editHandler(activeMathfieldIndex, 'enter');
-      } else if (cmd == 'setUnit') {
-        setUnit(mf);
-      } else if (cmd == 'eraseUnit') {
-        eraseUnit(mf);
-      } else if (cmd == 'nthroot') {
-        nthroot();
-      } else if (cmd == 'square') {
-        mf.keystroke('Up');
-        mf.typedtext('2');
-      } else {
-        mf.keystroke(cmd);
-      }
-    } else {
-      // no #
-      mf.typedText(cmd);
-    }
-    if (endsWithSpace) {
-      mf.typedText(' ');
-      mf.keystroke('Backspace');
-    }
-  }
 }
 
 function nthroot() {
@@ -244,6 +205,46 @@ function editHandler(index) {
   }
 }
 
+function virtualKeyboardEventHandler(event, cmd) {
+  console.log(event);
+  var fApp = FAList[activeMathfieldIndex];
+  var mf = fApp.mathField;
+
+  if (typeof mf !== 'undefined') {
+    var endsWithSpace = false;
+    if ((cmd.substr(cmd.length - 1)) == ' ') {
+      endsWithSpace = true;
+      // remove space from end of cmd
+      cmd = cmd.substring(0, cmd.length - 1);
+    }
+    if (cmd.startsWith('#')) {
+      // remove # from start of cmd
+      cmd = cmd.substring(1);
+      if (cmd == 'Enter') {
+        editHandler(activeMathfieldIndex, 'enter');
+      } else if (cmd == 'setUnit') {
+        setUnit(mf);
+      } else if (cmd == 'eraseUnit') {
+        eraseUnit(mf);
+      } else if (cmd == 'nthroot') {
+        nthroot();
+      } else if (cmd == 'square') {
+        mf.keystroke('Up');
+        mf.typedtext('2');
+      } else {
+        mf.keystroke(cmd);
+      }
+    } else {
+      // no #
+      mf.typedText(cmd);
+    }
+    if (endsWithSpace) {
+      mf.typedText(' ');
+      mf.keystroke('Backspace');
+    }
+  }
+}
+
 function sanitizePrecision(prec) {
   if (typeof prec == 'undefined') {
     prec = config.defaultPrecision;
@@ -259,6 +260,15 @@ function sanitizePrecision(prec) {
     }
   }
   return prec;
+}
+
+async function mathQuillifyAll() {
+  initVirtualKeyboard();
+  console.log('mathQuillifyAll');
+  $(".formula_applet:not(.mq-math-mode)").each(function () {
+    // console.log(this.id);
+    mathQuillify(this.id);
+  });
 }
 
 export async function mathQuillify(id) {
@@ -307,8 +317,6 @@ export async function mathQuillify(id) {
 
     // domElem.addEventListener('click', clickHandler);
     $el.on('click', clickHandler);
-
-    // console.log(fApp);
   }
   // console.log(FAList2);
   if (isEditor) {
@@ -359,28 +367,31 @@ export async function mathQuillify(id) {
         console.error('Hammer error: ' + error);
       }
     }
-  }
+    // insert span for right/wrong tag
+    $('<span class="mod">&nbsp;</span>').insertAfter($el);
+  } // end of *** no editor ***
 }
 
 function clickHandler(ev) {
   try {
-    // console.log(ev);
-    // ev.target.index does not exist, so use FAList2
     var fApp = FAList2[ev.currentTarget.id];
-    console.log(fApp);
+    console.log('click on ' + fApp.formulaApplet);
+    console.log(ev);
+    // ev.target.index does not exist, so use FAList2
+    // console.log(fApp);
     if (fApp.hasResultField) {
       ev.stopPropagation(); // avoid body click
       // deselect all applets
       $(".formula_applet").removeClass('selected');
-      $(".formula_applet").off('customKeyboardEvent');
-      $(ev.target).addClass('selected');
-      $(ev.target).on('customKeyboardEvent', function (_evnt, cmd) {
-        keyboardEvent(cmd);
+      $(".formula_applet").off('virtualKeyboardEvent');
+      $(fApp.formulaApplet).addClass('selected');
+      $(fApp.formulaApplet).on('virtualKeyboardEvent', function (_evnt, cmd) {
+        virtualKeyboardEventHandler(_evnt, cmd);
       });
       $("button.keyb_button").removeClass('selected');
       if ($('#virtualKeyboard').css('display') == 'none') {
         // if virtual keyboard is hidden, select keyboard button
-        $(fApp).nextAll("button.keyb_button:first").addClass('selected');
+        $(fApp.formulaApplet).nextAll("button.keyb_button:first").addClass('selected');
       }
       activeMathfieldIndex = fApp.index;
       //TODO use fApp.id instead of fApp.index
@@ -399,16 +410,6 @@ function clickHandler(ev) {
     console.log('ERROR ' + error);
   }
 
-}
-
-// eslint-disable-next-line no-unused-vars
-async function mathQuillifyAll() {
-  initVirtualKeyboard();
-  console.log('mathQuillifyAll');
-  $(".formula_applet:not(.mq-math-mode)").each(function () {
-    // console.log(this.id);
-    mathQuillify(this.id);
-  });
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -468,9 +469,9 @@ async function mathQuillify_old() {
         $(".formula_applet").removeClass('selected');
         $(".formula_applet").off('customKeyboardEvent');
         $el.addClass('selected');
-        $el.on('customKeyboardEvent', function (evnt, cmd) {
-          keyboardEvent(cmd);
-        });
+        // $el.on('customKeyboardEvent', function (evnt, cmd) {
+        //   keyboardEvent(cmd);
+        // });
         $("button.keyb_button").removeClass('selected');
         if ($('#virtualKeyboard').css('display') == 'none') {
           $el.nextAll("button.keyb_button:first").addClass('selected');

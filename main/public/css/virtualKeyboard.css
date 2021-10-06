@@ -4,8 +4,8 @@ div#virtualKeyboard{
 	left: 50%;
 	transform: translate(-50%, -50%);
 	/* background-color: #c0c0c050; transparency #50 */
-	background-color: #a0e0a0d0;
-	border-radius: 10px;
+	background-color:#b2cee7;
+	border-radius: 3px;
 }
 
 #virtualKeyboard table{
@@ -18,7 +18,7 @@ div#virtualKeyboard{
 }
 
 .virtualKeyboardButton {
-	background-color: darkkhaki;
+	background-color: #8bd;
 	width: 60px;
 	min-width: 50px;
 	height: 50px;
@@ -29,17 +29,19 @@ div#virtualKeyboard{
 	text-align: center;
 	vertical-align: middle;
 	border: 1px solid peru;
-	border-radius: 10px;
+	border-radius: 3px;
 	cursor: pointer;
 }
 
 .virtualKeyboardButton:active {
-	background-color: blue;
+	color: skyblue;
+	background-color: white;
 }
 
 .virtualKeyboardButton.smallgap {
 	width: 10px;
-	background-color: transparent;
+	/* background-color: transparent; */
+	background-color: #b2cee7;
 	border: 0px;
 	min-width: 10px;
 	cursor: move;
@@ -50,11 +52,11 @@ div#virtualKeyboard{
 }
 
 .virtualKeyboard-backspace {
-	background-color: firebrick;
+	background-color: orangered;
 }
 
 .virtualKeyboard-backspace:active {
-	background-color: greenyellow;
+	background-color: orange;
 }
 
 .virtualKeyboardButton.virtualKeyboard-unit{

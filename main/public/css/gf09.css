@@ -38,7 +38,7 @@ span.padding {
 }
 
 button.keyb_button {
-	/* display: none; */
+	display: none;
 }
 
 button.keyb_button.selected {
