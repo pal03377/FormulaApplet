@@ -34,7 +34,7 @@ export async function prepareEditorPage(fApp) {
       edit: function (mathField) { // useful event handlers
         try {
           var latex = mathField.latex();
-          console.log('** edithandler latex=' + latex);
+          console.log('** mathQuillEditHandler latex=' + latex);
           refreshResultField(latex);
         } catch (error) {
           console.log('ERROR in MQ.MathField: ' + error);

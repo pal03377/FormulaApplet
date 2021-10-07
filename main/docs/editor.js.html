@@ -33,7 +33,7 @@ import {
   domLoad
 } from "./dom.js";
 // import {
-//   reloadTranslation
+//   clickLanguage
 // } from "./translate.js";
 import {
   encode
@@ -46,37 +46,7 @@ var newFaId = newFaId || 'x8rT3dkkS';
 
 export async function initEditor() {
   await domLoad;
-  var before = $('div#ed_before');
-  if (before.length == 0) {
-    var ed = $('.formula_applet#editor');
-    ed.before('&lt;p id="mode_select">');
-    $('p#mode_select').append('  &lt;h3>&lt;span class="tr en mw-headline" id="Mode">Mode&lt;/span>&lt;span class="tr de mw-headline" id="Mode">Modus&lt;/span>&lt;/h3>');
-    $('p#mode_select').append('  &lt;input type="radio" id="auto" name="select_mode" checked />');
-    var label_lse = '&lt;label for="auto">&lt;span class="tr en lse">Automatic (left side of equation will be compared to right side)&lt;/span>';
-    label_lse += '&lt;span class="tr de lse">Automatisch (linke und rechte Gleichungsseite werden verglichen)&lt;/span>&lt;/label>';
-    $('p#mode_select').append(label_lse);
-    $('p#mode_select').append('  &lt;br/>');
-    $('p#mode_select').append('  &lt;input type="radio" id="manu" name="select_mode" />');
-    var label_manu = '&lt;label for="auto">&lt;span class="tr en manu">Manual (input will be compared with given solution)&lt;/span>';
-    label_manu += '&lt;span class="tr de manu">Manuell (Eingabe wird mit einer vorgegeben L&amp;ouml;sung verglichen)&lt;/span>&lt;/label>';
-    $('p#mode_select').append(label_manu);
-    ed.before('&lt;p id="input_id">');
-    $('p#input_id').append('  &lt;label class="tr de idfa" for="fa_name">Id des Formel-Applets (4 bis 20 Zeichen)&lt;/label>&lt;label class="tr en idfa" for="fa_name">Id of Formula Applet (4 to 20 characters)&lt;/label>');
-    $('p#input_id').append('  &lt;input type="text" id="fa_name" name="fa_bla_name" required minlength="4" maxlength="20" size="10">');
-    $('p#input_id').append('  &lt;button type="button" class="tr de mfxi problemeditor" id="random-id-d">Zufalls-ID&lt;/button>&lt;button type="button" class="tr en mfxi problemeditor" id="random-id-e">Random ID&lt;/button>');
-    ed.after('&lt;hr />&lt;textarea id="wiki-text" rows=4 cols=150>&lt;/textarea>');
-    var unitbuttons = '&lt;button type="button" class="tr de peri problemeditor" id="set-unit-d">Einheit&lt;/button>';
-    unitbuttons += '&lt;button type="button" class="tr en peri problemeditor" id="set-unit-e">Unit&lt;/button>';
-    unitbuttons += '&lt;button type="button" class="tr de erau problemeditor" id="erase-unit-d">Einheit l&amp;ouml;schen&lt;/button>';
-    unitbuttons += '&lt;button type="button" class="tr en erau problemeditor" id="erase-unit-e">Erase Unit&lt;/button>';
-    ed.after(unitbuttons);
-    ed.after('&lt;button type="button" class="tr de sif problemeditor" id="set-input-d">Eingabe-Feld setzen&lt;/button>&lt;button type="button" class="tr en sif problemeditor" id="set-input-e">Set input field&lt;/button>');
-    var prepend_uses = $('.prepend_uses#p_u');
-    var license_link = 'https://github.com/gro58/FormulaApplet/blob/master/js/lib/ToDo.md';
-    prepend_uses.after('&lt;p>&lt;span class="tr de uses">Das Formel-Applet benutzt die Bibliotheken jQuery, MathQuill und Hammer. &lt;/span>&lt;span class="tr en uses">FormulaApplet uses jQuery, MathQuill, and Hammer. &lt;/span>&lt;a href="' + license_link + '" class="tr de moreinfo">Weitere Informationen...&lt;/a>&lt;a href="' + license_link + '" class="tr en moreinfo">More info...&lt;/a>&lt;/p>');
-  }
-  $.event.trigger("reloadTranslationEvent");
-  // await reloadTranslation();
+  $.event.trigger("clickLanguageEvent");
 }
 
 export async function prepareEditorPage(fApp) {
@@ -84,16 +54,25 @@ export async function prepareEditorPage(fApp) {
   await initEditor();
   // make whole mathFieldSpan editable
   var mathFieldSpan = document.getElementById('math-field');
+  // var mathFieldSpan = $('p#editor.formula_applet');
   if (!mathFieldSpan) throw new Error("Cannot find math-field. The math editor must provide one.");
   var editorMf = MQ.MathField(mathFieldSpan, {
     spaceBehavesLikeTab: true, // configurable
     handlers: {
-      edit: function () { // useful event handlers
-        refreshResult(editorMf.latex())
+      edit: function (mathField) { // useful event handlers
+        try {
+          var latex = mathField.latex();
+          console.log('** edithandler latex=' + latex);
+          refreshResultField(latex);
+        } catch (error) {
+          console.log('ERROR in MQ.MathField: ' + error);
+        }
       }
     }
   });
   fApp.mathField = editorMf;
+  refreshResultField(editorMf.latex());
+  $.event.trigger("refreshLatexEvent");
 
   // adjust events
   $('#set-input-d, #set-input-e').on('mousedown', ev => {
@@ -102,7 +81,6 @@ export async function prepareEditorPage(fApp) {
   });
   $('#set-unit-d, #set-unit-e').on('mousedown', ev => {
     ev.preventDefault();
-    console.log(editorMf);
     setUnit(editorMf);
   });
   $('#erase-unit-d, #erase-unit-e').on('mousedown', ev => {
@@ -114,7 +92,7 @@ export async function prepareEditorPage(fApp) {
     var rId = makeid(8);
     document.getElementById('fa_name').value = rId;
     newFaId = rId;
-    refreshResult(editorMf.latex())
+    refreshResultField(editorMf.latex())
   });
 
   $('#fa_name').on('input', ev => {
@@ -128,21 +106,23 @@ export async function prepareEditorPage(fApp) {
     fa_name = fa_name.replace(/ /g, '_');
     if (4 &lt;= fa_name.length &amp;&amp; fa_name.length &lt;= 20) {
       newFaId = fa_name;
-      refreshResult(editorMf.latex())
+      refreshResultField(editorMf.latex())
     }
   });
 
   $('input[type="radio"]').on('click', ev => {
     var resultMode = ev.target.id;
     if (resultMode == 'auto') {
-      $('p#editor span.mq-class.inputfield').prop('contentEditable', 'false');
+      // $('p#editor span.mq-class.inputfield').prop('contentEditable', 'false');
+      $('p.edit span.mq-class.inputfield').prop('contentEditable', 'false');
       autoMode.set(true);
-      refreshResult(editorMf.latex())
+      refreshResultField(editorMf.latex())
     }
     if (resultMode == 'manu') {
-      $('p#editor span.mq-class.inputfield').prop('contentEditable', 'true');
+      // $('p#editor span.mq-class.inputfield').prop('contentEditable', 'true');
+      $('p.edit span.mq-class.inputfield').prop('contentEditable', 'true');
       autoMode.set(false);
-      refreshResult(editorMf.latex())
+      refreshResultField(editorMf.latex())
     }
   });
   $('#random-id-d').mousedown();
@@ -189,17 +169,11 @@ function getSelection(mf, options) {
     }
     selected = erased.substring(0, erased.length - postSelected.length);
     var result = [preSelected, selected, postSelected, ori];
-    console.log('selection: ' + result);
     return result;
   }
 }
 
 function setInput(editorMf) {
-  // var latex = editorMf.latex();
-  // console.log(latex);
-  // latex = eraseClass(latex);
-  // console.log(latex);
-  // editorMf.latex(latex);
   var temp = getSelection(editorMf, {
     erase: true
   });
@@ -316,12 +290,17 @@ export function setUnit(mf) {
   mf.latex(sanitizeInputfieldTag(newLatex));
 }
 
-function sanitizeInputfieldTag(latex){
-  // first make shorter
-  var result = latex.replace('\\class{inputfield}{','\\class{');
-  // then make longer again
-  result = result.replace('\\class{','\\class{inputfield}{');
-  return result;
+export function sanitizeInputfieldTag(latex) {
+  var result;
+  if (typeof latex === 'undefined') {
+    result = '';
+  } else {
+    // first make shorter
+    result = latex.replace('\\class{inputfield}{', '\\class{');
+    // then make longer again
+    result = result.replace('\\class{', '\\class{inputfield}{');
+    return result;
+  }
 }
 
 export function eraseUnit(mf) {
@@ -385,12 +364,15 @@ function separateInputfield(latex) {
     tag: tag,
     after: afterTag
   };
+  console.info(latex);
+  console.info(beforeTag + ' | ' + tag + ' | ' + afterTag);
   return result;
 }
 
 function eraseClass(latex) {
-  // latex = 'abc+class{def}+ghi';
+  // latex = 'abc\\class{inputfield}{def}ghi';
   // temp = ['abc+', 'def', '+ghi'];
+  // return 'abcdefghi';
   var temp = separateInputfield(latex);
   return temp.before + temp.tag + temp.after;
 }
@@ -405,12 +387,37 @@ const autoMode = {
   }
 }
 
-function refreshResult(latex) {
-  console.log(latex);
-  showEditorResults(separateInputfield(latex));
+function refreshResultField(latex) {
+  console.log('refreshResultField');
+  var parts = separateInputfield(latex);
+  showEditorResults(parts);
 }
 
 function showEditorResults(parts) {
+  var tex = parts.before + '{{result}}' + parts.after;
+  tex = tex.replace(/\\textcolor{blue}{/g, '\\unit{');
+  // $(document).trigger('texevent');
+
+  // maybe H5P editor
+  var texinput = $('div.field.field-name-TEX_expression.text input')[0];
+  if (typeof texinput !== 'undefined') {
+    // value of TEX_expression field is set to EditorResult
+    texinput.value = tex;
+    // trigger InputEvent. EventListener see formulaapplet-editor.js
+    texinput.dispatchEvent(new InputEvent('input', {
+      bubbles: true
+    }))
+  } else {
+    console.log('no TEX_expression found - probably no H5P');
+  }
+  // maybe html editor
+  var out = $('textarea#html-output');
+  if (typeof out !== 'undefined') {
+    out.text(getHTML(tex, parts.tag));
+  }
+}
+
+function getHTML(tex, tag) {
   var result = '&lt;p class="formula_applet"';
   // var editable = $('p#editor span.mq-class.inputfield').prop('contentEditable');
   var resultMode;
@@ -421,33 +428,28 @@ function showEditorResults(parts) {
   }
   var common_result = ' id="' + newFaId;
   if (resultMode == 'manu') {
-    common_result += '" data-b64="' + encode(parts.tag);
+    common_result += '" data-b64="' + encode(tag);
   }
   common_result += '">';
-  common_result += parts.before;
-  common_result += '{{result}}';
-  common_result += parts.after;
-  common_result = common_result.replace(/\\textcolor{blue}{/g, '\\unit{');
+  common_result += tex;
   result += common_result + '&lt;/p>';
-
-  var out = $('textarea#wiki-text');
-  if (out.length > 0) {
-    out.text(result);
-  }
+  return result;
 }
 
 function makeid(length) {
-  var result = '';
-  // var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_+-!%_+-!%_+-!%';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_+-!%';
+  var result = 'fa';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-_.-_.-';
   var numOfChars = characters.length;
-  for (var i = 0; i &lt; length; i++) {
+  for (var i = 2; i &lt; length; i++) {
     result += characters.charAt(Math.floor(Math.random() * numOfChars));
-
   }
   // result = '"' + result + '"';
   return result;
 }
+
+document.h5p_transfer = {
+  makeid
+};
 
 function createReplacement(latexstring) {
   const separators = '∀µ∉ö∋∐∔∝∤∮∱∸∺∽≀';
@@ -474,13 +476,13 @@ function createReplacement(latexstring) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#checkIfEqual">checkIfEqual</a></li><li><a href="global.html#checkIfEquality">checkIfEquality</a></li><li><a href="global.html#deleteSpaceAndRemoveBackslash">deleteSpaceAndRemoveBackslash</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#initTranslation">initTranslation</a></li><li><a href="global.html#rememberInit">rememberInit</a></li><li><a href="global.html#rememberLanguage">rememberLanguage</a></li><li><a href="global.html#separateInputfield">separateInputfield</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#unifyDefinitions">unifyDefinitions</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#checkIfEqual">checkIfEqual</a></li><li><a href="global.html#checkIfEquality">checkIfEquality</a></li><li><a href="global.html#deleteSpaceAndRemoveBackslash">deleteSpaceAndRemoveBackslash</a></li><li><a href="global.html#formulaAppletLanguage">formulaAppletLanguage</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#separateInputfield">separateInputfield</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#unifyDefinitions">unifyDefinitions</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Sep 11 2021 17:55:03 GMT+0200 (GMT+02:00)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Oct 06 2021 23:28:38 GMT+0200 (GMT+02:00)
 </footer>
 
 <script> prettyPrint(); </script>
