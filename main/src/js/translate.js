@@ -14,9 +14,9 @@ async function switchTo(lang) {
   // save lang
   console.log('save cookie lang=' + lang);
   setCookie('lang', lang, 7);
-  var element = document.getElementById(lang);
-  if (element) {
-    element.click();
+  var domElem = document.getElementById(lang);
+  if (domElem) {
+    domElem.click();
     console.log('trigger click ' + lang);
   }
 
@@ -25,16 +25,15 @@ async function switchTo(lang) {
 
 /**
  * formulaAppletLanguage hides _lang: no global variable
+ * TODO use 
  */
 export let formulaAppletLanguage = (function () {
   let _lang = "de";
   return {
     set: function (lang) {
-      // console.log('set lang to ' + lang);
       _lang = lang;
     },
     get: function () {
-      // console.log('get lang: ' + _lang);
       return _lang;
     }
   }
@@ -56,9 +55,9 @@ function clickListener(event) {
 }
 
 function addClickListener(lang) {
-  var element = document.getElementById(lang);
-  if (element) {
-    element.addEventListener('click', clickListener);
+  var domElem = document.getElementById(lang);
+  if (domElem) {
+    domElem.addEventListener('click', clickListener);
   }
 }
 

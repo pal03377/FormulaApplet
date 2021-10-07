@@ -7,27 +7,27 @@ import {
 } from "./js/translate.js";
 
 var lang;
-var typeofH5P = (typeof H5P);
-if (typeofH5P == 'undefined') {
-    console.info('no H5P');
-    lang = getCookie('lang');
-    if (lang == null || lang == 'null') {
-        lang = 'de';
-    }
-    preparePage();
-} else {
-    // eslint-disable-next-line no-undef
+console.log(typeof H5P);
+var isH5P = ((typeof H5P) !== 'undefined');
+console.log('isH5P = ' + isH5P);
+if (isH5P) {
+    //cheat for eslint
+    var H5P = H5P || {};
     lang = H5P.jQuery('html')[0].getAttribute('xml:lang');
-    // eslint-disable-next-line no-undef
     H5P.jQuery(document).on('preparePageEvent', function () {
         console.info('preparePageEvent received');
-        preparePage();
+        preparePage(isH5P);
     });
-    // eslint-disable-next-line no-undef
     H5P.jQuery(document).on('mathquillifyEvent', function (ev, id) {
         mathQuillify(id);
     });
     console.info('H5P listening to preparePageEvent');
+} else {
+    lang = getCookie('lang');
+    if (lang == null || lang == 'null') {
+        lang = 'de';
+    }
+    preparePage(isH5P);
 }
 console.log('formulaAppletLanguage.set ' + lang);
 formulaAppletLanguage.set(lang);

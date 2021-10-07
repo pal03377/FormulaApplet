@@ -1,0 +1,109 @@
+# Query: element
+# Including: *.js, *.html, *.json, *.css
+# Excluding: docs, mathquill*.js, bundle*.*, package*.*, \development\*
+# ContextLines: 1
+
+32 Ergebnisse - 7-Dateien
+
+development • H5PEditor.FormulaAppletEditor-1.0\scripts\formulaapplet-editor.js:
+  136  
+  137:   var checkbox = document.getElementById(getSelectorID('field-formulaappletphysics'));
+  138    // console.log(checkbox);
+
+  155  
+  156:   var formulaAppletMode = document.getElementById(getSelectorID('field-formulaappletmode'));
+  157    formulaAppletMode.addEventListener('change', function (e) {
+
+main • public\click_experiment.html:
+  51          function switchTo(lang) {
+  52:             document.getElementById('out').innerHTML = lang;
+  53              window.setTimeout(function () {
+  54:                 document.getElementById('out').innerHTML = '*';
+  55              }, 500);
+
+  62  
+  63:         document.getElementById('en2').addEventListener('click', function (event) {
+  64              clickhelper('en');
+  65          });
+  66:         document.getElementById('de2').addEventListener('click', function (event) {
+  67              clickhelper('de');
+
+main • public\editor.html:
+  13  	<script>
+  14: 		var domElem = document.getElementById('de');
+  15  		// console.log(domElem);
+
+main • src\js\editor.js:
+  27    // make whole mathFieldSpan editable
+  28:   var mathFieldSpan = document.getElementById('math-field');
+  29    // var mathFieldSpan = $('p#editor.formula_applet');
+
+  64      var rId = makeid(8);
+  65:     document.getElementById('fa_name').value = rId;
+  66      newFaId = rId;
+
+main • src\js\preparePage.js:
+  278      fApp.hasResultField = ($el.html().indexOf('\\MathQuillMathField{}') >= 0);
+  279:     // fApp.id = $el.attr('id') // name of formulaApplet
+  280      fApp.id = id // name of formulaApplet
+
+  312      var mqEditableField;
+  313:     mqEditableField = $el.find('.mq-editable-field')[0];
+  314    } else {
+
+main • src\js\translate.js:
+  57  function addClickListener(lang) {
+  58:   var domElem = document.getElementById(lang);
+  59:   if (domElem) {
+  60:     domElem.addEventListener('click', clickListener);
+  61    }
+
+main • src\js\virtualKeyboard.js:
+  371  function getVirtualKeyboard() {
+  372:     let result = document.createElement("div");
+  373      result.id = "virtualKeyboard";
+  374:     let header = document.createElement("div");
+  375      header.id = "virtualKeyboard_header";
+
+  377      result.append(header);
+  378:     let tabs = document.createElement("div");
+  379      tabs.id = "virtualKeyboard_tab";
+
+  388      for (let tabId of Object.keys(tabButtons)) {
+  389:         let button = document.createElement("button");
+  390          button.classList.add("tablinks");
+
+  405  function createTable(tableId) {
+  406:     let result = document.createElement("table");
+  407      result.id = "table_" + tableId;
+  408:     let tbody = document.createElement("tbody");
+  409      result.append(tbody);
+
+  411          var keylist = keys[tableId][rowNumber];
+  412:         let tr = document.createElement("tr");
+  413          tr.classList.add("virtualKeyboard-row" + rowNumber);
+
+  431              }
+  432:             let td = document.createElement("td");
+  433              td.classList.add("virtualKeyboardButton");
+
+  457      });
+  458:     // dragElement(document.getElementById("virtualKeyboard"));
+  459:     var virtualKeyboardElement = document.getElementById('virtualKeyboard');
+  460      // https://hammerjs.github.io/getting-started/
+  461:     var mc = new Hammer(virtualKeyboardElement);
+  462  
+
+  468          if (ev.type == 'panstart') {
+  469:             leftStart = virtualKeyboardElement.offsetLeft;
+  470:             topStart = virtualKeyboardElement.offsetTop;
+  471              leftTemp = leftStart;
+
+  476              topTemp = topStart + ev.deltaY;
+  477:             virtualKeyboardElement.style.left = leftTemp + 'px';
+  478:             virtualKeyboardElement.style.top = topTemp + 'px';
+  479          }
+
+  632      if (typeof kb == 'undefined') {
+  633:         kb = document.createElement('div');
+  634          kb.id = 'keyboard';

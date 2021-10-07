@@ -34,7 +34,7 @@ export async function prepareEditorPage(fApp) {
       edit: function (mathField) { // useful event handlers
         try {
           var latex = mathField.latex();
-          console.log('** edithandler latex=' + latex);
+          console.log('** mathQuillEditHandler latex=' + latex);
           refreshResultField(latex);
         } catch (error) {
           console.log('ERROR in MQ.MathField: ' + error);
@@ -370,19 +370,19 @@ function showEditorResults(parts) {
   tex = tex.replace(/\\textcolor{blue}{/g, '\\unit{');
   // $(document).trigger('texevent');
 
-  // H5P
+  // maybe H5P editor
   var texinput = $('div.field.field-name-TEX_expression.text input')[0];
-  // console.log(texinput);
   if (typeof texinput !== 'undefined') {
+    // value of TEX_expression field is set to EditorResult
     texinput.value = tex;
-    // trigger InputEvent
+    // trigger InputEvent. EventListener see formulaapplet-editor.js
     texinput.dispatchEvent(new InputEvent('input', {
       bubbles: true
     }))
   } else {
-    console.log('no TEX_expression found');
+    console.log('no TEX_expression found - probably no H5P');
   }
-  //html
+  // maybe html editor
   var out = $('textarea#html-output');
   if (typeof out !== 'undefined') {
     out.text(getHTML(tex, parts.tag));

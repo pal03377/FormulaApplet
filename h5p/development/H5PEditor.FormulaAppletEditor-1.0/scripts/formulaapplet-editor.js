@@ -21,10 +21,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     this.setValue = setValue;
 
     this.changes = [];
-    console.log('FormulaApplet constructed:');
-    // console.log(this);
-    // console.log('this.field:');
-    // console.log(this.field);
+    // console.log('FormulaApplet constructed:');
   }
 
   /**
@@ -52,21 +49,14 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     if (params.formulaAppletMode == 'manu') {
       html += ' data-b64="' + params.data_b64 + '"';
     }
-    // html += '">' + params.TEX_expression + '</p>';
     html += '>';
 
-    // var html = H5PEditor.createFieldMarkup(this.field, '<p id="' + id + '" class="formula_applet edit">egal', id);
     var fieldMarkup = H5PEditor.createFieldMarkup(this.field, html, id);
     self.$item = H5PEditor.$(fieldMarkup);
     self.$formulaApplet = self.$item.find('.formula_applet');
     self.$formulaApplet.text(params.TEX_expression);
     self.$formulaApplet[0].innerHTML = '<span id="math-field">' + self.$formulaApplet[0].innerHTML + '</span>'
-    // console.log(self.$formulaApplet[0]);
-    // const id2 = ns.getNextFieldId(this.field);
-    // var html2 = '<button type="button" class="tr de sif problemeditor" id="set-input-d" >Eingabe-Feld setzen</button>';
-    // var fieldMarkup2 = H5PEditor.createFieldMarkup(this.field, html2, id2);
-    // $wrapper.append(H5PEditor.$(fieldMarkup2));
-
+  
 
     self.config = {
       appendTo: self.$item[0],
@@ -82,11 +72,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
         console.log('hide: ' + expression);
       }
     };
-    // console.log('append:');
-    // console.log(self.field);
-    $wrapper.append(self.$item);
-    // console.log('appended to:');
-    // console.log($wrapper);
+        $wrapper.append(self.$item);
     $(function () {
       //code that needs to be executed when DOM is ready, after manipulation
       afterAppend(self);
@@ -149,7 +135,7 @@ function afterAppend(obj) {
   // }
 
   var checkbox = document.getElementById(getSelectorID('field-formulaappletphysics'));
-  console.log(checkbox);
+  // console.log(checkbox);
   checkbox.addEventListener('change', function () {
     if (this.checked) {
       console.log("Physics Mode");
@@ -164,18 +150,17 @@ function afterAppend(obj) {
   texinput.addEventListener('input', updateTexinput);
 
   function updateTexinput(e) {
-    // console.log('updateTexinput ' + e.target.value);
     obj.parent.params['fa_applet'] = e.target.value;
   }
 
   var formulaAppletMode = document.getElementById(getSelectorID('field-formulaappletmode'));
-  // console.log(formulaAppletPhysics);
   formulaAppletMode.addEventListener('change', function (e) {
-    // console.log(this);
     console.log(this.name + ' ' + this.value);
   });
-  console.log('listening to input event');
-  // console.log(ns);
+  console.log('listening to formulaappletmode change event');
+
+  H5P.jQuery('.field-name-id').css('display', 'none');
+
 
   // create 'set input field' button
   var anchor = H5P.jQuery('div.field.field-name-fa_applet.text.formulaAppletEditor');
@@ -191,7 +176,7 @@ function makeid(length) {
   for (var i = 2; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * numOfChars));
   }
-  console.log(result);
+  // console.log(result);
   // result = '"' + result + '"';
   return result;
 }

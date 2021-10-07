@@ -36,78 +36,74 @@ import {
 async function switchTo(lang) {
   await domLoad;
   console.log('switch to ' + lang);
-  rememberLanguage.lang = lang;
+  formulaAppletLanguage.set(lang);
   $(".tr").css("display", "none");
-  $(".tr." + lang).css("display", "initial");
+  $(".tr." + lang).css("display", "inline");
   // save lang
+  console.log('save cookie lang=' + lang);
   setCookie('lang', lang, 7);
-  $.event.trigger("refreshLanguageEvent");
+  var domElem = document.getElementById(lang);
+  if (domElem) {
+    domElem.click();
+    console.log('trigger click ' + lang);
+  }
+
+  $.event.trigger("refreshLatexEvent");
 }
 
 /**
- * rememberInit hides _isTranslationInitiated: no global variable
+ * formulaAppletLanguage hides _lang: no global variable
+ * TODO use 
  */
-let rememberInit = (function () {
-  let _isTranslationInitiated = true;
+export let formulaAppletLanguage = (function () {
+  let _lang = "de";
   return {
-    setTranslationInitiated: function (truefalse) {
-      _isTranslationInitiated = truefalse;
+    set: function (lang) {
+      _lang = lang;
     },
-    isTranslationInitiated: function () {
-      return _isTranslationInitiated;
+    get: function () {
+      return _lang;
     }
   }
 })();
 
-rememberInit.setTranslationInitiated(true);
-console.log(rememberInit.isTranslationInitiated());
+var translate = {
+  init: false
+};
 
-// export async function reloadTranslation() {
-async function reloadTranslation() {
-  var lang = getCookie('lang') || 'de';
-  // console.log('switch to lang: ' + lang);
-  await switchTo(lang);
-}
-
-/**
- * make buttons with id=de and id=en clickable
- * init event handler for reloadTranslationEvent
- * call reloadTranslation for the first time
- */
-export async function initTranslation() {
-  if (!rememberInit.translationIsInitiated) {
-    // backup of display attribute
-    console.debug('initTranslation()');
-
-    // click event for language buttons
-    $(function () {
-      // $('.btn').button()
-      $('#de').on('click', function () {
-        switchTo('de');
-      });
-      $('#en').on('click', function () {
-        switchTo('en');
-      });
-    });
-
-    $(document).on("reloadTranslationEvent", function () {
-      reloadTranslation();
-    });
-
-    rememberInit.setTranslationInitiated(true);
-    await reloadTranslation();
+function clickListener(event) {
+  var lang = this.id;
+  if (event.screenY == 0) {
+    // triggered click - do nothing
+    console.log('triggered click - do nothing');
+  } else {
+    // real click
+    switchTo(lang);
   }
 }
 
-/**
- * rememberLanguage hides _lang: no global variable
- */
-// export async function rememberLanguage() {
-//   var lang;
-//   return lang;
-// }
+function addClickListener(lang) {
+  var domElem = document.getElementById(lang);
+  if (domElem) {
+    domElem.addEventListener('click', clickListener);
+  }
+}
 
-export const rememberLanguage = {lang:"de", bli:"bla"};
+export async function initTranslation() {
+
+  if (!translate.init) {
+    console.log('translate.init START ');
+    // make buttons with id=de and id=en clickable
+    addClickListener('de');
+    addClickListener('en');
+    translate.init = true;
+    console.log('translate.init END');
+    var lang = formulaAppletLanguage.get();
+    switchTo(lang);
+  } else {
+    console.log('translate.init SKIPPED');
+  }
+}
 
 /**
  * 
@@ -130,7 +126,7 @@ function setCookie(cookieName, cookieValue, exdays) {
  * @returns {string} value of cookie
  * @see setCookie
  */
-function getCookie(cookieName) {
+export function getCookie(cookieName) {
   var name = cookieName + "=";
   var ca = document.cookie.split(';');
   for (var i = 0; i &lt; ca.length; i++) {
@@ -153,13 +149,13 @@ function getCookie(cookieName) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#checkIfEqual">checkIfEqual</a></li><li><a href="global.html#checkIfEquality">checkIfEquality</a></li><li><a href="global.html#deleteSpaceAndRemoveBackslash">deleteSpaceAndRemoveBackslash</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#initTranslation">initTranslation</a></li><li><a href="global.html#rememberInit">rememberInit</a></li><li><a href="global.html#rememberLanguage">rememberLanguage</a></li><li><a href="global.html#separateInputfield">separateInputfield</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#unifyDefinitions">unifyDefinitions</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#checkIfEqual">checkIfEqual</a></li><li><a href="global.html#checkIfEquality">checkIfEquality</a></li><li><a href="global.html#deleteSpaceAndRemoveBackslash">deleteSpaceAndRemoveBackslash</a></li><li><a href="global.html#formulaAppletLanguage">formulaAppletLanguage</a></li><li><a href="global.html#getCookie">getCookie</a></li><li><a href="global.html#separateInputfield">separateInputfield</a></li><li><a href="global.html#setCookie">setCookie</a></li><li><a href="global.html#unifyDefinitions">unifyDefinitions</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Sep 11 2021 17:55:03 GMT+0200 (GMT+02:00)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Oct 06 2021 23:28:38 GMT+0200 (GMT+02:00)
 </footer>
 
 <script> prettyPrint(); </script>

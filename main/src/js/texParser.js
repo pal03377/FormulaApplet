@@ -519,7 +519,6 @@ export function parseTreeByIndex(tree) {
     switch (parseTreeCounter.getCounter()) {
         case 1:
             message = 'delete spaces and remove backslash at \\min';
-            // console.clear();
             tree.leaf.content = deleteSpaceAndRemoveBackslash(tree.leaf.content);
             tree.leaf.content = makeDegreeUnit(tree.leaf.content);
             break;
@@ -1628,7 +1627,6 @@ export function fillWithValues(treeVar, list) {
     // random = true: fillWithRandomValues
     // random = false: fill with values of variableValueList
     var valueList = [];
-    // console.clear();
     var hasValue = true;
     treeVar.withEachNode = function (node) {
         if (node.type == 'integral') hasValue = false;
@@ -1744,7 +1742,6 @@ export function checkScientificNotation(texstring) {
     exponent = exponent.toString();
     // https://regex101.com/
     // var regex = RegExp('((\\d+\\,)?\\d+)', 'g');
-    // console.clear();
     var regex = RegExp('((\\-)?((\\d+)?\\,)?(\\d+))');
     // https://stackoverflow.com/questions/6003884/how-do-i-check-for-null-values-in-javascript
     var leftOk = false;
