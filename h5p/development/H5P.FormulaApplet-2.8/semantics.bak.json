@@ -19,7 +19,9 @@
     "importance": "low",
     "name": "checkAnswer",
     "type": "text",
-    "default": "Check"
+    "default": "Check",
+    "common": true,
+    "optional": true
   },
   {
     "name": "formulaAppletPhysics",

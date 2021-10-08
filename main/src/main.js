@@ -16,12 +16,12 @@ if (isH5P) {
     lang = H5P.jQuery('html')[0].getAttribute('xml:lang');
     H5P.jQuery(document).on('preparePageEvent', function () {
         console.info('preparePageEvent received');
-        preparePage(isH5P);
+        preparePage();
     });
     H5P.jQuery(document).on('mathquillifyEvent', function (ev, id) {
         mathQuillify(id);
     });
-    console.info('H5P listening to preparePageEvent');
+    console.info('H5P listening to preparePageEvent and mathquillifyEvent');
 } else {
     lang = getCookie('lang');
     if (lang == null || lang == 'null') {
