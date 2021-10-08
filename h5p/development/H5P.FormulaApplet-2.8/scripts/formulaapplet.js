@@ -35,16 +35,16 @@ H5P.FormulaApplet = (function ($) {
     if (this.options.formulaAppletMode == 'manu') {
       html += ' data-b64="' + this.options.data_b64 + '"';
     }
-    html += '">' + this.options.fa_applet + '</p>';
+    html += '>' + this.options.fa_applet + '</p>';
     console.log('append: ' + html);
     $container.append(html, afterAppend(this.options.id));
     // console.log('formulaAppletPhysics=' + this.options.formulaAppletPhysics);
     // console.log('formulaAppletMode=' + this.options.formulaAppletMode);
 
-    this.on('buttonPressed', function (event) {
-      var buttonText = event.data;
-      console.log('Someone pressed the ' + buttonText + ' button!');
-    });
+    // this.on('buttonPressed', function (event) {
+    //   var buttonText = event.data;
+    //   console.log('Someone pressed the ' + buttonText + ' button!');
+    // });
   };
 
   return C;

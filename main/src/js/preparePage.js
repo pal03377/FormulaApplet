@@ -40,6 +40,7 @@ import {
   checkIfEquality
 } from "./checkIfEqual.js";
 
+// TODO hide global variables
 var activeMathfieldId = 0;
 // var FAList = [];
 var FAList2 = {};
