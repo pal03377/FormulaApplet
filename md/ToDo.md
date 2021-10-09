@@ -2,8 +2,15 @@
 
 ## FormulaApplet as a H5P package
 * Exercise how to deal with other H5P packages (math, physics)
-* Use apps.zum.de and unterrichten.zum.de 
+* Use apps.zum.de and unterrichten.zum.de
+* Ask H5P Forum:
+   *  Create Button using semantics.json
+   *  Is there a PageLoad event? Wait for PageLoad, then mathQuillify
+* Use H5P-standalone for editor
 ## Coding
+* 'missing input field' bug at 'addition theorem' example (index.html)
+* translate.js uses localStore
+* VirtualKeyboard position
 * Use revealing module pattern, OOP
 * Use JSDoc https://jsdoc.app/ Started!
 * enable debugging in Visual Studio Code
