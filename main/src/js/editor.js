@@ -313,6 +313,7 @@ export function eraseUnit(mf) {
  * @example result.before = "", result.tag = "", result.after = "stringwithoutrinputfield"
  */
 function separateInputfield(latex) {
+  console.log('separate ' + latex);
   var beforeTag, tag, afterTag;
   var classTag = '\\class{inputfield}{';
   var pos = latex.indexOf(classTag);

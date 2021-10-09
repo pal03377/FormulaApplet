@@ -1,0 +1,64 @@
+[{
+    "name": "fa_applet",
+    "type": "text",
+    "label": "Formula Applet Editor",
+    "description": "This widget causes formulaapplet-editor.js to be called",
+    "optional": true,
+    "default": "a04000",
+    "widget": "formulaAppletEditor"
+  },
+  {
+    "label": "Formula text (TEX)",
+    "name": "TEX_expression",
+    "type": "text",
+    "default": "7 +\\class{inputfield}{x} = 11",
+    "description": "The TEX displayed to the end user."
+  },
+  {
+    "label": "Text for \"Check\" button",
+    "importance": "low",
+    "name": "checkAnswer",
+    "type": "text",
+    "default": "Check",
+    "common": true,
+    "optional": true
+
+  },
+  {
+    "name": "formulaAppletPhysics",
+    "type": "boolean",
+    "label": "Physics Mode",
+    "description": "Check if result is a <b>physical quantity</b> (value and unit). <br>Uncheck if result is a <b>mathematical expression</b>.",
+    "default": false
+  },
+  {
+    "name": "formulaAppletMode",
+    "type": "select",
+    "label": "Automatic/Manual Mode",
+    "description": "Result is computed automatically or is given by the author.",
+    "options": [{
+        "value": "auto",
+        "label": "Result is computed by the Formula Applet"
+      },
+      {
+        "value": "manu",
+        "label": "Input result is compared with a given result"
+      }
+    ],
+    "default": "auto"
+  },
+  {
+    "label": "Solution (encoded)",
+    "name": "data_b64",
+    "type": "text",
+    "default": "f0a4de78",
+    "description": "Solution (TEX), encoded"
+  },
+  {
+    "label": "Formula Applet Id",
+    "name": "id",
+    "type": "text",
+    "default": "new_id",
+    "description": "Id of the Formula Applet - has to be unique"
+  }
+]
