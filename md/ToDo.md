@@ -8,6 +8,7 @@
    *  Is there a PageLoad event? Wait for PageLoad, then mathQuillify
 * Use H5P-standalone for editor
 ## Coding
+* 'missing input field' bug at 'addition theorem' example (index.html)
 * translate.js uses localStore
 * VirtualKeyboard position
 * Use revealing module pattern, OOP
