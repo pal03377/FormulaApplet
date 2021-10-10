@@ -56,7 +56,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     self.$formulaApplet = self.$item.find('.formula_applet');
     self.$formulaApplet.text(params.TEX_expression);
     self.$formulaApplet[0].innerHTML = '<span id="math-field">' + self.$formulaApplet[0].innerHTML + '</span>'
-  
+
 
     self.config = {
       appendTo: self.$item[0],
@@ -72,7 +72,22 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
         console.log('hide: ' + expression);
       }
     };
-        $wrapper.append(self.$item);
+    $wrapper.append(self.$item);
+
+    var jui = H5P.JoubelUI;
+    console.log(jui);
+    var $button = jui.createButton({
+      title: 'Retry',
+      text: 'BliBlaBlu',
+      click: function (event) {
+        console.log('Retry was clicked');
+      }
+    });
+
+    console.log('append Button');
+    $wrapper.append($button);
+
+
     $(function () {
       //code that needs to be executed when DOM is ready, after manipulation
       afterAppend(self);
@@ -167,6 +182,7 @@ function afterAppend(obj) {
   console.log(anchor);
   var html = '<button type="button" class="problemeditor" id="set-input-e" style="">Set input field</button>'
   H5P.jQuery(html).appendTo(anchor);
+
 }
 
 function makeid(length) {

@@ -37,7 +37,9 @@ H5P.FormulaApplet = (function ($) {
     }
     html += '>' + this.options.fa_applet + '</p>';
     console.log('append: ' + html);
+    console.log($container);
     $container.append(html, afterAppend(this.options.id));
+  
     H5P.jQuery(document).trigger('mathquillifyEvent', this.options.id);
   };
 
