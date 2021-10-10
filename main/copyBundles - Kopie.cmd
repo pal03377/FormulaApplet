@@ -1,2 +1,0 @@
-copy E:\gut\gf09\main\public\build\bundle*.js D:\Users\privat\Laufwerk_E\gut\gf09\h5p\development\H5P.FormulaApplet-2.8\scripts\
-copy E:\gut\gf09\main\public\build\bundle*.js D:\Users\privat\Laufwerk_E\gut\gf09\h5p\development\H5P.FormulaApplet-2.8\scripts\

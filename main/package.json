@@ -1,6 +1,6 @@
 {
   "name": "formelapplet",
-  "version": "1.0.0",
+  "version": "1.0.619",
   "description": "lets you create math or physics exercises on HTML pages or in Wikis",
   "main": "src/index.js",
   "scripts": {
@@ -42,5 +42,8 @@
     "jquery": "^3.6.0",
     "bl": ">=5.0.0",
     "semver": ">=4.3.2"
+  },
+  "directories": {
+    "doc": "docs"
   }
 }
