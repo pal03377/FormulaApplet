@@ -33,10 +33,10 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     var self = this;
     const id = ns.getNextFieldId(this.field);
     var params = self.parent.params;
-    console.log(params);
+    // console.log(params);
     if (params.id == 'new_id') {
       var new_id = makeid(12);
-      console.log('new id = ' + new_id);
+      console.log('new id -> ' + new_id);
       params.id = new_id;
     }
     params.TEX_expression = params.fa_applet;
@@ -78,14 +78,14 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       title: 'set_input_field',
       text: 'Set input field',
       click: function (event) {
-        console.log(event);
+        // console.log(event);
         H5P.jQuery(document).trigger('setinputEvent');
-        console.log('trigger("setinputEvent")');
+        // console.log('trigger("setinputEvent")');
       }
     });
-
-    console.log('append Button');
+    // console.log('append Button');
     $wrapper.append($button);
+    // append html-output
     $wrapper.append('<textarea id="html-output" rows="4" cols="150">output</textarea>');
 
     $(function () {
@@ -135,13 +135,13 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 })(H5P.jQuery);
 
 function afterAppend(obj) {
-  console.log('afterAppend wait 100ms then...');
+  // console.log('afterAppend wait 100ms then...');
   setTimeout(function () {
     H5P.jQuery(document).trigger('resize');
-    console.log('trigger preparePageEvent');
+    // console.log('trigger preparePageEvent');
     H5P.jQuery(document).trigger('preparePageEvent');
   }, 100);
-  console.log(obj.parent.params);
+  // console.log(obj.parent.params);
 
   // if (obj.parent.params.id == 'new_id') {
   //   var new_id = makeid(12);
@@ -154,10 +154,8 @@ function afterAppend(obj) {
   checkbox.addEventListener('change', function () {
     if (this.checked) {
       console.log("Physics Mode");
-      // test();
     } else {
       console.log("Math Mode");
-      // test();
     }
   });
 
@@ -170,9 +168,9 @@ function afterAppend(obj) {
 
   var formulaAppletMode = document.getElementById(getSelectorID('field-formulaappletmode'));
   formulaAppletMode.addEventListener('change', function (e) {
-    console.log(this.name + ' ' + this.value);
+    console.log('formulaAppletMode ' + this.name + ' ' + this.value);
   });
-  console.log('listening to formulaappletmode change event');
+  // console.log('listening to formulaappletmode change event');
 
   H5P.jQuery('.field-name-id').css('display', 'none');
 

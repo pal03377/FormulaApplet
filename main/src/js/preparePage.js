@@ -64,7 +64,7 @@ function FApp() {
 
 export default async function preparePage() {
   await domLoad;
-  console.log('preparePage');
+  // console.log('preparePage');
   // body click deselects all applets
   $('body').on('click', function () {
     $(".formula_applet").removeClass('selected');
@@ -201,7 +201,7 @@ function mathQuillEditHandler(id) {
 }
 
 function virtualKeyboardEventHandler(_event, cmd) {
-  console.log(cmd);
+  // console.log(cmd);
   var fApp = FAList2[activeMathfieldId];
   var mf = fApp.mathField;
 
@@ -258,7 +258,7 @@ function sanitizePrecision(prec) {
 }
 
 export async function mathQuillifyAll() {
-  console.log('mathQuillifyAll');
+  // console.log('mathQuillifyAll');
   $(".formula_applet:not(.mq-math-mode)").each(function () {
     // console.log(this.id);
     mathQuillify(this.id);
@@ -267,7 +267,7 @@ export async function mathQuillifyAll() {
 
 export async function mathQuillify(id) {
   await domLoad;
-  console.log('mathQuillify ' + id);
+  // console.log('mathQuillify ' + id);
   var $el = $('#' + id + '.formula_applet:not(.mq-math-mode)');
   var domElem = $el[0];
   if (typeof domElem !== 'undefined') {
@@ -290,7 +290,7 @@ export async function mathQuillify(id) {
     fApp.formulaApplet = domElem;
 
     var isEditor = $el.hasClass('edit');
-    console.log(id + ' isEditor=' + isEditor);
+    // console.log(id + ' isEditor=' + isEditor);
     if (isEditor) {
       fApp.hasResultField = true;
     }
@@ -322,7 +322,7 @@ export async function mathQuillify(id) {
     // activate mouse clicks
     $el.on('click', clickHandler);
   }
-  console.log(FAList2);
+  // console.log(FAList2);
   if (isEditor) {
     // *** editor ***
     prepareEditorPage(fApp);

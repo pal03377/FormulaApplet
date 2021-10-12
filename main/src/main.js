@@ -12,13 +12,13 @@ window.onload = function () {
     // make sensitive for mathquillifyEvent(id)
     // formulaapplet.js: function afterAppend(id) fires mathquillifyEvent (one per applet)
     document.addEventListener('mathquillifyEvent', function (ev) {
-        console.log('receive mathquillifyEvent ' + ev);
+        console.log('main: receive mathquillifyEvent ' + ev);
     });
     // mathQuillify(id);
 
     var h5p_classes = document.getElementsByClassName('h5p-content');
     var isH5P = (h5p_classes.length > 0);
-    console.log('*** isH5P = ' + isH5P);
+    console.log('main: isH5P = ' + isH5P);
 
     var lang;
     if (isH5P) {

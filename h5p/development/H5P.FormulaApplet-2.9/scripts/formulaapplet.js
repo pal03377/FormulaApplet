@@ -36,8 +36,8 @@ H5P.FormulaApplet = (function ($) {
       html += ' data-b64="' + this.options.data_b64 + '"';
     }
     html += '>' + this.options.fa_applet + '</p>';
-    console.log('append: ' + html);
-    console.log($container);
+    // console.log('append: ' + html);
+    // console.log($container);
     $container.append(html, afterAppend(this.options.id));
   
     H5P.jQuery(document).trigger('mathquillifyEvent', this.options.id);
@@ -49,7 +49,7 @@ H5P.FormulaApplet = (function ($) {
 var chainTimerId = -1;
 var chainTimerInterval = 2000; //millisec
 var chainTimerFinished = function () {
-  console.log('chainTimer ' + chainTimerId + ' finished.');
+  // console.log('chainTimer ' + chainTimerId + ' finished.');
   H5P.jQuery(document).trigger('preparePageEvent');
 };
 
@@ -57,11 +57,11 @@ function chainTimer() {
   if (chainTimerId !== -1) {
     // stop timer, wait with chainTimerFinished
     clearTimeout(chainTimerId);
-    console.log('Timer ' + chainTimerId + ' stopped.');
+    // console.log('Timer ' + chainTimerId + ' stopped.');
   }
   // start next timer (or first timer) 
   chainTimerId = setTimeout(chainTimerFinished, chainTimerInterval);
-  console.log('Timer ' + chainTimerId + ' started.');
+  // console.log('Timer ' + chainTimerId + ' started.');
 }
 
 

@@ -17,7 +17,7 @@ async function switchTo(lang) {
   var domElem = document.getElementById(lang);
   if (domElem) {
     domElem.click();
-    console.log('trigger click ' + lang);
+    // console.log('trigger click ' + lang);
   }
 
   $.event.trigger("refreshLatexEvent");
@@ -47,7 +47,7 @@ function clickListener(event) {
   var lang = this.id;
   if (event.screenY == 0) {
     // triggered click - do nothing
-    console.log('triggered click - do nothing');
+    // console.log('triggered click - do nothing');
   } else {
     // real click
     switchTo(lang);
@@ -64,16 +64,16 @@ function addClickListener(lang) {
 export async function initTranslation() {
 
   if (!translate.init) {
-    console.log('translate.init START ');
+    // console.log('translate.init START ');
     // make buttons with id=de and id=en clickable
     addClickListener('de');
     addClickListener('en');
     translate.init = true;
-    console.log('translate.init END');
+    // console.log('translate.init END');
     var lang = formulaAppletLanguage.get();
     switchTo(lang);
   } else {
-    console.log('translate.init SKIPPED');
+    // console.log('translate.init SKIPPED');
   }
 }
 
