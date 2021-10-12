@@ -290,6 +290,7 @@ export async function mathQuillify(id) {
     fApp.formulaApplet = domElem;
 
     var isEditor = $el.hasClass('edit');
+    console.log(id + ' isEditor=' + isEditor);
     if (isEditor) {
       fApp.hasResultField = true;
     }
@@ -321,7 +322,7 @@ export async function mathQuillify(id) {
     // activate mouse clicks
     $el.on('click', clickHandler);
   }
-  // console.log(FAList2);
+  console.log(FAList2);
   if (isEditor) {
     // *** editor ***
     prepareEditorPage(fApp);

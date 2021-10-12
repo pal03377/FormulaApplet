@@ -24,6 +24,7 @@ export async function initEditor() {
 export async function prepareEditorPage(fApp) {
   // *** editor ***
   await initEditor();
+  console.log('prepareEditorPage');
   // make whole mathFieldSpan editable
   var mathFieldSpan = document.getElementById('math-field');
   // var mathFieldSpan = $('p#editor.formula_applet');
@@ -51,6 +52,12 @@ export async function prepareEditorPage(fApp) {
     ev.preventDefault();
     setInput(editorMf);
   });
+  document.addEventListener('setinputEvent', function (ev) {
+    console.log('setinputEvent');
+    ev.preventDefault();
+    setInput(editorMf);
+});
+
   $('#set-unit-d, #set-unit-e').on('mousedown', ev => {
     ev.preventDefault();
     setUnit(editorMf);

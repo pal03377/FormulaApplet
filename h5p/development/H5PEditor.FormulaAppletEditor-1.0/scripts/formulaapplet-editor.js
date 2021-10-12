@@ -74,19 +74,19 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     };
     $wrapper.append(self.$item);
 
-    var jui = H5P.JoubelUI;
-    console.log(jui);
-    var $button = jui.createButton({
-      title: 'Retry',
-      text: 'BliBlaBlu',
+    var $button = H5P.JoubelUI.createButton({
+      title: 'set_input_field',
+      text: 'Set input field',
       click: function (event) {
-        console.log('Retry was clicked');
+        console.log(event);
+        H5P.jQuery(document).trigger('setinputEvent');
+        console.log('trigger("setinputEvent")');
       }
     });
 
     console.log('append Button');
     $wrapper.append($button);
-
+    $wrapper.append('<textarea id="html-output" rows="4" cols="150">output</textarea>');
 
     $(function () {
       //code that needs to be executed when DOM is ready, after manipulation
@@ -178,10 +178,10 @@ function afterAppend(obj) {
 
 
   // create 'set input field' button
-  var anchor = H5P.jQuery('div.field.field-name-fa_applet.text.formulaAppletEditor');
-  console.log(anchor);
-  var html = '<button type="button" class="problemeditor" id="set-input-e" style="">Set input field</button>'
-  H5P.jQuery(html).appendTo(anchor);
+  // var anchor = H5P.jQuery('div.field.field-name-fa_applet.text.formulaAppletEditor');
+  // console.log(anchor);
+  // var html = '<button type="button" class="problemeditor" id="set-input-e" style="">Set input field</button>'
+  // H5P.jQuery(html).appendTo(anchor);
 
 }
 
