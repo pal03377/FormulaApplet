@@ -54,8 +54,11 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     var fieldMarkup = H5PEditor.createFieldMarkup(this.field, html, id);
     self.$item = H5PEditor.$(fieldMarkup);
     self.$formulaApplet = self.$item.find('.formula_applet');
-    self.$formulaApplet.text(params.TEX_expression);
-    self.$formulaApplet[0].innerHTML = '<span id="math-field">' + self.$formulaApplet[0].innerHTML + '</span>'
+    var temp = params.TEX_expression;
+    // temp = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
+    // temp = temp.replace(/{{result}}/g, '\\class{inputfield}{}');
+    self.$formulaApplet.text(temp);
+    self.$formulaApplet[0].innerHTML = '<span id="math-field">' + self.$formulaApplet[0].innerHTML + '</span>';
 
 
     self.config = {
@@ -79,8 +82,17 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       text: 'Set input field',
       click: function (event) {
         // console.log(event);
-        H5P.jQuery(document).trigger('setinputEvent');
-        // console.log('trigger("setinputEvent")');
+
+        // H5P.jQuery(document).trigger('setInputEvent');
+        // // H5P.jQuery.event.trigger('setInputEvent');
+        // console.log('trigger("setInputEvent")');
+        const si_ev = new Event('setInputEvent', {
+          bubbles: true,
+          cancelable: true,
+          composed: false
+        });
+        si_ev.data = 4711;
+        document.dispatchEvent(si_ev);
       }
     });
     // console.log('append Button');
@@ -135,11 +147,12 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 })(H5P.jQuery);
 
 function afterAppend(obj) {
-  // console.log('afterAppend wait 100ms then...');
+  console.log('afterAppend wait 100ms then...');
   setTimeout(function () {
     H5P.jQuery(document).trigger('resize');
     // console.log('trigger preparePageEvent');
     H5P.jQuery(document).trigger('preparePageEvent');
+    H5P.jQuery(document).trigger('setInputEvent');
   }, 100);
   // console.log(obj.parent.params);
 
@@ -180,6 +193,17 @@ function afterAppend(obj) {
   // console.log(anchor);
   // var html = '<button type="button" class="problemeditor" id="set-input-e" style="">Set input field</button>'
   // H5P.jQuery(html).appendTo(anchor);
+
+
+
+  // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
+  document.addEventListener('setInputEvent', function (ev) {
+    console.log(ev);
+    // var d = ev.data;
+    console.log('formulaapplet-editor.js: receive setInputEvent');
+  });
+  console.log('formulaapplet-editor.js: watch setInputEvent');
+
 
 }
 

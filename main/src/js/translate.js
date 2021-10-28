@@ -7,6 +7,9 @@ import {
 
 async function switchTo(lang) {
   await domLoad;
+  if(lang == ''){
+    lang = 'de';
+  }
   console.log('switch to ' + lang);
   formulaAppletLanguage.set(lang);
   $(".tr").css("display", "none");

@@ -64,6 +64,14 @@ function FApp() {
 
 export default async function preparePage() {
   await domLoad;
+
+  document.addEventListener('setInputEvent', function (ev) {
+    console.log(ev);
+    // var d = ev.data;
+    console.log('preparePage.js: receive setInputEvent');
+  });
+  console.log('preparePage.js: watch setInputEvent');
+
   // console.log('preparePage');
   // body click deselects all applets
   $('body').on('click', function () {
@@ -267,7 +275,7 @@ export async function mathQuillifyAll() {
 
 export async function mathQuillify(id) {
   await domLoad;
-  // console.log('mathQuillify ' + id);
+  console.log('mathQuillify ' + id);
   var $el = $('#' + id + '.formula_applet:not(.mq-math-mode)');
   var domElem = $el[0];
   if (typeof domElem !== 'undefined') {
@@ -325,6 +333,7 @@ export async function mathQuillify(id) {
   // console.log(FAList2);
   if (isEditor) {
     // *** editor ***
+    console.log(' # # # prepareEditorPage')
     prepareEditorPage(fApp);
     var mqEditableField;
     mqEditableField = $el.find('.mq-editable-field')[0];
@@ -336,39 +345,43 @@ export async function mathQuillify(id) {
       console.error('Error using MQ.StaticMath: ' + err);
       console.trace();
     }
-    if (fApp.hasResultField) {
-      if ($el.attr('data-b64') !== undefined) {
-        fApp.hasSolution = true;
-        var zip = $el.attr('data-b64');
-        fApp.solution = decode(zip);
-      } else {
-        fApp.hasSolution = false;
-      }
-      mqEditableField = $el.find('.mq-editable-field')[0];
-      fApp.mqEditableField = mqEditableField;
-      var mf = MQ.MathField(mqEditableField, {});
-      mf.config({
-        handlers: {
-          edit: () => {
-            mqEditableField.focus();
-            mathQuillEditHandler(fApp.id);
-          },
-          enter: () => {
-            mathQuillEditHandler(fApp.id);
-          },
+    try {
+      if (fApp.hasResultField) {
+        if ($el.attr('data-b64') !== undefined) {
+          fApp.hasSolution = true;
+          var zip = $el.attr('data-b64');
+          fApp.solution = decode(zip);
+        } else {
+          fApp.hasSolution = false;
         }
-      });
-      fApp.mathField = mf;
-
-      // make touch sensitive
-      try {
-        fApp.hammer = new Hammer(mqEditableField);
-        fApp.hammer.on("doubletap", function () {
-          showVirtualKeyboard();
+        mqEditableField = $el.find('.mq-editable-field')[0];
+        fApp.mqEditableField = mqEditableField;
+        var mf = MQ.MathField(mqEditableField, {});
+        mf.config({
+          handlers: {
+            edit: () => {
+              mqEditableField.focus();
+              mathQuillEditHandler(fApp.id);
+            },
+            enter: () => {
+              mathQuillEditHandler(fApp.id);
+            },
+          }
         });
-      } catch (error) {
-        console.error('Hammer error: ' + error);
+        fApp.mathField = mf;
+
+        // make touch sensitive
+        try {
+          fApp.hammer = new Hammer(mqEditableField);
+          fApp.hammer.on("doubletap", function () {
+            showVirtualKeyboard();
+          });
+        } catch (error) {
+          console.error('Hammer error: ' + error);
+        }
       }
+    } catch (error) {
+      console.log('ERROR ' + error);
     }
     // make virtual keyboard show/hide by mouseclick
     // console.log('virtual keyboard buttons');

@@ -19,6 +19,14 @@ var newFaId = newFaId || 'x8rT3dkkS';
 export async function initEditor() {
   await domLoad;
   $.event.trigger("clickLanguageEvent");
+  // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
+  document.addEventListener('setInputEvent', function (ev) {
+    console.log(ev);
+    // var d = ev.data;
+    console.log('editor.js: receive setInputEvent');
+  });
+  console.log('editor.js: watch setInputEvent');
+
 }
 
 export async function prepareEditorPage(fApp) {
@@ -53,11 +61,6 @@ export async function prepareEditorPage(fApp) {
     ev.preventDefault();
     setInput(editorMf);
   });
-  document.addEventListener('setinputEvent', function (ev) {
-    console.log('receive setinputEvent');
-    ev.preventDefault();
-    setInput(editorMf);
-});
 
   $('#set-unit-d, #set-unit-e').on('mousedown', ev => {
     ev.preventDefault();
