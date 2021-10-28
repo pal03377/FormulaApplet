@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ## Dependabot nervt
+=======
+## Dependabot
+>>>>>>> e4b698938eca06fb0b6cfc87f04b3516f94b5042
 * 1 ansi-regex vulnerability found in package-lock.json on Sep 24
 * Dependabot couldn't find a package.json. 
 ## Debuggen mit VSC oder Google Chrome?
@@ -15,4 +19,8 @@ und die Dateien von bundle.js kommunizieren mittels Custom Events
 ## Dies und Das
 * (function(){ ... })(); oder (function(){ ... }());
 * wieso npm run build, aber npm start ohne run?
+<<<<<<< HEAD
  
+=======
+ 
+>>>>>>> e4b698938eca06fb0b6cfc87f04b3516f94b5042
