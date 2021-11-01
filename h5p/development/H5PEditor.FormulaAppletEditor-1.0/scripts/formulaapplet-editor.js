@@ -22,6 +22,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 
     this.changes = [];
     // console.log('FormulaApplet constructed:');
+    // change the source code from within Chrome
   }
 
   /**
