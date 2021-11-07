@@ -36,20 +36,48 @@ H5P.FormulaApplet = (function ($) {
       html += ' data-b64="' + this.options.data_b64 + '"';
     }
     html += '>' + this.options.fa_applet + '</p>';
-    // console.log('append: ' + html);
+    // html = '<p>DEBUG formulaapplet.js DEBUG</p>';
+    console.log('formulaapplet: append ' + html);
     // console.log($container);
     $container.append(html, afterAppend(this.options.id));
-  
-    H5P.jQuery(document).trigger('mathquillifyEvent', this.options.id);
+    var id = this.options.id;
+    // console.log('id=' + id);
+    waitForMain(function () {
+      // console.log('window.mainIsLoaded ' + window.mainIsLoaded);
+      if (window.mainIsLoaded == 1) {
+        console.log('MAIN is loaded');
+        window.mainIsLoaded = 2; // prevent from doing twice
+      }
+      // console.log('TRIGGER mathquillifyEvent (formulaapplet.js) with id=' + id);
+      H5P.jQuery(document).trigger('mathquillifyEvent', id);
+    }, id);
   };
-
   return C;
 })(H5P.jQuery);
+
+var try_counter = 0;
+var try_counter_limit = 30;
+
+function waitForMain(cont, parm) {
+  if (window.mainIsLoaded > 0) {
+    cont();
+  } else {
+    try_counter++;
+    // console.log('Waiting for main: ' + try_counter);
+    if (try_counter < try_counter_limit) {
+      setTimeout(function () {
+        waitForMain(cont, parm);
+      }, 300);
+    } else {
+      console.error('waitForMain: Timeout');
+    }
+  }
+}
 
 var chainTimerId = -1;
 var chainTimerInterval = 2000; //millisec
 var chainTimerFinished = function () {
-  // console.log('chainTimer ' + chainTimerId + ' finished.');
+  console.log('TRIGGER preparePageEvent (formulaapplet.js)');
   H5P.jQuery(document).trigger('preparePageEvent');
 };
 
