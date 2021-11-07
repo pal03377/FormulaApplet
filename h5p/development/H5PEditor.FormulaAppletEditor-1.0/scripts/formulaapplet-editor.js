@@ -51,6 +51,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       html += ' data-b64="' + params.data_b64 + '"';
     }
     html += '>';
+    // html = '<p>DEBUG formulaapplet-editor.js DEBUG</p>';
 
     var fieldMarkup = H5PEditor.createFieldMarkup(this.field, html, id);
     self.$item = H5PEditor.$(fieldMarkup);
@@ -82,17 +83,13 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       title: 'set_input_field',
       text: 'Set input field',
       click: function (event) {
-        // console.log(event);
-
-        // H5P.jQuery(document).trigger('setInputEvent');
-        // // H5P.jQuery.event.trigger('setInputEvent');
-        // console.log('trigger("setInputEvent")');
         const si_ev = new Event('setInputEvent', {
           bubbles: true,
           cancelable: true,
           composed: false
         });
         si_ev.data = 4711;
+        console.log('TRIGGER setInputEvent (formulaapplet-editor.js)');
         document.dispatchEvent(si_ev);
       }
     });
@@ -148,13 +145,28 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 })(H5P.jQuery);
 
 function afterAppend(obj) {
-  console.log('afterAppend wait 100ms then...');
-  setTimeout(function () {
-    H5P.jQuery(document).trigger('resize');
-    // console.log('trigger preparePageEvent');
-    H5P.jQuery(document).trigger('preparePageEvent');
-    H5P.jQuery(document).trigger('setInputEvent');
-  }, 100);
+  waitForMain(function () {
+    // console.log('window.mainIsLoaded ' + window.mainIsLoaded);
+    if (window.mainIsLoaded == 1) {
+      console.log('MAIN is loaded');
+      window.mainIsLoaded = 2; // prevent from doing twice
+      H5P.jQuery(document).trigger('resize');
+      // console.log('TRIGGER preparePageEvent (formulaapplet-editor.js)');
+      H5P.jQuery(document).trigger('preparePageEvent');
+      // console.log('TRIGGER setInputEvent (formulaapplet-editor.js)');
+      H5P.jQuery(document).trigger('setInputEvent');
+    }
+  });
+
+  // setTimeout replaced by waitForMain
+  // console.log('afterAppend wait 100ms then...');
+  // setTimeout(function () {
+  // H5P.jQuery(document).trigger('resize');
+  // console.log('TRIGGER preparePageEvent (formulaapplet-editor.js)');
+  // H5P.jQuery(document).trigger('preparePageEvent');
+  // console.log('TRIGGER setInputEvent (formulaapplet-editor.js)');
+  // H5P.jQuery(document).trigger('setInputEvent');
+  // }, 100);
   // console.log(obj.parent.params);
 
   // if (obj.parent.params.id == 'new_id') {
@@ -206,6 +218,25 @@ function afterAppend(obj) {
   console.log('formulaapplet-editor.js: watch setInputEvent');
 
 
+}
+
+var try_counter = 0;
+var try_counter_limit = 30;
+
+function waitForMain(cont) {
+  if (window.mainIsLoaded > 0) {
+    cont();
+  } else {
+    try_counter++;
+    // console.log('Waiting for main: ' + try_counter);
+    if (try_counter < try_counter_limit) {
+      setTimeout(function () {
+        waitForMain(cont);
+      }, 300);
+    } else {
+      console.error('waitForMain: Timeout');
+    }
+  }
 }
 
 function makeid(length) {
