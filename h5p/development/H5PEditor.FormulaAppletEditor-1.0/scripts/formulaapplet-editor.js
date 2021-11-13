@@ -51,7 +51,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       html += ' data-b64="' + params.data_b64 + '"';
     }
     html += '>';
-    // html = '<p>DEBUG formulaapplet-editor.js DEBUG</p>';
+    // html = '<p class="formula_applet edit" id="0815" >';
 
     var fieldMarkup = H5PEditor.createFieldMarkup(this.field, html, id);
     self.$item = H5PEditor.$(fieldMarkup);
@@ -188,8 +188,23 @@ function afterAppend(obj) {
   var texinput = H5P.jQuery('div.field.field-name-TEX_expression.text input')[0];
   texinput.addEventListener('input', updateTexinput);
 
-  function updateTexinput(e) {
-    obj.parent.params['fa_applet'] = e.target.value;
+  function updateTexinput(event) {
+    console.log('TEX_expression changed: ' + event.target.value);
+    var out = document.getElementById('html-output');
+    console.log(out);
+    out.value = event.target.value;
+    console.log(out);
+    obj.parent.params['fa_applet'] = event.target.value;
+    // console.log(this);
+    // console.log(self);
+    // console.log(self.H5PEditor);
+    // console.log(self.H5PEditor.Editor);
+    // console.log(self.H5PEditor.FormulaAppletEditor);
+    // console.log(self.H5PEditor.FormulaAppletEditor.setExpression('BliBlaNlu'));
+    var mf = document.getElementById('math-field');
+    console.log(mf);
+    mf.innerHTML = event.target.value;
+    H5P.jQuery(document).trigger('mathquillifyAllEvent');
   }
 
   var formulaAppletMode = document.getElementById(getSelectorID('field-formulaappletmode'));
@@ -221,14 +236,14 @@ function afterAppend(obj) {
 }
 
 var try_counter = 0;
-var try_counter_limit = 30;
+var try_counter_limit = 10;
 
 function waitForMain(cont) {
   if (window.mainIsLoaded > 0) {
     cont();
   } else {
     try_counter++;
-    // console.log('Waiting for main: ' + try_counter);
+    console.log('Waiting for main: ' + try_counter);
     if (try_counter < try_counter_limit) {
       setTimeout(function () {
         waitForMain(cont);

@@ -57,6 +57,11 @@ window.onload = function () {
             // console.info('RECEIVE mathquillifyEvent(id) (main.js)' + id);
             mathQuillify(id);
         });
+        // eslint-disable-next-line no-undef
+        H5P.jQuery(document).on('mathquillifyAllEvent', function (_ev) {
+            console.info('RECEIVE mathquillifyAllEvent (main.js)');
+            mathQuillifyAll();
+        });
     
         console.info('LISTEN to preparePageEvent and mathquillifyEvent(id) (main.js)');
         // TODO this code causes bugs:
