@@ -1,0 +1,43 @@
+{
+  "title": "Formula Applet 2.8",
+  "description": "Displays a Formula Applet",
+  "majorVersion": 2,
+  "minorVersion": 8,
+  "patchVersion": 0,
+  "runnable": 1,
+  "author": "Rudolf Grossmann",
+  "license": "MIT",
+  "machineName": "H5P.FormulaApplet",
+  "preloadedJs": [{
+    "path": "scripts/formulaapplet.js"
+  }, {
+    "path": "scripts/bundle.js"
+  }],
+  "preloadedCss": [{
+      "path": "styles/formulaapplet.css"
+    },
+    {
+      "path": "styles/gf09.css"
+    },
+    {
+      "path": "styles/table.css"
+    },
+    {
+      "path": "styles/virtualKeyboard.css"
+    },
+    {
+      "path": "styles/MathQuill/mathquill.css"
+    }
+  ],
+  "editorDependencies": [{
+      "machineName": "H5PEditor.FormulaAppletEditor",
+      "majorVersion": 1,
+      "minorVersion": 0
+    },
+    {
+      "machineName": "H5P.JoubelUI",
+      "majorVersion": 1,
+      "minorVersion": 3
+    }
+  ]
+}
