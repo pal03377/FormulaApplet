@@ -2,7 +2,7 @@
     "name": "fa_applet",
     "type": "text",
     "label": "Formula Applet Editor",
-    "description": "This widget causes formulaapplet-editor.js to be called",
+    "description": "This widget hopefully causes formulaapplet-editor.js to be called",
     "optional": true,
     "default": "a04000",
     "widget": "formulaAppletEditor"
