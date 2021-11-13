@@ -1,4 +1,4 @@
-import $ from "jquery";
+// import $ from "jquery";
 import preparePage, {
     mathQuillifyAll,
     mathQuillify
@@ -7,43 +7,28 @@ import {
     formulaAppletLanguage,
     getCookie
 } from "./js/translate.js";
-
-// define global variable. Ugly but necessary.
-// var document.main_loaded = false;
-// localStorage.setItem('mainIsLoaded', 'false');
-// $('body').attr('mainIsLoaded', 'false');
-window.mainIsLoaded = 0;
+debugger;
 
 window.onload = function () {
     var h5p_classes = document.getElementsByClassName('h5p-content');
     var isH5P = (h5p_classes.length > 0);
     console.log('main: isH5P = ' + isH5P);
 
-    // eslint-disable-next-line no-unused-vars
-    // $(document).on('setInputEvent', function (ev) {
-    // eslint-disable-next-line no-undef
-    // eslint-disable-next-line no-unused-vars
-    // $(document).on('setInputEvent', function (ev) {
-    //     console.log('editor.js: receive setInputEvent');
-    //     // ev.preventDefault();
-    //     // setInput(editorMf);
-    // });
-
     // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
-    document.addEventListener('setInputEvent', function (ev) {
+    document.addEventListener('setInputfieldEvent', function (ev) {
         console.log(ev);
         // var d = ev.data;
-        console.log('RECEIVE setInputEvent (main.js)');
+        console.log('RECEIVE setInputfieldEvent (main.js)');
     });
-    console.log('LISTEN setInputEvent (main.js)');
+    console.log('LISTEN setInputfieldEvent (main.js)');
 
 
     var lang;
     if (isH5P) {
 
         // // eslint-disable-next-line no-undef
-        // H5P.jQuery(document).on('setInputEvent', function (_ev, id) {
-        //     console.log('main.js: receive setInputEvent');
+        // H5P.jQuery(document).on('setInputfieldEvent', function (_ev, id) {
+        //     console.log('main.js: receive setInputfieldEvent');
         // });
 
         // make sensitive for preparePageEvent
@@ -53,14 +38,24 @@ window.onload = function () {
             preparePage();
         });
         // eslint-disable-next-line no-undef
+        H5P.jQuery(document).on('mathquillifyAllEvent', function (_ev) {
+            mathQuillifyAll();
+        });
+    // eslint-disable-next-line no-undef
         H5P.jQuery(document).on('mathquillifyEvent', function (_ev, id) {
             // console.info('RECEIVE mathquillifyEvent(id) (main.js)' + id);
             mathQuillify(id);
         });
         // eslint-disable-next-line no-undef
-        H5P.jQuery(document).on('mathquillifyAllEvent', function (_ev) {
-            console.info('RECEIVE mathquillifyAllEvent (main.js)');
-            mathQuillifyAll();
+        H5P.jQuery(document).on('testEvent', function (_ev) {
+            console.info('RECEIVE testEvent (main.js)');
+        });
+        // eslint-disable-next-line no-undef
+        H5P.jQuery(document).on('SignalToMainEvent', function (_ev) {
+            console.info('RECEIVE SignalToMainEvent (main.js)');
+            console.info('TRIGGER echoFromMainEvent (main.js)');
+            // eslint-disable-next-line no-undef
+            H5P.jQuery(document).trigger('echoFromMainEvent');
         });
     
         console.info('LISTEN to preparePageEvent and mathquillifyEvent(id) (main.js)');
@@ -82,7 +77,7 @@ window.onload = function () {
     // This information is used by preparePage.js and translate.js/clickLanguage()
 
     // console.log('mainIsLoaded = true');
-    // every time main is called, window.mainIsLoaded is increased by 1
-    // The first time main is loaded, window.mainIsLoaded will be 1.
-    window.mainIsLoaded += 1;
+    // every time main is called, document.mainIsLoaded is increased by 1
+    // The first time main is loaded, document.mainIsLoaded will be 1.
+    // document.mainIsLoaded += 1;
 };
