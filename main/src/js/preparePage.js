@@ -68,9 +68,9 @@ export default async function preparePage() {
   document.addEventListener('setInputEvent', function (ev) {
     console.log(ev);
     // var d = ev.data;
-    console.log('preparePage.js: receive setInputEvent');
+    console.log('RECEIVE setInputEvent (preparePage.js)');
   });
-  console.log('preparePage.js: watch setInputEvent');
+  console.log('LISTEN setInputEvent (preparePage.js)');
 
   // console.log('preparePage');
   // body click deselects all applets
@@ -90,7 +90,7 @@ export default async function preparePage() {
   });
   initTranslation();
   initVirtualKeyboard();
-  // mathQuillifyAll();
+  mathQuillifyAll();
 }
 
 function nthroot() {
@@ -381,7 +381,7 @@ export async function mathQuillify(id) {
         }
       }
     } catch (error) {
-      console.log('ERROR ' + error);
+      // console.log('ERROR ' + error);
     }
     // make virtual keyboard show/hide by mouseclick
     // console.log('virtual keyboard buttons');
@@ -402,30 +402,32 @@ function clickHandler(ev) {
     // console.log(ev);
     // ev.target.index does not exist, so use FAList2
     // console.log(fApp);
-    if (fApp.hasResultField) {
-      ev.stopPropagation(); // avoid body click
-      // deselect all applets
-      $(".formula_applet").removeClass('selected');
-      $(".formula_applet").off('virtualKeyboardEvent');
-      $(fApp.formulaApplet).addClass('selected');
-      $(fApp.formulaApplet).on('virtualKeyboardEvent', function (_evnt, cmd) {
-        virtualKeyboardEventHandler(_evnt, cmd);
-      });
-      $("button.keyb_button").removeClass('selected');
-      if ($('#virtualKeyboard').css('display') == 'none') {
-        // if virtual keyboard is hidden, select keyboard button
-        $(fApp.formulaApplet).nextAll("button.keyb_button:first").addClass('selected');
-      }
-      activeMathfieldId = fApp.id;
-    } else {
-      // fApp has no ResultField (static formula)
-      try {
-        var mfContainer = MQ.StaticMath(fApp.formulaApplet);
-        var mfLatexForParser = mfContainer.latex();
-        var myTree = new FaTree();
-        myTree.leaf.content = mfLatexForParser;
-      } catch (error) {
-        console.log('ERROR ' + error);
+    if (typeof fApp !== 'undefined') {
+      if (fApp.hasResultField) {
+        ev.stopPropagation(); // avoid body click
+        // deselect all applets
+        $(".formula_applet").removeClass('selected');
+        $(".formula_applet").off('virtualKeyboardEvent');
+        $(fApp.formulaApplet).addClass('selected');
+        $(fApp.formulaApplet).on('virtualKeyboardEvent', function (_evnt, cmd) {
+          virtualKeyboardEventHandler(_evnt, cmd);
+        });
+        $("button.keyb_button").removeClass('selected');
+        if ($('#virtualKeyboard').css('display') == 'none') {
+          // if virtual keyboard is hidden, select keyboard button
+          $(fApp.formulaApplet).nextAll("button.keyb_button:first").addClass('selected');
+        }
+        activeMathfieldId = fApp.id;
+      } else {
+        // fApp has no ResultField (static formula)
+        try {
+          var mfContainer = MQ.StaticMath(fApp.formulaApplet);
+          var mfLatexForParser = mfContainer.latex();
+          var myTree = new FaTree();
+          myTree.leaf.content = mfLatexForParser;
+        } catch (error) {
+          console.log('ERROR ' + error);
+        }
       }
     }
   } catch (error) {

@@ -23,9 +23,9 @@ export async function initEditor() {
   document.addEventListener('setInputEvent', function (ev) {
     console.log(ev);
     // var d = ev.data;
-    console.log('editor.js: receive setInputEvent');
+    console.log('RECEIVE setInputEvent (editor.js)');
   });
-  console.log('editor.js: watch setInputEvent');
+  console.log('LISTEN setInputEvent (editor.js)');
 
 }
 
