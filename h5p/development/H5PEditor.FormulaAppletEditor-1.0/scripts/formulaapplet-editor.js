@@ -1,3 +1,6 @@
+var H5P = H5P || {};
+console.log('Here is formulaapplet-editor.js');
+
 /**
  * FormulaAppletEditor widget module
  *
@@ -101,8 +104,25 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     $(function () {
       //code that needs to be executed when DOM is ready, after manipulation
       afterAppend(self);
+      console.log('trigger many testEvents and a message...');
+      // console.log(window.parent);
+      // window.parent.postMessage("HELLO_PARENT", 'http://localhost/drupal/');
+      // console.log(window.document.URL);
+      // console.log(window.parent.document.URL);
+      // H5P.jQuery(window).trigger('testEvent');
+      // H5P.jQuery(window.parent).trigger('testEvent');
+      // H5P.jQuery(window.parent.parent).trigger('testEvent');
+      // H5P.jQuery(window.document).trigger('testEvent');
+      // H5P.jQuery(window.parent.document).trigger('testEvent');
+      // H5P.jQuery(window.parent.parent.document).trigger('testEvent');
+      waitForMainThenDo(afterMainIsLoaded);
     });
   };
+
+  function afterMainIsLoaded() {
+    // this code is executed if main is loaded
+    console.log('*** MAIN is loaded *** ');
+  }
 
   /**
    * Hide expression selector
@@ -145,18 +165,18 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 })(H5P.jQuery);
 
 function afterAppend(obj) {
-  waitForMain(function () {
-    // console.log('window.mainIsLoaded ' + window.mainIsLoaded);
-    if (window.mainIsLoaded == 1) {
-      console.log('MAIN is loaded');
-      window.mainIsLoaded = 2; // prevent from doing twice
-      H5P.jQuery(document).trigger('resize');
-      // console.log('TRIGGER preparePageEvent (formulaapplet-editor.js)');
-      H5P.jQuery(document).trigger('preparePageEvent');
-      // console.log('TRIGGER setInputEvent (formulaapplet-editor.js)');
-      H5P.jQuery(document).trigger('setInputEvent');
-    }
-  });
+  // waitForMain(function () {
+  //   // console.log('window.mainIsLoaded ' + window.mainIsLoaded);
+  //   if (window.mainIsLoaded == 1) {
+  //     console.log('MAIN is loaded');
+  //     window.mainIsLoaded = 2; // prevent from doing twice
+  //     H5P.jQuery(document).trigger('resize');
+  //     // console.log('TRIGGER preparePageEvent (formulaapplet-editor.js)');
+  //     H5P.jQuery(document).trigger('preparePageEvent');
+  //     // console.log('TRIGGER setInputEvent (formulaapplet-editor.js)');
+  //     H5P.jQuery(document).trigger('setInputEvent');
+  //   }
+  // });
 
   // setTimeout replaced by waitForMain
   // console.log('afterAppend wait 100ms then...');
@@ -235,21 +255,77 @@ function afterAppend(obj) {
 
 }
 
+// next lines are part of waitForMain mechanism
+// event listener listens to echoes from main.js
+var mainIsLoaded = 0; //TODO get rid of global var
+// eslint-disable-next-line no-undef
+H5P.jQuery(document).on('echoFromMainEvent', function (_ev) {
+  mainIsLoaded += 1;
+  console.info('RECEIVE echoFromMainEvent (formulaapplet-editor.js) mainIsLoaded=' + mainIsLoaded);
+});
+window.parent.parent.addEventListener('message', handleMessage2, true); //capturing phase
+console.info('LISTEN to message (formulaapplet-editor.js) !!!');
+
+function handleMessage2(event) {
+  // if (event.origin != "http://child.com") { return; }
+  console.log('--- message received:');
+  console.log(event);
+  console.log(event.data);
+  if (event.data == 'echoFromMainEvent') {
+    mainIsLoaded += 1;
+    console.info('RECEIVE echoFromMainEvent (formulaapplet-editor.js) mainIsLoaded=' + mainIsLoaded);
+    // console.log('event.origin = ' + event.origin);
+  }
+  // eslint-disable-next-line no-undef
+  // H5P.jQuery(document).trigger('echoFromMainEvent');
+  // switch (event.data) {
+  //     case "SignalToMainEvent":
+  //         alert("Hello Child");
+  //         break;
+  // }
+}
+
+
+
 var try_counter = 0;
 var try_counter_limit = 10;
 
-function waitForMain(cont) {
-  if (window.mainIsLoaded > 0) {
+// function waitForMain(cont) {
+//   if (window.mainIsLoaded > 0) {
+//     cont();
+//   } else {
+//     try_counter++;
+//     console.log('Waiting for main: ' + try_counter);
+//     if (try_counter < try_counter_limit) {
+//       setTimeout(function () {
+//         waitForMain(cont);
+//       }, 300);
+//     } else {
+//       console.error('waitForMain: Timeout');
+//     }
+//   }
+// }
+function waitForMainThenDo(cont) {
+  if (mainIsLoaded == 1) {
+    // execute callback onld the first time called
     cont();
   } else {
     try_counter++;
-    console.log('Waiting for main: ' + try_counter);
+    // console.log(window.parent.parent.document.URL);
+    var url = window.parent.parent.document.URL;
+    //       window.parent.parent.postMessage("SignalToMainEvent", 'http://localhost/drupal/');
+    window.parent.parent.postMessage("SignalToMainEvent", url);
+    // send another echo to main.js. If echo comes back, mainIsLoaded = true
+    console.info('post message SignalToMainEvent (formulaapplet.js) ' + try_counter);
+    // eslint-disable-next-line no-undef
+    // H5P.jQuery(document).trigger('SignalToMainEvent');
     if (try_counter < try_counter_limit) {
       setTimeout(function () {
-        waitForMain(cont);
+        // recurse
+        waitForMainThenDo(cont);
       }, 300);
     } else {
-      console.error('waitForMain: Timeout');
+      console.error('waitForMainThenDo: Timeout');
     }
   }
 }
