@@ -9,7 +9,8 @@ import $ from "jquery";
 import Hammer from "@egjs/hammerjs";
 import MQ from "./lib/mathquillWrapper.js";
 import {
-  domLoad
+  domLoad,
+  findDoc
 } from "./dom.js";
 
 import config from "./config.json";
@@ -279,51 +280,57 @@ function sanitizePrecision(prec) {
 
 export async function mathQuillifyAll() {
   console.log('mathQuillifyAll');
-  // console.log($(".formula_applet:not(.mq-math-mode)"));
-  // console.log($(window));
-  // console.log($(".formula_applet"));
-  // // console.log($(window.frames));
-  // console.log($(window.parent));
-  // console.log($(window.parent).find('formula_applet'));
-  // console.log($(window.parent.parent));
-  // console.log($(window.parent.parent).find('formula_applet'));
-  for (var i = 0; i < window.frames.length; i++) {
-    var frame = window.frames[i]; //list of windows
-    // do something with each subframe as frames[i]
-    console.log('***1 - ' + i);
-    console.log(frame); //Window  
-    console.log(frame.frameElement); //<iframe>
-    console.log(frame.frameElement.classList.value);
-    frame.document.body.style.border = "green dotted 4px";
-  }
-  // debugger;
-  var frame2 = window.frames[2].frames[0];
-  console.log('***2 - 0');
-  console.log(frame2);
+  // for (var i = 0; i < window.frames.length; i++) {
+  //   var frame = window.frames[i]; //list of windows
+  //   // do something with each subframe as frames[i]
+  //   console.log('***1 - ' + i);
+  //   console.log(frame); //Window  
+  //   console.log(frame.frameElement); //<iframe>
+  //   console.log(frame.frameElement.classList.value);
+  //   frame.document.body.style.border = "green dotted 4px";
+  // }
+  // // debugger;
+  // var frame2 = window.frames[2].frames[0];
+  // console.log('***2 - 0');
+  // console.log(frame2);
+  // try {
+  //   console.log(frame2.frameElement.classList.value);
+  //   // var editapplets = frame2.document.getElementsByClassName('.formula_applet.edit');
+  //   var mf = frame2.document.getElementById('math-field');
+  //   console.log(mf);
+  //   frame2.document.body.style.border = "red dotted 4px";
+  // } catch (error) {
+  //   console.log('error: ' + error)
+  // }
+
   try {
-    console.log(frame2.frameElement.classList.value);
-    // var editapplets = frame2.document.getElementsByClassName('.formula_applet.edit');
-    var mf = frame2.document.getElementById('math-field');
-    console.log(mf);
-    frame2.document.body.style.border = "red dotted 4px";
+    console.log(findDoc());
+    $(findDoc()).find(".formula_applet:not(.mq-math-mode)").each(function () {
+      console.log('to be mathquillified:' + this.id);
+      mathQuillify(this.id);
+    });
   } catch (error) {
-    console.log('error: ' + error)
+    // $(".formula_applet:not(.mq-math-mode)").each(function () {
+    //   console.log('to be mathquillified:' + this.id);
+    //   mathQuillify(this.id);
+    // });
+    console.log('error: ' + error);
   }
 
-  $(".formula_applet:not(.mq-math-mode)").each(function () {
-    console.log('to be mathquillified:' + this.id);
-    mathQuillify(this.id);
-  });
-  $(".formula_applet:not(.mq-math-mode)").each(function () {
-    console.log('to be mathquillified:' + this.id);
-    mathQuillify(this.id);
-  });
 }
 
 export async function mathQuillify(id) {
   await domLoad;
   console.log('mathQuillify ' + id);
-  var $el = $('#' + id + '.formula_applet:not(.mq-math-mode)');
+  var $el; //undefined
+  try {
+    $el = $(findDoc()).find('#' + id + '.formula_applet:not(.mq-math-mode)');
+  } catch (error) {
+    $el = $('#' + id + '.formula_applet:not(.mq-math-mode)');
+  }
+  if ($el == 'undefined') {
+    console.log(id + ' not found');
+  }
   var domElem = $el[0];
   if (typeof domElem !== 'undefined') {
     // console.log(domElem);

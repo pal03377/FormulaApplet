@@ -2,7 +2,7 @@
 
 import $ from "jquery";
 import {
-  domLoad
+  domLoad, findDoc
 } from "./dom.js";
 // import {
 //   clickLanguage
@@ -35,7 +35,13 @@ export async function prepareEditorPage(fApp) {
   console.log('prepareEditorPage');
   console.log(fApp);
   // make whole mathFieldSpan editable
-  var mathFieldSpan = document.getElementById('math-field');
+  var doc = findDoc();
+  // var doc2 = window.frames[2].frames[0].document;
+  // if (doc2 !== 'undefined') {
+  //   doc = doc2;
+  // }
+console.log(doc);
+  var mathFieldSpan = doc.getElementById('math-field');
   // var mathFieldSpan = $('p#editor.formula_applet');
   if (!mathFieldSpan) throw new Error("Cannot find math-field. The math editor must provide one.");
   var editorMf = MQ.MathField(mathFieldSpan, {
