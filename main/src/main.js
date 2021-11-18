@@ -25,12 +25,6 @@ window.onload = function () {
 
     var lang;
     if (isH5P) {
-
-        // // eslint-disable-next-line no-undef
-        // H5P.jQuery(document).on('setInputfieldEvent', function (_ev, id) {
-        //     console.log('main.js: receive setInputfieldEvent');
-        // });
-
         // make sensitive for preparePageEvent
         // eslint-disable-next-line no-undef
         H5P.jQuery(document).on('preparePageEvent', function () {
@@ -46,7 +40,6 @@ window.onload = function () {
             // console.info('RECEIVE mathquillifyEvent(id) (main.js)' + id);
             mathQuillify(id);
         });
-
         // eslint-disable-next-line no-undef
         H5P.jQuery(document).on('testEvent', function (_ev) {
             console.info('RECEIVE testEvent (main.js)');
@@ -56,21 +49,6 @@ window.onload = function () {
         window.addEventListener('message', handleMessage, false); //bubbling phase
         // window.addEventListener('message', handleMessage, true); //capturing phase
         console.info('LISTEN to message (main.js)');
-
-        // // eslint-disable-next-line no-undef
-        // H5P.jQuery(document).on('SignalToMainEvent', function (_ev) {
-        //     console.info('RECEIVE SignalToMainEvent (main.js)');
-        //     console.info('TRIGGER echoFromMainEvent (main.js)');
-        //     // eslint-disable-next-line no-undef
-        //     H5P.jQuery(document).trigger('echoFromMainEvent');
-        // });
-        // window.addEventListener('SignalToMainEvent', function (_ev) {
-        //     console.info('RECEIVE SignalToMainEvent (main.js)');
-        //     console.info('TRIGGER echoFromMainEvent (main.js)');
-        //     // eslint-disable-next-line no-undef
-        //     H5P.jQuery(document).trigger('echoFromMainEvent');
-        // });
-
         console.info('LISTEN to preparePageEvent and mathquillifyEvent(id) (main.js)');
         // TODO this code causes bugs:
         // eslint-disable-next-line no-undef
@@ -89,29 +67,18 @@ window.onload = function () {
     formulaAppletLanguage.set(lang);
     // This information is used by preparePage.js and translate.js/clickLanguage()
 
-    // console.log('mainIsLoaded = true');
     // every time main is called, document.mainIsLoaded is increased by 1
     // The first time main is loaded, document.mainIsLoaded will be 1.
-    // document.mainIsLoaded += 1;
 };
 
+// create echo
 function handleMessage(event) {
-    // if (event.origin != "http://child.com") { return; }
-    console.log('message received:');
-    // console.log(event);
-    console.log(event.data);
+    console.log('message received: ' + event.data);
     if (event.data == 'SignalToMainEvent') {
-        console.info('RECEIVE SignalToMainEvent (main.js)');
-        console.log('event.origin = ' +  event.origin);
-        console.info('post message echoFromMainEvent (main.js)');
-        // event.target.postMessage('echoFromMainEvent', event.origin);
-        event.target.postMessage('echoFromMainEvent', 'http://localhost/drupal/');
+        console.info('RECEIVE MESSAGE SignalToMainEvent (main.js)');
+        // console.log('event.origin = ' + event.origin);
+        console.info('POST MESSAGE echoFromMainEvent (main.js)');
+        event.target.postMessage('echoFromMainEvent', event.origin);
+        // event.target.postMessage('echoFromMainEvent', 'http://localhost/drupal/');
     }
-    // eslint-disable-next-line no-undef
-    // H5P.jQuery(document).trigger('echoFromMainEvent');
-    // switch (event.data) {
-    //     case "SignalToMainEvent":
-    //         alert("Hello Child");
-    //         break;
-    // }
 }

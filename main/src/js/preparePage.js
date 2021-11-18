@@ -27,10 +27,12 @@ import {
   checkScientificNotation
 }
 from "./texParser.js";
+
 import {
   initTranslation,
   formulaAppletLanguage
 } from "./translate.js";
+
 import initVirtualKeyboard, {
   showVirtualKeyboard
 } from "./virtualKeyboard.js";
@@ -71,6 +73,16 @@ export default async function preparePage() {
     console.log('RECEIVE setInputEvent (preparePage.js)');
   });
   console.log('LISTEN setInputEvent (preparePage.js)');
+
+  window.addEventListener('message', handleMessage, false); //bubbling phase
+
+  function handleMessage(event) {
+    console.log('message received: ' + event.data);
+    if (event.data == 'preparePageEvent') {
+      console.info('RECEIVE MESSAGE preparePageEvent (preparePage.js)');
+      preparePage();
+    }
+  }
 
   // console.log('preparePage');
   // body click deselects all applets
@@ -266,9 +278,44 @@ function sanitizePrecision(prec) {
 }
 
 export async function mathQuillifyAll() {
-  // console.log('mathQuillifyAll');
+  console.log('mathQuillifyAll');
+  // console.log($(".formula_applet:not(.mq-math-mode)"));
+  // console.log($(window));
+  // console.log($(".formula_applet"));
+  // // console.log($(window.frames));
+  // console.log($(window.parent));
+  // console.log($(window.parent).find('formula_applet'));
+  // console.log($(window.parent.parent));
+  // console.log($(window.parent.parent).find('formula_applet'));
+  for (var i = 0; i < window.frames.length; i++) {
+    var frame = window.frames[i]; //list of windows
+    // do something with each subframe as frames[i]
+    console.log('***1 - ' + i);
+    console.log(frame); //Window  
+    console.log(frame.frameElement); //<iframe>
+    console.log(frame.frameElement.classList.value);
+    frame.document.body.style.border = "green dotted 4px";
+  }
+  // debugger;
+  var frame2 = window.frames[2].frames[0];
+  console.log('***2 - 0');
+  console.log(frame2);
+  try {
+    console.log(frame2.frameElement.classList.value);
+    // var editapplets = frame2.document.getElementsByClassName('.formula_applet.edit');
+    var mf = frame2.document.getElementById('math-field');
+    console.log(mf);
+    frame2.document.body.style.border = "red dotted 4px";
+  } catch (error) {
+    console.log('error: ' + error)
+  }
+
   $(".formula_applet:not(.mq-math-mode)").each(function () {
-    // console.log(this.id);
+    console.log('to be mathquillified:' + this.id);
+    mathQuillify(this.id);
+  });
+  $(".formula_applet:not(.mq-math-mode)").each(function () {
+    console.log('to be mathquillified:' + this.id);
     mathQuillify(this.id);
   });
 }
