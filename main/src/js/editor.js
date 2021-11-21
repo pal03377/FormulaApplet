@@ -3,8 +3,7 @@
 import $ from "jquery";
 import {
   domLoad,
-  findDoc,
-  isH5P
+  findDoc
 } from "./dom.js";
 // import {
 //   clickLanguage
@@ -30,11 +29,7 @@ export async function initEditor() {
   console.log('LISTEN setInputEvent (editor.js)');
 }
 
-export async function prepareEditorApplet(fApp) {
-  // *** editor ***
-  await initEditor();
-  console.log('prepareEditorApplet');
-  // console.log(fApp);
+function mathQuillifyEditor() {
   // make whole mathFieldSpan editable
   var mathFieldSpan = findDoc().getElementById('math-field');
   console.log('mathFieldSpan.textContent=' + mathFieldSpan.textContent);
@@ -53,6 +48,15 @@ export async function prepareEditorApplet(fApp) {
       }
     }
   });
+return editorMf;
+}
+
+export async function prepareEditorApplet(fApp) {
+  // *** editor ***
+  await initEditor();
+  console.log('preparePage.js: prepareEditorApplet');
+  // console.log(fApp);
+  var editorMf = mathQuillifyEditor();
   fApp.mathField = editorMf;
   console.log('editorMf.latex=' + editorMf.latex());
   refreshResultField(editorMf.latex());

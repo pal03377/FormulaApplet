@@ -81,6 +81,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
         console.log('hide: ' + expression);
       }
     };
+
     console.log(self);
     console.log(self.$item);
     $wrapper.append(self.$item);
@@ -170,27 +171,41 @@ function afterAppend(obj) {
   console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
   console.log(obj);
 
+    // teximput is updated by editor.js: showEditorResults
+
   var texinput = H5P.jQuery('div.field.field-name-TEX_expression.text input')[0];
-  texinput.addEventListener('input', updateTexinput);
+  texinput.addEventListener('input', updateTexinputEventHandler);
 
-  console.log('right 1: ' + obj.params);
-  console.log('right 2:');
-  var mathField1 = document.getElementById('math-field');
-  // console.log(mathField1);
-  console.log(mathField1.innerHTML);
 
-  console.log('wrong or deferred output?');
-  console.log(window.frameElement.contentDocument);
-  // mathField2 = H5P.jQuery(window.frameElement.contentDocument).find('span#math-field');
-  mathField2 = window.frameElement.contentDocument.getElementById('math-field');
-  // console.log(mathField2);
-  console.log(mathField2.innerHTML);
+  function updateTexinputEventHandler(event) {
+    obj.parent.params['fa_applet'] = event.target.value;
+    console.log('TEX_expression changed: ' + event.target.value + 'event.isTrusted: ' + event.isTrusted);
+    if (event.isTrusted) {
+      //event caused by keyboard input
+      event.preventDefault();
+    } else {
+      //event caused by JavaScript, especially input to FormulaApplet: let event be captured
+    }
+    // do not yet update formulaAppletEditor widget , because editorMf and editorMf.latex() is not available
+  }
 
-  mathField2.innerHTML = obj.params;
-  // mathField2.innerHTML = 'wo ist der{{result}}Fehler';
+  // console.log('right 1: ' + obj.params);
+  // console.log('right 2:');
+  // var mathField1 = document.getElementById('math-field');
+  // // console.log(mathField1);
+  // console.log(mathField1.innerHTML);
+
+  // console.log('wrong or deferred output?');
+  // console.log(window.frameElement.contentDocument);
+  // // mathField2 = H5P.jQuery(window.frameElement.contentDocument).find('span#math-field');
+  // mathField2 = window.frameElement.contentDocument.getElementById('math-field');
+  // // console.log(mathField2);
+  // console.log(mathField2.innerHTML);
+
+  // mathField2.innerHTML = obj.params;
+  // // mathField2.innerHTML = 'wo ist der{{result}}Fehler';
 
   var checkbox = document.getElementById(getSelectorID('field-formulaappletphysics'));
-  // console.log(checkbox);
   checkbox.addEventListener('change', function () {
     if (this.checked) {
       console.log("Physics Mode");
@@ -199,32 +214,21 @@ function afterAppend(obj) {
     }
   });
 
-  function updateTexinput(event) {
-    console.log('TEX_expression changed: ' + event.target.value);
-    // done by editor.js!!!
-    // var out;
-    // out = document.getElementById('html-output'); //undefined if not yet appended
-    // if (typeof out !== 'undefined') {
-    //   console.log(out);
-    //   out.value = event.target.value;
-    //   console.log(out);
-    // }
-    // console.log(window.name);
-    obj.parent.params['fa_applet'] = event.target.value;
-    temp = event.target.value;
-    console.log('temp(update)1=' + temp);
-    //temp = temp.replace(/{{result}}/g, '\\class{inputfield}{42}');
-    //TODO replace 42 by "decode(solution)";
-    //console.log('temp(update)2=' + temp);
-    //mf.latex(temp);
-    }
-
   var formulaAppletMode = document.getElementById(getSelectorID('field-formulaappletmode'));
   formulaAppletMode.addEventListener('change', function (e) {
     console.log('formulaAppletMode ' + this.name + ' ' + this.value);
   });
 
+  // hide field-name-id
   H5P.jQuery('.field-name-id').css('display', 'none');
+
+  // make field-name-TEX_expression not editable
+  var TEX_expression = document.getElementById(getSelectorID('field-tex_expression'));
+  // console.log('TEX_expression');
+  // console.log(TEX_expression);
+  // TEX_expression.prop('readonly', true); 
+  // TEX_expression.css('readonly', 'true');
+  // H5P.jQuery('.field field-name-TEX_expression text').;
 
   // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
   document.addEventListener('setInputEvent', function (ev) {

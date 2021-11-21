@@ -24,7 +24,7 @@ export function findDoc() {
     }
     // console.log('dom.js: win.name=' + win.name);
     return win.document;
-};
+}
 
 export function isH5P() {
     var h5p_classes = document.getElementsByClassName('h5p-content');

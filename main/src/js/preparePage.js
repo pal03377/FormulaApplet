@@ -427,7 +427,7 @@ export async function mathQuillify(id) {
         }
         mqEditableField = $el.find('.mq-editable-field')[0];
         fApp.mqEditableField = mqEditableField;
-        var mf = MQ.MathField(mqEditableField, {});
+        mf = MQ.MathField(mqEditableField, {});
         mf.config({
           handlers: {
             edit: () => {
