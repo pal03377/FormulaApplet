@@ -7,18 +7,29 @@ export let domLoad = new Promise(function waitForDomThenResolve(resolve) { // re
     }
 });
 
-export function findDoc(){
-    var doc;
+export function findDoc() {
+    var win;
     try {
-        var doc2 = window.frames[2].frames[0].document;
-        if (typeof doc2 == 'undefined') {
-            doc = document;
-        } else {
-            doc = doc2;
-            doc2 = null;
+        var win2 = window.frames[2].frames[0];
+        if (typeof win2 == 'undefined') {
+            win = window;
+         } else {
+            win2.name = '>>> Editor Window <<<'; 
+            win = win2;
+            win2 = null;
         }
     } catch (error) {
-        doc = document;
+        window.name = '>>> Main Window <<<';
+        win = window;
     }
-    return doc;
+    // console.log('dom.js: win.name=' + win.name);
+    return win.document;
 };
+
+export function isH5P() {
+    var h5p_classes = document.getElementsByClassName('h5p-content');
+    var isH5P = (h5p_classes.length > 0);
+    // console.log('dom.js: isH5P = ' + isH5P);
+    // console.log('dom.js: window.name = ' + window.name);
+    return isH5P; //publish
+}

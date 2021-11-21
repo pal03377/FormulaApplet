@@ -7,12 +7,17 @@ import {
     formulaAppletLanguage,
     getCookie
 } from "./js/translate.js";
-debugger;
+import {
+    isH5P
+} from "./js/dom.js";
+// debugger;
 
 window.onload = function () {
-    var h5p_classes = document.getElementsByClassName('h5p-content');
-    var isH5P = (h5p_classes.length > 0);
-    console.log('main: isH5P = ' + isH5P);
+    // var h5p_classes = document.getElementsByClassName('h5p-content');
+    // var isH5P = (h5p_classes.length > 0);
+    // console.log('main: isH5P = ' + isH5P);
+    // console.log('main: window.name = ' + window.name);
+    // isH5P_public = isH5P; //publish
 
     // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
     document.addEventListener('setInputfieldEvent', function (ev) {
@@ -22,9 +27,8 @@ window.onload = function () {
     });
     console.log('LISTEN setInputfieldEvent (main.js)');
 
-
     var lang;
-    if (isH5P) {
+    if (isH5P()) {
         // make sensitive for preparePageEvent
         // eslint-disable-next-line no-undef
         H5P.jQuery(document).on('preparePageEvent', function () {
@@ -60,7 +64,7 @@ window.onload = function () {
             lang = 'de';
         }
         // no event necessary
-        mathQuillifyAll();
+        // mathQuillifyAll(); is included in preparePage()
         preparePage();
     }
     console.log('formulaAppletLanguage.set ' + lang);

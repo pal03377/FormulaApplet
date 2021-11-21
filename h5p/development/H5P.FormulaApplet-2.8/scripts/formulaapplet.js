@@ -1,5 +1,7 @@
 ﻿var H5P = H5P || {};
 console.log('Here is formulaapplet.js 2.8+');
+console.log('formulaapplet.js: window.name = ' + window.name);
+
 
 H5P.FormulaApplet = (function ($) {
   /**
@@ -38,7 +40,8 @@ H5P.FormulaApplet = (function ($) {
     html += '>' + this.options.fa_applet + '</p>';
     // console.log('append: ' + html);
     $container.append(html, afterAppend(this.options.id));
-    H5P.jQuery(document).trigger('mathquillifyEvent', this.options.id);
+    // H5P.jQuery(document).trigger('mathquillifyEvent', this.options.id);
+    // replaced by chainTimer -> trigger preparePageEvent
   };
 
   return C;
@@ -47,8 +50,9 @@ H5P.FormulaApplet = (function ($) {
 var chainTimerId = -1;
 var chainTimerInterval = 2000; //millisec
 var chainTimerFinished = function () {
-  // console.log('chainTimer ' + chainTimerId + ' finished.');
+  console.log('chainTimer ' + chainTimerId + ' finished.');
   H5P.jQuery(document).trigger('preparePageEvent');
+  // preparePageEvent may be replaced by mathquillifyEvent(id) in constructor
 };
 
 function chainTimer() {

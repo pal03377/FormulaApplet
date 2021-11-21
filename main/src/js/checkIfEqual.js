@@ -40,10 +40,10 @@ export function checkIfEquality(equation, dsList, precision) {
     // var precision = fApp.precision;
     if (dif < precision) {
         return true;
-        // $('#' + id).removeClass('mod_wrong').addClass('mod_ok');
+        // $(findDoc()).find(findDoc()).find('#' + id).removeClass('mod_wrong').addClass('mod_ok');
     } else {
         return false;
-        // $('#' + id).removeClass('mod_ok').addClass('mod_wrong');
+        // $(findDoc()).find('#' + id).removeClass('mod_ok').addClass('mod_wrong');
     }
 }
 

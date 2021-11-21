@@ -6,6 +6,7 @@
 
 var H5P = H5P || {};
 console.log('Here is formulaapplet-editor.js');
+// console.log('formulaapplet-editor.js: window.name = ' + window.name);
 
 H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (function ($) {
 
@@ -58,9 +59,12 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     self.$formulaApplet = self.$item.find('.formula_applet');
     var temp = params.TEX_expression;
     // temp = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
-    // temp = temp.replace(/{{result}}/g, '\\class{inputfield}{}');
-    self.$formulaApplet.text(temp);
-    self.$formulaApplet[0].innerHTML = '<span id="math-field">' + self.$formulaApplet[0].innerHTML + '</span>';
+    temp = temp.replace(/{{result}}/g, '\\class{inputfield}{}');
+    // console.log('set text of editor applet to ' + temp);
+    // self.$formulaApplet[0].innerHTML(temp);
+    var span = '<span id="math-field">' + temp + '</span>';
+    console.log('span=' + span);
+    self.$formulaApplet[0].innerHTML = span;
 
 
     self.config = {
@@ -77,6 +81,8 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
         console.log('hide: ' + expression);
       }
     };
+    console.log(self);
+    console.log(self.$item);
     $wrapper.append(self.$item);
 
     var $button = H5P.JoubelUI.createButton({
@@ -94,10 +100,15 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       }
     });
     $wrapper.append($button);
-    $wrapper.append('<textarea id="html-output" rows="4" cols="150">output</textarea>');
+    // $wrapper.append('<textarea id="html-output" rows="4" cols="150">output</textarea>');
+
 
     $(function () {
       //code that needs to be executed when DOM is ready, after manipulation
+      console.log('append html-output');
+      var texinputparent = H5P.jQuery('div.field.field-name-TEX_expression.text input').parent();
+      console.log(texinputparent);
+      texinputparent.append('<br><br><textarea id="html-output" rows="4" cols="150">output</textarea>');
       afterAppend(self);
       waitForMainThenDo(afterMainIsLoaded);
     });
@@ -156,6 +167,28 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 })(H5P.jQuery);
 
 function afterAppend(obj) {
+  console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
+  console.log(obj);
+
+  var texinput = H5P.jQuery('div.field.field-name-TEX_expression.text input')[0];
+  texinput.addEventListener('input', updateTexinput);
+
+  console.log('right 1: ' + obj.params);
+  console.log('right 2:');
+  var mathField1 = document.getElementById('math-field');
+  // console.log(mathField1);
+  console.log(mathField1.innerHTML);
+
+  console.log('wrong or deferred output?');
+  console.log(window.frameElement.contentDocument);
+  // mathField2 = H5P.jQuery(window.frameElement.contentDocument).find('span#math-field');
+  mathField2 = window.frameElement.contentDocument.getElementById('math-field');
+  // console.log(mathField2);
+  console.log(mathField2.innerHTML);
+
+  mathField2.innerHTML = obj.params;
+  // mathField2.innerHTML = 'wo ist der{{result}}Fehler';
+
   var checkbox = document.getElementById(getSelectorID('field-formulaappletphysics'));
   // console.log(checkbox);
   checkbox.addEventListener('change', function () {
@@ -166,27 +199,25 @@ function afterAppend(obj) {
     }
   });
 
-//   console.log(H5P.jQuery(window.frames[2]).find('iframe.h5p-editor-iframe'));
-  // console.log(H5P.jQuery(window.frames[2]));
-  // H5P.jQuery(window.frames[2]).find('iframe.h5p-editor-iframe').css('border', 'dotted red 4px');
-  console.log('frameElement:');
-  console.log(window.frameElement);
-
-  var texinput = H5P.jQuery('div.field.field-name-TEX_expression.text input')[0];
-  texinput.addEventListener('input', updateTexinput);
-
   function updateTexinput(event) {
     console.log('TEX_expression changed: ' + event.target.value);
-    var out = document.getElementById('html-output');
-    console.log(out);
-    out.value = event.target.value;
-    console.log(out);
+    // done by editor.js!!!
+    // var out;
+    // out = document.getElementById('html-output'); //undefined if not yet appended
+    // if (typeof out !== 'undefined') {
+    //   console.log(out);
+    //   out.value = event.target.value;
+    //   console.log(out);
+    // }
+    // console.log(window.name);
     obj.parent.params['fa_applet'] = event.target.value;
-    var mf = document.getElementById('math-field');
-    console.log(mf);
-    mf.innerHTML = event.target.value;
-    // H5P.jQuery(document).trigger('mathquillifyAllEvent');
-  }
+    temp = event.target.value;
+    console.log('temp(update)1=' + temp);
+    //temp = temp.replace(/{{result}}/g, '\\class{inputfield}{42}');
+    //TODO replace 42 by "decode(solution)";
+    //console.log('temp(update)2=' + temp);
+    //mf.latex(temp);
+    }
 
   var formulaAppletMode = document.getElementById(getSelectorID('field-formulaappletmode'));
   formulaAppletMode.addEventListener('change', function (e) {
