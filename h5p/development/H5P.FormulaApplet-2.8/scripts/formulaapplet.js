@@ -1,7 +1,5 @@
 ﻿var H5P = H5P || {};
-console.log('Here is formulaapplet.js 2.8+');
-console.log('formulaapplet.js: window.name = ' + window.name);
-
+console.log('Here is formulaapplet.js 2.8+ window.name = ' + window.name);
 
 H5P.FormulaApplet = (function ($) {
   /**
@@ -16,7 +14,6 @@ H5P.FormulaApplet = (function ($) {
     // Keep provided id.
     this.id = id;
     this.options.TEX_expression = this.options.fa_applet;
-    // console.log(this.options);
   };
 
 
@@ -38,10 +35,7 @@ H5P.FormulaApplet = (function ($) {
       html += ' data-b64="' + this.options.data_b64 + '"';
     }
     html += '>' + this.options.fa_applet + '</p>';
-    // console.log('append: ' + html);
     $container.append(html, afterAppend(this.options.id));
-    // H5P.jQuery(document).trigger('mathquillifyEvent', this.options.id);
-    // replaced by chainTimer -> trigger preparePageEvent
   };
 
   return C;

@@ -74,19 +74,18 @@ export default async function preparePage() {
     // var d = ev.data;
     console.log('RECEIVE setInputEvent (preparePage.js)');
   });
-  console.log('LISTEN setInputEvent (preparePage.js)');
+  // console.log('LISTEN setInputEvent (preparePage.js)');
 
   window.addEventListener('message', handleMessage, false); //bubbling phase
 
   function handleMessage(event) {
     console.log('message received: ' + event.data);
     if (event.data == 'preparePageEvent') {
-      console.info('RECEIVE MESSAGE preparePageEvent (preparePage.js)');
+      // console.info('RECEIVE MESSAGE preparePageEvent (preparePage.js)');
       preparePage();
     }
   }
 
-  // console.log('preparePage');
   // body click deselects all applets
   $(findDoc()).find('body').on('click', function () {
     $(findDoc()).find(".formula_applet").removeClass('selected');
@@ -175,7 +174,6 @@ function makeAutoUnitstring(mf) {
 function mathQuillEditHandler(id) {
   if (editHandlerActive == true) {
     var fApp = FAList[id];
-    // console.log(fApp);
     var mf = fApp.mathField;
     var mfContainer = MQ.StaticMath(fApp.formulaApplet);
     var solution = fApp.solution;
@@ -219,7 +217,6 @@ function mathQuillEditHandler(id) {
 }
 
 function virtualKeyboardEventHandler(_event, cmd) {
-  // console.log(cmd);
   var fApp = FAList[activeMathfieldId];
   var mf = fApp.mathField;
 
@@ -277,49 +274,22 @@ function sanitizePrecision(prec) {
 
 export async function mathQuillifyAll() {
   console.log('mathQuillifyAll');
-  // for (var i = 0; i < window.frames.length; i++) {
-  //   var frame = window.frames[i]; //list of windows
-  //   // do something with each subframe as frames[i]
-  //   console.log('***1 - ' + i);
-  //   console.log(frame); //Window  
-  //   console.log(frame.frameElement); //<iframe>
-  //   console.log(frame.frameElement.classList.value);
-  //   frame.document.body.style.border = "green dotted 4px";
-  // }
-  // // debugger;
-  // var frame2 = window.frames[2].frames[0];
-  // console.log('***2 - 0');
-  // console.log(frame2);
-  // try {
-  //   console.log(frame2.frameElement.classList.value);
-  //   // var editapplets = frame2.document.getElementsByClassName('.formula_applet.edit');
-  //   var mf = frame2.document.getElementById('math-field');
-  //   console.log(mf);
-  //   frame2.document.body.style.border = "red dotted 4px";
-  // } catch (error) {
-  //   console.log('error: ' + error)
-  // }
 
   try {
-    console.log(findDoc());
+    // console.log(findDoc());
     $(findDoc()).find(".formula_applet:not(.mq-math-mode)").each(function () {
       console.log('to be mathquillified:' + this.id);
       mathQuillify(this.id);
     });
   } catch (error) {
-    // $(".formula_applet:not(.mq-math-mode)").each(function () {
-    //   console.log('to be mathquillified:' + this.id);
-    //   mathQuillify(this.id);
-    // });
-    console.log('error: ' + error);
+    console.error('ERROR: ' + error);
   }
-
 }
 
 export async function mathQuillify(id) {
   await domLoad;
   console.log('mathQuillify ' + id);
-  console.log('preparePage.js/mathQuillify(id): window.name = ' + window.name);
+  // console.log('preparePage.js/mathQuillify(id): window.name = ' + window.name);
   var result = 'unknown result';
   var $el; //undefined
 
@@ -335,7 +305,6 @@ export async function mathQuillify(id) {
   var isEditor = $el.hasClass('edit');
   console.log(id + ' isEditor=' + isEditor);
 
-  // console.log(JSON.stringify(domElem));
   if (typeof domElem !== 'undefined') {
     var temp = domElem.innerHTML;
     console.log('temp=' + temp);
@@ -349,18 +318,17 @@ export async function mathQuillify(id) {
     //TODO
     if (isEditor && isH5P()) {
 
-      console.log('H5P Editor');
+      console.log('H5P & Editor');
       var mf = findDoc().getElementById('math-field');
       temp = mf.textContent;
       temp = temp.replace(/{{result}}/g, '\\class{inputfield}{}');
       mf.textContent = temp;
-      console.log(findDoc().getElementById('math-field'));
-      console.log('------------------------------------');
+      // console.log(findDoc().getElementById('math-field'));
+      // console.log('------------------------------------');
     } else {
       // domElem.innerHTML = temp; // funktioniert nicht bei H5P-Editor!!!
       domElem.innerHTML = temp;
     }
-    // console.log(JSON.stringify(domElem));
 
     // create new FApp object and store in FAList 
     var fApp = new FApp();
@@ -400,11 +368,9 @@ export async function mathQuillify(id) {
   } else {
     result = 'ERROR: no domElem';
   }
-  // console.log(FAList);
   var mqEditableField;
   if (isEditor) {
     // *** editor ***
-    // console.log(' # # # prepareEditorApplet')
     prepareEditorApplet(fApp);
     result = 'EditorApplet is prepared.'
     mqEditableField = $el.find('.mq-editable-field')[0];
@@ -456,7 +422,6 @@ export async function mathQuillify(id) {
     }
     try {
       // make virtual keyboard show/hide by mouseclick
-      // console.log('virtual keyboard buttons');
       ($('<button class="keyb_button">\u2328</button>')).insertAfter($el);
       $(findDoc()).find('button.keyb_button').on('mousedown', function () {
         showVirtualKeyboard();
@@ -478,10 +443,6 @@ export async function mathQuillify(id) {
 function clickHandler(ev) {
   try {
     var fApp = FAList[ev.currentTarget.id];
-    // console.log('click on ' + fApp.formulaApplet);
-    // console.log(ev);
-    // ev.target.index does not exist, so use FAList
-    // console.log(fApp);
     if (typeof fApp !== 'undefined') {
       if (fApp.hasResultField) {
         ev.stopPropagation(); // avoid body click
@@ -552,7 +513,7 @@ function unifyDefinitions(def) {
   return dsList;
 }
 
-$(findDoc()).find(document).on("refreshLatexEvent",
+$(findDoc()).on("refreshLatexEvent",
   function () {
     var lang = formulaAppletLanguage.get();
     refreshLatex(lang);
@@ -562,7 +523,6 @@ function refreshLatex(lang) {
   var id;
   for (id in FAList) {
     var fApp = FAList[id];
-    // console.log(fApp);
     if (!$(fApp.formulaApplet).hasClass('edit')) {
       var hasSolution = fApp.hasSolution || false;
       var oldLatex, newLatex;
@@ -587,6 +547,8 @@ function refreshLatex(lang) {
       }
       newLatex = sanitizeInputfieldTag(newLatex);
       if (oldLatex !== newLatex) {
+        console.log('oldLatex=' + oldLatex);
+        console.log('newLatex=' + newLatex);
         editHandlerActive = false;
         if (fApp.hasSolution) {
           mf.latex(newLatex);

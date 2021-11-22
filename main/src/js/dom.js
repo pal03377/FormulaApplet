@@ -22,14 +22,11 @@ export function findDoc() {
         window.name = '>>> Main Window <<<';
         win = window;
     }
-    // console.log('dom.js: win.name=' + win.name);
     return win.document;
 }
 
 export function isH5P() {
     var h5p_classes = document.getElementsByClassName('h5p-content');
     var isH5P = (h5p_classes.length > 0);
-    // console.log('dom.js: isH5P = ' + isH5P);
-    // console.log('dom.js: window.name = ' + window.name);
     return isH5P; //publish
 }

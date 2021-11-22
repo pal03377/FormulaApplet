@@ -6,8 +6,6 @@
 
 var H5P = H5P || {};
 console.log('Here is formulaapplet-editor.js');
-// console.log('formulaapplet-editor.js: window.name = ' + window.name);
-
 H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (function ($) {
 
   /**
@@ -37,7 +35,6 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     var self = this;
     const id = ns.getNextFieldId(this.field);
     var params = self.parent.params;
-    // console.log(params);
     if (params.id == 'new_id') {
       var new_id = makeid(12);
       console.log('new id -> ' + new_id);
@@ -58,12 +55,9 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     self.$item = H5PEditor.$(fieldMarkup);
     self.$formulaApplet = self.$item.find('.formula_applet');
     var temp = params.TEX_expression;
-    // temp = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
     temp = temp.replace(/{{result}}/g, '\\class{inputfield}{}');
-    // console.log('set text of editor applet to ' + temp);
-    // self.$formulaApplet[0].innerHTML(temp);
     var span = '<span id="math-field">' + temp + '</span>';
-    console.log('span=' + span);
+    // console.log('span=' + span);
     self.$formulaApplet[0].innerHTML = span;
 
 
@@ -82,8 +76,9 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       }
     };
 
-    console.log(self);
-    console.log(self.$item);
+    // console.log(self);
+    self.config.change('bli + bla = blu');
+    // console.log(self.$item);
     $wrapper.append(self.$item);
 
     var $button = H5P.JoubelUI.createButton({
@@ -96,7 +91,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
           composed: false
         });
         si_ev.data = 4711;
-        console.log('TRIGGER setInputEvent (formulaapplet-editor.js)');
+        // console.log('TRIGGER setInputEvent (formulaapplet-editor.js)');
         document.dispatchEvent(si_ev);
       }
     });
@@ -106,9 +101,9 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 
     $(function () {
       //code that needs to be executed when DOM is ready, after manipulation
-      console.log('append html-output');
+      // console.log('append html-output');
       var texinputparent = H5P.jQuery('div.field.field-name-TEX_expression.text input').parent();
-      console.log(texinputparent);
+      // console.log(texinputparent);
       texinputparent.append('<br><br><textarea id="html-output" rows="4" cols="150">output</textarea>');
       afterAppend(self);
       waitForMainThenDo(afterMainIsLoaded);
@@ -118,8 +113,8 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
   function afterMainIsLoaded() {
     // this code is executed if main is loaded
     console.log('*** MAIN is loaded *** ');
-    console.log('postMessage preparePageEvent');
-    console.log('TRIGGER testEvent');
+    // console.log('postMessage preparePageEvent');
+    // console.log('TRIGGER testEvent');
     // trigger event fails because target is in parent iframe
     // H5P.jQuery(document).trigger('preparePageEvent');
     var url = window.parent.parent.document.URL;
@@ -168,8 +163,8 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 })(H5P.jQuery);
 
 function afterAppend(obj) {
-  console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
-  console.log(obj);
+  // console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
+  // console.log(obj);
 
     // teximput is updated by editor.js: showEditorResults
 
@@ -179,31 +174,17 @@ function afterAppend(obj) {
 
   function updateTexinputEventHandler(event) {
     obj.parent.params['fa_applet'] = event.target.value;
-    console.log('TEX_expression changed: ' + event.target.value + 'event.isTrusted: ' + event.isTrusted);
+    var msg;
     if (event.isTrusted) {
-      //event caused by keyboard input
+      msg= ' event caused by keyboard input';
       event.preventDefault();
     } else {
+      msg = ' event caused by input to FormulaApplet';
       //event caused by JavaScript, especially input to FormulaApplet: let event be captured
     }
+    console.log('TEX_expression changed: ' + event.target.value + msg);
     // do not yet update formulaAppletEditor widget , because editorMf and editorMf.latex() is not available
   }
-
-  // console.log('right 1: ' + obj.params);
-  // console.log('right 2:');
-  // var mathField1 = document.getElementById('math-field');
-  // // console.log(mathField1);
-  // console.log(mathField1.innerHTML);
-
-  // console.log('wrong or deferred output?');
-  // console.log(window.frameElement.contentDocument);
-  // // mathField2 = H5P.jQuery(window.frameElement.contentDocument).find('span#math-field');
-  // mathField2 = window.frameElement.contentDocument.getElementById('math-field');
-  // // console.log(mathField2);
-  // console.log(mathField2.innerHTML);
-
-  // mathField2.innerHTML = obj.params;
-  // // mathField2.innerHTML = 'wo ist der{{result}}Fehler';
 
   var checkbox = document.getElementById(getSelectorID('field-formulaappletphysics'));
   checkbox.addEventListener('change', function () {
@@ -223,12 +204,7 @@ function afterAppend(obj) {
   H5P.jQuery('.field-name-id').css('display', 'none');
 
   // make field-name-TEX_expression not editable
-  var TEX_expression = document.getElementById(getSelectorID('field-tex_expression'));
-  // console.log('TEX_expression');
-  // console.log(TEX_expression);
-  // TEX_expression.prop('readonly', true); 
-  // TEX_expression.css('readonly', 'true');
-  // H5P.jQuery('.field field-name-TEX_expression text').;
+  // var TEX_expression = document.getElementById(getSelectorID('field-tex_expression'));
 
   // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
   document.addEventListener('setInputEvent', function (ev) {
@@ -236,7 +212,7 @@ function afterAppend(obj) {
     // var d = ev.data;
     console.log('formulaapplet-editor.js: receive setInputEvent');
   });
-  console.log('formulaapplet-editor.js: watch setInputEvent');
+  console.log('formulaapplet-editor.js: LISTEN to setInputEvent');
 
 
 }
@@ -244,19 +220,13 @@ function afterAppend(obj) {
 // next lines are part of waitForMain mechanism
 // event listener listens to echoes from main.js
 var mainIsLoaded = 0; //TODO get rid of global var
-// eslint-disable-next-line no-undef
-// H5P.jQuery(document).on('echoFromMainEvent', function (_ev) {
-//   mainIsLoaded += 1;
-//   console.info('RECEIVE echoFromMainEvent (formulaapplet-editor.js) mainIsLoaded=' + mainIsLoaded);
-// });
 window.parent.parent.addEventListener('message', handleEchoMessage, true); //capturing phase
-console.info('LISTEN to message (formulaapplet-editor.js) !!!');
+// console.info('LISTEN to message (formulaapplet-editor.js) !!!');
 
 function handleEchoMessage(event) {
-  // console.log('--- message received:' + event.data);
   if (event.data == 'echoFromMainEvent') {
     mainIsLoaded += 1;
-    console.info('RECEIVE echoFromMainEvent (formulaapplet-editor.js) mainIsLoaded=' + mainIsLoaded);
+    console.info('RECEIVE message echoFromMainEvent (formulaapplet-editor.js) mainIsLoaded=' + mainIsLoaded);
   }
 }
 
@@ -272,7 +242,7 @@ function waitForMainThenDo(cont) {
     var url = window.parent.parent.document.URL;
     window.parent.parent.postMessage("SignalToMainEvent", url);
     // send another echo to main.js. If echo comes back, mainIsLoaded = true
-    console.info('post message SignalToMainEvent (formulaapplet-editor.js) ' + try_counter);
+    console.info('post message SignalToMainEvent (formulaapplet-editor.js) try=' + try_counter);
     if (try_counter < try_counter_limit) {
       setTimeout(function () {
         // recurse
@@ -291,8 +261,6 @@ function makeid(length) {
   for (var i = 2; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * numOfChars));
   }
-  // console.log(result);
-  // result = '"' + result + '"';
   return result;
 }
 

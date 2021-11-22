@@ -26,13 +26,13 @@ export async function initEditor() {
     // var d = ev.data;
     console.log('RECEIVE setInputEvent (editor.js)');
   });
-  console.log('LISTEN setInputEvent (editor.js)');
+  // console.log('LISTEN setInputEvent (editor.js)');
 }
 
 function mathQuillifyEditor() {
   // make whole mathFieldSpan editable
   var mathFieldSpan = findDoc().getElementById('math-field');
-  console.log('mathFieldSpan.textContent=' + mathFieldSpan.textContent);
+  // console.log('mathFieldSpan.textContent=' + mathFieldSpan.textContent);
   if (!mathFieldSpan) throw new Error("Cannot find math-field. The math editor must provide one.");
   var editorMf = MQ.MathField(mathFieldSpan, {
     spaceBehavesLikeTab: true, // configurable
@@ -43,7 +43,7 @@ function mathQuillifyEditor() {
           console.log('** mathQuillEditHandler latex=' + latex);
           refreshResultField(latex);
         } catch (error) {
-          console.log('ERROR in MQ.MathField: ' + error);
+          console.error('ERROR in MQ.MathField: ' + error);
         }
       }
     }
@@ -55,12 +55,11 @@ export async function prepareEditorApplet(fApp) {
   // *** editor ***
   await initEditor();
   console.log('preparePage.js: prepareEditorApplet');
-  // console.log(fApp);
   var editorMf = mathQuillifyEditor();
   fApp.mathField = editorMf;
   console.log('editorMf.latex=' + editorMf.latex());
   refreshResultField(editorMf.latex());
-  $.event.trigger("refreshLatexEvent");
+  $.event.trigger("refreshLatexEvent");  //adjust \cdot versus \times
 
   // adjust events
   $(findDoc()).find('#set-input-d, #set-input-e').on('mousedown', ev => {
@@ -331,7 +330,7 @@ export function eraseUnit(mf) {
  * @example result.before = "", result.tag = "", result.after = "stringwithoutrinputfield"
  */
 function separateInputfield(latex) {
-  console.log('separate ' + latex);
+  // console.log('separate ' + latex);
   var beforeTag, tag, afterTag;
   var classTag = '\\class{inputfield}{';
   var pos = latex.indexOf(classTag);
@@ -356,7 +355,7 @@ function separateInputfield(latex) {
     after: afterTag
   };
   console.info(latex);
-  console.info(beforeTag + ' | ' + tag + ' | ' + afterTag);
+  console.info(beforeTag + '|' + tag + '|' + afterTag);
   return result;
 }
 
@@ -379,7 +378,7 @@ const autoMode = {
 }
 
 function refreshResultField(latex) {
-  console.log('refreshResultField latex=' + latex);
+  // console.log('refreshResultField latex=' + latex);
   var parts = separateInputfield(latex);
   showEditorResults(parts);
 }

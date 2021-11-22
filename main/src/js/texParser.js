@@ -58,7 +58,6 @@ node.prototype.debug = function () {
     text += ' children=' + this.children;
     text += ' type=' + this.type;
     text += ' content=' + this.content;
-    // console.debug(text);
     return text;
 };
 
@@ -552,17 +551,14 @@ export function parseTreeByIndex(tree) {
         case 8:
             message = 'parse log_base';
             parseLogLim(tree, 'log'); //log
-            // check_children(tree);
             break;
         case 9:
             message = 'parse lim';
             parseLogLim(tree, 'lim'); //lim
-            // check_children(tree);
             break;
         case 10:
             message = 'parse functions';
             parseFunction(tree);
-            // check_children(tree);
             break;
         case 11:
             message = 'parse fractions';
