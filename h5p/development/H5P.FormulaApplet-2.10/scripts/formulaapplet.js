@@ -1,5 +1,5 @@
 ﻿var H5P = H5P || {};
-console.log('Here is formulaapplet.js 2.8+ window.name = ' + window.name);
+console.log('Here is formulaapplet.js 2.10 - window.name = ' + window.name);
 
 H5P.FormulaApplet = (function ($) {
   /**
@@ -15,7 +15,6 @@ H5P.FormulaApplet = (function ($) {
     this.id = id;
     this.options.TEX_expression = this.options.fa_applet;
   };
-
 
   /**
    * Attach function called by H5P framework to insert H5P content into

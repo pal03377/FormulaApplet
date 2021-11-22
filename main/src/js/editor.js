@@ -163,6 +163,10 @@ function getSelection(mf, options) {
 }
 
 function setInput(editorMf) {
+    console.log('setInput!!!');
+}
+
+function setInputinactive(editorMf) {
   var temp = getSelection(editorMf, {
     erase: true
   });
