@@ -16,8 +16,7 @@
     },
     {
       "label": "Physik-Modus",
-      "description": "Haken, falls das Ergebnis eine <b>physikalische Größe</b> ist (Maßzahl und Einheit). <br>
-	  Kein Haken, falls das Ergebnis ein <b>mathematischer Ausdruck</b> ist."
+      "description": "Haken, falls das Ergebnis eine <b>physikalische Größe</b> ist (Maßzahl und Einheit). <br> Kein Haken, falls das Ergebnis ein <b>mathematischer Ausdruck</b> ist."
     },
     {
       "label": "Auto-Modus/Manueller Modus",
