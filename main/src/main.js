@@ -29,7 +29,7 @@ window.onload = function () {
             console.info('RECEIVE preparePageEvent');
             preparePage();
         });
-        // eslint-disable-next-line no-undef
+        // eslint-disable-next-line no-undef, no-unused-vars
         H5P.jQuery(document).on('mathquillifyAllEvent', function (_ev) {
             mathQuillifyAll();
         });
@@ -38,7 +38,7 @@ window.onload = function () {
             // console.info('RECEIVE mathquillifyEvent(id) (main.js)' + id);
             mathQuillify(id);
         });
-        // eslint-disable-next-line no-undef
+        // eslint-disable-next-line no-undef, no-unused-vars
         H5P.jQuery(document).on('testEvent', function (_ev) {
             console.info('RECEIVE testEvent (main.js)');
         });
