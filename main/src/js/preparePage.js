@@ -69,17 +69,17 @@ function FApp() {
 export default async function preparePage() {
   await domLoad;
 
-  document.addEventListener('setInputEvent', function (ev) {
-    console.log(ev);
-    // var d = ev.data;
-    console.log('RECEIVE setInputEvent (preparePage.js)');
-  });
-  // console.log('LISTEN setInputEvent (preparePage.js)');
+  // document.addEventListener('setInputFieldEvent', function (ev) {
+  //   console.log(ev);
+  //   // var d = ev.data;
+  //   console.log('RECEIVE setInputFieldEvent (preparePage.js)');
+  // });
+  // // console.log('LISTEN setInputFieldEvent (preparePage.js)');
 
   window.addEventListener('message', handleMessage, false); //bubbling phase
 
   function handleMessage(event) {
-    console.log('message received: ' + event.data);
+    // console.log('message received (preparePage.js): ' + event.data);
     if (event.data == 'preparePageEvent') {
       // console.info('RECEIVE MESSAGE preparePageEvent (preparePage.js)');
       preparePage();
@@ -307,14 +307,14 @@ export async function mathQuillify(id) {
 
   if (typeof domElem !== 'undefined') {
     var temp = domElem.innerHTML;
-    console.log('temp=' + temp);
+    // console.log('temp=' + temp);
     temp = temp.replace(/{{result}}/g, '\\MathQuillMathField{}');
     temp = temp.replace(/\\Ohm/g, '\\Omega');
     temp = temp.replace(/\\mathrm/g, '');
     temp = temp.replace(/\\unit{/g, config.unit_replacement);
     temp = temp.replace(/\\cdot/g, config.multiplicationSign);
-    console.log('after replace:');
-    console.log('temp=' + temp);
+    // console.log('after replace:');
+    // console.log('temp=' + temp);
     //TODO
     if (isEditor && isH5P()) {
 
@@ -373,7 +373,7 @@ export async function mathQuillify(id) {
     // *** editor ***
     prepareEditorApplet(fApp);
     result = 'EditorApplet is prepared.'
-    mqEditableField = $el.find('.mq-editable-field')[0];
+    mqEditableField = $el.find('.mq-editable-field')[0]; // why?
   } else {
     // *** no editor ***
     try {

@@ -41,7 +41,7 @@ H5P.FormulaApplet = (function ($) {
 })(H5P.jQuery);
 
 var chainTimerId = -1;
-var chainTimerInterval = 2000; //millisec
+var chainTimerInterval = 1000; //millisec
 var chainTimerFinished = function () {
   console.log('chainTimer ' + chainTimerId + ' finished.');
   H5P.jQuery(document).trigger('preparePageEvent');

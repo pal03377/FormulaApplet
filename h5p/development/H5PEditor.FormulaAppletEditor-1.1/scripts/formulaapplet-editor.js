@@ -77,24 +77,30 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     };
 
     // console.log(self);
-    self.config.change('bli + bla = blu');
+    self.config.change('75 + {{result}} = 77');
     // console.log(self.$item);
     $wrapper.append(self.$item);
 
     var $button = H5P.JoubelUI.createButton({
       title: 'set_input_field',
       text: 'Set input field',
-      click: function (event) {
-        const si_ev = new Event('setInputEvent', {
-          bubbles: true,
-          cancelable: true,
-          composed: false
-        });
-        si_ev.data = 4711;
-        // console.log('TRIGGER setInputEvent (formulaapplet-editor.js)');
-        document.dispatchEvent(si_ev);
+      click: function (_event) {
+        // const si_ev = new Event('setInputFieldEvent', {
+        //   bubbles: true,
+        //   cancelable: true,
+        //   composed: false
+        // });
+        // si_ev.data = 4711;
+        // // console.log('TRIGGER setInputFieldEvent (formulaapplet-editor.js)');
+        // document.dispatchEvent(si_ev);
+
+        // avoid deselect
+        // do nothing - event.preventDefault();
+        // var url = window.parent.parent.document.URL;
+        // window.parent.parent.postMessage("setInputFieldEvent", url);
       }
     });
+    $button.attr('id', '#set-input-h5p');
     $wrapper.append($button);
     // $wrapper.append('<textarea id="html-output" rows="4" cols="150">output</textarea>');
 
@@ -119,7 +125,8 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     // H5P.jQuery(document).trigger('preparePageEvent');
     var url = window.parent.parent.document.URL;
     window.parent.parent.postMessage("preparePageEvent", url);
-    H5P.jQuery(window.parent.parent.document).trigger('testEvent');
+    window.parent.parent.postMessage("testEvent", url);
+    // H5P.jQuery(window.parent.parent.document).trigger('testEvent');
   }
 
   /**
@@ -166,7 +173,7 @@ function afterAppend(obj) {
   // console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
   // console.log(obj);
 
-    // teximput is updated by editor.js: showEditorResults
+  // teximput is updated by editor.js: showEditorResults
 
   var texinput = H5P.jQuery('div.field.field-name-TEX_expression.text input')[0];
   texinput.addEventListener('input', updateTexinputEventHandler);
@@ -176,7 +183,7 @@ function afterAppend(obj) {
     obj.parent.params['fa_applet'] = event.target.value;
     var msg;
     if (event.isTrusted) {
-      msg= ' event caused by keyboard input';
+      msg = ' event caused by keyboard input';
       event.preventDefault();
     } else {
       msg = ' event caused by input to FormulaApplet';
@@ -207,12 +214,12 @@ function afterAppend(obj) {
   // var TEX_expression = document.getElementById(getSelectorID('field-tex_expression'));
 
   // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
-  document.addEventListener('setInputEvent', function (ev) {
-    console.log(ev);
-    // var d = ev.data;
-    console.log('formulaapplet-editor.js: receive setInputEvent');
-  });
-  console.log('formulaapplet-editor.js: LISTEN to setInputEvent');
+  // document.addEventListener('setInputFieldEvent', function (ev) {
+  //   console.log(ev);
+  //   // var d = ev.data;
+  //   console.log('formulaapplet-editor.js: receive setInputFieldEvent');
+  // });
+  // console.log('formulaapplet-editor.js: LISTEN to setInputFieldEvent');
 
 
 }
