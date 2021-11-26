@@ -278,7 +278,7 @@ export async function mathQuillifyAll() {
   try {
     // console.log(findDoc());
     $(findDoc()).find(".formula_applet:not(.mq-math-mode)").each(function () {
-      console.log('to be mathquillified:' + this.id);
+      // console.log('to be mathquillified:' + this.id);
       mathQuillify(this.id);
     });
   } catch (error) {
@@ -303,7 +303,7 @@ export async function mathQuillify(id) {
   }
   var domElem = $el[0];
   var isEditor = $el.hasClass('edit');
-  console.log(id + ' isEditor=' + isEditor);
+  // console.log(id + ' isEditor=' + isEditor);
 
   if (typeof domElem !== 'undefined') {
     var temp = domElem.innerHTML;

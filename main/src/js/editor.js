@@ -61,10 +61,12 @@ function mathQuillifyEditor() {
 }
 //TODO get rid of global variables
 // eslint-disable-next-line no-unused-vars
-var rememberSelection_old = '';
-var rememberSelection_new = '';
+var $rememberSelection_old = $();
+var $rememberSelection_new = $();
+var selectionArray = [];
+var eventArray = [];
 // eslint-disable-next-line no-unused-vars
-var $rememberUnselected = '';
+var $rememberUnselected = $();
 
 export async function prepareEditorApplet(fApp) {
     // *** editor ***
@@ -82,33 +84,40 @@ export async function prepareEditorApplet(fApp) {
     $rememberUnselected = $rootBlock.clone();
     console.log('$rootBlock[0].innerHTML=' + $rootBlock[0].innerHTML);
 
-    //TODO get rid of global variables
-    var DOMSubtreeModifiedEventHandlerActive = true;
-    $rootBlock.on('DOMSubtreeModified', function () {
-        if (DOMSubtreeModifiedEventHandlerActive) {
-            // console.log('DOMSubtreeModified');
-            try {
-                var $selection = $rootBlock.find('.mq-selection');
-                var selectionHTML = $selection.clone().html();
-                if (typeof selectionHTML !== 'undefined' && selectionHTML.length > 0) {
-                    if (selectionHTML !== rememberSelection_new) {
-                        rememberSelection_old = rememberSelection_new;
-                        rememberSelection_new = selectionHTML;
-                        // console.log('old=' + rememberSelection_old);
-                        // console.log('new=' + rememberSelection_new);
-                        // console.log(' ');
-                    }
-                    //     //   DOMSubtreeModifiedEventHandlerActive = false;
-                    //     //   this.innerHTML = 'µ';
-                    //     //   DOMSubtreeModifiedEventHandlerActive = true;
-                } else {
-                    // console.log('no selection');
-                }
-            } catch (error) {
-                console.log('ERROR: ' + error);
-            }
-        }
+    $rootBlock.on('DOMSubtreeModified', function (ev) {
+        console.log(ev.target);
     });
+
+    //TODO get rid of global variables
+    // var DOMSubtreeModifiedEventHandlerActive = true;
+    // $rootBlock.on('DOMSubtreeModified', function (ev) {
+    //     if (DOMSubtreeModifiedEventHandlerActive) {
+    //         // console.log('DOMSubtreeModified');
+    //         try {
+    //             var $selection = $rootBlock.find('.mq-selection');
+    //             var selectionHTML = $selection.html();
+    //             if (typeof selectionHTML !== 'undefined' && selectionHTML.length > 0) {
+    //                 if (selectionHTML !== $rememberSelection_new.html()) {
+    //                     $rememberSelection_old = $rememberSelection_new.clone();
+    //                     $rememberSelection_new = $selection.clone();
+    //                     // console.log('old=' + $rememberSelection_old.html());
+    //                     // console.log('new=' + $rememberSelection_new.html());
+    //                     // console.log(' ');
+    //                     selectionArray.push($rememberSelection_new);
+    //                     eventArray.push(ev);
+    //                     // console.log(selectionArray);
+    //                 }
+    //                 //     //   DOMSubtreeModifiedEventHandlerActive = false;
+    //                 //     //   this.innerHTML = 'µ';
+    //                 //     //   DOMSubtreeModifiedEventHandlerActive = true;
+    //             } else {
+    //                 // console.log('no selection');
+    //             }
+    //         } catch (error) {
+    //             console.log('ERROR: ' + error);
+    //         }
+    //     }
+    // });
 
     // $rootBlock.on('select', function () {
     //     console.log('select event');
@@ -140,7 +149,7 @@ export async function prepareEditorApplet(fApp) {
     console.clear();
 
     $(findDoc()).find('#set-input-h5p2').on('click', ev => {
-        ev.preventDefault();
+        // ev.preventDefault();
         console.log('h5p2 mousedown');
         setInputDebug(editorMf);
     });
@@ -249,11 +258,19 @@ function setInputDebug(_editorMf) {
     console.log('setInputDebug');
     // console.log('editorMF=');
     // console.log(editorMf);
-    console.log('rememberSelection_old=' + rememberSelection_old);
-    console.log('$rememberUnselected[0].outerHTML=');
-    console.log($rememberUnselected[0].outerHTML);
-    var check = $rememberUnselected[0].outerHTML.indexOf(rememberSelection_old);
-    console.log(check);
+
+    // console.log('rememberSelection_old=' + $rememberSelection_old.html());
+    // console.log('$rememberUnselected=');
+    console.log($rememberUnselected.html());
+    for (var i = 0; i < selectionArray.length; i++) {
+        var $sel = selectionArray[i];
+        console.log($sel[0].innerHTML);
+    }
+
+    selectionArray = [];
+    // var check = $rememberUnselected.html().indexOf($rememberSelection_old.html());
+    // console.log(check);
+
     // mf.innerHTML = remember;
     // console.log('remember -> latex=' + mf.latex());
     // var mathFieldSpan = findDoc().getElementById('math-field');
