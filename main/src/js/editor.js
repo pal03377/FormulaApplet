@@ -20,17 +20,6 @@ var newFaId = newFaId || 'x8rT3dkkS';
 export async function initEditor() {
     await domLoad;
     $.event.trigger("clickLanguageEvent");
-    // // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
-    // document.addEventListener('setInputFieldEvent', function (ev) {
-    //   console.log(ev);
-    //   // var d = ev.data;
-    //   console.log('RECEIVE setInputFieldEvent (editor.js)');
-    // });
-    // // console.log('LISTEN setInputFieldEvent (editor.js)');
-
-    // move EvetListener to prepareEditorApplet -> editorMF exists
-    // window.addEventListener('message', handleMessage, false); //bubbling phase
-    // 
 }
 
 var mathQuillEditHandlerActive = true;
@@ -75,38 +64,30 @@ export async function prepareEditorApplet(fApp) {
     // H5P stuff
     window.addEventListener('message', SetInputFieldMessageHandler, false); //bubbling phase
 
+    var newLatex = 'new'; //TODO get rid of global vars
     function SetInputFieldMessageHandler(event) {
         // H5P
         console.log(event.data);
         if (event.data[0] == 'setInputFieldEvent') {
             console.info('*** RECEIVE message setInputFieldEvent (editor.js)');
+            editorMf.latex(newLatex);
             // var mathquillCommandIdArray = event.data[1];
             // setInputDebug(fApp, event.data[1]);
         }
-        if (event.data[0] == 'setInputFieldMouseoverEvent') {   
+        if (event.data[0] == 'setInputFieldMouseoverEvent') {
             console.info('*** RECEIVE message setInputFieldMouseoverEvent (editor.js)');
-            setInput(editorMf);
+            var latex = setInput(editorMf);
+            console.log(latex);
+            editorMf.latex(latex.old);
+            newLatex = latex.new;
         }
     }
 
     $(findDoc()).find('#set-input-d, #set-input-e').on('mousedown', ev => {
         ev.preventDefault();
-        setInput(editorMf);
+        var newLatex = setInput(editorMf).new;
+        editorMf.latex(newLatex);
     });
-
-    // var joubelButton = $(findDoc()).find('#set-input-h5p');
-    // console.log(joubelButton);
-
-    // var append_button_html = '<button type="button" class="tr de sif problemeditor" id="set-input-h5p2">setInputDebug</button>'
-    // $(append_button_html).insertAfter(fApp.formulaApplet);
-    // console.log('html button inserted after formula applet');
-    // console.clear();
-
-    // $(findDoc()).find('#set-input-h5p2').on('click', _ev => {
-    //     // ev.preventDefault();
-    //     console.log('h5p2 mousedown');
-    //     setInputDebug(editorMf);
-    // });
 
     $(findDoc()).find('#set-unit-d, #set-unit-e').on('mousedown', ev => {
         ev.preventDefault();
@@ -156,7 +137,6 @@ export async function prepareEditorApplet(fApp) {
     });
     // generate a new random ID
     $(findDoc()).find('#random-id-d').trigger('mousedown');
-    // $(findDoc()).find('input[type="radio"]#manu').click();
     $(findDoc()).find('input[type="radio"]#auto').trigger('click');
 }
 
@@ -208,21 +188,6 @@ function getSelection(mf, options) {
     }
 }
 
-function setInputDebug(fApp, mathquillCommandIdArray) {
-    console.log('setInputDebug');
-    console.log(fApp.mathField.latex());
-    // console.log(fApp.formulaApplet);
-    // console.log(mathquillCommandIdArray);
-    for (var i = 0; i < mathquillCommandIdArray.length; i++) {
-        var mathquillCommandId = mathquillCommandIdArray[i];
-        // console.log(mathquillCommandId);
-        var selector = 'span [mathquill-command-id="' + mathquillCommandId + '"]';
-        var span = $(fApp.formulaApplet).find(selector);
-        span.html('µ');
-    }
-    console.log(fApp.mathField.latex());
-}
-
 function setInput(editorMf) {
     var temp = getSelection(editorMf, {
         erase: true
@@ -230,14 +195,17 @@ function setInput(editorMf) {
     var preSelected = temp[0];
     var selected = temp[1];
     var postSelected = temp[2];
+    var result = {};
+    result['old'] = temp[3];
     var newLatex = temp[3];
     if (selected.length > 0) {
         newLatex = preSelected + '\\class{inputfield}{' + selected + '}' + postSelected;
     } else {
         newLatex = sanitizeInputfieldTag(newLatex);
     }
-    editorMf.latex(newLatex);
-}
+    result['new']= newLatex;
+    return result;
+ }
 
 function getPositionOfUnitTags(latex, unitTag) {
     // get position of exising unit tags
@@ -497,10 +465,6 @@ function makeid(length) {
     // result = '"' + result + '"';
     return result;
 }
-
-document.h5p_transfer = {
-    makeid
-};
 
 function createreplacementCharacter(latexstring) {
     const separators = '∀µ∉ö∋∐∔∝∤∮∱∸∺∽≀';
