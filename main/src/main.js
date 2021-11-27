@@ -13,20 +13,12 @@ import {
 // debugger;
 
 window.onload = function () {
-    // // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
-    // document.addEventListener('setInputfieldEvent', function (ev) {
-    //     console.log(ev);
-    //     // var d = ev.data;
-    //     console.log('RECEIVE setInputfieldEvent (main.js)');
-    // });
-    // // console.log('LISTEN setInputfieldEvent (main.js)');
-
-    var lang;
+     var lang;
     if (isH5P()) {
         // make sensitive for preparePageEvent
         // eslint-disable-next-line no-undef
         H5P.jQuery(document).on('preparePageEvent', function () {
-            console.info('RECEIVE preparePageEvent');
+            // console.info('RECEIVE preparePageEvent');
             preparePage();
         });
         // eslint-disable-next-line no-undef, no-unused-vars

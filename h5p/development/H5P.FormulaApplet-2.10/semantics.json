@@ -1,18 +1,18 @@
 [{
     "name": "fa_applet",
     "type": "text",
-    "label": "Formula Applet Editor",
-    "description": "This widget hopefully causes formulaapplet-editor.js to be called",
+    "label": "Expression (Formula Applet Editor)",
+    "description": "Use this field if you do not know TEX",
     "optional": true,
-    "default": "a04000",
+    "default": "default",
     "widget": "formulaAppletEditor"
   },
   {
-    "label": "Formula text (TEX)",
+    "label": "Expression (TEX representation)",
     "name": "TEX_expression",
     "type": "text",
     "default": "7 +\\class{inputfield}{x} = 11",
-    "description": "The TEX displayed to the end user."
+    "description": "Use this field if you know TEX"
   },
   {
     "label": "Text for \"Check\" button",
@@ -21,8 +21,8 @@
     "type": "text",
     "default": "Check",
     "common": true,
-    "optional": true
-
+    "optional": true,
+    "info": "dummy (not used)"
   },
   {
     "name": "formulaAppletPhysics",

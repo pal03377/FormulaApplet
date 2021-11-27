@@ -169,8 +169,14 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 })(H5P.jQuery);
 
 function afterAppend(obj) {
-  // console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
+  console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
   console.log(obj);
+  console.log('obj.config');
+  console.log(obj.config);
+  console.log('obj.field');
+  console.log(obj.field);
+  console.log('obj.params');
+  console.log(obj.params);
 
   // teximput is updated by editor.js: showEditorResults
   var texinput = H5P.jQuery('div.field.field-name-TEX_expression.text input')[0];

@@ -43,7 +43,7 @@ H5P.FormulaApplet = (function ($) {
 var chainTimerId = -1;
 var chainTimerInterval = 1000; //millisec
 var chainTimerFinished = function () {
-  console.log('chainTimer ' + chainTimerId + ' finished.');
+  // console.log('chainTimer ' + chainTimerId + ' finished.');
   H5P.jQuery(document).trigger('preparePageEvent');
   // preparePageEvent may be replaced by mathquillifyEvent(id) in constructor
 };
