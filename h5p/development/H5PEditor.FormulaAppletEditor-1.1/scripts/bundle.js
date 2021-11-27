@@ -21000,17 +21000,6 @@
 	async function initEditor() {
 	    await domLoad;
 	    $$1.event.trigger("clickLanguageEvent");
-	    // // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
-	    // document.addEventListener('setInputFieldEvent', function (ev) {
-	    //   console.log(ev);
-	    //   // var d = ev.data;
-	    //   console.log('RECEIVE setInputFieldEvent (editor.js)');
-	    // });
-	    // // console.log('LISTEN setInputFieldEvent (editor.js)');
-
-	    // move EvetListener to prepareEditorApplet -> editorMF exists
-	    // window.addEventListener('message', handleMessage, false); //bubbling phase
-	    // 
 	}
 
 	var mathQuillEditHandlerActive = true;
@@ -21055,38 +21044,30 @@
 	    // H5P stuff
 	    window.addEventListener('message', SetInputFieldMessageHandler, false); //bubbling phase
 
+	    var newLatex = 'new'; //TODO get rid of global vars
 	    function SetInputFieldMessageHandler(event) {
 	        // H5P
 	        console.log(event.data);
 	        if (event.data[0] == 'setInputFieldEvent') {
 	            console.info('*** RECEIVE message setInputFieldEvent (editor.js)');
+	            editorMf.latex(newLatex);
 	            // var mathquillCommandIdArray = event.data[1];
 	            // setInputDebug(fApp, event.data[1]);
 	        }
-	        if (event.data[0] == 'setInputFieldMouseoverEvent') {   
+	        if (event.data[0] == 'setInputFieldMouseoverEvent') {
 	            console.info('*** RECEIVE message setInputFieldMouseoverEvent (editor.js)');
-	            setInput(editorMf);
+	            var latex = setInput(editorMf);
+	            console.log(latex);
+	            editorMf.latex(latex.old);
+	            newLatex = latex.new;
 	        }
 	    }
 
 	    $$1(findDoc()).find('#set-input-d, #set-input-e').on('mousedown', ev => {
 	        ev.preventDefault();
-	        setInput(editorMf);
+	        var newLatex = setInput(editorMf).new;
+	        editorMf.latex(newLatex);
 	    });
-
-	    // var joubelButton = $(findDoc()).find('#set-input-h5p');
-	    // console.log(joubelButton);
-
-	    // var append_button_html = '<button type="button" class="tr de sif problemeditor" id="set-input-h5p2">setInputDebug</button>'
-	    // $(append_button_html).insertAfter(fApp.formulaApplet);
-	    // console.log('html button inserted after formula applet');
-	    // console.clear();
-
-	    // $(findDoc()).find('#set-input-h5p2').on('click', _ev => {
-	    //     // ev.preventDefault();
-	    //     console.log('h5p2 mousedown');
-	    //     setInputDebug(editorMf);
-	    // });
 
 	    $$1(findDoc()).find('#set-unit-d, #set-unit-e').on('mousedown', ev => {
 	        ev.preventDefault();
@@ -21136,7 +21117,6 @@
 	    });
 	    // generate a new random ID
 	    $$1(findDoc()).find('#random-id-d').trigger('mousedown');
-	    // $(findDoc()).find('input[type="radio"]#manu').click();
 	    $$1(findDoc()).find('input[type="radio"]#auto').trigger('click');
 	}
 
@@ -21195,14 +21175,17 @@
 	    var preSelected = temp[0];
 	    var selected = temp[1];
 	    var postSelected = temp[2];
+	    var result = {};
+	    result['old'] = temp[3];
 	    var newLatex = temp[3];
 	    if (selected.length > 0) {
 	        newLatex = preSelected + '\\class{inputfield}{' + selected + '}' + postSelected;
 	    } else {
 	        newLatex = sanitizeInputfieldTag(newLatex);
 	    }
-	    editorMf.latex(newLatex);
-	}
+	    result['new']= newLatex;
+	    return result;
+	 }
 
 	function getPositionOfUnitTags(latex, unitTag) {
 	    // get position of exising unit tags
@@ -21462,10 +21445,6 @@
 	    // result = '"' + result + '"';
 	    return result;
 	}
-
-	document.h5p_transfer = {
-	    makeid
-	};
 
 	function createreplacementCharacter(latexstring) {
 	    const separators = '∀µ∉ö∋∐∔∝∤∮∱∸∺∽≀';
@@ -22835,20 +22814,12 @@
 	// debugger;
 
 	window.onload = function () {
-	    // // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
-	    // document.addEventListener('setInputfieldEvent', function (ev) {
-	    //     console.log(ev);
-	    //     // var d = ev.data;
-	    //     console.log('RECEIVE setInputfieldEvent (main.js)');
-	    // });
-	    // // console.log('LISTEN setInputfieldEvent (main.js)');
-
-	    var lang;
+	     var lang;
 	    if (isH5P()) {
 	        // make sensitive for preparePageEvent
 	        // eslint-disable-next-line no-undef
 	        H5P.jQuery(document).on('preparePageEvent', function () {
-	            console.info('RECEIVE preparePageEvent');
+	            // console.info('RECEIVE preparePageEvent');
 	            preparePage();
 	        });
 	        // eslint-disable-next-line no-undef, no-unused-vars
