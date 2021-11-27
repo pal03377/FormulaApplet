@@ -13,13 +13,13 @@ import {
 // debugger;
 
 window.onload = function () {
-    // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
-    document.addEventListener('setInputfieldEvent', function (ev) {
-        console.log(ev);
-        // var d = ev.data;
-        console.log('RECEIVE setInputfieldEvent (main.js)');
-    });
-    // console.log('LISTEN setInputfieldEvent (main.js)');
+    // // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
+    // document.addEventListener('setInputfieldEvent', function (ev) {
+    //     console.log(ev);
+    //     // var d = ev.data;
+    //     console.log('RECEIVE setInputfieldEvent (main.js)');
+    // });
+    // // console.log('LISTEN setInputfieldEvent (main.js)');
 
     var lang;
     if (isH5P()) {
@@ -69,12 +69,17 @@ window.onload = function () {
     // The first time main is loaded, document.mainIsLoaded will be 1.
 };
 
-// create echo
 function handleMessage(event) {
-    // console.log('message received: ' + event.data);
+    // console.log('message received (main.js): ' + event.data);
+
+    // create echo
     if (event.data == 'SignalToMainEvent') {
         // console.info('RECEIVE MESSAGE SignalToMainEvent (main.js)');
         // console.info('POST MESSAGE echoFromMainEvent (main.js)');
         event.target.postMessage('echoFromMainEvent', event.origin);
     }
+    
+    if (event.data == 'testEvent') {
+        console.info('RECEIVE testEvent (main.js)');
+     }
 }
