@@ -89,8 +89,9 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       text: 'Set input field (Joubel)',
       click: function (event) {
         event.preventDefault();
-        // console.log(lastMutation);
+
         var mathquillCommandIdArray = [];
+        // get lastMutation (global var) from mutationObserver
         lastMutation.each(function () {
           var $node = H5P.jQuery(this);
           // console.log($node);
@@ -100,7 +101,9 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
           mathquillCommandIdArray.push(mathquillCommandId);
         });
         console.log(mathquillCommandIdArray);
- 
+        var url = window.parent.parent.document.URL;
+        window.parent.parent.postMessage(["setInputFieldEvent", mathquillCommandIdArray], url);
+
         // const si_ev = new Event('setInputFieldEvent', {
         //   bubbles: true,
         //   cancelable: true,
@@ -110,11 +113,10 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
         // // console.log('TRIGGER setInputFieldEvent (formulaapplet-editor.js)');
         // document.dispatchEvent(si_ev);
 
-        var url = window.parent.parent.document.URL;
-        window.parent.parent.postMessage("setInputFieldEvent", url);
       }
     });
     $button.attr('id', '#set-input-h5p');
+    $button.on('mouseover', buttonMouseoverHandler);
     $wrapper.append($button);
     // $wrapper.append('<textarea id="html-output" rows="4" cols="150">output</textarea>');
 
@@ -129,9 +131,21 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     });
   };
 
+  function buttonMouseoverHandler(ev) {
+    console.log(ev);
+    var url = window.parent.parent.document.URL;
+    window.parent.parent.postMessage(["setInputFieldMouseoverEvent", 'dummy'], url);
+  };
+
   function afterMainIsLoaded() {
     // this code is executed if main is loaded
     console.log('*** MAIN is loaded *** ');
+
+    console.log('check items of editor page after MAIN is loaded, before preparePage/prepareEditorApplet');
+    // var params = FormulaAppletEditor.getExpression();
+    console.log(this.H5PEditor);
+
+
     // console.log('postMessage preparePageEvent');
     // console.log('TRIGGER testEvent');
     // trigger event fails because target is in parent iframe
@@ -191,11 +205,12 @@ function afterAppend(obj) {
   // console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
   // console.log(obj);
 
+
+
   // teximput is updated by editor.js: showEditorResults
 
   var texinput = H5P.jQuery('div.field.field-name-TEX_expression.text input')[0];
   texinput.addEventListener('input', updateTexinputEventHandler);
-
 
   function updateTexinputEventHandler(event) {
     obj.parent.params['fa_applet'] = event.target.value;
@@ -230,13 +245,13 @@ function afterAppend(obj) {
 
 }
 
-function installDOMSubtreeModifiedHandler() {
-  // has to be done after mathquillifying, i. e. after preparePage
-  // eventHamdler for DOMSubtreeModified
-  var $rootBlock = H5P.jQuery('#math-field').find('.mq-root-block');
-  console.log('$rootBlock.html()=' + $rootBlock.html());
-  $rootBlock.on('DOMSubtreeModified', DOMSubtreeModifiedHandler);
-}
+// function installDOMSubtreeModifiedHandler() {
+//   // has to be done after mathquillifying, i. e. after preparePage
+//   // eventHamdler for DOMSubtreeModified
+//   var $rootBlock = H5P.jQuery('#math-field').find('.mq-root-block');
+//   console.log('$rootBlock.html()=' + $rootBlock.html());
+//   $rootBlock.on('DOMSubtreeModified', DOMSubtreeModifiedHandler);
+// }
 
 function installMutationObserver() {
   var $rootBlock = H5P.jQuery('#math-field').find('.mq-root-block');
@@ -272,20 +287,20 @@ function RootblockMutationHandler(mutations) {
 }
 
 //TODO get rid of global variables
-var $rootBlock = H5P.jQuery('#math-field').find('.mq-root-block');
+// var $rootBlock = H5P.jQuery('#math-field').find('.mq-root-block');
 
-function DOMSubtreeModifiedHandler(ev) {
-  try {
-    // var $selection = $rootBlock.find('.mq-selection');
-    var $selection = H5P.jQuery(ev.target);
-    var selectionHTML = $selection.html();
-    if (typeof selectionHTML !== 'undefined' && selectionHTML.length > 0) {
-      selectionArray.push($selection.clone());
-    }
-  } catch (error) {
-    console.log('ERROR: ' + error);
-  }
-};
+// function DOMSubtreeModifiedHandler(ev) {
+//   try {
+//     // var $selection = $rootBlock.find('.mq-selection');
+//     var $selection = H5P.jQuery(ev.target);
+//     var selectionHTML = $selection.html();
+//     if (typeof selectionHTML !== 'undefined' && selectionHTML.length > 0) {
+//       selectionArray.push($selection.clone());
+//     }
+//   } catch (error) {
+//     console.log('ERROR: ' + error);
+//   }
+// };
 
 //TODO get rid of global variables
 // var DOMSubtreeModifiedEventHandlerActive = true;
