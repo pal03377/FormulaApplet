@@ -72,12 +72,20 @@ export async function prepareEditorApplet(fApp) {
     refreshResultField(editorMf.latex());
     $.event.trigger("refreshLatexEvent"); //adjust \cdot versus \times
 
+    // H5P stuff
     window.addEventListener('message', SetInputFieldMessageHandler, false); //bubbling phase
 
     function SetInputFieldMessageHandler(event) {
-        if (event.data == 'setInputFieldEvent') {
+        // H5P
+        console.log(event.data);
+        if (event.data[0] == 'setInputFieldEvent') {
             console.info('*** RECEIVE message setInputFieldEvent (editor.js)');
-            setInputDebug(editorMf);
+            // var mathquillCommandIdArray = event.data[1];
+            // setInputDebug(fApp, event.data[1]);
+        }
+        if (event.data[0] == 'setInputFieldMouseoverEvent') {   
+            console.info('*** RECEIVE message setInputFieldMouseoverEvent (editor.js)');
+            setInput(editorMf);
         }
     }
 
@@ -94,11 +102,11 @@ export async function prepareEditorApplet(fApp) {
     // console.log('html button inserted after formula applet');
     // console.clear();
 
-    $(findDoc()).find('#set-input-h5p2').on('click', _ev => {
-        // ev.preventDefault();
-        console.log('h5p2 mousedown');
-        setInputDebug(editorMf);
-    });
+    // $(findDoc()).find('#set-input-h5p2').on('click', _ev => {
+    //     // ev.preventDefault();
+    //     console.log('h5p2 mousedown');
+    //     setInputDebug(editorMf);
+    // });
 
     $(findDoc()).find('#set-unit-d, #set-unit-e').on('mousedown', ev => {
         ev.preventDefault();
@@ -200,9 +208,19 @@ function getSelection(mf, options) {
     }
 }
 
-function setInputDebug(_editorMf) {
+function setInputDebug(fApp, mathquillCommandIdArray) {
     console.log('setInputDebug');
-
+    console.log(fApp.mathField.latex());
+    // console.log(fApp.formulaApplet);
+    // console.log(mathquillCommandIdArray);
+    for (var i = 0; i < mathquillCommandIdArray.length; i++) {
+        var mathquillCommandId = mathquillCommandIdArray[i];
+        // console.log(mathquillCommandId);
+        var selector = 'span [mathquill-command-id="' + mathquillCommandId + '"]';
+        var span = $(fApp.formulaApplet).find(selector);
+        span.html('µ');
+    }
+    console.log(fApp.mathField.latex());
 }
 
 function setInput(editorMf) {
