@@ -1,8 +1,8 @@
 {
-  "title": "Formula Applet 2.8",
+  "title": "Formula Applet 2.10",
   "description": "Displays a Formula Applet",
   "majorVersion": 2,
-  "minorVersion": 8,
+  "minorVersion": 10,
   "patchVersion": 0,
   "runnable": 1,
   "author": "Rudolf Grossmann",
@@ -32,7 +32,7 @@
   "editorDependencies": [{
       "machineName": "H5PEditor.FormulaAppletEditor",
       "majorVersion": 1,
-      "minorVersion": 0
+      "minorVersion": 1
     },
     {
       "machineName": "H5P.JoubelUI",
