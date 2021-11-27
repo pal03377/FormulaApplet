@@ -1,0 +1,188 @@
+div#virtualKeyboard{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	/* background-color: #c0c0c050; transparency #50 */
+	background-color:#b2cee7;
+	border-radius: 3px;
+}
+
+#virtualKeyboard table{
+	display: none;
+	/* width: calc(100% +120px); */
+}
+
+#virtualKeyboard table#table_mixed{
+	display: table;
+}
+
+.virtualKeyboardButton {
+	background-color: #8bd;
+	width: 60px;
+	min-width: 50px;
+	height: 50px;
+	margin: 10px;
+	padding: 3px 7px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20pt;
+	text-align: center;
+	vertical-align: middle;
+	border: 1px solid peru;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.virtualKeyboardButton:active {
+	color: skyblue;
+	background-color: white;
+}
+
+.virtualKeyboardButton.smallgap {
+	width: 10px;
+	/* background-color: transparent; */
+	background-color: #b2cee7;
+	border: 0px;
+	min-width: 10px;
+	cursor: move;
+}
+
+.virtualKeyboard-shift {
+	color:navy;
+}
+
+.virtualKeyboard-backspace {
+	background-color: orangered;
+}
+
+.virtualKeyboard-backspace:active {
+	background-color: orange;
+}
+
+.virtualKeyboardButton.virtualKeyboard-unit{
+	font-size: 120%;
+}
+
+.virtualKeyboardButton.virtualKeyboard-clear_unit{
+	font-size: 120%;
+}
+
+div#output tbody {
+	margin: 15px;
+}
+
+#virtualKeyboard {
+	position: absolute;
+	z-index: 9;
+	cursor: move;
+}
+
+#table_abc .virtualKeyboard-row1 .virtualKeyboardButton {
+	position: relative;
+	left: 20px;
+}
+#table_abc .virtualKeyboard-row2 .virtualKeyboardButton {
+	position: relative;
+	left: 40px;
+}
+#table_abc_caps .virtualKeyboard-row1 .virtualKeyboardButton {
+	position: relative;
+	left: 20px;
+}
+#table_abc_caps .virtualKeyboard-row2 .virtualKeyboardButton {
+	position: relative;
+	left: 40px;
+}
+#table_greek .virtualKeyboard-row1 .virtualKeyboardButton {
+	position: relative;
+	left: 20px;
+}
+#table_greek .virtualKeyboard-row2 .virtualKeyboardButton {
+	position: relative;
+	left: 40px;
+}
+#table_greek_caps .virtualKeyboard-row1 .virtualKeyboardButton {
+	position: relative;
+	left: 20px;
+}
+#table_greek_caps .virtualKeyboard-row2 .virtualKeyboardButton {
+	position: relative;
+	left: 40px;
+}
+/* #virtualKeyboard table#table_abc{
+	padding-right: 20px;
+} */
+
+#virtualKeyboard_header {
+	height: 20px;
+	background-color: darkolivegreen;
+	cursor: move;
+	z-index: 10;
+	padding: 10px;
+	display: none;
+}
+
+/* Style the tab */
+.virtualKeyboard_tab {
+	overflow: hidden;
+	border: none;
+	background-color: transparent;
+}
+
+/* Style the buttons inside the tab */
+.virtualKeyboard_tab button {
+	background-color: #d0d0d0;
+	float: left;
+	left: 20px;
+	border: 1px solid #c0c040;
+	outline: none;
+	cursor: pointer;
+	padding: 6px 16px;
+	transition: 0.3s;
+	font-size: 20px;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+}
+
+/* Change background color of buttons on hover */
+.virtualKeyboard_tab button:hover {
+	background-color: #80f080;
+	color: rgba(0, 0, 255)
+}
+
+button#button-table_off {
+	float: right;
+	font-size: 20px;
+	color: orangered;
+	background-color: transparent;
+	border: none;
+	/* margin-right: 5px; */
+}
+
+.tablinks.selected {
+	background-color:darkkhaki;
+	color:  blue;
+	border-color: blue;
+	border-width: 2px;
+	border-bottom: transparent;
+}
+
+/* Create an active/current tablink class */
+/* .virtualKeyboard_tab button.active {
+	background-color:  darkkhaki;
+	color: red;
+} */
+
+/* Style the tab content */
+.tabcontent {
+	display: none;
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-top: none;
+}
+
+/* #sup_root {
+	position: relative;
+	top: -0.5em;
+	right: -0.5em;
+} */

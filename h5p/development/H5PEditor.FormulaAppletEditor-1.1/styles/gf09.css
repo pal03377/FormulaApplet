@@ -1,0 +1,165 @@
+.mq-cursor { 
+    background-color:lightyellow;
+    color: darkred;
+}
+.formula_applet{
+    border: darkblue solid thin;
+    background-color: lightblue;
+}
+.formula_applet.selected{
+    border: blue solid medium;
+    /* background-color: lightgoldenrodyellow; */
+    background-color: antiquewhite;
+}
+
+.mq-editable-field .mq-cursor {
+	border-left: 1px solid red;
+}
+
+.formula_applet.isEqual{
+    border: green solid medium;
+    background-color: lightgreen;
+}
+.formula_applet.isNotEqual{
+    border: red solid medium;
+    background-color: salmon;
+}
+
+.formula_applet.solution{
+	border:none;
+	background-color: transparent;
+}
+
+span.padding{
+	padding-left: 20px;
+}
+
+button.keyb_button{
+	display: none;
+}
+
+button.keyb_button.selected{
+	display: inline-block;
+	font-size: 28px;
+	line-height: 0.9;
+	border-radius: 5px;
+	padding: 3px;
+	margin-left: 16px;
+	color: blue;
+	background-color: lightgoldenrodyellow;
+}
+	
+div#output{
+	font-size:26pt; 
+	font-family:Arial, Helvetica, sans-serif;
+}
+
+/* editor */
+.mq-class.inputfield{
+	color: blue;
+	background-color: lightgreen;
+	/* font-size: 11pt; */
+	border: 1px;
+	border-style: dotted;
+	border-color:black;
+	padding: 1px;
+}
+
+/* editoe mode "auto" */
+.mq-class.inputfield[contenteditable="false"]{
+	/* color: crimson; */
+	color: lightgreen; /* foreground = background */
+}
+
+#editor.formula_applet {
+	display: inline-block;
+}
+
+textarea#wiki-text{
+	font-size: 18px;
+}
+
+#develop {
+	background-color: green;
+}
+
+#develop:hover {
+	background-color: midnightblue;
+}
+
+#lang_select input[type="radio"] {
+    /* display:none; */
+}
+#lang_select input[type="radio"] + label {
+    color:#000;
+    font-family:Arial, sans-serif;
+    font-size:18px;
+}
+#lang_select input[type="radio"] + label span {
+	content: \u9678;
+    display:inline-block;
+    width:19px;
+    height:19px;
+    /* margin:-1px 4px 0 0; */
+    vertical-align:middle;
+    /* background:url(http://webdesigntutsplus.s3.amazonaws.com/tuts/391_checkboxes/check_radio_sheet.png) -38px top no-repeat; */
+    cursor:pointer;
+}
+#lang_select input[type="radio"]:checked + label span {
+	content: \u9673;
+    /* background:url(http://webdesigntutsplus.s3.amazonaws.com/tuts/391_checkboxes/check_radio_sheet.png) -57px top no-repeat; */
+}
+#mode_select input[type="radio"] + label {
+    color:#000;
+    font-family:Arial, sans-serif;
+    font-size:18px;
+}
+#mode_select input[type="radio"] + label span {
+	content: \u9678;
+    display:inline-block;
+    /* width:19px; */
+    height:19px;
+    /* margin:-1px 4px 0 0; */
+    vertical-align:middle;
+    /* background:url(http://webdesigntutsplus.s3.amazonaws.com/tuts/391_checkboxes/check_radio_sheet.png) -38px top no-repeat; */
+    cursor:pointer;
+}
+
+#input_id input#fa_name {
+	margin: 1em;
+}
+
+button.problemeditor {
+	color: #f0f0f0;
+	background-color: #0084c1;
+	padding: 0.1em 0.4em;
+	font: normal 16px "OpenSans Regular", sans-serif;
+	display: inline-block;
+	border-radius: 10rem;
+	line-height: 22px;
+	margin: 0;
+	margin-left: 20px;
+}
+
+/* style of units */
+span.mq-textcolor{
+	/* font-size: 22px; */
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-style: normal !important;
+	font-weight: normal;
+	padding:0 5 0 3;
+	/* color: rgba(228, 79, 59, 0.836) !important; */
+	color: darkred !important;
+	/* background-color:lightgoldenrodyellow; #fafad2 */
+	/* background-color:rgba(150, 230, 230, 0.6); */
+	/* border:darkgreen dotted 2px; */
+}
+
+/* .mq-math-mode,
+.mq-math-mode .mq-editable-field {
+  cursor: text;
+  font-family: Arial, "Times New Roman", Symbola, serif;
+} */
+.formula_applet.edit{
+	width: max-content;
+}
