@@ -288,7 +288,7 @@ export async function mathQuillifyAll() {
 
 export async function mathQuillify(id) {
   await domLoad;
-  console.log('mathQuillify ' + id);
+  // console.log('mathQuillify ' + id);
   // console.log('preparePage.js/mathQuillify(id): window.name = ' + window.name);
   var result = 'unknown result';
   var $el; //undefined

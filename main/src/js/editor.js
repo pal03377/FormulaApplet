@@ -35,6 +35,7 @@ export async function initEditor() {
 
 var mathQuillEditHandlerActive = true;
 //TODO get rid of global vars
+// hier geändert.
 
 function mathQuillifyEditor() {
     // make whole mathFieldSpan editable
@@ -59,14 +60,6 @@ function mathQuillifyEditor() {
     });
     return editorMf;
 }
-//TODO get rid of global variables
-// eslint-disable-next-line no-unused-vars
-var $rememberSelection_old = $();
-var $rememberSelection_new = $();
-var selectionArray = [];
-var eventArray = [];
-// eslint-disable-next-line no-unused-vars
-var $rememberUnselected = $();
 
 export async function prepareEditorApplet(fApp) {
     // *** editor ***
@@ -79,76 +72,29 @@ export async function prepareEditorApplet(fApp) {
     refreshResultField(editorMf.latex());
     $.event.trigger("refreshLatexEvent"); //adjust \cdot versus \times
 
-    // adjust events
-    var $rootBlock = $(findDoc()).find('#math-field').find('.mq-root-block');
-    $rememberUnselected = $rootBlock.clone();
-    console.log('$rootBlock[0].innerHTML=' + $rootBlock[0].innerHTML);
+    window.addEventListener('message', SetInputFieldMessageHandler, false); //bubbling phase
 
-    $rootBlock.on('DOMSubtreeModified', function (ev) {
-        console.log(ev.target);
-    });
-
-    //TODO get rid of global variables
-    // var DOMSubtreeModifiedEventHandlerActive = true;
-    // $rootBlock.on('DOMSubtreeModified', function (ev) {
-    //     if (DOMSubtreeModifiedEventHandlerActive) {
-    //         // console.log('DOMSubtreeModified');
-    //         try {
-    //             var $selection = $rootBlock.find('.mq-selection');
-    //             var selectionHTML = $selection.html();
-    //             if (typeof selectionHTML !== 'undefined' && selectionHTML.length > 0) {
-    //                 if (selectionHTML !== $rememberSelection_new.html()) {
-    //                     $rememberSelection_old = $rememberSelection_new.clone();
-    //                     $rememberSelection_new = $selection.clone();
-    //                     // console.log('old=' + $rememberSelection_old.html());
-    //                     // console.log('new=' + $rememberSelection_new.html());
-    //                     // console.log(' ');
-    //                     selectionArray.push($rememberSelection_new);
-    //                     eventArray.push(ev);
-    //                     // console.log(selectionArray);
-    //                 }
-    //                 //     //   DOMSubtreeModifiedEventHandlerActive = false;
-    //                 //     //   this.innerHTML = 'µ';
-    //                 //     //   DOMSubtreeModifiedEventHandlerActive = true;
-    //             } else {
-    //                 // console.log('no selection');
-    //             }
-    //         } catch (error) {
-    //             console.log('ERROR: ' + error);
-    //         }
-    //     }
-    // });
-
-    // $rootBlock.on('select', function () {
-    //     console.log('select event');
-    // });
-    // $rootBlock.on('selectionchange', function () {
-    //     console.log('selectionchange event');
-    // });
-
-    //   window.addEventListener('message', SetInputFieldMessageHandler, false); //bubbling phase
-
-    //   function SetInputFieldMessageHandler(event) {
-    //     if (event.data == 'setInputFieldEvent') {
-    //       console.info('*** RECEIVE message setInputFieldEvent (editor.js)');
-    //       setInputDebug(editorMf);
-    //     }
-    //   }
+    function SetInputFieldMessageHandler(event) {
+        if (event.data == 'setInputFieldEvent') {
+            console.info('*** RECEIVE message setInputFieldEvent (editor.js)');
+            setInputDebug(editorMf);
+        }
+    }
 
     $(findDoc()).find('#set-input-d, #set-input-e').on('mousedown', ev => {
         ev.preventDefault();
         setInput(editorMf);
     });
 
-    var joubelButton = $(findDoc()).find('#set-input-h5p');
-    console.log(joubelButton);
-    var append_button_html = '<button type="button" class="tr de sif problemeditor" id="set-input-h5p2">Eingabe-Feld setzen</button>'
-    // $(append_button_html).insertAfter(joubelButton);
-    $(append_button_html).insertAfter(fApp.formulaApplet);
-    console.log('html button inserted after formula applet');
-    console.clear();
+    // var joubelButton = $(findDoc()).find('#set-input-h5p');
+    // console.log(joubelButton);
 
-    $(findDoc()).find('#set-input-h5p2').on('click', ev => {
+    // var append_button_html = '<button type="button" class="tr de sif problemeditor" id="set-input-h5p2">setInputDebug</button>'
+    // $(append_button_html).insertAfter(fApp.formulaApplet);
+    // console.log('html button inserted after formula applet');
+    // console.clear();
+
+    $(findDoc()).find('#set-input-h5p2').on('click', _ev => {
         // ev.preventDefault();
         console.log('h5p2 mousedown');
         setInputDebug(editorMf);
@@ -256,39 +202,7 @@ function getSelection(mf, options) {
 
 function setInputDebug(_editorMf) {
     console.log('setInputDebug');
-    // console.log('editorMF=');
-    // console.log(editorMf);
 
-    // console.log('rememberSelection_old=' + $rememberSelection_old.html());
-    // console.log('$rememberUnselected=');
-    console.log($rememberUnselected.html());
-    for (var i = 0; i < selectionArray.length; i++) {
-        var $sel = selectionArray[i];
-        console.log($sel[0].innerHTML);
-    }
-
-    selectionArray = [];
-    // var check = $rememberUnselected.html().indexOf($rememberSelection_old.html());
-    // console.log(check);
-
-    // mf.innerHTML = remember;
-    // console.log('remember -> latex=' + mf.latex());
-    // var mathFieldSpan = findDoc().getElementById('math-field');
-    // var selection = $(mathFieldSpan).find('.mq-selected');
-    // console.log(selection);
-
-    // mf.clearSelection();
-    // var replacementCharacter = createreplacementCharacter(ori);
-    // if (ori.indexOf(replacementCharacter) == -1) {
-    // Do replacement!
-    // mf.typedText(replacementCharacter);
-    // mathQuillEditHandlerActive = false;
-    // mf.keystroke('Spacebar');
-    // // mf.typedText('µ');
-    // // }
-    // var replaced = mf.latex();
-    // console.log('replaced= ' + replaced);
-    // mathQuillEditHandlerActive = true;
 }
 
 function setInput(editorMf) {

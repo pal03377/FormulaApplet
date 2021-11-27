@@ -15,7 +15,8 @@ console.log("PRODUCTION", production, "(env: " + process.env.PRODUCTION + ")");
 export default [{
 	input: 'src/main.js',
 	output: {
-		sourcemap: !production,
+		// sourcemap: !production,
+		sourcemap: true,
 		format: 'iife',
 		name: 'app',
 		file: 'public/build/bundle.js'

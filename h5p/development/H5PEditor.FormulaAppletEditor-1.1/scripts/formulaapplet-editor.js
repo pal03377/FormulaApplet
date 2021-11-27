@@ -6,6 +6,9 @@
 
 var H5P = H5P || {};
 console.log('Here is formulaapplet-editor.js');
+//TODO get rid of global variables
+var selectionArray = [];
+
 H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (function ($) {
 
   /**
@@ -83,8 +86,21 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 
     var $button = H5P.JoubelUI.createButton({
       title: 'set_input_field',
-      text: 'Set input field',
-      click: function (_event) {
+      text: 'Set input field (Joubel)',
+      click: function (event) {
+        event.preventDefault();
+        // console.log(lastMutation);
+        var mathquillCommandIdArray = [];
+        lastMutation.each(function () {
+          var $node = H5P.jQuery(this);
+          // console.log($node);
+          // console.log($node.html());
+          var mathquillCommandId = $node[0].attributes['mathquill-command-id'].value;
+          // console.log(mathquillCommandId);
+          mathquillCommandIdArray.push(mathquillCommandId);
+        });
+        console.log(mathquillCommandIdArray);
+ 
         // const si_ev = new Event('setInputFieldEvent', {
         //   bubbles: true,
         //   cancelable: true,
@@ -94,16 +110,13 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
         // // console.log('TRIGGER setInputFieldEvent (formulaapplet-editor.js)');
         // document.dispatchEvent(si_ev);
 
-        // avoid deselect
-        // do nothing - event.preventDefault();
-        // var url = window.parent.parent.document.URL;
-        // window.parent.parent.postMessage("setInputFieldEvent", url);
+        var url = window.parent.parent.document.URL;
+        window.parent.parent.postMessage("setInputFieldEvent", url);
       }
     });
     $button.attr('id', '#set-input-h5p');
     $wrapper.append($button);
     // $wrapper.append('<textarea id="html-output" rows="4" cols="150">output</textarea>');
-
 
     $(function () {
       //code that needs to be executed when DOM is ready, after manipulation
@@ -126,7 +139,12 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     var url = window.parent.parent.document.URL;
     window.parent.parent.postMessage("preparePageEvent", url);
     window.parent.parent.postMessage("testEvent", url);
-    // H5P.jQuery(window.parent.parent.document).trigger('testEvent');
+    //TODO wait for preparePage to have finished
+    setTimeout(function () { //give preparePage one second
+      // installDOMSubtreeModifiedHandler();
+      installMutationObserver();
+    }, 1000);
+    H5P.jQuery(window.parent.parent.document).trigger('testEvent');
   }
 
   /**
@@ -210,19 +228,105 @@ function afterAppend(obj) {
   // hide field-name-id
   H5P.jQuery('.field-name-id').css('display', 'none');
 
-  // make field-name-TEX_expression not editable
-  // var TEX_expression = document.getElementById(getSelectorID('field-tex_expression'));
-
-  // https://blog.logrocket.com/custom-events-in-javascript-a-complete-guide/
-  // document.addEventListener('setInputFieldEvent', function (ev) {
-  //   console.log(ev);
-  //   // var d = ev.data;
-  //   console.log('formulaapplet-editor.js: receive setInputFieldEvent');
-  // });
-  // console.log('formulaapplet-editor.js: LISTEN to setInputFieldEvent');
-
-
 }
+
+function installDOMSubtreeModifiedHandler() {
+  // has to be done after mathquillifying, i. e. after preparePage
+  // eventHamdler for DOMSubtreeModified
+  var $rootBlock = H5P.jQuery('#math-field').find('.mq-root-block');
+  console.log('$rootBlock.html()=' + $rootBlock.html());
+  $rootBlock.on('DOMSubtreeModified', DOMSubtreeModifiedHandler);
+}
+
+function installMutationObserver() {
+  var $rootBlock = H5P.jQuery('#math-field').find('.mq-root-block');
+  let RootblockObserver = new MutationObserver(RootblockMutationHandler);
+  RootblockObserver.observe($rootBlock[0], {
+    //config
+    childList: true, // observe direct children
+    subtree: true, // and lower descendants too
+    characterData: true,
+    characterDataOldValue: false // pass old data to callback
+  });
+}
+
+//TODO get rid of global var
+var lastMutation = {};
+
+function RootblockMutationHandler(mutations) {
+  mutations.forEach(function (mutation) {
+    var newNodes = mutation.addedNodes; // DOM NodeList
+    if (newNodes !== null) { // If there are new nodes added
+      var $nodes = H5P.jQuery(newNodes).clone(); // jQuery set
+      // console.log('+++');
+      // console.log($nodes);
+      if ($nodes.html() !== 'undefined') {
+        // $nodes.each(function () {
+        //   var $node = H5P.jQuery(this);
+        //   console.log($node.html());
+        // });
+        lastMutation = $nodes;
+      }
+    }
+  });
+}
+
+//TODO get rid of global variables
+var $rootBlock = H5P.jQuery('#math-field').find('.mq-root-block');
+
+function DOMSubtreeModifiedHandler(ev) {
+  try {
+    // var $selection = $rootBlock.find('.mq-selection');
+    var $selection = H5P.jQuery(ev.target);
+    var selectionHTML = $selection.html();
+    if (typeof selectionHTML !== 'undefined' && selectionHTML.length > 0) {
+      selectionArray.push($selection.clone());
+    }
+  } catch (error) {
+    console.log('ERROR: ' + error);
+  }
+};
+
+//TODO get rid of global variables
+// var DOMSubtreeModifiedEventHandlerActive = true;
+// $rootBlock.on('DOMSubtreeModified', function (ev) {
+//     if (DOMSubtreeModifiedEventHandlerActive) {
+//         // console.log('DOMSubtreeModified');
+//         try {
+//             var $selection = $rootBlock.find('.mq-selection');
+//             var selectionHTML = $selection.html();
+//             if (typeof selectionHTML !== 'undefined' && selectionHTML.length > 0) {
+//                 if (selectionHTML !== $rememberSelection_new.html()) {
+//                     $rememberSelection_old = $rememberSelection_new.clone();
+//                     $rememberSelection_new = $selection.clone();
+//                     // console.log('old=' + $rememberSelection_old.html());
+//                     // console.log('new=' + $rememberSelection_new.html());
+//                     // console.log(' ');
+//                     selectionArray.push($rememberSelection_new);
+//                     eventArray.push(ev);
+//                     // console.log(selectionArray);
+//                 }
+//                 //     //   DOMSubtreeModifiedEventHandlerActive = false;
+//                 //     //   this.innerHTML = 'µ';
+//                 //     //   DOMSubtreeModifiedEventHandlerActive = true;
+//             } else {
+//                 // console.log('no selection');
+//             }
+//         } catch (error) {
+//             console.log('ERROR: ' + error);
+//         }
+//     }
+// });
+
+// $rootBlock.on('select', function () {
+//     console.log('select event');
+// });
+// $rootBlock.on('selectionchange', function () {
+//     console.log('selectionchange event');
+// });
+
+
+
 
 // next lines are part of waitForMain mechanism
 // event listener listens to echoes from main.js
