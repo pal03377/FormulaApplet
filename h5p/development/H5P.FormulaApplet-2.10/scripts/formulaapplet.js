@@ -13,7 +13,7 @@ H5P.FormulaApplet = (function ($) {
     }, options);
     // Keep provided id.
     this.id = id;
-    this.options.TEX_expression = this.options.fa_applet;
+    // this.options.TEX_expression = this.options.fa_applet;
   };
 
   /**
@@ -33,10 +33,12 @@ H5P.FormulaApplet = (function ($) {
     if (this.options.formulaAppletMode == 'manu') {
       html += ' data-b64="' + this.options.data_b64 + '"';
     }
-    html += '>' + this.options.fa_applet + '</p>';
+    html += '>' + this.options.TEX_expression + '</p>'; //do not use fa_applet
+    console.log(this.options.TEX_expression);
     $container.append(html, afterAppend(this.options.id));
+    var testhtml = '<p>' + this.options.test + '</p>';
+    $container.append(testhtml, afterAppend(this.options.id));
   };
-
   return C;
 })(H5P.jQuery);
 

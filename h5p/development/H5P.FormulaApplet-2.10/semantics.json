@@ -1,4 +1,11 @@
 [{
+    "label": "Test (semantics.json)",
+    "name": "test",
+    "type": "text",
+    "default": "default text",
+    "description": "Use of this type: explore use of parameters"
+  },
+  {
     "name": "fa_applet",
     "type": "text",
     "label": "Expression (Formula Applet Editor)",

@@ -66,6 +66,16 @@ function FApp() {
   this.unitAuto = false;
 }
 
+window.addEventListener('message', handleMessage, false); //bubbling phase
+
+function handleMessage(event) {
+  // console.log('message received (preparePage.js): ' + event.data);
+  if (event.data == 'preparePageEvent') {
+    console.info('RECEIVE MESSAGE preparePageEvent (preparePage.js)');
+    preparePage();
+  }
+}
+
 export default async function preparePage() {
   await domLoad;
 
@@ -75,16 +85,6 @@ export default async function preparePage() {
   //   console.log('RECEIVE setInputFieldEvent (preparePage.js)');
   // });
   // // console.log('LISTEN setInputFieldEvent (preparePage.js)');
-
-  window.addEventListener('message', handleMessage, false); //bubbling phase
-
-  function handleMessage(event) {
-    // console.log('message received (preparePage.js): ' + event.data);
-    if (event.data == 'preparePageEvent') {
-      // console.info('RECEIVE MESSAGE preparePageEvent (preparePage.js)');
-      preparePage();
-    }
-  }
 
   // body click deselects all applets
   $(findDoc()).find('body').on('click', function () {
@@ -276,9 +276,9 @@ export async function mathQuillifyAll() {
   console.log('mathQuillifyAll');
 
   try {
-    // console.log(findDoc());
+    console.log(findDoc());
     $(findDoc()).find(".formula_applet:not(.mq-math-mode)").each(function () {
-      // console.log('to be mathquillified:' + this.id);
+      console.log('to be mathquillified:' + this.id);
       mathQuillify(this.id);
     });
   } catch (error) {

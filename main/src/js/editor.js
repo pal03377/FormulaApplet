@@ -457,7 +457,7 @@ function getHTML(tex, tag) {
 
 function makeid(length) {
     var result = 'fa';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-_.-_.-';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var numOfChars = characters.length;
     for (var i = 2; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * numOfChars));
