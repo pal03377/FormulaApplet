@@ -36,8 +36,8 @@ H5P.FormulaApplet = (function ($) {
     html += '>' + this.options.TEX_expression + '</p>'; //do not use fa_applet
     console.log(this.options.TEX_expression);
     $container.append(html, afterAppend(this.options.id));
-    var testhtml = '<p>' + this.options.test + '</p>';
-    $container.append(testhtml, afterAppend(this.options.id));
+    // var testhtml = '<p>' + this.options.test + '</p>';
+    // $container.append(testhtml, afterAppend(this.options.id));
   };
   return C;
 })(H5P.jQuery);

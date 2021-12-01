@@ -98,8 +98,8 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     $wrapper.append($button);
     $button.on('mouseover', buttonMouseoverHandler);
 
-    var testhtml = '<p>' + params.test + '</p>';
-    $wrapper.append(testhtml);
+    // var testhtml = '<p>' + params.test + '</p>';
+    // $wrapper.append(testhtml);
 
     function buttonMouseoverHandler(ev) {
       ev.stopImmediatePropagation();
@@ -137,7 +137,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     //   // installDOMSubtreeModifiedHandler();
     //   // installMutationObserver();
     // }, 1000);
-    H5P.jQuery(window.parent.parent.document).trigger('testEvent');
+    // H5P.jQuery(window.parent.parent.document).trigger('testEvent');
   }
 
   /**
@@ -182,17 +182,17 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 
 function afterAppend(obj) {
   console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
-  console.log(obj);
-  console.log('obj.config');
-  console.log(obj.config);
-  console.log('obj.field');
-  console.log(obj.field);
-  console.log('obj.params');
-  console.log(obj.params);
-  console.log('obj.parent');
-  console.log(obj.parent);
-  console.log('obj.parent.params');
-  console.log(obj.parent.params);
+  // console.log(obj);
+  // console.log('obj.config');
+  // console.log(obj.config);
+  // console.log('obj.field');
+  // console.log(obj.field);
+  // console.log('obj.params');
+  // console.log(obj.params);
+  // console.log('obj.parent');
+  // console.log(obj.parent);
+  // console.log('obj.parent.params');
+  // console.log(obj.parent.params);
 
   // teximput is updated by editor.js: showEditorResults
   var texinput = H5P.jQuery('div.field.field-name-TEX_expression.text input')[0];
@@ -213,9 +213,9 @@ function afterAppend(obj) {
     // cannot update formulaAppletEditor widget , because editorMf and editorMf.latex() is not available
     // obj.parent.params.test = event.target.value; needs 'save' to be changed
     // console.log(obj.parent.children[0]);
-    console.log('set value of test to "blafasel"');
-    obj.parent.children[0].setValue('test', 'blafasel'); // no success
-    obj.parent.children[0].setValue('field-test-14', 'blafasel'); //no success
+    // console.log('set value of test to "blafasel"');
+    // obj.parent.children[0].setValue('test', 'blafasel'); // no success
+    // obj.parent.children[0].setValue('field-test-14', 'blafasel'); //no success
   }
 
   var checkbox = document.getElementById(getSelectorID('field-formulaappletphysics'));

@@ -72,6 +72,6 @@ function handleMessage(event) {
     }
     
     if (event.data == 'testEvent') {
-        console.info('RECEIVE testEvent (main.js)');
+        console.info('RECEIVE testEvent message (main.js)');
      }
 }
