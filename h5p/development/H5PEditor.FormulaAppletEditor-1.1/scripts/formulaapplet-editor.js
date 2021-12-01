@@ -43,7 +43,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       console.log('new id -> ' + new_id);
       params.id = new_id;
     }
-    params.TEX_expression = params.fa_applet;
+    // params.TEX_expression = params.fa_applet;
 
     var html = '<p class="formula_applet edit" id="' + params.id + '"';
     if (params.formulaAppletPhysics == true) {
@@ -52,16 +52,18 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     if (params.formulaAppletMode == 'manu') {
       html += ' data-b64="' + params.data_b64 + '"';
     }
+    var temp = params.TEX_expression;
+    temp = temp.replace(/{{result}}/g, '\\class{inputfield}{}');
     html += '>';
+    var span = '<span id="math-field">' + temp + '</span>';
+    html += span;
+    html += '<\p>';
 
     var fieldMarkup = H5PEditor.createFieldMarkup(this.field, html, id);
     self.$item = H5PEditor.$(fieldMarkup);
     self.$formulaApplet = self.$item.find('.formula_applet');
-    var temp = params.TEX_expression;
-    temp = temp.replace(/{{result}}/g, '\\class{inputfield}{}');
-    var span = '<span id="math-field">' + temp + '</span>';
     // console.log('span=' + span);
-    self.$formulaApplet[0].innerHTML = span;
+    // self.$formulaApplet[0].innerHTML = span;
 
 
     self.config = {
@@ -80,7 +82,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     };
 
     // console.log(self);
-    self.config.change('75 + {{result}} = 77');
+    self.config.change('7599 + {{result}} = 7799');
     // console.log(self.$item);
     $wrapper.append(self.$item);
 
@@ -89,19 +91,23 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       text: 'Set input field (Joubel)',
       click: function (event) {
         event.preventDefault();
-        postEvent(["setInputFieldEvent","dummy data"]);
+        postEvent(["setInputFieldEvent", "dummy data"]);
       }
     });
     $button.attr('id', '#set-input-h5p');
-    $button.on('mouseover', buttonMouseoverHandler);
     $wrapper.append($button);
-  
+    $button.on('mouseover', buttonMouseoverHandler);
+
+    // var testhtml = '<p>' + params.test + '</p>';
+    // $wrapper.append(testhtml);
+
     function buttonMouseoverHandler(ev) {
+      ev.stopImmediatePropagation();
       ev.preventDefault();
       // console.log(ev);
       postEvent(["setInputFieldMouseoverEvent", 'dummy data']);
     };
-  
+
     $(function () {
       //code that needs to be executed when DOM is ready, after manipulation
       var texinputparent = H5P.jQuery('div.field.field-name-TEX_expression.text input').parent();
@@ -111,21 +117,27 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     });
   };
 
-    function afterMainIsLoaded() {
+  function afterMainIsLoaded() {
     // this code is executed if main is loaded
     console.log('*** MAIN is loaded *** ');
 
     console.log('check items of editor page after MAIN is loaded, before preparePage/prepareEditorApplet');
+    console.log(this);
     console.log(this.H5PEditor);
+    console.log(H5PEditor);
+    var FAE = H5PEditor.FormulaAppletEditor;
+    console.log(FAE);
 
+    console.log('before triggering preparePageEvent');
+    console.log(H5P.jQuery(window.frames));
     postEvent("preparePageEvent");
-    postEvent(["testEvent","data"]);
+    postEvent(["testEvent", "data"]);
     //TODO wait for preparePage to have finished
     // setTimeout(function () { //give preparePage one second
     //   // installDOMSubtreeModifiedHandler();
     //   // installMutationObserver();
     // }, 1000);
-    H5P.jQuery(window.parent.parent.document).trigger('testEvent');
+    // H5P.jQuery(window.parent.parent.document).trigger('testEvent');
   }
 
   /**
@@ -170,30 +182,40 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 
 function afterAppend(obj) {
   console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
-  console.log(obj);
-  console.log('obj.config');
-  console.log(obj.config);
-  console.log('obj.field');
-  console.log(obj.field);
-  console.log('obj.params');
-  console.log(obj.params);
+  // console.log(obj);
+  // console.log('obj.config');
+  // console.log(obj.config);
+  // console.log('obj.field');
+  // console.log(obj.field);
+  // console.log('obj.params');
+  // console.log(obj.params);
+  // console.log('obj.parent');
+  // console.log(obj.parent);
+  // console.log('obj.parent.params');
+  // console.log(obj.parent.params);
 
   // teximput is updated by editor.js: showEditorResults
   var texinput = H5P.jQuery('div.field.field-name-TEX_expression.text input')[0];
   texinput.addEventListener('input', updateTexinputEventHandler);
 
   function updateTexinputEventHandler(event) {
-    obj.parent.params['fa_applet'] = event.target.value;
+    obj.parent.params['TEX_expression'] = event.target.value;
     var msg;
     if (event.isTrusted) {
       msg = ' event caused by keyboard input';
       event.preventDefault();
     } else {
       msg = ' event caused by input to FormulaApplet';
+      console.log(obj);
       //event caused by JavaScript, especially input to FormulaApplet: let event be captured
     }
     console.log('TEX_expression changed: ' + event.target.value + msg);
-    // do not yet update formulaAppletEditor widget , because editorMf and editorMf.latex() is not available
+    // cannot update formulaAppletEditor widget , because editorMf and editorMf.latex() is not available
+    // obj.parent.params.test = event.target.value; needs 'save' to be changed
+    // console.log(obj.parent.children[0]);
+    // console.log('set value of test to "blafasel"');
+    // obj.parent.children[0].setValue('test', 'blafasel'); // no success
+    // obj.parent.children[0].setValue('field-test-14', 'blafasel'); //no success
   }
 
   var checkbox = document.getElementById(getSelectorID('field-formulaappletphysics'));
@@ -211,10 +233,10 @@ function afterAppend(obj) {
   });
 
   // hide field-name-id
-  H5P.jQuery('.field-name-id').css('display', 'none');
+  // H5P.jQuery('.field-name-id').css('display', 'none');
 }
 
-function postEvent(message){
+function postEvent(message) {
   // message may be an array of [messageType, data]
   window.parent.parent.postMessage(message, window.parent.parent.document.URL);
 }
@@ -260,7 +282,7 @@ function waitForMainThenDo(cont) {
 
 function makeid(length) {
   var result = 'fa';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.-_.-_.-';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   var numOfChars = characters.length;
   for (var i = 2; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * numOfChars));
