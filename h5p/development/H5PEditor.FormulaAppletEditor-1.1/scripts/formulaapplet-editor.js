@@ -4,6 +4,7 @@
  * @param {H5P.jQuery} $
  */
 
+
 var H5P = H5P || {};
 console.log('Here is formulaapplet-editor.js');
 //TODO get rid of global variables
@@ -230,6 +231,7 @@ function afterAppend(obj) {
   var formulaAppletMode = document.getElementById(getSelectorID('field-formulaappletmode'));
   formulaAppletMode.addEventListener('change', function (e) {
     console.log('formulaAppletMode ' + this.name + ' ' + this.value);
+    postEvent(['setAutoModeEvent','formulaAppletMode ' + this.name + ' ' + this.value]);
   });
 
   // hide field-name-id

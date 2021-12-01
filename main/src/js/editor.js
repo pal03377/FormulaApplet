@@ -62,24 +62,29 @@ export async function prepareEditorApplet(fApp) {
     $.event.trigger("refreshLatexEvent"); //adjust \cdot versus \times
 
     // H5P stuff
-    window.addEventListener('message', SetInputFieldMessageHandler, false); //bubbling phase
+    window.addEventListener('message', messageHandler, false); //bubbling phase
 
     var newLatex = 'new'; //TODO get rid of global vars
-    function SetInputFieldMessageHandler(event) {
+    function messageHandler(event) {
         // H5P
         console.log(event.data);
-        if (event.data[0] == 'setInputFieldEvent') {
-            console.info('*** RECEIVE message setInputFieldEvent (editor.js)');
-            editorMf.latex(newLatex);
-            // var mathquillCommandIdArray = event.data[1];
-            // setInputDebug(fApp, event.data[1]);
-        }
         if (event.data[0] == 'setInputFieldMouseoverEvent') {
             console.info('*** RECEIVE message setInputFieldMouseoverEvent (editor.js)');
             var latex = setInput(editorMf);
             console.log(latex);
             editorMf.latex(latex.old);
             newLatex = latex.new;
+        }
+        // setInputFieldMouseoverEvent precedes setInputFieldEvent
+        // global var newLatex is renewed by function setInput() 
+        if (event.data[0] == 'setInputFieldEvent') {
+            console.info('*** RECEIVE message setInputFieldEvent (editor.js)');
+            editorMf.latex(newLatex);
+            // var mathquillCommandIdArray = event.data[1];
+            // setInputDebug(fApp, event.data[1]);
+        }
+       if (event.data[0] == 'setAutoModeEvent') {
+            console.info('*** RECEIVE message setAutoModeEvent (editor.js) ' + event.data[1]);
         }
     }
 
@@ -396,7 +401,7 @@ function eraseClass(latex) {
     return temp.before + temp.tag + temp.after;
 }
 
-const autoMode = {
+export const autoMode = {
     auto: true,
     set: function (truefalse) {
         this.auto = truefalse

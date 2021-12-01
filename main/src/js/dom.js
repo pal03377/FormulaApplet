@@ -18,25 +18,25 @@ export function findDoc() {
         //     win = win2;
         //     win2 = null;
         // }
-        console.log('search for editor iframe');
+        // console.log('search for editor iframe');
         var frameList = window.frames;
         var found = false;
         var frm;
         for (var i = 0; i < frameList.length; i += 1) {
             frm = frameList[i];
-            console.log(i + ' ' + frm.frameElement.classList.value);
+            // console.log(i + ' ' + frm.frameElement.classList.value);
             if ($(frm.frameElement).hasClass('overlay-active')) {
                 found = true;
                 i = frameList.length; //short circuit
             }
         }
         if (found) {
-            console.log('search for editor iframe second layer');
+            // console.log('search for editor iframe second layer');
             frameList = frm.frames;
             found = false;
             for (i = 0; i < frameList.length; i += 1) {
                 frm = frameList[i];
-                console.log(i + ' ' + frm.frameElement.classList.value);
+                // console.log(i + ' ' + frm.frameElement.classList.value);
                 if ($(frm.frameElement).hasClass('h5p-editor-iframe')) {
                     found = true;
                     i = frameList.length; //short circuit
@@ -54,7 +54,7 @@ export function findDoc() {
         win = window;
         win.name = '>>> Error Window <<<';
     }
-    console.log(win.name);
+    // console.log(win.name);
     return win.document;
 }
 
