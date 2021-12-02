@@ -29,7 +29,6 @@ var mathQuillEditHandlerActive = true;
 function mathQuillifyEditor(fApp) {
     // make whole mathFieldSpan editable
     var mathFieldSpan = findDoc().getElementById('math-field');
-    // console.log('mathFieldSpan.textContent=' + mathFieldSpan.textContent);
     if (!mathFieldSpan) throw new Error("Cannot find math-field. The math editor must provide one.");
     var editorMf = MQ.MathField(mathFieldSpan, {
         spaceBehavesLikeTab: true, // configurable
@@ -70,8 +69,6 @@ export async function prepareEditorApplet(fApp) {
         console.log(event.data);
         if (event.data[0] == 'testEvent') {
             console.info('*** RECEIVE message testEvent (editor.js) data=' + event.data[1]);
-            // console.log(event.target);
-            // console.log(event.origin);
         }
         if (event.data[0] == 'setInputFieldMouseoverEvent') {
             console.info('*** RECEIVE message setInputFieldMouseoverEvent (editor.js)');
@@ -170,7 +167,7 @@ function getSelection(mf, options) {
     console.log('ori= ' + ori);
     var erased = ori;
     if (erase) {
-        erased = eraseClass(ori);
+        erased = eraseInputfieldClass(ori);
     }
     var replacementCharacter = createreplacementCharacter(ori);
     if (ori.indexOf(replacementCharacter) == -1) {
@@ -182,7 +179,7 @@ function getSelection(mf, options) {
         // erase class{inputfield}
         var replacedAndErased = mf.latex();
         if (erase) {
-            replacedAndErased = eraseClass(replacedAndErased);
+            replacedAndErased = eraseInputfieldClass(replacedAndErased);
         }
         console.log('replacedAndErased= ' + replacedAndErased);
         var preSelected = '?';
@@ -204,6 +201,7 @@ function getSelection(mf, options) {
             console.error('Something went wrong with replacement of input field', check, postSelected);
         }
         selected = erased.substring(0, erased.length - postSelected.length);
+        //TODO use object syntax instead of array syntax
         var result = [preSelected, selected, postSelected, ori];
         return result;
     }
@@ -380,7 +378,6 @@ export function eraseUnit(mf) {
  * @example result.before = "", result.tag = "", result.after = "string_without_inputfield"
  */
 function separateInputfield(latex) {
-    // console.log('separate ' + latex);
     var beforeTag, tag, afterTag;
     var classTag = '\\class{inputfield}{';
     var pos = latex.indexOf(classTag);
@@ -409,23 +406,13 @@ function separateInputfield(latex) {
     return result;
 }
 
-function eraseClass(latex) {
+function eraseInputfieldClass(latex) {
     // latex = 'abc\\class{inputfield}{def}ghi';
-    // temp = ['abc+', 'def', '+ghi'];
+    // temp = {before: 'abc+', tag: 'def', after: 'ghi'};
     // return 'abcdefghi';
     var temp = separateInputfield(latex);
     return temp.before + temp.tag + temp.after;
 }
-
-// export const autoMode = {
-//     auto: true,
-//     set: function (truefalse) {
-//         this.auto = truefalse
-//     },
-//     get: function () {
-//         return this.auto
-//     }
-// }
 
 function refreshResultField(latex, hasSolution) {
     // console.log('refreshResultField latex=' + latex);

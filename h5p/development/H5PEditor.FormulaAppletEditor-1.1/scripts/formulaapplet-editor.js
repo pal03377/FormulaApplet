@@ -39,11 +39,6 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     var self = this;
     const id = ns.getNextFieldId(this.field);
     var params = self.parent.params;
-    if (params.id == 'new_id') {
-      var new_id = makeid(12);
-      console.log('new id -> ' + new_id);
-      params.id = new_id;
-    }
     // params.TEX_expression = params.fa_applet;
 
     var html = '<p class="formula_applet edit" id="' + params.id + '"';
@@ -54,6 +49,10 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       html += ' data-b64="' + params.data_b64 + '"';
     }
     var temp = params.TEX_expression;
+    if (typeof temp == 'undefined') {
+      temp = '17 + {{result}} = 21';
+    }
+    console.log('temp=' + temp);
     temp = temp.replace(/{{result}}/g, '\\class{inputfield}{}');
     html += '>';
     var span = '<span id="math-field">' + temp + '</span>';
@@ -63,9 +62,6 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     var fieldMarkup = H5PEditor.createFieldMarkup(this.field, html, id);
     self.$item = H5PEditor.$(fieldMarkup);
     self.$formulaApplet = self.$item.find('.formula_applet');
-    // console.log('span=' + span);
-    // self.$formulaApplet[0].innerHTML = span;
-
 
     self.config = {
       appendTo: self.$item[0],
@@ -82,9 +78,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       }
     };
 
-    // console.log(self);
-    self.config.change('7599 + {{result}} = 7799');
-    // console.log(self.$item);
+    self.config.change('formula applet changed');
     $wrapper.append(self.$item);
 
     var $button = H5P.JoubelUI.createButton({
@@ -105,7 +99,6 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     function buttonMouseoverHandler(ev) {
       ev.stopImmediatePropagation();
       ev.preventDefault();
-      // console.log(ev);
       postEvent(["setInputFieldMouseoverEvent", 'dummy data']);
     };
 
@@ -122,25 +115,9 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     // this code is executed if main is loaded
     console.log('*** MAIN is loaded *** ');
 
-    // console.log('check items of editor page after MAIN is loaded, before preparePage/prepareEditorApplet');
-    // console.log(this);
-    // console.log(this.H5PEditor);
-    // console.log(H5PEditor);
-    // var FAE = this.H5PEditor.FormulaAppletEditor;
-    // console.log(FAE);
-    // console.log(this.setExpression('set get test'));
-    // console.log(this.getExpression());
-
     console.log('before triggering preparePageEvent');
-    // console.log(H5P.jQuery(window.frames));
     postEvent("preparePageEvent");
     postEvent(["testEvent", "data"]);
-    //TODO wait for preparePage to have finished
-    // setTimeout(function () { //give preparePage one second
-    //   // installDOMSubtreeModifiedHandler();
-    //   // installMutationObserver();
-    // }, 1000);
-    // H5P.jQuery(window.parent.parent.document).trigger('testEvent');
   }
 
   /**
@@ -186,6 +163,23 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 function afterAppend(obj) {
   console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
 
+  // // if (params.id == 'new_id') {
+  //   var new_id = makeid(12);
+  //   // console.log('new id -> ' + new_id);
+  //   params.id = new_id;
+  //   // }
+
+  //TODO bug: new_id is not replaced by a random id when generation a new formula applet
+  //TODO bug: getField('id') has a random id but gets a new random id
+  var id = getField('id');
+  console.log('id.value=' + id.value);
+  if (id.value == 'new_id') {
+    var new_id = makeid(12);
+    console.log('new id -> ' + new_id);
+    id.value = id.$input[0].value = new_id;
+    postEvent("preparePageEvent");
+  }
+
   window.addEventListener('message', setSolutionMessageHandler, false); //bubbling phase
 
   function setSolutionMessageHandler(event) {
@@ -194,21 +188,11 @@ function afterAppend(obj) {
       var b64 = event.data[1];
       var data_b64 = getField('data_b64');
       data_b64.value = data_b64.$input[0].value = b64;
-
-      //TODO find a better solution using methods of 'text field object'
-      // console.log(b64);
-      // var solutionField = document.getElementById(getSelectorID('field-data_b64'));
-      // console.log(params['data_b64']);
-      // solutionField.value = b64;
-      // console.log(params['data_b64']);
-      // params['data_b64'] = b64;
-      // console.log(params['data_b64']);
     }
   }
 
   function getField(name) {
     var children = obj.parent.children;
-    // console.log(children);
     var result;
     for (var i = 0; i < children.length; i++) {
       var child = children[i];
@@ -220,20 +204,6 @@ function afterAppend(obj) {
     return result;
   }
 
-  // var data_b64 = getField('data_b64');
-  // console.log(data_b64);
-  // console.log(`template ${data_b64.field.name}.value=${data_b64.value}`);
-  // data_b64.value = data_b64.$input[0].value = 'very big test';
-  // console.log(`template ${data_b64.field.name}.value=${data_b64.value}`);
-
-  // console.log('obj');
-  // console.log(obj);
-  // console.log('obj.config');
-  // console.log(obj.config);
-  // console.log('obj.field');
-  // console.log(obj.field);
-  // console.log('obj.params');
-  // console.log(obj.params);
   console.log('obj.parent.params');
   console.log(obj.parent.params);
 
@@ -253,12 +223,8 @@ function afterAppend(obj) {
       //event caused by JavaScript, especially input to FormulaApplet: let event be captured
     }
     console.log('TEX_expression changed: ' + event.target.value + msg);
+    //TODO update formulaAppletEditor widget
     // cannot update formulaAppletEditor widget , because editorMf and editorMf.latex() is not available
-    // obj.parent.params.test = event.target.value; needs 'save' to be changed
-    // console.log(obj.parent.children[0]);
-    // console.log('set value of test to "blafasel"');
-    // obj.parent.children[0].setValue('test', 'blafasel'); // no success
-    // obj.parent.children[0].setValue('field-test-14', 'blafasel'); //no success
   }
 
   var checkbox = document.getElementById(getSelectorID('field-formulaappletphysics'));
@@ -290,7 +256,6 @@ function postEvent(message) {
 // event listener listens to echoes from main.js
 var mainIsLoaded = 0; //TODO get rid of global var
 window.parent.parent.addEventListener('message', handleEchoMessage, true); //capturing phase
-// console.info('LISTEN to message (formulaapplet-editor.js) !!!');
 
 function handleEchoMessage(event) {
   if (event.data == 'echoFromMainEvent') {
@@ -298,11 +263,6 @@ function handleEchoMessage(event) {
     console.info('RECEIVE message echoFromMainEvent (formulaapplet-editor.js) mainIsLoaded=' + mainIsLoaded);
   }
 }
-
-// document.addEventListener('setSolutionEvent', function (ev) {
-//   console.log('RECEIVE message setSolutionEvent');
-//   console.log(ev);
-// });
 
 //TODO get rid of global var
 var try_counter = 0;

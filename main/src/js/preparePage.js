@@ -69,7 +69,6 @@ function FApp() {
 window.addEventListener('message', handleMessage, false); //bubbling phase
 
 function handleMessage(event) {
-  // console.log('message received (preparePage.js): ' + event.data);
   if (event.data == 'preparePageEvent') {
     console.info('RECEIVE MESSAGE preparePageEvent (preparePage.js)');
     preparePage();
@@ -78,13 +77,6 @@ function handleMessage(event) {
 
 export default async function preparePage() {
   await domLoad;
-
-  // document.addEventListener('setInputFieldEvent', function (ev) {
-  //   console.log(ev);
-  //   // var d = ev.data;
-  //   console.log('RECEIVE setInputFieldEvent (preparePage.js)');
-  // });
-  // // console.log('LISTEN setInputFieldEvent (preparePage.js)');
 
   // body click deselects all applets
   $(findDoc()).find('body').on('click', function () {
@@ -289,7 +281,6 @@ export async function mathQuillifyAll() {
 export async function mathQuillify(id) {
   await domLoad;
   // console.log('mathQuillify ' + id);
-  // console.log('preparePage.js/mathQuillify(id): window.name = ' + window.name);
   var result = 'unknown result';
   var $el; //undefined
 
@@ -317,17 +308,13 @@ export async function mathQuillify(id) {
     // console.log('temp=' + temp);
     //TODO
     if (isEditor && isH5P()) {
-
       console.log('H5P & Editor');
       var mf = findDoc().getElementById('math-field');
       temp = mf.textContent;
       temp = temp.replace(/{{result}}/g, '\\class{inputfield}{}');
       mf.textContent = temp;
-      // console.log(findDoc().getElementById('math-field'));
-      // console.log('------------------------------------');
     } else {
-      // domElem.innerHTML = temp; // funktioniert nicht bei H5P-Editor!!!
-      domElem.innerHTML = temp;
+      domElem.innerHTML = temp; // funktioniert nicht bei H5P-Editor!!!
     }
 
     // create new FApp object and store in FAList 

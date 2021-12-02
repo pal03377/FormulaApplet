@@ -45,7 +45,7 @@ H5P.FormulaApplet = (function ($) {
 var chainTimerId = -1;
 var chainTimerInterval = 1000; //millisec
 var chainTimerFinished = function () {
-  // console.log('chainTimer ' + chainTimerId + ' finished.');
+  // console.log('Timer ' + chainTimerId + ' finished.');
   H5P.jQuery(document).trigger('preparePageEvent');
   // preparePageEvent may be replaced by mathquillifyEvent(id) in constructor
 };
@@ -54,7 +54,7 @@ function chainTimer() {
   if (chainTimerId !== -1) {
     // stop timer, wait with chainTimerFinished
     clearTimeout(chainTimerId);
-    // console.log('Timer ' + chainTimerId + ' stopped.');
+    console.log('ChainTimer stopped.');
   }
   // start next timer (or first timer) 
   chainTimerId = setTimeout(chainTimerFinished, chainTimerInterval);
