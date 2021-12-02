@@ -109,23 +109,6 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       postEvent(["setInputFieldMouseoverEvent", 'dummy data']);
     };
 
-    window.addEventListener('message', setSolutionMessageHandler, false); //bubbling phase
-
-    function setSolutionMessageHandler(event) {
-      if (event.data[0] == 'setSolutionEvent') {
-        console.log('RECEIVE message setSolutionEvent');
-        var b64 = event.data[1];
-        //TODO find a better solution using methods of 'text field object'
-        // console.log(b64);
-        var solutionField = document.getElementById(getSelectorID('field-data_b64'));
-        // console.log(params['data_b64']);
-        solutionField.value = b64;
-        // console.log(params['data_b64']);
-        params['data_b64'] = b64;
-        // console.log(params['data_b64']);
-      }
-    }
-
     $(function () {
       //code that needs to be executed when DOM is ready, after manipulation
       var texinputparent = H5P.jQuery('div.field.field-name-TEX_expression.text input').parent();
@@ -139,15 +122,17 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     // this code is executed if main is loaded
     console.log('*** MAIN is loaded *** ');
 
-    console.log('check items of editor page after MAIN is loaded, before preparePage/prepareEditorApplet');
-    console.log(this);
-    console.log(this.H5PEditor);
-    console.log(H5PEditor);
-    var FAE = H5PEditor.FormulaAppletEditor;
-    console.log(FAE);
+    // console.log('check items of editor page after MAIN is loaded, before preparePage/prepareEditorApplet');
+    // console.log(this);
+    // console.log(this.H5PEditor);
+    // console.log(H5PEditor);
+    // var FAE = this.H5PEditor.FormulaAppletEditor;
+    // console.log(FAE);
+    // console.log(this.setExpression('set get test'));
+    // console.log(this.getExpression());
 
     console.log('before triggering preparePageEvent');
-    console.log(H5P.jQuery(window.frames));
+    // console.log(H5P.jQuery(window.frames));
     postEvent("preparePageEvent");
     postEvent(["testEvent", "data"]);
     //TODO wait for preparePage to have finished
@@ -200,6 +185,48 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 
 function afterAppend(obj) {
   console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
+
+  window.addEventListener('message', setSolutionMessageHandler, false); //bubbling phase
+
+  function setSolutionMessageHandler(event) {
+    if (event.data[0] == 'setSolutionEvent') {
+      console.log('RECEIVE message setSolutionEvent');
+      var b64 = event.data[1];
+      var data_b64 = getField('data_b64');
+      data_b64.value = data_b64.$input[0].value = b64;
+
+      //TODO find a better solution using methods of 'text field object'
+      // console.log(b64);
+      // var solutionField = document.getElementById(getSelectorID('field-data_b64'));
+      // console.log(params['data_b64']);
+      // solutionField.value = b64;
+      // console.log(params['data_b64']);
+      // params['data_b64'] = b64;
+      // console.log(params['data_b64']);
+    }
+  }
+
+  function getField(name) {
+    var children = obj.parent.children;
+    // console.log(children);
+    var result;
+    for (var i = 0; i < children.length; i++) {
+      var child = children[i];
+      if (child.field.name == name) {
+        result = child;
+        i = children.length; //short circuit
+      }
+    }
+    return result;
+  }
+
+  // var data_b64 = getField('data_b64');
+  // console.log(data_b64);
+  // console.log(`template ${data_b64.field.name}.value=${data_b64.value}`);
+  // data_b64.value = data_b64.$input[0].value = 'very big test';
+  // console.log(`template ${data_b64.field.name}.value=${data_b64.value}`);
+
+  // console.log('obj');
   // console.log(obj);
   // console.log('obj.config');
   // console.log(obj.config);
@@ -207,10 +234,8 @@ function afterAppend(obj) {
   // console.log(obj.field);
   // console.log('obj.params');
   // console.log(obj.params);
-  // console.log('obj.parent');
-  // console.log(obj.parent);
-  // console.log('obj.parent.params');
-  // console.log(obj.parent.params);
+  console.log('obj.parent.params');
+  console.log(obj.parent.params);
 
   // teximput is updated by editor.js: showEditorResults
   var texinput = H5P.jQuery('div.field.field-name-TEX_expression.text input')[0];

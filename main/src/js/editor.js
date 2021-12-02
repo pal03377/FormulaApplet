@@ -376,8 +376,8 @@ export function eraseUnit(mf) {
  * @returns {object} object consisting of three strings: before, tag, after
  * @example result = separateInputfield("bli\\class{inputfield}{bla}blu"), then
  * @example result.before = "bli", result.tag = "bla", result.after = "blu"
- * @example result = separateInputfield("stringwithoutrinputfield"), then
- * @example result.before = "", result.tag = "", result.after = "stringwithoutrinputfield"
+ * @example result = separateInputfield("string_without_inputfield"), then
+ * @example result.before = "", result.tag = "", result.after = "string_without_inputfield"
  */
 function separateInputfield(latex) {
     // console.log('separate ' + latex);
@@ -467,6 +467,7 @@ function getHTML(tex, tag, hasSolution) {
         //H5P stuff OMG
         var doc = findDoc();
         doc.defaultView.postMessage(['setSolutionEvent', enc], doc.URL);
+        console.log('postMessage setSolutionEvent enc=' + enc);
     }
     common_result += '">';
     common_result += tex;
