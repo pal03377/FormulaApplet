@@ -19,14 +19,14 @@ var newFaId = newFaId || 'x8rT3dkkS';
 
 export async function initEditor() {
     await domLoad;
-    $.event.trigger("clickLanguageEvent");
+    $.event.trigger("clickLanguageEvent"); //TODO never received?
 }
 
 var mathQuillEditHandlerActive = true;
 //TODO get rid of global vars
 // hier geändert.
 
-function mathQuillifyEditor() {
+function mathQuillifyEditor(fApp) {
     // make whole mathFieldSpan editable
     var mathFieldSpan = findDoc().getElementById('math-field');
     // console.log('mathFieldSpan.textContent=' + mathFieldSpan.textContent);
@@ -39,7 +39,7 @@ function mathQuillifyEditor() {
                     if (mathQuillEditHandlerActive) {
                         var latex = mathField.latex();
                         console.log('** mathQuillEditHandler latex=' + latex);
-                        refreshResultField(latex);
+                        refreshResultField(latex, fApp.hasSolution);
                     }
                 } catch (error) {
                     console.error('ERROR in MQ.MathField: ' + error);
@@ -54,11 +54,11 @@ export async function prepareEditorApplet(fApp) {
     // *** editor ***
     await initEditor();
     console.log('preparePage.js: prepareEditorApplet');
-    var editorMf = mathQuillifyEditor();
+    var editorMf = mathQuillifyEditor(fApp);
     // editorMf understands e.g. editorMf.latex('\\sqrt{2}') and var latextext = editorMf.latex();
     fApp.mathField = editorMf;
     console.log('editorMf.latex=' + editorMf.latex());
-    refreshResultField(editorMf.latex());
+    refreshResultField(editorMf.latex(), fApp.hasSolution);
     $.event.trigger("refreshLatexEvent"); //adjust \cdot versus \times
 
     // H5P stuff
@@ -68,6 +68,11 @@ export async function prepareEditorApplet(fApp) {
     function messageHandler(event) {
         // H5P
         console.log(event.data);
+        if (event.data[0] == 'testEvent') {
+            console.info('*** RECEIVE message testEvent (editor.js) data=' + event.data[1]);
+            // console.log(event.target);
+            // console.log(event.origin);
+        }
         if (event.data[0] == 'setInputFieldMouseoverEvent') {
             console.info('*** RECEIVE message setInputFieldMouseoverEvent (editor.js)');
             var latex = setInput(editorMf);
@@ -83,8 +88,17 @@ export async function prepareEditorApplet(fApp) {
             // var mathquillCommandIdArray = event.data[1];
             // setInputDebug(fApp, event.data[1]);
         }
-       if (event.data[0] == 'setAutoModeEvent') {
-            console.info('*** RECEIVE message setAutoModeEvent (editor.js) ' + event.data[1]);
+        if (event.data[0] == 'setModeEvent') {
+            var auto_or_manu = event.data[1];
+            console.info('*** RECEIVE message setModeEvent (editor.js) ' + auto_or_manu);
+            if (auto_or_manu == 'auto') {
+                fApp.hasSolution = false;
+                refreshResultField(editorMf.latex(), fApp.hasSolution)
+            }
+            if (auto_or_manu == 'manu') {
+                fApp.hasSolution = true;
+                refreshResultField(editorMf.latex(), fApp.hasSolution)
+            }
         }
     }
 
@@ -107,7 +121,7 @@ export async function prepareEditorApplet(fApp) {
         var rId = makeid(8);
         document.getElementById('fa_name').value = rId;
         newFaId = rId;
-        refreshResultField(editorMf.latex())
+        refreshResultField(editorMf.latex(), fApp.hasSolution)
     });
 
     $(findDoc()).find('#fa_name').on('input', ev => {
@@ -121,7 +135,7 @@ export async function prepareEditorApplet(fApp) {
         fa_name = fa_name.replace(/ /g, '_');
         if (4 <= fa_name.length && fa_name.length <= 20) {
             newFaId = fa_name;
-            refreshResultField(editorMf.latex())
+            refreshResultField(editorMf.latex(), fApp.hasSolution)
         }
     });
 
@@ -130,14 +144,16 @@ export async function prepareEditorApplet(fApp) {
         if (resultMode == 'auto') {
             // $(findDoc()).find('p#editor span.mq-class.inputfield').prop('contentEditable', 'false');
             $(findDoc()).find('p.edit span.mq-class.inputfield').prop('contentEditable', 'false');
-            autoMode.set(true);
-            refreshResultField(editorMf.latex())
+            fApp.hasSolution = false;
+            // autoMode.set(true);
+            refreshResultField(editorMf.latex(), fApp.hasSolution)
         }
         if (resultMode == 'manu') {
             // $(findDoc()).find('p#editor span.mq-class.inputfield').prop('contentEditable', 'true');
             $(findDoc()).find('p.edit span.mq-class.inputfield').prop('contentEditable', 'true');
-            autoMode.set(false);
-            refreshResultField(editorMf.latex())
+            // autoMode.set(false);
+            fApp.hasSolution = true;
+            refreshResultField(editorMf.latex(), fApp.hasSolution)
         }
     });
     // generate a new random ID
@@ -208,9 +224,9 @@ function setInput(editorMf) {
     } else {
         newLatex = sanitizeInputfieldTag(newLatex);
     }
-    result['new']= newLatex;
+    result['new'] = newLatex;
     return result;
- }
+}
 
 function getPositionOfUnitTags(latex, unitTag) {
     // get position of exising unit tags
@@ -401,23 +417,23 @@ function eraseClass(latex) {
     return temp.before + temp.tag + temp.after;
 }
 
-export const autoMode = {
-    auto: true,
-    set: function (truefalse) {
-        this.auto = truefalse
-    },
-    get: function () {
-        return this.auto
-    }
-}
+// export const autoMode = {
+//     auto: true,
+//     set: function (truefalse) {
+//         this.auto = truefalse
+//     },
+//     get: function () {
+//         return this.auto
+//     }
+// }
 
-function refreshResultField(latex) {
+function refreshResultField(latex, hasSolution) {
     // console.log('refreshResultField latex=' + latex);
     var parts = separateInputfield(latex);
-    showEditorResults(parts);
+    showEditorResults(parts, hasSolution);
 }
 
-function showEditorResults(parts) {
+function showEditorResults(parts, hasSolution) {
     var tex = parts.before + '{{result}}' + parts.after;
     tex = tex.replace(/\\textcolor{blue}{/g, '\\unit{');
     // $(findDoc()).find(document).trigger('texevent');
@@ -437,22 +453,20 @@ function showEditorResults(parts) {
     // maybe html editor
     var out = $(findDoc()).find('textarea#html-output');
     if (typeof out !== 'undefined') {
-        out.text(getHTML(tex, parts.tag));
+        out.text(getHTML(tex, parts.tag, hasSolution));
     }
 }
 
-function getHTML(tex, tag) {
+function getHTML(tex, tag, hasSolution) {
     var result = '<p class="formula_applet"';
     // var editable = $(findDoc()).find('p#editor span.mq-class.inputfield').prop('contentEditable');
-    var resultMode;
-    if (autoMode.get()) {
-        resultMode = 'auto';
-    } else {
-        resultMode = 'manu';
-    }
     var common_result = ' id="' + newFaId;
-    if (resultMode == 'manu') {
-        common_result += '" data-b64="' + encode(tag);
+    if (hasSolution) {
+        var enc = encode(tag);
+        common_result += '" data-b64="' + enc;
+        //H5P stuff OMG
+        var doc = findDoc();
+        doc.defaultView.postMessage(['setSolutionEvent', enc], doc.URL);
     }
     common_result += '">';
     common_result += tex;

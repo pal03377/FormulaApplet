@@ -109,6 +109,23 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       postEvent(["setInputFieldMouseoverEvent", 'dummy data']);
     };
 
+    window.addEventListener('message', setSolutionMessageHandler, false); //bubbling phase
+
+    function setSolutionMessageHandler(event) {
+      if (event.data[0] == 'setSolutionEvent') {
+        console.log('RECEIVE message setSolutionEvent');
+        var b64 = event.data[1];
+        //TODO find a better solution using methods of 'text field object'
+        // console.log(b64);
+        var solutionField = document.getElementById(getSelectorID('field-data_b64'));
+        // console.log(params['data_b64']);
+        solutionField.value = b64;
+        // console.log(params['data_b64']);
+        params['data_b64'] = b64;
+        // console.log(params['data_b64']);
+      }
+    }
+
     $(function () {
       //code that needs to be executed when DOM is ready, after manipulation
       var texinputparent = H5P.jQuery('div.field.field-name-TEX_expression.text input').parent();
@@ -230,8 +247,9 @@ function afterAppend(obj) {
 
   var formulaAppletMode = document.getElementById(getSelectorID('field-formulaappletmode'));
   formulaAppletMode.addEventListener('change', function (e) {
-    console.log('formulaAppletMode ' + this.name + ' ' + this.value);
-    postEvent(['setAutoModeEvent','formulaAppletMode ' + this.name + ' ' + this.value]);
+    // mode=auto means hasSolution=false  mode=manu means hasSolution=true
+    console.log('post setModeEvent ' + this.value);
+    postEvent(['setModeEvent', this.value]);
   });
 
   // hide field-name-id
@@ -255,6 +273,11 @@ function handleEchoMessage(event) {
     console.info('RECEIVE message echoFromMainEvent (formulaapplet-editor.js) mainIsLoaded=' + mainIsLoaded);
   }
 }
+
+// document.addEventListener('setSolutionEvent', function (ev) {
+//   console.log('RECEIVE message setSolutionEvent');
+//   console.log(ev);
+// });
 
 //TODO get rid of global var
 var try_counter = 0;

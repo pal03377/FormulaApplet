@@ -13,7 +13,7 @@ import {
 // debugger;
 
 window.onload = function () {
-     var lang;
+    var lang;
     if (isH5P()) {
         // make sensitive for preparePageEvent
         // eslint-disable-next-line no-undef
@@ -31,9 +31,9 @@ window.onload = function () {
             mathQuillify(id);
         });
         // eslint-disable-next-line no-undef, no-unused-vars
-        H5P.jQuery(document).on('testEvent', function (_ev) {
-            console.info('RECEIVE testEvent (main.js)');
-        });
+        // H5P.jQuery(document).on('testEvent', function (_ev) {
+        //     console.info('RECEIVE testEvent (main.js)');
+        // });
         // console.info('LISTEN to testEvent (main.js)');
 
         window.addEventListener('message', handleMessage, false); //bubbling phase
@@ -70,8 +70,10 @@ function handleMessage(event) {
         // console.info('POST MESSAGE echoFromMainEvent (main.js)');
         event.target.postMessage('echoFromMainEvent', event.origin);
     }
-    
-    if (event.data == 'testEvent') {
-        console.info('RECEIVE testEvent message (main.js)');
-     }
+
+    // if (event.data == 'testEvent') {
+    //     console.info('RECEIVE testEvent message (main.js)');
+    //     console.log(event.target);
+    //     console.log(event.origin);
+    // }
 }
