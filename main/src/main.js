@@ -18,6 +18,9 @@ window.onload = function () {
         // make sensitive for preparePageEvent
         // eslint-disable-next-line no-undef
         H5P.jQuery(document).on('preparePageEvent', function () {
+            console.log('RECEIVE preparePageEvent (main.js)');
+            // console.log('THIS SHOULD NOT HAPPEN because message events are used now!');
+            // but it is used by formulaapplet.js, chainTimer
             preparePage();
         });
         // eslint-disable-next-line no-undef, no-unused-vars
@@ -46,13 +49,9 @@ window.onload = function () {
     console.log('formulaAppletLanguage.set ' + lang);
     formulaAppletLanguage.set(lang);
     // This information is used by preparePage.js and translate.js/clickLanguage()
-
-    // every time main is called, document.mainIsLoaded is increased by 1
-    // The first time main is loaded, document.mainIsLoaded will be 1.
 };
 
 function handleMessage(event) {
-
     // create echo
     if (event.data == 'SignalToMainEvent') {
         event.target.postMessage('echoFromMainEvent', event.origin);

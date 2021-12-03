@@ -1,4 +1,20 @@
 [{
+    "name": "formulaAppletMode",
+    "type": "select",
+    "label": "Automatic/Manual Mode",
+    "description": "Result is computed automatically or is specified by the author.",
+    "options": [{
+        "value": "auto",
+        "label": "Result is computed by the Formula Applet"
+      },
+      {
+        "value": "manu",
+        "label": "You have to specify a result"
+      }
+    ],
+    "default": "auto"
+  },
+  {
     "name": "fa_applet",
     "type": "text",
     "label": "Expression (Formula Applet Editor)",
@@ -30,22 +46,6 @@
     "label": "Physics Mode",
     "description": "Check if result is a <b>physical quantity</b> (value and unit). <br>Uncheck if result is a <b>mathematical expression</b>.",
     "default": false
-  },
-  {
-    "name": "formulaAppletMode",
-    "type": "select",
-    "label": "Automatic/Manual Mode",
-    "description": "Result is computed automatically or is given by the author.",
-    "options": [{
-        "value": "auto",
-        "label": "Result is computed by the Formula Applet"
-      },
-      {
-        "value": "manu",
-        "label": "Input result is compared with a given result"
-      }
-    ],
-    "default": "auto"
   },
   {
     "label": "Solution (encoded)",

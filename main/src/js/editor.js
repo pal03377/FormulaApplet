@@ -1,30 +1,35 @@
 "use strict";
 
 import $ from "jquery";
+
 import {
     domLoad,
     findDoc
 } from "./dom.js";
+
 // import {
 //   clickLanguage
 // } from "./translate.js";
+
 import {
     encode
 } from "./decode.js";
+
 import {
     findCorrespondingRightBracket
 } from "./texParser.js";
+
 import MQ from "./lib/mathquillWrapper.js";
-var newFaId = newFaId || 'x8rT3dkkS';
 
 export async function initEditor() {
     await domLoad;
     $.event.trigger("clickLanguageEvent"); //TODO never received?
 }
 
+var newFaId = newFaId || 'new_id';
+//TODO if H5P take id from editor applet 
 var mathQuillEditHandlerActive = true;
 //TODO get rid of global vars
-// hier geändert.
 
 function mathQuillifyEditor(fApp) {
     // make whole mathFieldSpan editable
@@ -66,26 +71,44 @@ export async function prepareEditorApplet(fApp) {
     var newLatex = 'new'; //TODO get rid of global vars
     function messageHandler(event) {
         // H5P
+        // this kind of messageHandler receives also messages intended to be received by other messageHandlers!
+        // uncommenting next line will lead to misleading messages
         console.log(event.data);
-        if (event.data[0] == 'testEvent') {
+        var eventType = event.data[0];
+        if (eventType == 'idChangedEvent') {
+            var newId = event.data[1];
+            console.info('*** RECEIVE message idChangedEvent (editor.js) data=' + newId);
+            newFaId = newId; //TODO get rid of global vars
+        }
+        if (eventType == 'testEvent') {
             console.info('*** RECEIVE message testEvent (editor.js) data=' + event.data[1]);
         }
-        if (event.data[0] == 'setInputFieldMouseoverEvent') {
+        if (eventType == 'setInputFieldMouseoverEvent') {
             console.info('*** RECEIVE message setInputFieldMouseoverEvent (editor.js)');
             var latex = setInput(editorMf);
             console.log(latex);
             editorMf.latex(latex.old);
-            newLatex = latex.new;
+            //TODO get rid of global vars
+            newLatex = latex.new; //prepare for setInputFieldEvent
         }
+
+        if (eventType == 'refreshEvent') {
+            console.info('*** RECEIVE message refreshEvent (editor.js)');
+            latex = editorMf.latex();
+            console.log(latex);
+            editorMf.latex(latex);
+        }
+
+        
         // setInputFieldMouseoverEvent precedes setInputFieldEvent
         // global var newLatex is renewed by function setInput() 
-        if (event.data[0] == 'setInputFieldEvent') {
+        if (eventType == 'setInputFieldEvent') {
             console.info('*** RECEIVE message setInputFieldEvent (editor.js)');
             editorMf.latex(newLatex);
             // var mathquillCommandIdArray = event.data[1];
             // setInputDebug(fApp, event.data[1]);
         }
-        if (event.data[0] == 'setModeEvent') {
+        if (eventType == 'setModeEvent') {
             var auto_or_manu = event.data[1];
             console.info('*** RECEIVE message setModeEvent (editor.js) ' + auto_or_manu);
             if (auto_or_manu == 'auto') {
@@ -115,9 +138,9 @@ export async function prepareEditorApplet(fApp) {
     });
     $(findDoc()).find('#random-id-d, #random-id-e').on('mousedown', ev => {
         ev.preventDefault();
-        var rId = makeid(8);
-        document.getElementById('fa_name').value = rId;
-        newFaId = rId;
+        var randomId = makeid(8);
+        document.getElementById('fa_name').value = randomId;
+        newFaId = randomId;
         refreshResultField(editorMf.latex(), fApp.hasSolution)
     });
 
@@ -447,7 +470,7 @@ function showEditorResults(parts, hasSolution) {
 function getHTML(tex, tag, hasSolution) {
     var result = '<p class="formula_applet"';
     // var editable = $(findDoc()).find('p#editor span.mq-class.inputfield').prop('contentEditable');
-    var common_result = ' id="' + newFaId;
+    var common_result = ' id="' + newFaId; //TODO this does not apply to H5P
     if (hasSolution) {
         var enc = encode(tag);
         common_result += '" data-b64="' + enc;

@@ -54,10 +54,12 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     }
     console.log('temp=' + temp);
     temp = temp.replace(/{{result}}/g, '\\class{inputfield}{}');
+    console.log('temp=' + temp);
     html += '>';
     var span = '<span id="math-field">' + temp + '</span>';
     html += span;
     html += '<\p>';
+    console.log('html=' + html);
 
     var fieldMarkup = H5PEditor.createFieldMarkup(this.field, html, id);
     self.$item = H5PEditor.$(fieldMarkup);
@@ -114,10 +116,20 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
   function afterMainIsLoaded() {
     // this code is executed if main is loaded
     console.log('*** MAIN is loaded *** ');
-
     console.log('before triggering preparePageEvent');
     postEvent("preparePageEvent");
+    var id = getputId.get();
+    console.log(id);
+    if (id !== 'nothingToDo') {
+      console.log('postEvent idChangedEvent with id=' + id);
+      postEvent(["idChangedEvent", id]);
+    }
     postEvent(["testEvent", "data"]);
+    var elem = document.getElementById('new_id');
+    console.log(elem);
+    H5P.jQuery(elem).attr('id', id)
+    console.log(elem);
+    postEvent(["refreshEvent", "dummy"]);
   }
 
   /**
@@ -163,22 +175,47 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
 function afterAppend(obj) {
   console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
 
+  // spread new id if necessary
+  try {
+    var idField = getField('id');
+    console.log('idField.value=' + idField.value);
+    if (idField.value == 'new_id') {
+      var newId = makeid(12);
+      console.log('new_id -> ' + newId);
+      idField.value = idField.$input[0].value = newId;
+      console.log('obj.parent.params.id=' + obj.parent.params.id);
+      obj.parent.params.id = newId;
+      console.log('obj.parent.params.id=' + obj.parent.params.id);
+      // postEvent(["idChangedEvent", newId]); //wait for main to be loaded
+      getputId.put(newId);
+    } else {
+      getputId.put('nothingToDo');
+    }
+  } catch (error) {
+    console.error('ERROR: ' + error);
+  }
+
   // // if (params.id == 'new_id') {
   //   var new_id = makeid(12);
   //   // console.log('new id -> ' + new_id);
   //   params.id = new_id;
   //   // }
 
-  //TODO bug: new_id is not replaced by a random id when generation a new formula applet
+  //TODO bug: new_id is not replaced by a random id when generatingon a new formula applet
   //TODO bug: getField('id') has a random id but gets a new random id
-  var id = getField('id');
-  console.log('id.value=' + id.value);
-  if (id.value == 'new_id') {
-    var new_id = makeid(12);
-    console.log('new id -> ' + new_id);
-    id.value = id.$input[0].value = new_id;
-    postEvent("preparePageEvent");
-  }
+  // var id = getField('id');
+  // console.log('id.value=' + id.value);
+  // if (id.value == 'new_id') {
+  //   var newId = makeid(12);
+  //   console.log('new_id -> ' + newId);
+  //   id.value = id.$input[0].value = newId;
+  //   // causes TwoTimesPreparePage bug (lose result field )
+  //   console.log('obj.parent.params.id=' + obj.parent.params.id);
+  //   obj.parent.params.id = newId;
+  //   console.log('obj.parent.params.id=' + obj.parent.params.id);
+  //   console.log('postEvent idChangedEvent');
+  //   postEvent(["idChangedEvent", newId]);
+  // }
 
   window.addEventListener('message', setSolutionMessageHandler, false); //bubbling phase
 
@@ -206,6 +243,7 @@ function afterAppend(obj) {
 
   console.log('obj.parent.params');
   console.log(obj.parent.params);
+  console.log('obj.parent.params.TEX_expression=' + obj.parent.params.TEX_expression);
 
   // teximput is updated by editor.js: showEditorResults
   var texinput = H5P.jQuery('div.field.field-name-TEX_expression.text input')[0];
@@ -244,7 +282,9 @@ function afterAppend(obj) {
   });
 
   // hide field-name-id
-  // H5P.jQuery('.field-name-id').css('display', 'none');
+  H5P.jQuery('.field-name-id').css('display', 'none');
+  // hide field-name-data_b64
+  H5P.jQuery('.field-name-data_b64').css('display', 'none');
 }
 
 function postEvent(message) {
@@ -276,7 +316,7 @@ function waitForMainThenDo(cont) {
     try_counter++;
     postEvent("SignalToMainEvent");
     // send another echo to main.js. If echo comes back, mainIsLoaded = true
-    console.info('post message SignalToMainEvent (formulaapplet-editor.js) try=' + try_counter);
+    console.info('(1) post message SignalToMainEvent (formulaapplet-editor.js) try=' + try_counter);
     if (try_counter < try_counter_limit) {
       setTimeout(function () {
         // recurse
@@ -319,4 +359,16 @@ function getSelectorID(selectorName) {
     });
   }
   return result;
+
 }
+
+//TODO get rid of global vars
+const getputId = {
+  idStore: '',
+  get: function () {
+    return idStore;
+  },
+  put: function (id) {
+    idStore = id
+  }
+};
