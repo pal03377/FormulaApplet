@@ -6,7 +6,9 @@
 
 
 var H5P = H5P || {};
-console.log('Here is formulaapplet-editor.js');
+console.log('Here is formulaapplet-editor.js 1.1 - window.name = ' + window.name);
+console.log(H5P);
+console.log(H5Pbridge);
 //TODO get rid of global variables
 var selectionArray = [];
 
@@ -102,6 +104,8 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       ev.stopImmediatePropagation();
       ev.preventDefault();
       postEvent(["setInputFieldMouseoverEvent", 'dummy data']);
+      console.log('test export/import of function');
+      console.log(faEXP.makeid(150));
     };
 
     $(function () {
@@ -116,6 +120,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
   function afterMainIsLoaded() {
     // this code is executed if main is loaded
     console.log('*** MAIN is loaded *** ');
+    console.log(H5Pbridge);
     console.log('before triggering preparePageEvent');
     postEvent("preparePageEvent");
     var id = getputId.get();
@@ -324,6 +329,8 @@ function waitForMainThenDo(cont) {
       }, 300);
     } else {
       console.error('waitForMainThenDo: Timeout');
+      // optimistic approach
+      afterMainIsLoaded();
     }
   }
 }

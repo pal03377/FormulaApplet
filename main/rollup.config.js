@@ -18,7 +18,7 @@ export default [{
 		// sourcemap: !production,
 		sourcemap: true,
 		format: 'iife',
-		name: 'app',
+		name: 'H5Pbridge',
 		file: 'public/build/bundle.js'
 	},
 	plugins: [

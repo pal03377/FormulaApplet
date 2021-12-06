@@ -1,5 +1,6 @@
 ﻿var H5P = H5P || {};
 console.log('Here is formulaapplet.js 2.10 - window.name = ' + window.name);
+console.log(H5P);
 
 H5P.FormulaApplet = (function ($) {
   /**
@@ -45,7 +46,8 @@ H5P.FormulaApplet = (function ($) {
 var chainTimerId = -1;
 var chainTimerInterval = 1000; //millisec
 var chainTimerFinished = function () {
-  console.log('Timer ' + chainTimerId + ' finished.');
+  console.log('last Timer ' + chainTimerId + ' finished.');
+  console.log(H5Pbridge);
   H5P.jQuery(document).trigger('preparePageEvent');
   // preparePageEvent may be replaced by mathquillifyEvent(id) in constructor
 };

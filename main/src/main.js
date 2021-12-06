@@ -10,6 +10,9 @@ import {
 import {
     isH5P
 } from "./js/dom.js";
+
+// H5Pbridge
+export { preparePage };
 // debugger;
 
 window.onload = function () {
@@ -57,3 +60,19 @@ function handleMessage(event) {
         event.target.postMessage('echoFromMainEvent', event.origin);
     }
 }
+
+// export default function main_square(x){
+//     return x*x;
+// }
+
+export function makeid(length) {
+    var result = 'fa';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789____----';
+    var numOfChars = characters.length;
+    for (var i = 2; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * numOfChars));
+    }
+    // result = '"' + result + '"';
+    return result;
+}
+

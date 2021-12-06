@@ -485,7 +485,7 @@ function getHTML(tex, tag, hasSolution) {
     return result;
 }
 
-function makeid(length) {
+export function makeid(length) {
     var result = 'fa';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var numOfChars = characters.length;
