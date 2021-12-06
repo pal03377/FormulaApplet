@@ -66,7 +66,7 @@ function FApp() {
   this.unitAuto = false;
 }
 
-window.addEventListener('message', handleMessage, false); //bubbling phase
+// window.addEventListener('message', handleMessage, false); //bubbling phase
 
 // function handleMessage(event) {
 //   if (event.data == 'preparePageEvent') {

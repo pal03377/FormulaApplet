@@ -104,8 +104,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       ev.stopImmediatePropagation();
       ev.preventDefault();
       postEvent(["setInputFieldMouseoverEvent", 'dummy data']);
-      console.log('test export/import of function');
-      console.log(faEXP.makeid(150));
+      console.log(H5Pbridge.makeid(150));
     };
 
     $(function () {
@@ -287,29 +286,37 @@ function postEvent(message) {
 
 // Start of waitForMain mechanism
 // event listener listens to echoes from main.js
-var mainIsLoaded = 0; //TODO get rid of global var
-window.parent.parent.addEventListener('message', handleEchoMessage, true); //capturing phase
+// var mainIsLoaded = 0; //TODO get rid of global var
+// window.parent.parent.addEventListener('message', handleEchoMessage, true); //capturing phase
 
-function handleEchoMessage(event) {
-  if (event.data == 'echoFromMainEvent') {
-    mainIsLoaded += 1;
-    console.info('RECEIVE message echoFromMainEvent (formulaapplet-editor.js) mainIsLoaded=' + mainIsLoaded);
-  }
-}
+// function handleEchoMessage(event) {
+//   if (event.data == 'echoFromMainEvent') {
+//     mainIsLoaded += 1;
+//     console.info('RECEIVE message echoFromMainEvent (formulaapplet-editor.js) mainIsLoaded=' + mainIsLoaded);
+//   }
+// }
 
 //TODO get rid of global var
 var try_counter = 0;
 var try_counter_limit = 10;
 
 function waitForMainThenDo(cont) {
-  if (mainIsLoaded == 1) {
-    // execute callback only the first time called
+  var mainIsLoaded = false;
+  try {
+    mainIsLoaded = H5Pbridge.mainIsLoaded();
+  } catch (error) {
+    console.log(try_counter);
+    console.log(H5Pbridge);
+  }
+  if (mainIsLoaded) {
+    // execute callback
     cont();
   } else {
     try_counter++;
-    postEvent("SignalToMainEvent");
-    // send another echo to main.js. If echo comes back, mainIsLoaded = true
-    console.info('(1) post message SignalToMainEvent (formulaapplet-editor.js) try=' + try_counter);
+    // postEvent("SignalToMainEvent");
+    // // send another echo to main.js. If echo comes back, mainIsLoaded = true
+    // console.info('(1) post message SignalToMainEvent (formulaapplet-editor.js) try=' + try_counter);
+    console.info(`waitFarMain try_counter=${try_counter}`);
     if (try_counter < try_counter_limit) {
       setTimeout(function () {
         // recurse

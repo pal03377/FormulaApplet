@@ -12,7 +12,7 @@ import {
 } from "./js/dom.js";
 
 // H5Pbridge
-export { preparePage };
+export { preparePage, mathQuillify };
 // debugger;
 
 window.onload = function () {
@@ -61,10 +61,6 @@ function handleMessage(event) {
     }
 }
 
-// export default function main_square(x){
-//     return x*x;
-// }
-
 export function makeid(length) {
     var result = 'fa';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789____----';
@@ -74,5 +70,9 @@ export function makeid(length) {
     }
     // result = '"' + result + '"';
     return result;
+}
+
+export function mainIsLoaded(){
+    return true;
 }
 
