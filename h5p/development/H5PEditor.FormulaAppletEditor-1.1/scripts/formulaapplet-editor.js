@@ -122,7 +122,8 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     console.log('*** MAIN is loaded *** ');
     console.log(H5Pbridge);
     console.log('before triggering preparePageEvent');
-    postEvent("preparePageEvent");
+    // postEvent("preparePageEvent");
+    H5Pbridge.preparePage();
     var id = getputId.get();
     console.log(id);
     if (id !== 'nothingToDo') {
@@ -208,19 +209,6 @@ function afterAppend(obj) {
 
   //TODO bug: new_id is not replaced by a random id when generatingon a new formula applet
   //TODO bug: getField('id') has a random id but gets a new random id
-  // var id = getField('id');
-  // console.log('id.value=' + id.value);
-  // if (id.value == 'new_id') {
-  //   var newId = makeid(12);
-  //   console.log('new_id -> ' + newId);
-  //   id.value = id.$input[0].value = newId;
-  //   // causes TwoTimesPreparePage bug (lose result field )
-  //   console.log('obj.parent.params.id=' + obj.parent.params.id);
-  //   obj.parent.params.id = newId;
-  //   console.log('obj.parent.params.id=' + obj.parent.params.id);
-  //   console.log('postEvent idChangedEvent');
-  //   postEvent(["idChangedEvent", newId]);
-  // }
 
   window.addEventListener('message', setSolutionMessageHandler, false); //bubbling phase
 

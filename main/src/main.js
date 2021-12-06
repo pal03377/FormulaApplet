@@ -18,14 +18,14 @@ export { preparePage };
 window.onload = function () {
     var lang;
     if (isH5P()) {
-        // make sensitive for preparePageEvent
-        // eslint-disable-next-line no-undef
-        H5P.jQuery(document).on('preparePageEvent', function () {
-            console.log('RECEIVE preparePageEvent (main.js)');
-            // console.log('THIS SHOULD NOT HAPPEN because message events are used now!');
-            // but it is used by formulaapplet.js, chainTimer
-            preparePage();
-        });
+        // // make sensitive for preparePageEvent
+        // // eslint-disable-next-line no-undef
+        // H5P.jQuery(document).on('preparePageEvent', function () {
+        //     console.log('RECEIVE preparePageEvent (main.js)');
+        //     // console.log('THIS SHOULD NOT HAPPEN because message events are used now!');
+        //     // but it is used by formulaapplet.js, chainTimer
+        //     preparePage();
+        // });
         // eslint-disable-next-line no-undef, no-unused-vars
         H5P.jQuery(document).on('mathquillifyAllEvent', function (_ev) {
             mathQuillifyAll();
