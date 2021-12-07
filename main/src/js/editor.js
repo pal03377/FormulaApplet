@@ -1,6 +1,7 @@
 "use strict";
 
 import $ from "jquery";
+import config from "./config.json";
 
 import {
     domLoad,
@@ -54,6 +55,8 @@ function mathQuillifyEditor(fApp) {
     return editorMf;
 }
 
+
+
 export async function prepareEditorApplet(fApp) {
     // *** editor ***
     await initEditor();
@@ -67,6 +70,7 @@ export async function prepareEditorApplet(fApp) {
 
     // H5P stuff
     window.addEventListener('message', messageHandler, false); //bubbling phase
+    window.parent.parent.addEventListener('message', messageHandler, false); //bubbling phase
 
     var newLatex = 'new'; //TODO get rid of global vars
     function messageHandler(event) {
@@ -99,7 +103,7 @@ export async function prepareEditorApplet(fApp) {
             editorMf.latex(latex);
         }
 
-        
+
         // setInputFieldMouseoverEvent precedes setInputFieldEvent
         // global var newLatex is renewed by function setInput() 
         if (eventType == 'setInputFieldEvent') {
@@ -274,7 +278,7 @@ function getPositionOfUnitTags(latex, unitTag) {
 
 export function setUnit(mf) {
     var i, k;
-    var unitTag = '\\textcolor{blue}{';
+    var unitTag = config.unit_replacement;
     // erase class inputfield = false
     var temp = getSelection(mf, {
         erase: false
@@ -487,7 +491,7 @@ function getHTML(tex, tag, hasSolution) {
 
 export function makeid(length) {
     var result = 'fa';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
     var numOfChars = characters.length;
     for (var i = 2; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * numOfChars));

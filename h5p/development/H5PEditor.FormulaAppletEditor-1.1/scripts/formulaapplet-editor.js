@@ -90,6 +90,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       text: 'Set input field (Joubel)',
       click: function (event) {
         event.preventDefault();
+        console.log("post setInputFieldEvent click");
         postEvent(["setInputFieldEvent", "dummy data"]);
       }
     });
@@ -103,8 +104,8 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     function buttonMouseoverHandler(ev) {
       ev.stopImmediatePropagation();
       ev.preventDefault();
+      console.log("post setInputFieldMouseoverEvent");
       postEvent(["setInputFieldMouseoverEvent", 'dummy data']);
-      console.log(H5Pbridge.makeid(150));
     };
 
     $(function () {
@@ -129,7 +130,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
       console.log('postEvent idChangedEvent with id=' + id);
       postEvent(["idChangedEvent", id]);
     }
-    postEvent(["testEvent", "data"]);
+    postEvent(["testEvent", "dummy data"]);
     var elem = document.getElementById('new_id');
     console.log(elem);
     H5P.jQuery(elem).attr('id', id)
@@ -185,7 +186,7 @@ function afterAppend(obj) {
     var idField = getField('id');
     console.log('idField.value=' + idField.value);
     if (idField.value == 'new_id') {
-      var newId = makeid(12);
+      var newId = H5Pbridge.makeid(12);
       console.log('new_id -> ' + newId);
       idField.value = idField.$input[0].value = newId;
       console.log('obj.parent.params.id=' + obj.parent.params.id);
@@ -332,15 +333,15 @@ function waitForMainThenDo(cont) {
 // End of waitForMain mechanism
 
 
-function makeid(length) {
-  var result = 'fa';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var numOfChars = characters.length;
-  for (var i = 2; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * numOfChars));
-  }
-  return result;
-}
+// function makeid(length) {
+//   var result = 'fa';
+//   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+//   var numOfChars = characters.length;
+//   for (var i = 2; i < length; i++) {
+//     result += characters.charAt(Math.floor(Math.random() * numOfChars));
+//   }
+//   return result;
+// }
 
 function getSelectorID(selectorName) {
   var result = '';
