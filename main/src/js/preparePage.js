@@ -66,14 +66,14 @@ function FApp() {
   this.unitAuto = false;
 }
 
-window.addEventListener('message', handleMessage, false); //bubbling phase
+// window.addEventListener('message', handleMessage, false); //bubbling phase
 
-function handleMessage(event) {
-  if (event.data == 'preparePageEvent') {
-    console.info('RECEIVE MESSAGE preparePageEvent (preparePage.js)');
-    preparePage();
-  }
-}
+// function handleMessage(event) {
+//   if (event.data == 'preparePageEvent') {
+//     console.info('RECEIVE MESSAGE preparePageEvent (preparePage.js)');
+//     preparePage();
+//   }
+// }
 
 export default async function preparePage() {
   await domLoad;
