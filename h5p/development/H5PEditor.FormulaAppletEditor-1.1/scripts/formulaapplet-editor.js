@@ -43,11 +43,12 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     var params = self.parent.params;
     // params.TEX_expression = params.fa_applet;
 
+    var hasSolution = (params.formulaAppletMode == 'manu');
     var html = '<p class="formula_applet edit" id="' + params.id + '"';
     if (params.formulaAppletPhysics == true) {
       html += ' mode="physics"';
     }
-    if (params.formulaAppletMode == 'manu') {
+    if (hasSolution) {
       html += ' data-b64="' + params.data_b64 + '"';
     }
     var temp = params.TEX_expression;
@@ -122,7 +123,6 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     console.log('*** MAIN is loaded *** ');
     console.log(H5Pbridge);
     console.log('before triggering preparePageEvent');
-    // postEvent("preparePageEvent");
     H5Pbridge.preparePage();
     var id = getputId.get();
     console.log(id);
