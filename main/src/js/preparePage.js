@@ -79,16 +79,16 @@ export default async function preparePage() {
   await domLoad;
 
   // body click deselects all applets
-  $(findDoc()).find('body').on('click', function () {
-    $(findDoc()).find(".formula_applet").removeClass('selected');
-    $(findDoc()).find("button.keyb_button").removeClass('selected');
+  $('body').on('click', function () {
+    $(".formula_applet").removeClass('selected');
+    $("button.keyb_button").removeClass('selected');
   });
 
   // make tab key work
-  $(findDoc()).find('body').on('keyup', function (ev) {
+  $('body').on('keyup', function (ev) {
     var key = ev.originalEvent.key;
     if (key == 'Tab') {
-      var fa = $(findDoc()).find(ev.target).parents('.formula_applet');
+      var fa = $(ev.target).parents('.formula_applet');
       // var id = $(fa).attr('id');
       fa.trigger('click');
     }
@@ -191,15 +191,15 @@ function mathQuillEditHandler(id) {
       isEqual = checkIfEquality(mfContainer.latex(), dsList, precision);
     }
     var key = '#' + id + '.formula_applet + span.mod';
-    var mod = $(findDoc()).find(key)[0];
+    var mod = $(key)[0];
     if (isEqual) {
-      $(findDoc()).find(mod).css({
+      $(mod).css({
         "color": "green",
         "font-size": "30pt"
       });
       mod.innerHTML = "&nbsp;&#x2714;";
     } else {
-      $(findDoc()).find(mod).css({
+      $(mod).css({
         "color": "red",
         "font-size": "30pt"
       });
@@ -269,7 +269,7 @@ export async function mathQuillifyAll() {
 
   try {
     console.log(findDoc());
-    $(findDoc()).find(".formula_applet:not(.mq-math-mode)").each(function () {
+    $(".formula_applet:not(.mq-math-mode)").each(function () {
       console.log('to be mathquillified:' + this.id);
       mathQuillify(this.id);
     });
@@ -285,7 +285,7 @@ export async function mathQuillify(id) {
   var $el; //undefined
 
   try {
-    $el = $(findDoc()).find('#' + id + '.formula_applet:not(.mq-math-mode)');
+    $el = $('#' + id + '.formula_applet:not(.mq-math-mode)');
   } catch (error) {
     $el = $('#' + id + '.formula_applet:not(.mq-math-mode)');
   }
@@ -410,9 +410,9 @@ export async function mathQuillify(id) {
     try {
       // make virtual keyboard show/hide by mouseclick
       ($('<button class="keyb_button">\u2328</button>')).insertAfter($el);
-      $(findDoc()).find('button.keyb_button').on('mousedown', function () {
+      $('button.keyb_button').on('mousedown', function () {
         showVirtualKeyboard();
-        $(findDoc()).find("button.keyb_button").removeClass('selected');
+        $("button.keyb_button").removeClass('selected');
       });
       // insert span for right/wrong tag
       $('<span class="mod">&nbsp;</span>').insertAfter($el);
@@ -420,7 +420,7 @@ export async function mathQuillify(id) {
       result = 'ERROR ' + error;
     }
   } // end of *** no editor ***
-  var fa = $(findDoc()).find('#' + id);
+  var fa = $('#' + id);
   if (fa.hasClass('mq-math-mode')) {
     result = 'mathquillifying ' + id + ': SUCCESS';
   }
@@ -434,16 +434,16 @@ function clickHandler(ev) {
       if (fApp.hasResultField) {
         ev.stopPropagation(); // avoid body click
         // deselect all applets
-        $(findDoc()).find(".formula_applet").removeClass('selected');
-        $(findDoc()).find(".formula_applet").off('virtualKeyboardEvent');
-        $(findDoc()).find(fApp.formulaApplet).addClass('selected');
-        $(findDoc()).find(fApp.formulaApplet).on('virtualKeyboardEvent', function (_evnt, cmd) {
+        $(".formula_applet").removeClass('selected');
+        $(".formula_applet").off('virtualKeyboardEvent');
+        $(fApp.formulaApplet).addClass('selected');
+        $(fApp.formulaApplet).on('virtualKeyboardEvent', function (_evnt, cmd) {
           virtualKeyboardEventHandler(_evnt, cmd);
         });
-        $(findDoc()).find("button.keyb_button").removeClass('selected');
-        if ($(findDoc()).find('#virtualKeyboard').css('display') == 'none') {
+        $("button.keyb_button").removeClass('selected');
+        if ($('#virtualKeyboard').css('display') == 'none') {
           // if virtual keyboard is hidden, select keyboard button
-          $(findDoc()).find(fApp.formulaApplet).nextAll("button.keyb_button:first").addClass('selected');
+          $(fApp.formulaApplet).nextAll("button.keyb_button:first").addClass('selected');
         }
         activeMathfieldId = fApp.id;
       } else {

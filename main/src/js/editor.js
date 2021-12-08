@@ -126,21 +126,21 @@ export async function prepareEditorApplet(fApp) {
         }
     }
 
-    $(findDoc()).find('#set-input-d, #set-input-e').on('mousedown', ev => {
+    $('#set-input-d, #set-input-e').on('mousedown', ev => {
         ev.preventDefault();
         var newLatex = setInput(editorMf).new;
         editorMf.latex(newLatex);
     });
 
-    $(findDoc()).find('#set-unit-d, #set-unit-e').on('mousedown', ev => {
+    $('#set-unit-d, #set-unit-e').on('mousedown', ev => {
         ev.preventDefault();
         setUnit(editorMf);
     });
-    $(findDoc()).find('#erase-unit-d, #erase-unit-e').on('mousedown', ev => {
+    $('#erase-unit-d, #erase-unit-e').on('mousedown', ev => {
         ev.preventDefault();
         eraseUnit(editorMf);
     });
-    $(findDoc()).find('#random-id-d, #random-id-e').on('mousedown', ev => {
+    $('#random-id-d, #random-id-e').on('mousedown', ev => {
         ev.preventDefault();
         var randomId = makeid(8);
         document.getElementById('fa_name').value = randomId;
@@ -148,7 +148,7 @@ export async function prepareEditorApplet(fApp) {
         refreshResultField(editorMf.latex(), fApp.hasSolution)
     });
 
-    $(findDoc()).find('#fa_name').on('input', ev => {
+    $('#fa_name').on('input', ev => {
         var fa_name = ev.target.value;
         // avoid XSS
         fa_name = fa_name.replace(/</g, '');
@@ -163,26 +163,26 @@ export async function prepareEditorApplet(fApp) {
         }
     });
 
-    $(findDoc()).find('input[type="radio"]').on('click', ev => {
+    $('input[type="radio"]').on('click', ev => {
         var resultMode = ev.target.id;
         if (resultMode == 'auto') {
-            // $(findDoc()).find('p#editor span.mq-class.inputfield').prop('contentEditable', 'false');
-            $(findDoc()).find('p.edit span.mq-class.inputfield').prop('contentEditable', 'false');
+            // $('p#editor span.mq-class.inputfield').prop('contentEditable', 'false');
+            $('p.edit span.mq-class.inputfield').prop('contentEditable', 'false');
             fApp.hasSolution = false;
             // autoMode.set(true);
             refreshResultField(editorMf.latex(), fApp.hasSolution)
         }
         if (resultMode == 'manu') {
-            // $(findDoc()).find('p#editor span.mq-class.inputfield').prop('contentEditable', 'true');
-            $(findDoc()).find('p.edit span.mq-class.inputfield').prop('contentEditable', 'true');
+            // $('p#editor span.mq-class.inputfield').prop('contentEditable', 'true');
+            $('p.edit span.mq-class.inputfield').prop('contentEditable', 'true');
             // autoMode.set(false);
             fApp.hasSolution = true;
             refreshResultField(editorMf.latex(), fApp.hasSolution)
         }
     });
     // generate a new random ID
-    $(findDoc()).find('#random-id-d').trigger('mousedown');
-    $(findDoc()).find('input[type="radio"]#auto').trigger('click');
+    $('#random-id-d').trigger('mousedown');
+    $('input[type="radio"]#auto').trigger('click');
 }
 
 function getSelection(mf, options) {
@@ -450,10 +450,10 @@ function refreshResultField(latex, hasSolution) {
 function showEditorResults(parts, hasSolution) {
     var tex = parts.before + '{{result}}' + parts.after;
     tex = tex.replace(/\\textcolor{blue}{/g, '\\unit{');
-    // $(findDoc()).find(document).trigger('texevent');
+    // $(document).trigger('texevent');
 
     // maybe H5P editor
-    var texinput = $(findDoc()).find('div.field.field-name-TEX_expression.text input')[0];
+    var texinput = $('div.field.field-name-TEX_expression.text input')[0];
     if (typeof texinput !== 'undefined') {
         // value of TEX_expression field is set to EditorResult
         texinput.value = tex;
@@ -465,7 +465,7 @@ function showEditorResults(parts, hasSolution) {
         console.log('no TEX_expression found - probably no H5P');
     }
     // maybe html editor
-    var out = $(findDoc()).find('textarea#html-output');
+    var out = $('textarea#html-output');
     if (typeof out !== 'undefined') {
         out.text(getHTML(tex, parts.tag, hasSolution));
     }
@@ -473,7 +473,7 @@ function showEditorResults(parts, hasSolution) {
 
 function getHTML(tex, tag, hasSolution) {
     var result = '<p class="formula_applet"';
-    // var editable = $(findDoc()).find('p#editor span.mq-class.inputfield').prop('contentEditable');
+    // var editable = $('p#editor span.mq-class.inputfield').prop('contentEditable');
     var common_result = ' id="' + newFaId; //TODO this does not apply to H5P
     if (hasSolution) {
         var enc = encode(tag);

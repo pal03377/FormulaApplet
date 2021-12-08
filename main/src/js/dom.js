@@ -10,49 +10,57 @@ export let domLoad = new Promise(function waitForDomThenResolve(resolve) { // re
 });
 
 export function findDoc() {
-    var win;
-    try {
-        var frameList = window.frames;
-        var found = false;
-        var frm;
-        for (var i = 0; i < frameList.length; i += 1) {
-            frm = frameList[i];
-            if ($(frm.frameElement).hasClass('overlay-active')) {
-                found = true;
-                i = frameList.length; //short circuit
-            }
-        }
-        if (found) {
-            frameList = frm.frames;
-            found = false;
-            for (i = 0; i < frameList.length; i += 1) {
-                frm = frameList[i];
-                if ($(frm.frameElement).hasClass('h5p-editor-iframe')) {
+    return document;
+}
+
+function findDoc_bak() {
+    var win, message;
+    if (isH5P()) {
+        try {
+            var frameList = window.frames;
+            var found = false;
+            for (var i = 0; i < frameList.length; i += 1) {
+                win = frameList[i];
+                // console.log(frm);
+                if ($(win.frameElement).hasClass('overlay-active')) {
                     found = true;
                     i = frameList.length; //short circuit
                 }
             }
-        }
-        if (found) {
-            win = frm;
-            win.name = '>>> Editor Window <<<';
-        } else {
-            window.name = '>>> Main Window <<<';
+            if (found) {
+                frameList = win.frames;
+                found = false;
+                for (i = 0; i < frameList.length; i += 1) {
+                    win = frameList[i];
+                    // console.log(frm);
+                    if ($(win.frameElement).hasClass('h5p-editor-iframe')) {
+                        found = true;
+                        i = frameList.length; //short circuit
+                    }
+                }
+            }
+            if (found) {
+                win.name = '>>> Editor Window <<<';
+                message = '>>> Editor window';
+                // console.log(win);
+            } else {
+                window.name = '>>> Main Window <<<';
+                message = '>>> Main window';
+                win = window;
+            }
+        } catch (error) {
             win = window;
+            win.name = '>>> Error Window <<<';
+            message = '>>> ERROR in seeking Editor window';
         }
-    } catch (error) {
+    } else {
         win = window;
-        win.name = '>>> Error Window <<<';
+        message = '>>> No H5P window';
     }
     // console.log(win.name);
+    console.log(message);
     return win.document;
 }
-
-// export function isH5P() {
-//     var h5p_classes = document.getElementsByClassName('h5p-content');
-//     var isH5P = (h5p_classes.length > 0);
-//     return isH5P; //publish
-// }
 
 export function isH5P() {
     return ((typeof window.H5P) !== 'undefined');
