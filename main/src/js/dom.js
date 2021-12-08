@@ -48,8 +48,12 @@ export function findDoc() {
     return win.document;
 }
 
+// export function isH5P() {
+//     var h5p_classes = document.getElementsByClassName('h5p-content');
+//     var isH5P = (h5p_classes.length > 0);
+//     return isH5P; //publish
+// }
+
 export function isH5P() {
-    var h5p_classes = document.getElementsByClassName('h5p-content');
-    var isH5P = (h5p_classes.length > 0);
-    return isH5P; //publish
+    return ((typeof window.H5P) !== 'undefined');
 }
