@@ -112,7 +112,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     $(function () {
       //code that needs to be executed when DOM is ready, after manipulation
       var texinputparent = H5P.jQuery('div.field.field-name-TEX_expression.text input').parent();
-      texinputparent.append('<br><br><textarea id="html-output" rows="4" cols="150">output</textarea>');
+      texinputparent.append('<br><br><textarea id="html-output" rows="4" cols="150" disabled>output</textarea>');
       afterAppend(self);
       waitForMainThenDo(afterMainIsLoaded);
     });

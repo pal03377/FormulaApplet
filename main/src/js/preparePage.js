@@ -270,7 +270,7 @@ export async function mathQuillifyAll() {
   try {
     console.log(findDoc());
     $(".formula_applet:not(.mq-math-mode)").each(function () {
-      console.log('to be mathquillified:' + this.id);
+      // console.log('to be mathquillified:' + this.id);
       mathQuillify(this.id);
     });
   } catch (error) {
@@ -500,7 +500,7 @@ function unifyDefinitions(def) {
   return dsList;
 }
 
-$(findDoc()).on("refreshLatexEvent",
+$(document).on("refreshLatexEvent",
   function () {
     var lang = formulaAppletLanguage.get();
     refreshLatex(lang);
@@ -510,7 +510,9 @@ function refreshLatex(lang) {
   var id;
   for (id in FAList) {
     var fApp = FAList[id];
-    if (!$(fApp.formulaApplet).hasClass('edit')) {
+    console.log(fApp);
+    console.log(fApp.formulaApplet.outerHTML);
+   if (!$(fApp.formulaApplet).hasClass('edit')) {
       var hasSolution = fApp.hasSolution || false;
       var oldLatex, newLatex;
       if (hasSolution) {
