@@ -293,8 +293,9 @@ export async function mathQuillify(id) {
     result = id + ' not found';
   }
   var domElem = $el[0];
-  var isEditor = $el.hasClass('edit');
-  // console.log(id + ' isEditor=' + isEditor);
+  // var isEditor = $el.hasClass('edit');
+  var isEditor = (id.slice(-5) == '-edit');
+  console.log(id + ' isEditor=' + isEditor);
 
   if (typeof domElem !== 'undefined') {
     var temp = domElem.innerHTML;
@@ -512,7 +513,9 @@ function refreshLatex(lang) {
     var fApp = FAList[id];
     console.log(fApp);
     console.log(fApp.formulaApplet.outerHTML);
-   if (!$(fApp.formulaApplet).hasClass('edit')) {
+    var isEditor = (id.slice(-5) == '-edit');
+    // if (!$(fApp.formulaApplet).hasClass('edit')) {
+    if (!isEditor) {
       var hasSolution = fApp.hasSolution || false;
       var oldLatex, newLatex;
       if (hasSolution) {
