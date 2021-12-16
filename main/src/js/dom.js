@@ -9,9 +9,9 @@ export let domLoad = new Promise(function waitForDomThenResolve(resolve) { // re
     }
 });
 
-export function findDoc() {
-    return document;
-}
+// export function findDoc() {  //finally seen as not necessary
+//     return document;
+// }
 
 // function findDoc_bak() {
 //     var win, message;

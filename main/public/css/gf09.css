@@ -6,6 +6,7 @@
 .formula_applet {
 	border: darkblue solid thin;
 	background-color: lightblue;
+	display: inline-block;
 }
 
 .formula_applet.selected {
@@ -75,7 +76,12 @@ div#output {
 	/* foreground = background */
 }
 
-#editor.formula_applet {
+/* #editor.formula_applet {
+	display: inline-block;
+} */
+
+/* H5P */
+.formulaAppletEditor .formula_applet{
 	display: inline-block;
 }
 
@@ -181,6 +187,7 @@ span.mq-textcolor {
   cursor: text;
   font-family: Arial, "Times New Roman", Symbola, serif;
 } */
-.formula_applet.edit {
+
+/* .formula_applet.edit {
 	display: inline-block;
-}
+} */

@@ -4,8 +4,7 @@ import $ from "jquery";
 import config from "./config.json";
 
 import {
-    domLoad,
-    findDoc
+    domLoad
 } from "./dom.js";
 
 // import {
@@ -34,7 +33,7 @@ var mathQuillEditHandlerActive = true;
 
 function mathQuillifyEditor(fApp) {
     // make whole mathFieldSpan editable
-    var mathFieldSpan = findDoc().getElementById('math-field');
+    var mathFieldSpan = document.getElementById('math-field');
     if (!mathFieldSpan) throw new Error("Cannot find math-field. The math editor must provide one.");
     var editorMf = MQ.MathField(mathFieldSpan, {
         spaceBehavesLikeTab: true, // configurable
@@ -142,11 +141,15 @@ export async function prepareEditorApplet(fApp) {
     });
     $('#random-id-d, #random-id-e').on('mousedown', ev => {
         ev.preventDefault();
+        setNewId();
+    });
+
+    function setNewId(){
         var randomId = makeid(8);
         document.getElementById('fa_name').value = randomId;
         newFaId = randomId;
         refreshResultField(editorMf.latex(), fApp.hasSolution)
-    });
+    }
 
     $('#fa_name').on('input', ev => {
         var fa_name = ev.target.value;
@@ -181,7 +184,8 @@ export async function prepareEditorApplet(fApp) {
         }
     });
     // generate a new random ID
-    $('#random-id-d').trigger('mousedown');
+//     $('#random-id-d').trigger('mousedown');
+    setNewId();
     $('input[type="radio"]#auto').trigger('click');
 }
 
