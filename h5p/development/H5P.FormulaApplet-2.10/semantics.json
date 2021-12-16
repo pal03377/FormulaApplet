@@ -51,7 +51,7 @@
     "label": "Solution (encoded)",
     "name": "data_b64",
     "type": "text",
-    "default": "f0a4de78",
+    "default": "default-solution",
     "description": "Solution (TEX), encoded"
   },
   {

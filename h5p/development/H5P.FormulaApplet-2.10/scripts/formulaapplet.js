@@ -35,7 +35,8 @@ H5P.FormulaApplet = (function ($) {
       html += ' data-b64="' + this.options.data_b64 + '"';
     }
     html += '>' + this.options.TEX_expression + '</p>'; //do not use fa_applet
-    console.log(this.options.TEX_expression);
+    // console.log(this.options.TEX_expression);
+    console.log(html);
     $container.append(html, afterAppend(this.options.id));
     // var testhtml = '<p>' + this.options.test + '</p>';
     // $container.append(testhtml, afterAppend(this.options.id));

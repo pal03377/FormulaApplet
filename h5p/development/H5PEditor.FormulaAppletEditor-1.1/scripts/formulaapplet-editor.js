@@ -210,15 +210,24 @@ function afterAppend(obj) {
   //TODO bug: new_id is not replaced by a random id when generatingon a new formula applet
   //TODO bug: getField('id') has a random id but gets a new random id
 
-  window.addEventListener('message', setSolutionMessageHandler, false); //bubbling phase
+  window.addEventListener('message', function (ev) {
+    setSolutionMessageHandler(ev, obj);
+  }, false); //bubbling phase
 
-  function setSolutionMessageHandler(event) {
+  function setSolutionMessageHandler(event, obj) {
     if (event.data[0] == 'setSolutionEvent') {
       console.log('RECEIVE message setSolutionEvent');
       var b64 = event.data[1];
+      // get DOM object by name
       var data_b64 = getField('data_b64');
-      data_b64.value = data_b64.$input[0].value = b64;
-    }
+      // does not work: data_b64.value = b64;
+      // synchronize DOM
+      data_b64.$input[0].value = b64;
+      // set value of data_b64 field
+      console.log("obj.parent.params['data_b64']=" + obj.parent.params['data_b64']);
+      obj.parent.params['data_b64'] = b64;
+      console.log("obj.parent.params['data_b64']=" + obj.parent.params['data_b64']);
+     }
   }
 
   function getField(name) {
@@ -268,16 +277,31 @@ function afterAppend(obj) {
   });
 
   var formulaAppletMode = document.getElementById(getSelectorID('field-formulaappletmode'));
-  formulaAppletMode.addEventListener('change', function (e) {
+  // console.log('formulaAppletMode');
+  // console.log(formulaAppletMode);
+  formulaAppletMode.addEventListener('change', function (_e) {
     // mode=auto means hasSolution=false  mode=manu means hasSolution=true
-    console.log('post setModeEvent ' + this.value);
-    postEvent(['setModeEvent', this.value]);
+    // console.log(e.target.value);
+    sendModeTofApp();
+    // console.log();
   });
+
+  // first time at init
+  sendModeTofApp();
+
+  function sendModeTofApp() {
+    var mode = obj.parent.params['formulaAppletMode'];
+    console.log('post setModeEvent ' + mode);
+    postEvent(['setModeEvent', mode]);
+  }
 
   // hide field-name-id
   H5P.jQuery('.field-name-id').css('display', 'none');
   // hide field-name-data_b64
-  H5P.jQuery('.field-name-data_b64').css('display', 'none');
+  // H5P.jQuery('.field-name-data_b64').css('display', 'none');
+  var tex_expr = document.getElementById(getSelectorID('field-tex_expression'));
+  // https://www.educba.com/jquery-disable-input/
+  H5P.jQuery(tex_expr).attr('disabled', 'disabled');
 }
 
 function postEvent(message) {

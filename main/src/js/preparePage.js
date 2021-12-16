@@ -10,7 +10,6 @@ import Hammer from "@egjs/hammerjs";
 import MQ from "./lib/mathquillWrapper.js";
 import {
   domLoad,
-  findDoc,
   isH5P
 } from "./dom.js";
 
@@ -49,6 +48,10 @@ console.log('preparePage.js: window.name = ' + window.name);
 var activeMathfieldId = 0;
 var FAList = {};
 var editHandlerActive = true;
+
+export function getFAList(){
+  return FAList;
+}
 
 // define class FApp using function syntax
 function FApp() {
@@ -268,7 +271,7 @@ export async function mathQuillifyAll() {
   console.log('mathQuillifyAll');
 
   try {
-    console.log(findDoc());
+    // console.log(findDoc());
     $(".formula_applet:not(.mq-math-mode)").each(function () {
       // console.log('to be mathquillified:' + this.id);
       mathQuillify(this.id);
@@ -294,6 +297,7 @@ export async function mathQuillify(id) {
   }
   var domElem = $el[0];
   // var isEditor = $el.hasClass('edit');
+  // H5P: applets should have different ids in view mode and in edit mode
   var isEditor = (id.slice(-5) == '-edit');
   console.log(id + ' isEditor=' + isEditor);
 
@@ -310,7 +314,7 @@ export async function mathQuillify(id) {
     //TODO
     if (isEditor && isH5P()) {
       console.log('H5P & Editor');
-      var mf = findDoc().getElementById('math-field');
+      var mf = document.getElementById('math-field');
       temp = mf.textContent;
       temp = temp.replace(/{{result}}/g, '\\class{inputfield}{}');
       mf.textContent = temp;
@@ -318,7 +322,7 @@ export async function mathQuillify(id) {
       domElem.innerHTML = temp; // funktioniert nicht bei H5P-Editor!!!
     }
 
-    // create new FApp object and store in FAList 
+    // create new FApp object and store it in FAList
     var fApp = new FApp();
     fApp.hasResultField = ($el.html().indexOf('\\MathQuillMathField{}') >= 0);
     fApp.id = id // name of formulaApplet
@@ -375,6 +379,7 @@ export async function mathQuillify(id) {
         if ($el.attr('data-b64') !== undefined) {
           fApp.hasSolution = true;
           var zip = $el.attr('data-b64');
+          console.log('zip=' + zip);
           fApp.solution = decode(zip);
         } else {
           fApp.hasSolution = false;
@@ -421,8 +426,7 @@ export async function mathQuillify(id) {
       result = 'ERROR ' + error;
     }
   } // end of *** no editor ***
-  var fa = $('#' + id);
-  if (fa.hasClass('mq-math-mode')) {
+  if ($('#' + id).hasClass('mq-math-mode')) {
     result = 'mathquillifying ' + id + ': SUCCESS';
   }
   console.log(result);

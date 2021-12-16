@@ -1,4 +1,4 @@
-import $ from "jquery";
+// import $ from "jquery";
 
 export let domLoad = new Promise(function waitForDomThenResolve(resolve) { // reject weggelassen, weil es beim DOM Load ohnehin nie Fehler geben sollte
     if (document.readyState !== "loading") {

@@ -1,7 +1,8 @@
 // import $ from "jquery";
 import preparePage, {
     mathQuillifyAll,
-    mathQuillify
+    mathQuillify,
+    getFAList
 } from "./js/preparePage.js";
 import {
     formulaAppletLanguage,
@@ -15,7 +16,12 @@ import {
 } from "./js/editor.js";
 
 // H5Pbridge
-export { preparePage, mathQuillify, makeid };
+export {
+    preparePage,
+    mathQuillify,
+    makeid,
+    getFAList
+};
 
 // debugger;
 
@@ -76,7 +82,6 @@ window.onload = function () {
 //     return result;
 // }
 
-export function mainIsLoaded(){
+export function mainIsLoaded() {
     return true;
 }
-
