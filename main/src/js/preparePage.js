@@ -298,7 +298,9 @@ export async function mathQuillify(id) {
   var domElem = $el[0];
   // var isEditor = $el.hasClass('edit');
   // H5P: applets should have different ids in view mode and in edit mode
-  var isEditor = (id.slice(-5) == '-edit');
+  // var isEditor = (id.slice(-5) == '-edit');
+  // every editor applet has the same id; only one per page is allowed
+  var isEditor = (id == 'formulaappleteditor');
   console.log(id + ' isEditor=' + isEditor);
 
   if (typeof domElem !== 'undefined') {
@@ -517,7 +519,9 @@ function refreshLatex(lang) {
     var fApp = FAList[id];
     console.log(fApp);
     console.log(fApp.formulaApplet.outerHTML);
-    var isEditor = (id.slice(-5) == '-edit');
+    // var isEditor = (id.slice(-5) == '-edit');
+    // every editor applet has the same id; only one per page is allowed
+    var isEditor = (id == 'formulaappleteditor');
     // if (!$(fApp.formulaApplet).hasClass('edit')) {
     if (!isEditor) {
       var hasSolution = fApp.hasSolution || false;

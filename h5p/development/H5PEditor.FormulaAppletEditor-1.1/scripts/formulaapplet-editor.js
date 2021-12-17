@@ -44,7 +44,8 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     // params.TEX_expression = params.fa_applet;
 
     var hasSolution = (params.formulaAppletMode == 'manu');
-    var html = '<p class="formula_applet" id="' + params.id + '-edit"';
+    // var html = '<p class="formula_applet" id="' + params.id + '-edit"';
+    var html = '<p class="formula_applet" id="formulaappleteditor"';
     if (params.formulaAppletPhysics == true) {
       html += ' mode="physics"';
     }
