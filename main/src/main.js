@@ -2,7 +2,6 @@
 import preparePage, {
     mathQuillifyAll,
     mathQuillify,
-    getFAList
 } from "./js/preparePage.js";
 import {
     formulaAppletLanguage,
@@ -12,15 +11,18 @@ import {
     isH5P
 } from "./js/dom.js";
 import {
-    makeid
+    randomId,
+    editor_fApp
 } from "./js/editor.js";
+import decode from "./js/decode.js";
 
 // H5Pbridge
 export {
     preparePage,
     mathQuillify,
-    makeid,
-    getFAList
+    randomId,
+    editor_fApp,
+    decode
 };
 
 // debugger;
@@ -28,14 +30,6 @@ export {
 window.onload = function () {
     var lang;
     if (isH5P()) {
-        // // make sensitive for preparePageEvent
-        // // eslint-disable-next-line no-undef
-        // H5P.jQuery(document).on('preparePageEvent', function () {
-        //     console.log('RECEIVE preparePageEvent (main.js)');
-        //     // console.log('THIS SHOULD NOT HAPPEN because message events are used now!');
-        //     // but it is used by formulaapplet.js, chainTimer
-        //     preparePage();
-        // });
         // eslint-disable-next-line no-undef, no-unused-vars
         H5P.jQuery(document).on('mathquillifyAllEvent', function (_ev) {
             mathQuillifyAll();
@@ -71,7 +65,7 @@ window.onload = function () {
 //     }
 // }
 
-// export function makeid(length) {
+// export function randomId(length) {
 //     var result = 'fa';
 //     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789____----';
 //     var numOfChars = characters.length;

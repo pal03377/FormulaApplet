@@ -48,9 +48,10 @@ console.log('preparePage.js: window.name = ' + window.name);
 var activeMathfieldId = 0;
 var FAList = {};
 var editHandlerActive = true;
+var editorFapp;
 
-export function getFAList(){
-  return FAList;
+export async function get_editorFapp() {
+  return editorFapp;
 }
 
 // define class FApp using function syntax
@@ -192,6 +193,7 @@ function mathQuillEditHandler(id) {
       isEqual = checkIfEqual(mfLatexForParser, solution, dsList, precision);
     } else {
       isEqual = checkIfEquality(mfContainer.latex(), dsList, precision);
+      console.log(mfContainer.latex() + ' isEqual= ' + isEqual);
     }
     var key = '#' + id + '.formula_applet + span.mod';
     var mod = $(key)[0];
@@ -298,9 +300,8 @@ export async function mathQuillify(id) {
   var domElem = $el[0];
   // var isEditor = $el.hasClass('edit');
   // H5P: applets should have different ids in view mode and in edit mode
-  // var isEditor = (id.slice(-5) == '-edit');
-  // every editor applet has the same id; only one per page is allowed
-  var isEditor = (id == 'formulaappleteditor');
+  var isEditor = (id.slice(-5) == '-edit');
+  // var isEditor = (id == 'formulaappleteditor');
   console.log(id + ' isEditor=' + isEditor);
 
   if (typeof domElem !== 'undefined') {
@@ -316,6 +317,7 @@ export async function mathQuillify(id) {
     //TODO
     if (isEditor && isH5P()) {
       console.log('H5P & Editor');
+      // console.log(H5P['FAEditor']);
       var mf = document.getElementById('math-field');
       temp = mf.textContent;
       temp = temp.replace(/{{result}}/g, '\\class{inputfield}{}');
@@ -327,9 +329,14 @@ export async function mathQuillify(id) {
     // create new FApp object and store it in FAList
     var fApp = new FApp();
     fApp.hasResultField = ($el.html().indexOf('\\MathQuillMathField{}') >= 0);
-    fApp.id = id // name of formulaApplet
-    fApp.formulaApplet = domElem;
 
+    if (isEditor) {
+      // prepare for getHTML()
+      fApp.id = id.slice(0, -5);
+    } else {
+      fApp.id = id // name of formulaApplet
+    }
+    fApp.formulaApplet = domElem;
     if (isEditor) {
       fApp.hasResultField = true;
     }
@@ -356,6 +363,11 @@ export async function mathQuillify(id) {
 
     // store FApp object in FAList and take id as key
     FAList[id] = fApp;
+    if (id == 'formulaappleteditor') {
+      console.log('store editor: fApp -> editorFapp');
+      editorFapp = fApp;
+      console.log(editorFapp);
+    }
 
     // activate mouse clicks
     $el.on('click', clickHandler);
@@ -432,6 +444,7 @@ export async function mathQuillify(id) {
     result = 'mathquillifying ' + id + ': SUCCESS';
   }
   console.log(result);
+  return fApp;
 }
 
 function clickHandler(ev) {
@@ -468,7 +481,6 @@ function clickHandler(ev) {
   } catch (error) {
     console.log('ERROR ' + error);
   }
-
 }
 
 /**
@@ -517,12 +529,13 @@ function refreshLatex(lang) {
   var id;
   for (id in FAList) {
     var fApp = FAList[id];
-    console.log(fApp);
-    console.log(fApp.formulaApplet.outerHTML);
-    // var isEditor = (id.slice(-5) == '-edit');
-    // every editor applet has the same id; only one per page is allowed
-    var isEditor = (id == 'formulaappleteditor');
-    // if (!$(fApp.formulaApplet).hasClass('edit')) {
+    // console.log(fApp);
+    // console.log(fApp.formulaApplet.outerHTML);
+
+    var isEditor = (id.slice(-5) == '-edit');
+    // every editor applet has the same id 'formulaappleteditor'
+    // only one editor applet per page is allowed
+    // var isEditor = (id == 'formulaappleteditor');
     if (!isEditor) {
       var hasSolution = fApp.hasSolution || false;
       var oldLatex, newLatex;
