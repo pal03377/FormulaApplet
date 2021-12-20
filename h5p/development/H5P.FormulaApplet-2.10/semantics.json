@@ -2,7 +2,7 @@
     "name": "formulaAppletMode",
     "type": "select",
     "label": "Automatic/Manual Mode",
-    "description": "Result is computed automatically or is specified by the author.",
+    "description": "Result is computed automatically or has to be specified by the author.",
     "options": [{
         "value": "auto",
         "label": "Result is computed by the Formula Applet"
@@ -18,17 +18,17 @@
     "name": "fa_applet",
     "type": "text",
     "label": "Expression (Formula Applet Editor)",
-    "description": "Use this field if you do not know TEX",
+    "description": " ",
     "optional": true,
     "default": "default",
     "widget": "formulaAppletEditor"
   },
   {
-    "label": "Expression (TEX representation)",
+    "label": "Expression (LATEX)",
     "name": "TEX_expression",
     "type": "text",
     "default": "7 +\\class{inputfield}{x} = 11",
-    "description": "Use this field if you know TEX"
+    "description": "Use this field if you are familiar with LATEX"
   },
   {
     "label": "Text for \"Check\" button",

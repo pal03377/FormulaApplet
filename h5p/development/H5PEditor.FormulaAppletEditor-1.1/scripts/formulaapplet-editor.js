@@ -6,9 +6,14 @@
 
 
 var H5P = H5P || {};
+H5P['FAEditor'] = {e: 'empty'};
+// H5P['test_key'] = {a: 'test', b: 'object'};
 console.log('Here is formulaapplet-editor.js 1.1 - window.name = ' + window.name);
 console.log(H5P);
+console.log(H5PEditor);
 console.log(H5Pbridge);
+console.log(H5Pbridge.editor_fApp);
+
 //TODO get rid of global variables
 var selectionArray = [];
 
@@ -32,6 +37,16 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     this.changes = [];
   }
 
+  // /**
+  //  * Peovide parent parameters 
+  //  * @public
+  //  * @param {H5P.jQuery} 
+  //  */
+  // FormulaAppletEditor.prototype.provideParentParams = function () {
+  //   var self = this;
+  //   return self.parent.params;
+  // }
+
   /**
    * Append the field to the wrapper. 
    * @public
@@ -44,20 +59,21 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     // params.TEX_expression = params.fa_applet;
 
     var hasSolution = (params.formulaAppletMode == 'manu');
-    // var html = '<p class="formula_applet" id="' + params.id + '-edit"';
-    var html = '<p class="formula_applet" id="formulaappleteditor"';
+    var html = '<p class="formula_applet" id="' + params.id + '-edit"';
     if (params.formulaAppletPhysics == true) {
       html += ' mode="physics"';
     }
+    var solution = '';
     if (hasSolution) {
       html += ' data-b64="' + params.data_b64 + '"';
+      solution = H5Pbridge.decode(params.data_b64);
     }
     var temp = params.TEX_expression;
     if (typeof temp == 'undefined') {
       temp = '17 + {{result}} = 21';
     }
     console.log('temp=' + temp);
-    temp = temp.replace(/{{result}}/g, '\\class{inputfield}{}');
+    temp = temp.replace(/{{result}}/g, '\\class{inputfield}{' + solution + '}');
     console.log('temp=' + temp);
     html += '>';
     var span = '<span id="math-field">' + temp + '</span>';
@@ -126,7 +142,7 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     console.log('before triggering preparePageEvent');
     H5Pbridge.preparePage();
     var id = getputId.get();
-    console.log(id);
+    console.log('id=' + id);
     if (id !== 'nothingToDo') {
       console.log('postEvent idChangedEvent with id=' + id);
       postEvent(["idChangedEvent", id]);
@@ -166,6 +182,14 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
     return isEmpty ? null : this.params;
   };
 
+  FormulaAppletEditor.prototype.getparentParams = function () {
+    var pp = this.parent.params;
+    var isEmpty = (pp === null || pp === "");
+    console.log('parent parameters:');
+    console.log(pp);
+    return isEmpty ? 'null' : pp;
+  };
+
   /**
    * Validate the current values.
    */
@@ -175,21 +199,21 @@ H5PEditor.widgets.formulaAppletEditor = H5PEditor.FormulaAppletEditor = (functio
   };
 
   FormulaAppletEditor.prototype.remove = function () {};
-
   return FormulaAppletEditor;
 })(H5P.jQuery);
 
-function afterAppend(obj) {
+async function afterAppend(obj) {
   console.log('formulaapplet-editor.js: afterAppend - window.name = ' + window.name);
 
-  // spread new id if necessary
+  // generate new id if necessary (new applet), and spread it
   try {
     var idField = getField('id');
     console.log('idField.value=' + idField.value);
     if (idField.value == 'new_id') {
-      var newId = H5Pbridge.makeid(12);
+      var newId = H5Pbridge.randomId(12);
       console.log('new_id -> ' + newId);
-      idField.value = idField.$input[0].value = newId;
+      idField.value = newId;
+      idField.$input[0].value = newId;
       console.log('obj.parent.params.id=' + obj.parent.params.id);
       obj.parent.params.id = newId;
       console.log('obj.parent.params.id=' + obj.parent.params.id);
@@ -203,7 +227,7 @@ function afterAppend(obj) {
   }
 
   // // if (params.id == 'new_id') {
-  //   var new_id = makeid(12);
+  //   var new_id = randomId(12);
   //   // console.log('new id -> ' + new_id);
   //   params.id = new_id;
   //   // }
@@ -228,7 +252,14 @@ function afterAppend(obj) {
       console.log("obj.parent.params['data_b64']=" + obj.parent.params['data_b64']);
       obj.parent.params['data_b64'] = b64;
       console.log("obj.parent.params['data_b64']=" + obj.parent.params['data_b64']);
-     }
+    }
+    if (event.data[0] == 'initIdEvent') {
+      console.log('RECEIVE message initIdEvent');
+      // should be done by H5P system:
+      // var idField = getField('id');
+      // // synchronize DOM
+      // idField.$input[0].value = obj.parent.params['id'];
+    }
   }
 
   function getField(name) {
@@ -247,6 +278,12 @@ function afterAppend(obj) {
   console.log('obj.parent.params');
   console.log(obj.parent.params);
   console.log('obj.parent.params.TEX_expression=' + obj.parent.params.TEX_expression);
+
+  // var FAList = H5Pbridge.getFAList();
+  // console.log(FAList);
+  // // var editor_fApp = FAList.formulaappleteditor;
+  // var editor_fApp = FAList[0];
+  // console.log(editor_fApp);
 
   // teximput is updated by editor.js: showEditorResults
   var texinput = H5P.jQuery('div.field.field-name-TEX_expression.text input')[0];
@@ -297,12 +334,21 @@ function afterAppend(obj) {
   }
 
   // hide field-name-id
-  H5P.jQuery('.field-name-id').css('display', 'none');
+  // H5P.jQuery('.field-name-id').css('display', 'none');
   // hide field-name-data_b64
   // H5P.jQuery('.field-name-data_b64').css('display', 'none');
   var tex_expr = document.getElementById(getSelectorID('field-tex_expression'));
   // https://www.educba.com/jquery-disable-input/
   H5P.jQuery(tex_expr).attr('disabled', 'disabled');
+
+  // var editor_fApp = await H5Pbridge.get_editorFapp(); //async
+  // console.log('editor_fApp');
+  // console.log(editor_fApp);
+  // console.log('editor_fApp.id=' + editor_fApp.id);
+
+  H5P['FAEditor'] = obj;
+  console.log("H5P['FAEditor']");
+  console.log(H5P['FAEditor']);
 }
 
 function postEvent(message) {
@@ -311,17 +357,6 @@ function postEvent(message) {
 }
 
 // Start of waitForMain mechanism
-// event listener listens to echoes from main.js
-// var mainIsLoaded = 0; //TODO get rid of global var
-// window.parent.parent.addEventListener('message', handleEchoMessage, true); //capturing phase
-
-// function handleEchoMessage(event) {
-//   if (event.data == 'echoFromMainEvent') {
-//     mainIsLoaded += 1;
-//     console.info('RECEIVE message echoFromMainEvent (formulaapplet-editor.js) mainIsLoaded=' + mainIsLoaded);
-//   }
-// }
-
 //TODO get rid of global var
 var try_counter = 0;
 var try_counter_limit = 10;
@@ -358,7 +393,7 @@ function waitForMainThenDo(cont) {
 // End of waitForMain mechanism
 
 
-// function makeid(length) {
+// function randomId(length) {
 //   var result = 'fa';
 //   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 //   var numOfChars = characters.length;

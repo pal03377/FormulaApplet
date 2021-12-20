@@ -4,7 +4,8 @@ import $ from "jquery";
 import config from "./config.json";
 
 import {
-    domLoad
+    domLoad,
+    isH5P
 } from "./dom.js";
 
 // import {
@@ -20,14 +21,15 @@ import {
 } from "./texParser.js";
 
 import MQ from "./lib/mathquillWrapper.js";
+// import { editor_fApp } from "../main";
+
+export var editor_fApp;
 
 export async function initEditor() {
     await domLoad;
     $.event.trigger("clickLanguageEvent"); //TODO never received?
 }
 
-var newFaId = newFaId || 'new_id';
-//TODO if H5P take id from editor applet 
 var mathQuillEditHandlerActive = true;
 //TODO get rid of global vars
 
@@ -54,12 +56,10 @@ function mathQuillifyEditor(fApp) {
     return editorMf;
 }
 
-
-
 export async function prepareEditorApplet(fApp) {
     // *** editor ***
     await initEditor();
-    console.log('preparePage.js: prepareEditorApplet');
+    console.log('editor.js: prepareEditorApplet');
     var editorMf = mathQuillifyEditor(fApp);
     // editorMf understands e.g. editorMf.latex('\\sqrt{2}') and var latextext = editorMf.latex();
     fApp.mathField = editorMf;
@@ -81,7 +81,7 @@ export async function prepareEditorApplet(fApp) {
         if (eventType == 'idChangedEvent') {
             var newId = event.data[1];
             console.info('*** RECEIVE message idChangedEvent (editor.js) data=' + newId);
-            newFaId = newId; //TODO get rid of global vars
+            fApp.id = newId;
         }
         if (eventType == 'testEvent') {
             console.info('*** RECEIVE message testEvent (editor.js) data=' + event.data[1]);
@@ -141,34 +141,38 @@ export async function prepareEditorApplet(fApp) {
     });
     $('#random-id-d, #random-id-e').on('mousedown', ev => {
         ev.preventDefault();
-        setNewId();
+        changeId(randomId(8));
     });
-
-    function setNewId() {
-        var randomId = makeid(8);
-        try {
-            document.getElementById('fa_name').value = randomId;
-        } catch (error) {
-            console.log('maybe H5P: ' + error);
-        }
-        newFaId = randomId;
-        refreshResultField(editorMf.latex(), fApp)
-    }
 
     $('#fa_name').on('input', ev => {
-        var fa_name = ev.target.value;
-        // avoid XSS
-        fa_name = fa_name.replace(/</g, '');
-        fa_name = fa_name.replace(/>/g, '');
-        fa_name = fa_name.replace(/"/g, '');
-        fa_name = fa_name.replace(/'/g, '');
-        fa_name = fa_name.replace(/&/g, '');
-        fa_name = fa_name.replace(/ /g, '_');
-        if (4 <= fa_name.length && fa_name.length <= 20) {
-            newFaId = fa_name;
-            refreshResultField(editorMf.latex(), fApp)
-        }
+        console.log(ev);
+        console.log('fa_name input ' + ev.target.value);
+        changeId(ev.target.value);
     });
+
+    var old_id = 'start';
+    //TODO get rid of global vars
+    function changeId(id) {
+        id = id.replace(/</g, '');
+        id = id.replace(/>/g, '');
+        id = id.replace(/"/g, '');
+        id = id.replace(/'/g, '');
+        id = id.replace(/&/g, '');
+        id = id.replace(/ /g, '_');
+        if (4 <= id.length && id.length <= 20) {
+            // id meets the conditions
+            if (old_id !== id) {
+                console.log(old_id + ' -> ' + id);
+                fApp.id = id;
+                if (!isH5P()) {
+                    $('#fa_name').val(id);
+                }
+                old_id = id;
+                // update HTML
+                refreshResultField(editorMf.latex(), fApp)
+            }
+        }
+    }
 
     $('input[type="radio"]').on('click', ev => {
         var resultMode = ev.target.id;
@@ -187,11 +191,28 @@ export async function prepareEditorApplet(fApp) {
             refreshResultField(editorMf.latex(), fApp)
         }
     });
-    // generate a new random ID
-    //     $('#random-id-d').trigger('mousedown');
-    setNewId();
-    $('input[type="radio"]#auto').trigger('click');
-}
+
+    if (isH5P()) {
+        // //TODO if H5P take ID from editor applet 
+        // console.log('H5PEditor:');
+        // // eslint-disable-next-line no-undef
+        // console.log(H5PEditor);
+        // console.log('H5PEditor.Editor');
+        // // eslint-disable-next-line no-undef
+        // console.log(H5PEditor.Editor);
+        // // console.log('H5PEditor.FormulaAppletEditor.prototype.getparentParams:');
+        // // eslint-disable-next-line no-undef
+        // console.log('');
+
+        // something like changeId(H5P.id-field) would be nice
+        document.defaultView.postMessage(['initIdEvent', 'dummy data'], document.URL);
+    } else {
+        // generate a new random ID
+        changeId(randomId(8));
+        $('input[type="radio"]#auto').trigger('click');
+    }
+    editor_fApp = fApp;
+} // end of prepareEditorApplet
 
 function getSelection(mf, options) {
     // if options.erase is undefined, erase defaults to false
@@ -482,7 +503,7 @@ function showEditorResults(parts, fApp) {
 function getHTML(tex, tag, fApp) {
     var result = '<p class="formula_applet"';
     // var editable = $('p#editor span.mq-class.inputfield').prop('contentEditable');
-    var common_result = ' id="' + newFaId; //TODO this does not apply to H5P
+    var common_result = ' id="' + fApp.id;
     if (fApp.hasSolution) {
         var enc = encode(tag);
         common_result += '" data-b64="' + enc;
@@ -496,7 +517,7 @@ function getHTML(tex, tag, fApp) {
     return result;
 }
 
-export function makeid(length) {
+export function randomId(length) {
     var result = 'fa';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
     var numOfChars = characters.length;
