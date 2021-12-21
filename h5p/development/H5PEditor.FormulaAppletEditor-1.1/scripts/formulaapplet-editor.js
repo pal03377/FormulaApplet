@@ -279,12 +279,6 @@ async function afterAppend(obj) {
   console.log(obj.parent.params);
   console.log('obj.parent.params.TEX_expression=' + obj.parent.params.TEX_expression);
 
-  // var FAList = H5Pbridge.getFAList();
-  // console.log(FAList);
-  // // var editor_fApp = FAList.formulaappleteditor;
-  // var editor_fApp = FAList[0];
-  // console.log(editor_fApp);
-
   // teximput is updated by editor.js: showEditorResults
   var texinput = H5P.jQuery('div.field.field-name-TEX_expression.text input')[0];
   texinput.addEventListener('input', updateTexinputEventHandler);
@@ -341,11 +335,6 @@ async function afterAppend(obj) {
   // https://www.educba.com/jquery-disable-input/
   H5P.jQuery(tex_expr).attr('disabled', 'disabled');
 
-  // var editor_fApp = await H5Pbridge.get_editorFapp(); //async
-  // console.log('editor_fApp');
-  // console.log(editor_fApp);
-  // console.log('editor_fApp.id=' + editor_fApp.id);
-
   H5P['FAEditor'] = obj;
   console.log("H5P['FAEditor']");
   console.log(H5P['FAEditor']);
@@ -353,7 +342,8 @@ async function afterAppend(obj) {
 
 function postEvent(message) {
   // message may be an array of [messageType, data]
-  window.parent.parent.postMessage(message, window.parent.parent.document.URL);
+  // window.parent.parent.postMessage(message, window.parent.parent.document.URL);
+  H5Pbridge.editorMessageHandler(message);
 }
 
 // Start of waitForMain mechanism

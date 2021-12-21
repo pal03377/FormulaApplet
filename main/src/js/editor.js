@@ -21,9 +21,6 @@ import {
 } from "./texParser.js";
 
 import MQ from "./lib/mathquillWrapper.js";
-// import { editor_fApp } from "../main";
-
-export var editor_fApp;
 
 export async function initEditor() {
     await domLoad;
@@ -31,6 +28,7 @@ export async function initEditor() {
 }
 
 var mathQuillEditHandlerActive = true;
+var editor_fApp;
 //TODO get rid of global vars
 
 function mathQuillifyEditor(fApp) {
@@ -56,35 +54,22 @@ function mathQuillifyEditor(fApp) {
     return editorMf;
 }
 
-export async function prepareEditorApplet(fApp) {
-    // *** editor ***
-    await initEditor();
-    console.log('editor.js: prepareEditorApplet');
-    var editorMf = mathQuillifyEditor(fApp);
-    // editorMf understands e.g. editorMf.latex('\\sqrt{2}') and var latextext = editorMf.latex();
-    fApp.mathField = editorMf;
-    console.log('editorMf.latex=' + editorMf.latex());
-    refreshResultField(editorMf.latex(), fApp);
-    $.event.trigger("refreshLatexEvent"); //adjust \cdot versus \times
-
-    // H5P stuff
-    window.addEventListener('message', messageHandler, false); //bubbling phase
-    window.parent.parent.addEventListener('message', messageHandler, false); //bubbling phase
-
-    var newLatex = 'new'; //TODO get rid of global vars
-    function messageHandler(event) {
-        // H5P
-        // this kind of messageHandler receives also messages intended to be received by other messageHandlers!
-        // uncommenting next line will lead to misleading messages
-        console.log(event.data);
-        var eventType = event.data[0];
+var newLatex = 'new'; //TODO get rid of global vars
+// this kind of messageHandler receives also messages intended to be received by other messageHandlers!
+export async function editorMessageHandler(event) {
+    if (typeof editor_fApp !== 'undefined') {
+        var fApp = editor_fApp;
+        // H5P 
+        console.log(fApp.id + ' ' + event);
+        var editorMf = fApp.mathField;
+        var eventType = event[0];
         if (eventType == 'idChangedEvent') {
-            var newId = event.data[1];
+            var newId = event[1];
             console.info('*** RECEIVE message idChangedEvent (editor.js) data=' + newId);
             fApp.id = newId;
         }
         if (eventType == 'testEvent') {
-            console.info('*** RECEIVE message testEvent (editor.js) data=' + event.data[1]);
+            console.info('*** RECEIVE message testEvent (editor.js) data=' + event[1]);
         }
         if (eventType == 'setInputFieldMouseoverEvent') {
             console.info('*** RECEIVE message setInputFieldMouseoverEvent (editor.js)');
@@ -102,17 +87,14 @@ export async function prepareEditorApplet(fApp) {
             editorMf.latex(latex);
         }
 
-
         // setInputFieldMouseoverEvent precedes setInputFieldEvent
         // global var newLatex is renewed by function setInput() 
         if (eventType == 'setInputFieldEvent') {
             console.info('*** RECEIVE message setInputFieldEvent (editor.js)');
             editorMf.latex(newLatex);
-            // var mathquillCommandIdArray = event.data[1];
-            // setInputDebug(fApp, event.data[1]);
         }
         if (eventType == 'setModeEvent') {
-            var auto_or_manu = event.data[1];
+            var auto_or_manu = event[1];
             console.info('*** RECEIVE message setModeEvent (editor.js) ' + auto_or_manu);
             if (auto_or_manu == 'auto') {
                 fApp.hasSolution = false;
@@ -124,6 +106,24 @@ export async function prepareEditorApplet(fApp) {
             }
         }
     }
+}
+
+
+export async function prepareEditorApplet(fApp) {
+    // *** editor ***
+    await initEditor();
+    console.log('editor.js: prepareEditorApplet');
+    var editorMf = mathQuillifyEditor(fApp);
+    // editorMf understands e.g. editorMf.latex('\\sqrt{2}') and var latextext = editorMf.latex();
+    fApp.mathField = editorMf;
+    console.log('editorMf.latex=' + editorMf.latex());
+    refreshResultField(editorMf.latex(), fApp);
+    $.event.trigger("refreshLatexEvent"); //adjust \cdot versus \times
+
+    // H5P stuff
+    window.addEventListener('message', editorMessageHandler(fApp), false); //bubbling phase
+    window.parent.parent.addEventListener('message', editorMessageHandler(fApp), false); //bubbling phase
+
 
     $('#set-input-d, #set-input-e').on('mousedown', ev => {
         ev.preventDefault();
