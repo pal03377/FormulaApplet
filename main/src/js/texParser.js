@@ -1,7 +1,9 @@
 /** 
- * Contains old code from nodefactory.js (GRO)
  * Code for traversing: 
- * https://code.tutsplus.com/articles/data-structures-with-javascript-tree--cms-23393 **/
+ * https://code.tutsplus.com/articles/data-structures-with-javascript-tree--cms-23393 
+ * https://www.geeksforgeeks.org/what-is-export-default-in-javascript/
+ * **/
+
 
 "use strict";
 // Klasse als Funktion in JS
@@ -56,7 +58,6 @@ node.prototype.debug = function () {
     text += ' children=' + this.children;
     text += ' type=' + this.type;
     text += ' content=' + this.content;
-    console.debug(text);
     return text;
 };
 
@@ -81,8 +82,8 @@ function createNode(type, content, tree) {
     }
 }
 
-export class FaTree {
-    constructor() {
+// define class FaTree using function syntax
+export function FaTree() {
         this.listOfFree = [];
         this.nodelist = [];
         this.nodelist[0] = new node();
@@ -99,8 +100,7 @@ export class FaTree {
         this.root.children = [this.leaf.id];
         this.hasValue = false;
         this.variableValueList = [];
-    }
-};
+}
 
 function withEachNode(tree, f) {
     var i = 0;
@@ -114,7 +114,7 @@ function withEachNode(tree, f) {
         if (i === tree.nodelist.length) {
             stop = true;
         }
-    } while (stop === false);
+    } while (stop === false)
 }
 
 function withEachLeaf(tree, f) {
@@ -164,7 +164,7 @@ function deleteSingleNodes(tree) {
             tree.listOfFree.push(node.id);
         }
     });
-    return tree.listOfFree;
+    // return tree.listOfFree;
 }
 
 node.prototype.isRightmostChild = function (nodelist) {
@@ -179,13 +179,14 @@ node.prototype.isRightmostChild = function (nodelist) {
 };
 
 function findLeftBracket(content, bra) {
+    var pos;
     var long = '\\left' + bra;
     if (bra === '{') {
         long = '\\left\\{';
     }
     var minPos = -1;
     var braKind = 'nothing';
-    var pos = content.indexOf(long);
+    pos = content.indexOf(long);
     var masked = content;
     if (pos >= 0) {
         minPos = pos;
@@ -194,14 +195,15 @@ function findLeftBracket(content, bra) {
         var stop = false;
         pos = -1;
         do {
-            var pos = masked.indexOf(long, pos + 1);
+            pos = masked.indexOf(long, pos + 1);
             if (pos === -1) {
                 stop = true;
             } else {
+                var part1;
                 if (pos > 0) {
-                    var part1 = masked.substring(0, pos - 1);
+                    part1 = masked.substring(0, pos - 1);
                 } else {
-                    var part1 = '';
+                    part1 = '';
                 }
                 var part2 = '\\left@';
                 if (bra === '\\{') {
@@ -214,7 +216,7 @@ function findLeftBracket(content, bra) {
     }
     // All occurrencies of long are masked
     // Look for short bracket
-    var pos = masked.indexOf(bra);
+    pos = masked.indexOf(bra);
     if (pos >= 0) {
         if (minPos === -1) {
             minPos = pos;
@@ -230,10 +232,11 @@ function findLeftBracket(content, bra) {
 }
 
 function findLeftmostBracket(content) {
+    var pos;
     var leftPos = -1;
     var braKind = 'nothing';
     var result = findLeftBracket(content, "(");
-    var pos = result[0];
+    pos = result[0];
     if (pos > -1) {
         if (leftPos === -1) {
             leftPos = pos;
@@ -246,8 +249,8 @@ function findLeftmostBracket(content) {
         }
     }
     // maybe there is a better (smaller) pos for a [ bracket
-    var result = findLeftBracket(content, '[');
-    var pos = result[0];
+    result = findLeftBracket(content, '[');
+    pos = result[0];
     if (pos > -1) {
         if (leftPos === -1) {
             leftPos = pos;
@@ -260,8 +263,8 @@ function findLeftmostBracket(content) {
         }
     }
     // maybe there is a better (smaller) pos for a { bracket
-    var result = findLeftBracket(content, '{');
-    var pos = result[0];
+    result = findLeftBracket(content, '{');
+    pos = result[0];
     if (pos > -1) {
         if (leftPos === -1) {
             leftPos = pos;
@@ -274,8 +277,8 @@ function findLeftmostBracket(content) {
         }
     }
     // maybe there is a better (smaller) pos for a | bracket
-    var result = findLeftBracket(content, '|');
-    var pos = result[0];
+    result = findLeftBracket(content, '|');
+    pos = result[0];
     if (pos > -1) {
         if (leftPos === -1) {
             leftPos = pos;
@@ -291,12 +294,13 @@ function findLeftmostBracket(content) {
 }
 
 export function findCorrespondingRightBracket(content, bra) {
-    var rightbra = '';
-    var pos = ['(', '[', '{', '|', '\\left(', '\\left[', '\\left\\{', '\\left|'].indexOf(bra);
+    var pos;
+    pos = ['(', '[', '{', '|', '\\left(', '\\left[', '\\left\\{', '\\left|'].indexOf(bra);
+    var rightbra;
     if (pos === -1) {
-        var rightbra = 'no bracket found error';
+        rightbra = 'no bracket found error';
     } else {
-        var rightbra = [')', ']', '}', '|', '\\right)', '\\right]', '\\right\\}', '\\right|'][pos];
+        rightbra = [')', ']', '}', '|', '\\right)', '\\right]', '\\right\\}', '\\right|'][pos];
     }
     var stop = false;
     var mass = [];
@@ -307,7 +311,7 @@ export function findCorrespondingRightBracket(content, bra) {
     var rightPos = -1;
     pos = -1;
     do {
-        var pos = content.indexOf(bra, pos + 1);
+        pos = content.indexOf(bra, pos + 1);
         if (pos === -1) {
             stop = true;
         } else {
@@ -320,7 +324,7 @@ export function findCorrespondingRightBracket(content, bra) {
     pos = -1;
     stop = false;
     do {
-        var pos = content.indexOf(rightbra, pos + 1);
+        pos = content.indexOf(rightbra, pos + 1);
         if (pos === -1) {
             stop = true;
         } else {
@@ -328,7 +332,7 @@ export function findCorrespondingRightBracket(content, bra) {
         }
     } while (stop === false);
     // sum of masses
-    for (var i = 1; i < content.length; i++) {
+    for (i = 1; i < content.length; i++) {
         var sum = mass[i - 1] + mass[i];
         if (mass[i] === -1 && sum === 0) {
             rightPos = i;
@@ -336,7 +340,12 @@ export function findCorrespondingRightBracket(content, bra) {
         }
         mass[i] = sum;
     }
-    return {leftPos: leftPos, bracketLength: bra.length, rightPos: rightPos, rightBracketLength: rightbra.length};
+    return {
+        leftPos: leftPos,
+        bracketLength: bra.length,
+        rightPos: rightPos,
+        rightBracketLength: rightbra.length
+    };
 }
 
 function removeOperators(tree, kindOfOperators) {
@@ -397,13 +406,14 @@ function removeOperators(tree, kindOfOperators) {
                 loop = false;
             } else {
                 // found an operator opOne or opTwo in node[index]
-                var leftpart = node.content.substring(0, pos);
+                var leftpart, middlepart, rightpart;
+                leftpart = node.content.substring(0, pos);
                 if (posOneFlag) {
-                    var middlepart = node.content.substring(pos, pos + opOneLength);
-                    var rightpart = node.content.substring(pos + opOneLength);
+                    middlepart = node.content.substring(pos, pos + opOneLength);
+                    rightpart = node.content.substring(pos + opOneLength);
                 } else {
-                    var middlepart = node.content.substring(pos, pos + opTwoLength);
-                    var rightpart = node.content.substring(pos + opTwoLength);
+                    middlepart = node.content.substring(pos, pos + opTwoLength);
+                    rightpart = node.content.substring(pos + opTwoLength);
                 }
                 // number of § markers
                 var leftcount = (leftpart.match(/§/g) || []).length;
@@ -418,15 +428,16 @@ function removeOperators(tree, kindOfOperators) {
                     console.warn('(remove operators) Wrong number of bracket markers');
                 }
                 var rememberchildren = node.children;
+                var leftchildren, rightchildren;
                 if (leftcount > 0) {
-                    var leftchildren = rememberchildren.slice(0, leftcount);
+                    leftchildren = rememberchildren.slice(0, leftcount);
                 } else {
-                    var leftchildren = [];
+                    leftchildren = [];
                 }
                 if (rightcount > 0) {
-                    var rightchildren = rememberchildren.slice(leftcount, rememberchildren.length);
+                    rightchildren = rememberchildren.slice(leftcount, rememberchildren.length);
                 } else {
-                    var rightchildren = [];
+                    rightchildren = [];
                 }
                 var operator = createNode('plusminus', middlepart, tree);
                 if (kindOfOperators === 'equal') {
@@ -480,8 +491,8 @@ function removeOperators(tree, kindOfOperators) {
             }
         } while (loop == true);
     });
-    return tree.nodelist;
-};
+    // return tree.nodelist;
+}
 
 let parseTreeCounter = {
     counter: 0,
@@ -503,27 +514,26 @@ export function parseTreeByIndex(tree) {
     parseTreeCounter.inc();
     var endParse = false;
     var message = '';
-    var result = '';
+   // var listOfFree;
     switch (parseTreeCounter.getCounter()) {
         case 1:
-            message = 'delete spaces and remove backslash at \min';
-            // console.clear();
+            message = 'delete spaces and remove backslash at \\min';
             tree.leaf.content = deleteSpaceAndRemoveBackslash(tree.leaf.content);
             tree.leaf.content = makeDegreeUnit(tree.leaf.content);
             break;
         case 2:
             message = 'parse brackets';
-            result = parseBrackets(tree);
+            parseBrackets(tree);
             break;
         case 3:
             message = 'parse equal';
-            result = removeOperators(tree, 'equal');
+            removeOperators(tree, 'equal');
             message = 'parse plusminus';
-            result = removeOperators(tree, 'plusminus');
+            removeOperators(tree, 'plusminus');
             break;
         case 4:
             message = 'parse timesdivided';
-            result = removeOperators(tree, 'timesdivided');
+            removeOperators(tree, 'timesdivided');
             break;
         case 5:
             message = 'unify subscript and exponent (part 1)';
@@ -541,17 +551,14 @@ export function parseTreeByIndex(tree) {
         case 8:
             message = 'parse log_base';
             parseLogLim(tree, 'log'); //log
-            // check_children(tree);
             break;
         case 9:
             message = 'parse lim';
             parseLogLim(tree, 'lim'); //lim
-            // check_children(tree);
             break;
         case 10:
             message = 'parse functions';
             parseFunction(tree);
-            // check_children(tree);
             break;
         case 11:
             message = 'parse fractions';
@@ -565,7 +572,7 @@ export function parseTreeByIndex(tree) {
             break;
         case 13:
             message = 'delete single § nodes'
-            var listOfFree = deleteSingleNodes(tree);
+            deleteSingleNodes(tree);
             break;
         case 14:
             message = 'parse greek';
@@ -577,7 +584,7 @@ export function parseTreeByIndex(tree) {
             break;
         case 16:
             message = 'delete single § nodes';
-            var listOfFree = deleteSingleNodes(tree);
+            deleteSingleNodes(tree);
             break;
         case 17:
             message = 'parse mixed numbers ';
@@ -601,7 +608,7 @@ export function parseTreeByIndex(tree) {
             break;
         case 22:
             message = 'delete single § nodes'
-            var listOfFree = deleteSingleNodes(tree);
+            deleteSingleNodes(tree);
             break;
         case 23:
             message = 'parse unit'
@@ -615,13 +622,16 @@ export function parseTreeByIndex(tree) {
             break;
         case 25:
             message = 'delete single § nodes';
-            var listOfFree = deleteSingleNodes(tree);
+            deleteSingleNodes(tree);
             break;
         default:
             message = 'end of parse';
             endParse = true;
+    }
+    return {
+        message: message,
+        endParse: endParse
     };
-    return { message: message, endParse: endParse };
 }
 
 export default function parse(texstring) {
@@ -631,13 +641,23 @@ export default function parse(texstring) {
     parseTreeCounter.setCounter(0);
     while (!endParse) {
         var parseResult = parseTreeByIndex(myTree);
-        var message = parseResult.message;
         endParse = parseResult.endParse;
-        //paint_tree(tree, canvas, message);
+        //paint_tree(tree, canvas, parseResult.message);
     }
     return myTree;
 }
 
+/**
+ * deletes spaces and removes backslashes before 'min' or 'max'<br>
+* 
+ * @param {string} text latex string to be parsed 
+ * @returns {string} beautified latex string
+ * @example text = 'abc  def' returns 'abc def'
+ * @example A backslash \ has to be escaped as \\ in regex expressions and javascript strings
+ * @example text = '\min' returns 'min'
+ * @example text = '\cdot' (no trailing space) returns '\cdot ' (1 space)
+ * @example text = '\cdot  ' (2 spaces) returns '\cdot ' (1 space)
+  */
 function deleteSpaceAndRemoveBackslash(text) {
     // https://stackoverflow.com/questions/4025482/cant-escape-the-backslash-with-regex#4025505
     // http://www.javascripter.net/faq/backslashinregularexpressions.htm
@@ -645,9 +665,10 @@ function deleteSpaceAndRemoveBackslash(text) {
     var temp = text.replace(/\\\s/g, '');
     temp = temp.replace(/\\min/g, 'min');
     temp = temp.replace(/\\max/g, 'max');
+    // unify spaces after \\cdot
     temp = temp.replace(/\\cdot/g, '\\cdot '); // no space -> one space, but one space -> two spaces
-    temp = temp.replace(/\\cdot  /g, '\\cdot '); // two spaces -> one space
-   
+    temp = temp.replace(/\\cdot {2}/g, '\\cdot '); // two spaces -> one space
+
     // temp = temp.replace(/\\Ohm/g, '\\Omega'); // transform unit Ohm to greek Omega. Done in preparePage.js
     return temp;
 }
@@ -684,7 +705,7 @@ function makeDegreeUnit(text) {
     } while (stop == false);
 
     // handle the end of text string
-    var gap = text.substring(lastlastIndex);
+    gap = text.substring(lastlastIndex);
     gaps.push(gap);
     number.push('');
     degree.push('');
@@ -889,14 +910,15 @@ function parseRadix(tree, nthroot) {
                 var right = node.content.substring(pos + needle.length);
                 var radIndex = (left.match(/§/g) || []).length;
                 // if there is no § in left, then radIndex = 0
+                var newcontent, radix;
                 if (nthroot === true) {
-                    var newcontent = left + '§' + right;
+                    newcontent = left + '§' + right;
                     // node has one § less! 
                     node.content = newcontent;
                     //check
-                    var test = tree.nodelist[node.children[radIndex]].type;
-                    test = tree.nodelist[node.children[radIndex + 1]].type;
-                    var radix = createNode('nthroot', '', tree);
+                    // test = tree.nodelist[node.children[radIndex]].type;
+                    // test = tree.nodelist[node.children[radIndex + 1]].type;
+                    radix = createNode('nthroot', '', tree);
                     // link radix
                     radix.parent = node.id;
                     //radix has two children 
@@ -907,11 +929,11 @@ function parseRadix(tree, nthroot) {
                     node.children[radIndex] = radix.id;
                     node.children.splice(radIndex + 1, 1);
                 } else {
-                    var newcontent = left + '§' + right;
+                    newcontent = left + '§' + right;
                     //check
-                    var test = tree.nodelist[node.children[radIndex]].type;
+                    // test = tree.nodelist[node.children[radIndex]].type;
                     node.content = newcontent;
-                    var radix = createNode('sqrt', '', tree);
+                    radix = createNode('sqrt', '', tree);
                     // link radix
                     radix.parent = node.id;
                     //radix has only one child
@@ -976,13 +998,13 @@ function parseFunction(tree) {
     withEachLeaf(tree, function (node) {
         var stop = false;
         var k = 0;
+        var fu;
         do {
-            var fu = functionList()[k];
+            fu = functionList()[k];
             var type = 'fu-' + fu;
             fu = '\\' + fu;
             var pos = node.content.indexOf(fu);
             if (pos > -1) {
-                var pow = '';
                 var leftpart = node.content.substring(0, pos);
                 var leftCount = (leftpart.match(/§/g) || []).length;
                 var rest = node.content.substring(pos + fu.length);
@@ -1010,7 +1032,7 @@ function parseFunction(tree) {
                     } else {
                         //", "\\sin2\alpha
                         rest = rest.trim();
-                        var arg = createNode('leaf', rest, tree);
+                        arg = createNode('leaf', rest, tree);
                         arg.parent = fuNode.id;
                         //fuNode.children[0] = remember;
                         fuNode.children[0] = arg.id;
@@ -1044,6 +1066,7 @@ function parseFunction(tree) {
 function parseFrac(tree) {
     const needle = '\\frac§§';
     withEachLeaf(tree, function (node) {
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             var pos = node.content.indexOf(needle);
             if (pos <= -1) break;
@@ -1055,6 +1078,7 @@ function parseFrac(tree) {
             node.content = left + '§' + right;
             // check
             var test = tree.nodelist[node.children[fracIndex]].type;
+            // eslint-disable-next-line no-unused-vars
             test = tree.nodelist[node.children[fracIndex + 1]].type;
 
             var fraction = createNode('frac', '', tree);
@@ -1074,6 +1098,7 @@ function parseFrac(tree) {
 function parseTextColor(tree) {
     const needle = '\\textcolor§§';
     withEachLeaf(tree, function (node) {
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             var pos = node.content.indexOf(needle);
             if (pos <= -1) break;
@@ -1084,7 +1109,7 @@ function parseTextColor(tree) {
             // node has one § less! 
             node.content = left + '§' + right;
             var bracket = tree.nodelist[node.children[unit_index]];
-            var test = tree.nodelist[node.children[unit_index + 1]].type;
+            // var test = tree.nodelist[node.children[unit_index + 1]].type;
             //check
             // fetch the color
             var colornode = tree.nodelist[bracket.children[0]];
@@ -1108,14 +1133,15 @@ function parseTextColor(tree) {
 }
 
 function greekList() {
-    return ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", 
-            "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi", 
-            "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega", 
-            "varepsilon", "vartheta", "varkappa", "varpi", "varrho", "varsigma", "varphi", 
-            "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", 
-            "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", 
-            "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega", 
-            "to", "infty"];
+    return ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta",
+        "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi",
+        "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega",
+        "varepsilon", "vartheta", "varkappa", "varpi", "varrho", "varsigma", "varphi",
+        "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta",
+        "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi",
+        "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega",
+        "to", "infty"
+    ];
 }
 
 function parseGreek(tree) {
@@ -1124,7 +1150,7 @@ function parseGreek(tree) {
         var pos = -1;
         do {
             var greek = '\\' + greekList()[k];
-            var pos = node.content.indexOf(greek);
+            pos = node.content.indexOf(greek);
             if (pos > -1) {
                 var leftpart = node.content.substring(0, pos);
                 var leftCount = (leftpart.match(/§/g) || []).length;
@@ -1166,7 +1192,6 @@ function parseNumbers(tree) {
 function parseMixedNumbers(tree) {
     withEachLeaf(tree, function (node) {
         var content = node.content.trim();
-        var isMixedNumber = false;
         if (content.startsWith('§§')) {
             var child0 = tree.nodelist[node.children[0]];
             if (child0.type == 'number') {
@@ -1182,7 +1207,6 @@ function parseMixedNumbers(tree) {
                     }
                     // TODO: try/catch
                     if (nom.type == 'number' && denom.type == 'number') {
-                        isMixedNumber = true;
                         var mixedNum = createNode('mixedNumber', '', tree);
                         // leaf node has one child less and is parent of mixedNum
                         node.content = node.content.substr(1);
@@ -1244,8 +1268,9 @@ function parseSubPower(tree, power) {
     }
     withEachLeaf(tree, function (node) {
         var pos = -1;
+        // eslint-disable-next-line no-constant-condition
         while (true) {
-            var pos = node.content.indexOf(needle);
+            pos = node.content.indexOf(needle);
             if (pos <= -1) break;
             var leftpart = node.content.substring(0, pos);
             var middlepart = node.content.substr(pos, 3);
@@ -1307,7 +1332,7 @@ function parseFactors(tree) {
             }
         } else {
             // unit
-            var content = node.content.trim();
+            content = node.content.trim();
             if (decomposeUnit(content)[0] == false) {
                 // try to separate rightmost (youngest) character
                 var left = content.substr(0, content.length - 1);
@@ -1337,7 +1362,7 @@ function decomposeUnit(unitstring) {
     if (value == 'u') {
         if (unitstring.length > 1) {
             // attempt to separate prefix and unit
-            var prefix = unitstring.substr(0, 1);
+            prefix = unitstring.substr(0, 1);
             // preserve default value of var unit
             var rest = unitstring.substr(1);
             var power = prefix2power(prefix);
@@ -1404,7 +1429,7 @@ function unit2value(unitname) {
     valueOf["J"] = valueOf["N"] * valueOf["m"];
     valueOf["W"] = valueOf["J"] / valueOf["s"];
     valueOf["V"] = valueOf["W"] * valueOf["A"];
-    valueOf["\Omega"] = valueOf["V"] / valueOf["A"];
+    valueOf["\\Omega"] = valueOf["V"] / valueOf["A"];
     valueOf["Pa"] = valueOf["N"] / (valueOf["m"] * valueOf["m"]);
     valueOf["bar"] = 100000 * valueOf["Pa"];
     valueOf["Liter"] = 0.001 * valueOf["m"] * valueOf["m"] * valueOf["m"];
@@ -1443,25 +1468,26 @@ export function evaluateTree(filledTree) {
 
 function val(node, tree) { // TODO: different name, too similar to function value?
     //recursive
+    var fu, child0, child1, child2, temp;
     var children = node.children;
     var numberOfChildren = children.length;
     if (numberOfChildren == 0) {
         if (node.type == 'number') {
-            var temp = node.content.replace(',', '.');
+            temp = node.content.replace(',', '.');
             node.value = temp;
         }
         if (node.type == 'invisible_zero') {
             node.value = 0;
         }
         if (isInUnit(tree, node)) {
-            var temp = decomposeUnit(node.content);
+            temp = decomposeUnit(node.content);
             if (temp[0] == true) {
                 node.value = temp[3];
             }
         }
     }
     if (numberOfChildren == 1) {
-        var child0 = tree.nodelist[children[0]];
+        child0 = tree.nodelist[children[0]];
         var arg = val(child0, tree);
         if (node.type.startsWith('bracket-') || node.type == 'root' || node.type == 'unit') {
             if (node.type == 'bracket-\\left|') {
@@ -1473,7 +1499,7 @@ function val(node, tree) { // TODO: different name, too similar to function valu
             }
         } else {
             if (node.type.startsWith('fu-')) {
-                var fu = node.type.substr(3)
+                fu = node.type.substr(3)
                 node.value = trigonometry(fu, arg);
             }
         }
@@ -1483,8 +1509,8 @@ function val(node, tree) { // TODO: different name, too similar to function valu
     }
 
     if (numberOfChildren == 2) {
-        var child0 = tree.nodelist[children[0]];
-        var child1 = tree.nodelist[children[1]];
+        child0 = tree.nodelist[children[0]];
+        child1 = tree.nodelist[children[1]];
         var ch0 = val(child0, tree);
         var ch1 = val(child1, tree);
         if (node.type == '*') {
@@ -1505,10 +1531,10 @@ function val(node, tree) { // TODO: different name, too similar to function valu
             node.value = Math.pow(Number(ch0), Number(ch1));
         }
         if (node.type == 'fu-log') {
-            node.value = Math.log(Number(ch1))/Math.log(Number(ch0));
+            node.value = Math.log(Number(ch1)) / Math.log(Number(ch0));
         }
         if (node.type.startsWith('fu-') && node.content == 'power') {
-            var fu = node.type.substr(3)
+            fu = node.type.substr(3)
             var base = trigonometry(fu, ch1);
             node.value = Math.pow(base, ch0)
         }
@@ -1535,12 +1561,13 @@ function val(node, tree) { // TODO: different name, too similar to function valu
         }
     }
     if (numberOfChildren > 2) {
-        var child0 = tree.nodelist[children[0]];
-        var child1 = tree.nodelist[children[1]];
-        var child_2 = tree.nodelist[children[2]];
+        child0 = tree.nodelist[children[0]];
+        child1 = tree.nodelist[children[1]];
+        child2 = tree.nodelist[children[2]];
         var dummy = val(child0, tree);
-        var dummy = val(child1, tree);
-        var dummy = val(child_2, tree);
+        dummy = val(child1, tree);
+        // eslint-disable-next-line no-unused-vars
+        dummy = val(child2, tree);
     }
     return node.value;
 }
@@ -1596,7 +1623,6 @@ export function fillWithValues(treeVar, list) {
     // random = true: fillWithRandomValues
     // random = false: fill with values of variableValueList
     var valueList = [];
-    // console.clear();
     var hasValue = true;
     treeVar.withEachNode = function (node) {
         if (node.type == 'integral') hasValue = false;
@@ -1624,7 +1650,7 @@ export function fillWithValues(treeVar, list) {
                     found = true;
                     stop = true; //short circuit
                 } else {
-                    i ++;
+                    i++;
                 }
                 if (i === nodelist.length) {
                     stop = true;
@@ -1638,11 +1664,11 @@ export function fillWithValues(treeVar, list) {
                         var u2 = -2 * Math.log(Math.random());
                         var value = 1000 * Math.cos(u1) * Math.sqrt(u2);
                     } else {
-                        var value = list[content];
+                        value = list[content];
                         if (typeof value == 'undefined') {
                             console.error('Variable in definition set but not in applet: ' + content);
                             stop = true;
-                            i ++;
+                            i++;
                             hasValue = false;
                             found = false;
                         }
@@ -1653,7 +1679,7 @@ export function fillWithValues(treeVar, list) {
                                 if (node.content == content) {
                                     node.value = value;
                                 }
-                                if (node.content == '\pi') {
+                                if (node.content == '\\pi') {
                                     node.value = Math.PI;
                                     value = Math.PI;
                                 }
@@ -1712,7 +1738,6 @@ export function checkScientificNotation(texstring) {
     exponent = exponent.toString();
     // https://regex101.com/
     // var regex = RegExp('((\\d+\\,)?\\d+)', 'g');
-    // console.clear();
     var regex = RegExp('((\\-)?((\\d+)?\\,)?(\\d+))');
     // https://stackoverflow.com/questions/6003884/how-do-i-check-for-null-values-in-javascript
     var leftOk = false;
@@ -1733,5 +1758,9 @@ export function checkScientificNotation(texstring) {
         rightOk = true;
     }
     isScientific = (leftOk && rightOk);
-    return { isScientific, mantissa, exponent };
+    return {
+        isScientific,
+        mantissa,
+        exponent
+    };
 }

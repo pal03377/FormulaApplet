@@ -7,7 +7,7 @@ import copy from 'rollup-plugin-copy';
 import { terser } from 'rollup-plugin-terser';
 import json from '@rollup/plugin-json';
 import replace from '@rollup/plugin-replace';
-import babel from '@rollup/plugin-babel';
+// import babel from '@rollup/plugin-babel';
 
 const production = process.env.PRODUCTION === "true";
 console.log("PRODUCTION", production, "(env: " + process.env.PRODUCTION + ")");
@@ -61,9 +61,10 @@ function getCopyTargets(filename) {
 export default [{
 	input: 'src/main.js',
 	output: {
-		sourcemap: !production,
+		// sourcemap: !production,
+		sourcemap: true,
 		format: 'iife',
-		name: 'app',
+		name: 'H5Pbridge',
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
@@ -88,7 +89,7 @@ export default [{
 		commonjs({
 			preferBuiltins: false
 		}),
-		production && babel({ babelHelpers: 'bundled' }),
+		// production && babel({ babelHelpers: 'bundled' }),
 
 		serveWanted && serve(),
 

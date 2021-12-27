@@ -1,0 +1,22 @@
+{
+    // Verwendet IntelliSense zum Ermitteln möglicher Attribute.
+    // Zeigen Sie auf vorhandene Attribute, um die zugehörigen Beschreibungen anzuzeigen.
+    // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    {
+        "name": "npm start -> Launch Chrome",
+        "request": "launch",
+        "type": "pwa-chrome",
+        "url": "http://localhost:5000",
+        "webRoot": "${workspaceFolder}"
+    },
+    {   
+        "name": "Chrome classic (XAMPP)",
+        "type": "pwa-chrome",
+        "request": "launch",
+        "url": "http://localhost:8080/gf09/main/public/index.html",
+        "webRoot": "${workspaceFolder}"
+    }
+    ]
+}

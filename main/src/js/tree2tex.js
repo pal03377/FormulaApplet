@@ -2,6 +2,7 @@
 // not needed for actual lib?
 
 export function tree2TEX(tree) {
+    // eslint-disable-next-line no-unused-vars
     var depth = 0;
     return recurse(tree.root);
 
@@ -33,10 +34,11 @@ export function tree2TEX(tree) {
             if (node.type.startsWith('bracket')) {
                 result = node.type.substring(8);
                 var pos = ['(', '[', '{', '\\left(', '\\left[', '\\left\\{'].indexOf(result);
+                var rightbra;
                 if (pos === -1) {
-                    var rightbra = 'no corresponding bracket found error';
+                    rightbra = 'no corresponding bracket found error';
                 } else {
-                    var rightbra = [')', ']', '}', '\\right)', '\\right]', '\\right\\}'][pos];
+                    rightbra = [')', ']', '}', '\\right)', '\\right]', '\\right\\}'][pos];
                 }
                 result += res[0];
                 result += rightbra;
@@ -57,18 +59,18 @@ export function tree2TEX(tree) {
             if (node.type.startsWith('fu-')) {
                 result = '\\';
                 result += node.type.substr(3);
-                var child = tree.nodelist[node.children[0]];
+                child = tree.nodelist[node.children[0]];
                 // \tanxy -> \tan xy
                 var insert_space = true;
                 if (child.type.startsWith('bracket')) {
                     insert_space = false
-                };
+                }
                 if (child.content.startsWith(' ')) {
                     insert_space = false
-                };
+                }
                 if (child.type.startsWith('greek')) {
                     insert_space = false
-                };
+                }
                 if (insert_space) {
                     result += ' ';
                 }
@@ -86,7 +88,7 @@ export function tree2TEX(tree) {
                 result += res[1];
                 if (node.type.startsWith('timesdivided')) {
                     var temp = result.replace(/\\cdot/g, '\\cdot ');
-                    result = temp.replace(/\\cdot  /g, '\\cdot ');
+                    result = temp.replace(/\\cdot {2}/g, '\\cdot ');
                 }
                 done = true;
             }
@@ -148,9 +150,9 @@ export function tree2TEX(tree) {
         }
         if (done === false) {
             // handle bracket childs (maybe 1 or 2 or even more)
-            var pos = -1;
+            pos = -1;
             var count = 0;
-            var temp = node.content;
+            temp = node.content;
             // Do not change node.content. Use temp instead.
             do {
                 pos = temp.indexOf('§');

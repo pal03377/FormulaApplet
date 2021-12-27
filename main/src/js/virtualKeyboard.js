@@ -2,7 +2,9 @@
 
 import $ from "jquery";
 import Hammer from "@egjs/hammerjs";
-import { keyboardEvent } from "./preparePage.js";
+// replace call of keyboardEvent by triggering a custonKeyboardEvent
+//import { keyboardEvent } from "./preparePage.js";
+
 
 const squareroot = '<span style="white-space: nowrap; font-size:larger">&radic;<span style="text-decoration:overline;">&nbsp;&#x2b1a;&nbsp;</span></span>';
 const nthRoot = '<sup style="position: relative; top: -0.5em; right: -0.5em;">\u2b1a</sup>' + squareroot;
@@ -27,6 +29,7 @@ keys['mixed'] = [
         ['8'],
         ['9'],
         ['times', '&times;', '\\cdot '],
+        // ['times', '&times;', '\\times '],
         ['divided', '&divide;', '/']
     ],
     // row 1
@@ -535,7 +538,7 @@ function keyboardEvent0(cmd) {
 
         }
     } else {
-        keyboardEvent(cmd);
+        $(".formula_applet").trigger('virtualKeyboardEvent', cmd);
         // switch back
         if (activeKeyboard == 'abc_caps') {
             activeKeyboard = 'abc';
@@ -569,7 +572,7 @@ function keyboardActivate(keyboardId) {
         case 'greek_caps':
         case 'greek_capslock':
             $('.virtualKeyboard_tab button#button-table_greek').addClass("selected");
-            var buttontext = '\u03b1\u03b2\u03b3'
+            buttontext = '\u03b1\u03b2\u03b3'
             if (keyboardId == 'greek_caps') {
                 buttontext = '\u0391\u0392\u0393';
             }

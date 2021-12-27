@@ -1,10 +1,17 @@
 obsolete/
 other/
-development/
+/development/*
 regex_example.js
 js/lib/KAS/
 Algebrite_files/
 js/lib/Algebrite/
 js/lib/ToDo.pdf
-
+node_modules/
+Doxyfile
+doc(doxygen)
+version*.txt
+/md/Paul.md
+make-zip/
+html_version/
+h5p/development/H5P.JoubelUI-1.3/
 
