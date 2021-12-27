@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
@@ -11,13 +12,24 @@
     <link rel='stylesheet' type='text/css' media='screen' href='MathQuill/mathquill.css'>
     <script src='build/bundle.js'></script>
 </head>
+
 <body>
+
+    <p id="lang_select">
+        <input type="radio" name="lang" class="problemeditor language" id="en"></input>
+        <label for="en"><span></span>Englisch </label>
+        <br />
+        <input type="radio" name="lang" class="problemeditor language" id="de" checked></input>
+        <label for="de"><span></span>Deutsch </label>
+    </p>
 
     <h1>Check if Equal</h1>
     <p class="formula_applet" id="frs993">7\frac{5}{8}a^2=7,625a^2</p><br />
-    <p class="formula_applet" id="unu683">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,972\textcolor{blue}{\frac{m}{s}}</p><br />
+    <p class="formula_applet" id="unu683">3,5\textcolor{blue}{\frac{km}{h}}=\ 0,972\textcolor{blue}{\frac{m}{s}}</p>
+    <br />
     <p class="formula_applet" id="inv862">3,5 \textcolor{blue}{kWh} = 12,6 \textcolor{blue}{MJ}</p><br />
-    <p class="formula_applet" id="utr575">\sin\left(\frac{\pi}{2}\right)=\ \sin\left(90\textcolor{blue}{°}\right)</p> buggy<br />
+    <p class="formula_applet" id="utr575">\sin\left(\frac{\pi}{2}\right)=\ \sin\left(90\textcolor{blue}{°}\right)</p>
+    buggy<br />
     <p class="formula_applet" id="fal487">(7,2c - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
     <p class="formula_applet" id="ser409">(7,2a - 3,4b)^2 = 51,84a^2-48,96ab + 11,56b^2</p><br />
     <p class="formula_applet" id="con335">\frac{1}{u}-\frac{1}{v}=\frac{v-u}{uv}</p><br />
@@ -28,7 +40,8 @@
     <p class="formula_applet" id="check_03" prec="0.001">(2u + 7v)^2 = {{result}}</p> prec="0.001"<br />
     <p class="formula_applet" id="check_04" precision="0.1%">(2u + 7v)^2 = {{result}}</p> precision="0.1%"<br />
     <p class="formula_applet" prec="0.25%" id="check_05">(2u + 7v)^2 = {{result}}</p> prec="0.25%"<br />
-    <p class="formula_applet" id="check_06" precision="0,001">(2u + 7v)^2 = {{result}}</p> precision="0,001" (Comma)<br />
+    <p class="formula_applet" id="check_06" precision="0,001">(2u + 7v)^2 = {{result}}</p> precision="0,001"
+    (Comma)<br />
     <p class="formula_applet" id="check_07" prec="0.1 %">(2u + 7v)^2 = {{result}}</p> prec="0.1 %" (space)<br />
     <p class="formula_applet" id="check_08" prec="4.7e-6">(2u + 7v)^2 = {{result}}</p> prec="4.7e-6"<br />
 
@@ -41,7 +54,9 @@
     <p class="formula_applet" id="no_bnd">\int_2^5\ {\sin} x\ \mathrm{d}x</p><br>
     <p class="formula_applet" id="no_xay">sin^2 \alpha + cos^2\alpha = 1</p> No result field {{...}} necessary.<br />
     <p class="formula_applet" id="inv862a" mode=physics>3,5 \unit{kWh} = {{result}} \unit{MJ}</p> (12,6MJ)<br />
-    <p class="formula_applet" id="definition_set" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} = {{result}}</p><span class='padding'><span class='tr en oneone'>One variable, one definition set.</span><span class='tr de oneone'>Eine Variable, eine Definitionsmenge.</span></span><br />
+    <p class="formula_applet" id="definition_set" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} = {{result}}</p><span
+        class='padding'><span class='tr en oneone'>One variable, one definition set.</span><span
+            class='tr de oneone'>Eine Variable, eine Definitionsmenge.</span></span><br />
     <p class="formula_applet" id="light-house" data-b64='gOmkT'>s=\sqrt{ h^2 + {{result}} }</p><br />
     <p class="formula_applet" id="binom_02">(2u + 7v)^2 = 4u^2 + 28uv + {{result}}</p><br />
     <p class="formula_applet" id="fraction">\frac{13t^2 - 5t}{t} = {{result}}</p><br />
@@ -49,11 +64,18 @@
     <p class="formula_applet" id="CheckIfEqual">{{result}} = 0</p><br />
 
     <h1>Sample Tasks 2</h1>
-    <p class="formula_applet" id="inv862a">3,5 \textcolor{blue}{kWh} = {{result}} \textcolor{blue}{MJ}</p> (12,6MJ) mit alter Syntax: \textcolor <br />
-    <p class="formula_applet" id="definition_set_more_than_numofvar" def="x > 0 && y < 5">\frac{\sqrt{x^3}}{\sqrt{x}} = {{result}}</p><span class='padding'><span class='tr en moredef'>Number of definition sets exceeds number of variables.</span><span class='tr de moredef'>Mehr Definitionsmengen als Variablen.</span></span><br />
-    <p class="formula_applet" id="definition_set_less_than_numofvar" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} + y \cdot z = {{result}}</p><span class='padding'><span class='tr en morevars'>Number of variables exceeds number of definition sets.</span><span class='tr de morevars'>Mehr Variablen als Definitionsmengen.</span></span><br />
+    <p class="formula_applet" id="inv862a">3,5 \textcolor{blue}{kWh} = {{result}} \textcolor{blue}{MJ}</p> (12,6MJ) mit
+    alter Syntax: \textcolor <br />
+    <p class="formula_applet" id="definition_set_more_than_numofvar" def="x > 0 && y < 5">\frac{\sqrt{x^3}}{\sqrt{x}} =
+        {{result}}</p><span class='padding'><span class='tr en moredef'>Number of definition sets exceeds number of
+            variables.</span><span class='tr de moredef'>Mehr Definitionsmengen als Variablen.</span></span><br />
+    <p class="formula_applet" id="definition_set_less_than_numofvar" def="x > 0">\frac{\sqrt{x^3}}{\sqrt{x}} + y \cdot z
+        = {{result}}</p><span class='padding'><span class='tr en morevars'>Number of variables exceeds number of
+            definition sets.</span><span class='tr de morevars'>Mehr Variablen als
+            Definitionsmengen.</span></span><br />
     <p class="formula_applet" id="binom_01">(2u + 7v)^2 = {{result}}</p><br />
     <p class="formula_applet" id="CheckIfTrue">{{result}}</p><br />
 
 </body>
+
 </html>

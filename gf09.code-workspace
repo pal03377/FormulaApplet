@@ -1,0 +1,13 @@
+{
+    "folders": [
+        {
+            "name": "H5P-Development",
+            "path": "./h5p/development"
+        },
+        {
+            "name": "Bundle Development",
+            "path": "./main"
+        }
+    ],
+    "settings": {}
+}

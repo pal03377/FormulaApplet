@@ -1,0 +1,64 @@
+[{
+    "name": "formulaAppletMode",
+    "type": "select",
+    "label": "Automatic/Manual Mode",
+    "description": "Result is computed automatically or has to be specified by the author.",
+    "options": [{
+        "value": "auto",
+        "label": "Result is computed by the Formula Applet"
+      },
+      {
+        "value": "manu",
+        "label": "You have to specify a result"
+      }
+    ],
+    "default": "auto"
+  },
+  {
+    "name": "fa_applet",
+    "type": "text",
+    "label": "Expression (Formula Applet Editor)",
+    "description": " ",
+    "optional": true,
+    "default": "default",
+    "widget": "formulaAppletEditor"
+  },
+  {
+    "label": "Expression (LATEX)",
+    "name": "TEX_expression",
+    "type": "text",
+    "default": "7 +\\class{inputfield}{x} = 11",
+    "description": "Use this field if you are familiar with LATEX"
+  },
+  {
+    "label": "Text for \"Check\" button",
+    "importance": "low",
+    "name": "checkAnswer",
+    "type": "text",
+    "default": "Check",
+    "common": true,
+    "optional": true,
+    "info": "dummy (not used)"
+  },
+  {
+    "name": "formulaAppletPhysics",
+    "type": "boolean",
+    "label": "Physics Mode",
+    "description": "Check if result is a <b>physical quantity</b> (value and unit). <br>Uncheck if result is a <b>mathematical expression</b>.",
+    "default": false
+  },
+  {
+    "label": "Solution (encoded)",
+    "name": "data_b64",
+    "type": "text",
+    "default": "default-solution",
+    "description": "Solution (TEX), encoded"
+  },
+  {
+    "label": "Formula Applet Id",
+    "name": "id",
+    "type": "text",
+    "default": "new_id",
+    "description": "Id of the Formula Applet - has to be unique"
+  }
+]
